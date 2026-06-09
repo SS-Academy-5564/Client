@@ -5,7 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "build:tools": "tsc -p tsconfig.tools.json",
+    "e2e": "npm run build:tools && ng e2e",
+    "e2e:ui": "npm run build:tools && npx playwright test --ui"
   },
   "private": true,
   "packageManager": "npm@11.12.0",
@@ -23,6 +26,8 @@
     "@angular/build": "^21.2.13",
     "@angular/cli": "^21.2.13",
     "@angular/compiler-cli": "^21.2.0",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.2",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2"
   }
