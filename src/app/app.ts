@@ -40,7 +40,7 @@ import { provideEchartsCore } from 'ngx-echarts';
             <button mat-raised-button color="primary" type="button">Primary Action</button>
 
             <div class="chart-container">
-              <echarts [options]="chartOptions" style="width:100%;height:360px;"></echarts>
+              <echarts [options]="chartOptions()" style="width:100%;height:360px;"></echarts>
               <mat-progress-spinner *ngIf="loading()" diameter="48" mode="indeterminate"></mat-progress-spinner>
             </div>
           </form>
