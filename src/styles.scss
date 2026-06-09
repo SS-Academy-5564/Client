@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+@forward '@angular/material/core/theming' show define-theme, define-colors, all-component-themes;
+
+@use '@angular/material' as mat;
+
+$my-theme: define-theme((
+  color: (
+    primary: mat.$violet-palette,
+    tertiary: mat.$rose-palette,
+  ),
+));
+
+@include mat.all-component-themes($my-theme);
+
+@include mat.core();
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
