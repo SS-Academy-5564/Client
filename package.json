@@ -8,7 +8,13 @@
     "watch": "ng build --watch --configuration development",
     "build:tools": "tsc -p tsconfig.tools.json",
     "e2e": "npm run build:tools && ng e2e",
-    "e2e:ui": "npm run build:tools && npx playwright test --ui"
+    "e2e:ui": "npm run build:tools && npx playwright test --ui",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "lint": "npx prettier --check src/"
   },
   "private": true,
   "packageManager": "npm@11.12.0",
@@ -33,7 +39,11 @@
     "@angular/compiler-cli": "^21.2.0",
     "@playwright/test": "^1.60.0",
     "@types/node": "^25.9.2",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
+    "jsdom": "^29.1.1",
     "prettier": "^3.8.1",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^4.1.8"
   }
 }
