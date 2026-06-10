@@ -68,10 +68,6 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "e2e": {
-          "builder": "./tools/builders/e2e:e2e",
-          "options": {}
         }
       }
     }

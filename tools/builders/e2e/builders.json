@@ -1,9 +1,0 @@
-{
-  "builders": {
-    "e2e": {
-      "implementation": "./index",
-      "schema": "./schema.json",
-      "description": "Run Playwright e2e tests"
-    }
-  }
-}
