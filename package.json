@@ -1,0 +1,51 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "generate": "ng generate",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "build:tools": "tsc -p tsconfig.tools.json",
+    "postinstall": "npm run build:tools",
+    "e2e": "npx playwright test",
+    "e2e:ui": "npx playwright test --ui",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "lint": "npx prettier --check src/"
+  },
+  "private": true,
+  "packageManager": "npm@11.12.0",
+  "dependencies": {
+    "@angular/animations": "^21.2.16",
+    "@angular/cdk": "^21.2.14",
+    "@angular/common": "^21.2.0",
+    "@angular/compiler": "^21.2.0",
+    "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@angular/material": "^21.2.14",
+    "@angular/platform-browser": "^21.2.0",
+    "@angular/router": "^21.2.0",
+    "echarts": "^5.6.0",
+    "ngx-echarts": "^21.0.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^21.2.13",
+    "@angular/cli": "^21.2.13",
+    "@angular/compiler-cli": "^21.2.0",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^25.9.2",
+    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/ui": "^4.1.8",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2",
+    "vitest": "^4.1.8"
+  }
+}
