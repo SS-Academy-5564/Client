@@ -1,0 +1,28 @@
+
+ <div class="container">
+      <mat-card appearance="outlined" class="demo-card">
+        <mat-card-header>
+          <mat-card-title>Angular Material + ngx-echarts</mat-card-title>
+          <mat-card-subtitle>Standalone components with Signals and Signals-based inputs</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form class="demo-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Sample input</mat-label>
+              <input matInput placeholder="Type something..." />
+            </mat-form-field>
+
+            <div class="button-wrapper">
+                <app-button label="Primary Action" type="primary" variant="full-width"></app-button>
+            </div>
+          
+
+            <div class="chart-container">
+              <echarts [options]="chartOptions()" style="width:100%;height:350px;"></echarts>
+              <mat-progress-spinner *ngIf="loading()" diameter="48" mode="indeterminate"></mat-progress-spinner>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>

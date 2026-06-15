@@ -1,21 +1,127 @@
 @forward '@angular/material' show define-theme, define-colors, all-component-themes;
-
 @use '@angular/material' as mat;
+
 
 $my-theme: mat.define-theme((
   color: (
-    primary: mat.$violet-palette,
-    tertiary: mat.$rose-palette,
-  ),
+    theme-type: light,
+    primary: mat.$violet-palette, 
+    tertiary: mat.$red-palette
+  )
 ));
 
+@include mat.core();
 @include mat.all-component-themes($my-theme);
 
-@include mat.core();
+
+:root {
+  color-scheme: light;
+  font-family: 'Inter', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  
+
+  --surface: #ffffff;           
+  --surface-muted: #ffffff;       
+  --surface-strong: #ffffff;      
+  --text-primary: #0f172a;        
+  --text-secondary: #64748b;    
+  
+  --accent: #574bff;           
+  --accent-soft: rgba(80, 36, 252, 0.08);
+  
+  --border: #e2e8f0;              
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); 
+  --radius: 16px;                 
+}
+
+* {
+  box-sizing: border-box;
+}
+
 
 html, body {
   margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  min-height: 100%;
+  background-color: #f8fafc;     
+  color: var(--text-primary);
+  font-family: 'Inter', Roboto, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+
+::v-deep, :root {
+  --mdc-filled-button-container-shape: 8px;
+  --mdc-protected-button-container-shape: 8px;
+  --mdc-outlined-button-container-shape: 8px;
+  
+
+  .mat-mdc-flat-button.mat-primary, 
+  .mat-mdc-raised-button.mat-primary {
+    --mdc-filled-button-container-color: var(--accent) !important;
+    --mdc-protected-button-container-color: var(--accent) !important;
+    --mdc-filled-button-label-text-color: #ffffff !important;
+    --mdc-protected-button-label-text-color: #ffffff !important;
+  }
+
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: var(--accent) !important;
+  }
+  
+
+  .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: var(--accent) !important;
+  }
+}
+
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.page-container {
+  width: min(520px, 100%);
+  margin: 0 auto;
+}
+
+.surface-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.surface-card-strong {
+  background: #ffffff !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+  border-radius: var(--radius) !important;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 24px 16px;
+  }
+  
+  :root {
+    --radius: 12px; 
+  }
 }
