@@ -7,7 +7,6 @@ import {ButtonComponent} from "../ui/button/button.component";
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [
     RouterModule,
     MatToolbarModule,

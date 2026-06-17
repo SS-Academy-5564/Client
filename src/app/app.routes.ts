@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { loggedOutOnlyGuard } from './core/guards/logged-out-only-guard';
+import { loggedOutOnlyGuard } from '@core/guards/logged-out-only-guard';
 
 export const routes: Routes = [
   {

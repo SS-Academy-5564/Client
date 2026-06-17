@@ -16,7 +16,7 @@
     "module": "preserve",
     "types": [
       "node"
-    ]
+    ],
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

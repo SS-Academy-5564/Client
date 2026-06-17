@@ -10,26 +10,25 @@
   background-color: var(--bg-main);
 }
 
-::v-deep {
+:host ::ng-deep {
   .mdc-text-field--outlined {
-    background-color: #ffffff !important;
-    border-radius: 8px !important;
+    background-color: #ffffff;
+    border-radius: 8px;
   }
   .mdc-notched-outline__leading,
   .mdc-notched-outline__notch,
   .mdc-notched-outline__trailing {
-    border-color: var(--border-color) !important;
+    border-color: var(--border-color);
   }
   .mdc-text-field--focused .mdc-notched-outline__leading,
   .mdc-text-field--focused .mdc-notched-outline__notch,
   .mdc-text-field--focused .mdc-notched-outline__trailing {
-    border-color: var(--primary-purple) !important;
-    border-width: 2px !important;
+    border-color: var(--primary-purple);
+    border-width: 2px;
   }
 
-
   .mat-mdc-card-content {
-    padding: 24px 0 0 0 !important; 
+    padding: 24px 0 0 0; 
   }
 }
 
@@ -41,10 +40,10 @@
 }
 
 .demo-card {
-  background: #ffffff !important;
-  border: 1px solid var(--border-color) !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
-  border-radius: 16px !important;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
   overflow: hidden;
   margin-top: 24px;
 }
@@ -56,20 +55,9 @@
   width: 100%;
 }
 
-
-.demo-form mat-form-field,
-.demo-form button[mat-raised-button] {
+.demo-form mat-form-field {
   margin-left: 32px;
   margin-right: 32px;
-}
-
-.demo-form button[mat-raised-button] {
-  min-height: 48px;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 8px !important;
-  align-self: flex-start;
-  padding: 0 24px;
 }
 
 .button-wrapper {
@@ -77,17 +65,17 @@
 }
 
 .chart-container {
-  width: 100%;                    
+  width: 100%;                  
   display: block;                  
   margin-top: 24px;
   position: relative;
   border-top: 1px solid var(--border-color); 
+  background-color: #ffffff;
 }
 
-
-echarts {
+echarts, .echarts {
   display: block;
-  width: 100% !important;        
+  width: 100% !important;   
 }
 
 .chart-container mat-progress-spinner {

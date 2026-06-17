@@ -5,15 +5,14 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-button',
-  standalone: true,
   imports: [CommonModule, MatButtonModule, RouterModule],
   templateUrl: './button.html',
   styleUrls: ['./button.scss'],
 })
 export class ButtonComponent {
-  @Input() label = '';
   @Input() type: 'primary' | 'secondary' | 'text' = 'primary';
-  @Input() variant: 'default' | 'nav' | 'full-width' = 'default';
-  @Input() disabled = false;
-  @Input() routerLink?: string;
+  @Input() variant: 'full-width' | 'nav' | 'default' = 'default';
+  @Input() label: string = '';
+  @Input() disabled: boolean = false;
+  @Input() routerLink: string | null = null;
 }

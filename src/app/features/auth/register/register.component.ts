@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { RegisterRequest } from '../../../core/models/register-model';
-import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
+import { RegisterRequest } from '@core/models/register-model';
+import { passwordMatchValidator } from '@shared/validators/password-match.validator';
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
@@ -11,11 +11,10 @@ import {MatButtonModule} from "@angular/material/button";
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
-import { ButtonComponent } from '../../../shared/ui/button/button.component';
+import { ButtonComponent } from '@shared/ui/button/button.component';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, RouterModule, ButtonComponent, MatIconModule],
   templateUrl: './register.html',
   styleUrl: './register.scss',
