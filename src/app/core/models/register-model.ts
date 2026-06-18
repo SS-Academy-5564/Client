@@ -6,7 +6,3 @@ export interface RegisterRequest {
     confirmPassword: string;
 }
 
-export interface AuthResponse {
-    isLoading: boolean;
-    error: string | null;
-}

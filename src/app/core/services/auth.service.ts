@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { finalize } from "rxjs/internal/operators/finalize";
+import { finalize } from 'rxjs/operators';
 import { RegisterRequest } from "../models/register-model";
 import { environment } from '../../../environments/environment';
 
@@ -20,7 +20,7 @@ export class AuthService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http .post(this.apiUrl, payload)
+    return this.http.post(this.apiUrl, payload)
       .pipe(finalize(() => this.isLoading.set(false)));
   }
 

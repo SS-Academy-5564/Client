@@ -54,7 +54,7 @@
             <span class="field-label">Password</span>
             <mat-form-field appearance="outline" class="full-width">
               <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" placeholder="Min. 8 characters" />
-              <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
+             <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility($event)" [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'" [attr.aria-pressed]="!hidePassword()">
                 <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
               <mat-error *ngIf="form.get('password')?.hasError('required')">
@@ -70,13 +70,13 @@
             <span class="field-label">Confirm password</span>
             <mat-form-field appearance="outline" class="full-width">
               <input matInput [type]="hideConfirmPassword() ? 'password' : 'text'" formControlName="confirmPassword" placeholder="••••••••" />
-              <button mat-icon-button matSuffix type="button" (click)="toggleConfirmPasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword()">
+              <button mat-icon-button matSuffix type="button" (click)="toggleConfirmPasswordVisibility($event)" [attr.aria-label]="hideConfirmPassword() ? 'Show password' : 'Hide password'" [attr.aria-pressed]="!hideConfirmPassword()">
                 <mat-icon>{{hideConfirmPassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
               <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
                 Confirmation is required
               </mat-error>
-              <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
+              <mat-error *ngIf="form.hasError('passwordMismatch') && form.touched">
                 Passwords do not match
               </mat-error>
             </mat-form-field>
@@ -84,6 +84,7 @@
 
           <app-button label="Create account" variant="full-width" type="primary" [disabled]="form.invalid" />
         </form>
+
       </mat-card-content>
       
       

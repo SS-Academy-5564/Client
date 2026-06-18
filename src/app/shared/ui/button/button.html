@@ -1,14 +1,14 @@
 <ng-container [ngSwitch]="type">
   
-  <button *ngSwitchCase="'primary'" mat-raised-button [class.full-width]="variant === 'full-width'" [class.nav-button]="variant === 'nav'" [disabled]="disabled" [routerLink]="routerLink">
+  <button  type="button" *ngSwitchCase="'primary'" mat-raised-button [class.full-width]="variant === 'full-width'" [class.nav-button]="variant === 'nav'" [disabled]="disabled" [routerLink]="routerLink">
     {{ label }}
   </button>
 
-  <button *ngSwitchCase="'secondary'" mat-stroked-button [class.full-width]="variant === 'full-width'" [class.nav-button]="variant === 'nav'" [disabled]="disabled" [routerLink]="routerLink">
+  <button type="button" *ngSwitchCase="'secondary'" mat-stroked-button [class.full-width]="variant === 'full-width'" [class.nav-button]="variant === 'nav'" [disabled]="disabled" [routerLink]="routerLink">
     {{ label }}
   </button>
 
-  <button *ngSwitchDefault mat-button [class.full-width]="variant === 'full-width'" [class.nav-button]="variant === 'nav'" [disabled]="disabled" [routerLink]="routerLink">
+  <button type="button" *ngSwitchDefault mat-button [class.full-width]="variant === 'full-width'" [class.nav-button]="variant === 'nav'" [disabled]="disabled" [routerLink]="routerLink">
     {{ label }}
   </button>
 

@@ -8,7 +8,7 @@ import {
 } from '@angular/platform-browser-dynamic/testing';
 import { beforeAll } from 'vitest';
 import { readFileSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { resolve } from 'path';
 
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,

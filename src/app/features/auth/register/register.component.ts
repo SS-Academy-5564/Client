@@ -26,6 +26,7 @@ export class RegisterComponent {
   protected readonly hidePassword = signal<boolean>(true);
   protected readonly hideConfirmPassword = signal<boolean>(true);
 
+
   readonly form = this.fb.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
@@ -63,7 +64,7 @@ export class RegisterComponent {
     this.authService.register(this.form.getRawValue() as RegisterRequest)
     .subscribe({
       next: () => {
-        console.log('Registration successful');
+        // TODO: navigate to login when implemented
       },
       error: err => {
          this.authService.setError(
