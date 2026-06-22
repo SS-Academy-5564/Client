@@ -15,11 +15,13 @@ import { provideEchartsCore } from 'ngx-echarts';
     MatInputModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    NgxEchartsModule
+    NgxEchartsModule,
   ],
-  providers: [provideEchartsCore({
-    echarts: () => import('echarts')
-  })],
+  providers: [
+    provideEchartsCore({
+      echarts: () => import('echarts'),
+    }),
+  ],
   template: `
     <div class="container">
       <h1>Hello, {{ title() }}</h1>
@@ -48,28 +50,30 @@ import { provideEchartsCore } from 'ngx-echarts';
       </mat-card>
     </div>
   `,
-  styles: [`
-    .container {
-      padding: 24px;
-      max-width: 960px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
+  styles: [
+    `
+      .container {
+        padding: 24px;
+        max-width: 960px;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
 
-    .demo-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+      .demo-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
 
-    .demo-card {
-      margin-top: 16px;
-    }
+      .demo-card {
+        margin-top: 16px;
+      }
 
-    .chart-container {
-      margin-top: 16px;
-    }
-  `]
+      .chart-container {
+        margin-top: 16px;
+      }
+    `,
+  ],
 })
 export class App {
   protected readonly title = signal('Client');
@@ -78,29 +82,29 @@ export class App {
   protected readonly chartOptions = signal({
     backgroundColor: 'transparent',
     tooltip: {
-      trigger: 'axis'
+      trigger: 'axis',
     },
     legend: {
-      data: ['Series A', 'Series B']
+      data: ['Series A', 'Series B'],
     },
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
     },
     series: [
       {
         name: 'Series A',
         type: 'bar',
-        data: [120, 200, 150, 80, 70, 110, 130]
+        data: [120, 200, 150, 80, 70, 110, 130],
       },
       {
         name: 'Series B',
         type: 'line',
-        data: [60, 120, 100, 140, 90, 80, 150]
-      }
-    ]
+        data: [60, 120, 100, 140, 90, 80, 150],
+      },
+    ],
   });
 }

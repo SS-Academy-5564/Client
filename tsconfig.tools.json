@@ -6,7 +6,5 @@
     "types": ["node"],
     "declaration": false
   },
-  "include": [
-    "tools/**/*.ts"
-  ]
+  "include": ["tools/**/*.ts"]
 }
