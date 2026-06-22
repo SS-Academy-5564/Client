@@ -16,8 +16,8 @@ import { ButtonComponent } from '@shared/ui/button/button.component';
 @Component({
   selector: 'app-register',
   imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, RouterModule, ButtonComponent, MatIconModule],
-  templateUrl: './register.html',
-  styleUrl: './register.scss',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);

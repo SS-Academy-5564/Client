@@ -26,8 +26,8 @@ import { ButtonComponent } from '@shared/ui/button/button.component';
   providers: [provideEchartsCore({
     echarts: () => import('echarts')
   })],
-  templateUrl: './home.html',
-  styleUrl: './home.scss',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   protected readonly title = signal('Client');

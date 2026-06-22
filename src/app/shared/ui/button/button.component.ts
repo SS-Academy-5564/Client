@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-button',
   imports: [CommonModule, MatButtonModule, RouterModule],
-  templateUrl: './button.html',
-  styleUrls: ['./button.scss'],
+  templateUrl: './button.component.html',
+  styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
   @Input() type: 'primary' | 'secondary' | 'text' = 'primary';
