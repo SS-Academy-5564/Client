@@ -8,6 +8,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     importProvidersFrom(NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
-    }))
+    })),
   ]
 };
