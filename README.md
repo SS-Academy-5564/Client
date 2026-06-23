@@ -55,6 +55,45 @@ npm run e2e:ui # with UI
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Internationalization (i18n)
+
+This project uses Angular's built-in i18n with `@angular/localize`. Translations are applied at build time — each locale produces a separate output bundle.
+
+Supported locales:
+- `en-US` — source language (English)
+- `uk` — Ukrainian
+
+### Extracting strings
+
+After adding or changing `i18n` markers in templates or `$localize` tags in TypeScript, regenerate the source message file:
+
+```bash
+ng extract-i18n --output-path src/locales
+```
+
+This updates `src/locales/messages.xlf`. Copy any new `<trans-unit>` blocks into `src/locales/messages.uk.xlf` and add `<target>` translations.
+
+### Serving a specific locale locally
+
+```bash
+ng serve                      # English (default)
+ng serve --configuration=uk   # Ukrainian
+```
+
+### Building for production
+
+```bash
+npm run build
+```
+
+Produces a localized output per locale under `dist/Client/browser/`:
+```
+dist/Client/browser/
+  uk/   ← Ukrainian build
+```
+
+To also produce an English build, add `en-US` to the `localize` array in the `production` configuration in `angular.json`.
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
