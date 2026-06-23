@@ -7,15 +7,16 @@
         <target>Привіт, <x id="INTERPOLATION" equiv-text="{{ title() }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">25,27</context>
+          <context context-type="linenumber">28,30</context>
         </context-group>
+        <note priority="1" from="description">Page heading greeting</note>
       </trans-unit>
       <trans-unit id="739313073051259180" datatype="html">
         <source>Standalone components with Signals and Signals-based inputs</source>
         <target>Автономні компоненти з Signals та полями вводу на основі Signals</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2885313976860500121" datatype="html">
@@ -23,24 +24,27 @@
         <target>Приклад поля вводу</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">39,40</context>
         </context-group>
+        <note priority="1" from="description">Form field label</note>
       </trans-unit>
       <trans-unit id="7008764618395900070" datatype="html">
         <source>Type something...</source>
         <target>Введіть щось...</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">37,38</context>
+          <context context-type="linenumber">40,41</context>
         </context-group>
+        <note priority="1" from="description">Form field placeholder</note>
       </trans-unit>
       <trans-unit id="7397760241381561901" datatype="html">
         <source>Primary Action</source>
         <target>Основна дія</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">40,41</context>
+          <context context-type="linenumber">43,45</context>
         </context-group>
+        <note priority="1" from="description">Form submit button</note>
       </trans-unit>
       <trans-unit id="6531898240125800824" datatype="html">
         <source>Date: <x id="INTERPOLATION" equiv-text="{{ sampleDate() | date:&apos;longDate&apos; }}"/></source>
@@ -49,21 +53,27 @@
           <context context-type="sourcefile">src/app/app.ts</context>
           <context context-type="linenumber">46,47</context>
         </context-group>
+        <note priority="1" from="description">Date example label</note>
       </trans-unit>
       <trans-unit id="5696244706071223399" datatype="html">
         <source>Price: <x id="INTERPOLATION" equiv-text="{{ samplePrice() | currency }}"/></source>
-        <target>Ціна: <x id="INTERPOLATION" equiv-text="{{ sampleDate() | date:&apos;longDate&apos; }}"/></target>
+        <target>Ціна: <x id="INTERPOLATION" equiv-text="{{ samplePrice() | currency }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
           <context context-type="linenumber">47,48</context>
         </context-group>
+        <note priority="1" from="description">Price example label</note>
       </trans-unit>
       <trans-unit id="2816922040873882597" datatype="html">
         <source>Series A</source>
         <target>Дані A</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4814784078350866996" datatype="html">
@@ -71,7 +81,11 @@
         <target>Дані B</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8563137213157122993" datatype="html">
@@ -79,7 +93,7 @@
         <target>Пон</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">89</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8502240922750617054" datatype="html">
@@ -87,7 +101,7 @@
         <target>Вівт</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">100</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7421778640995344715" datatype="html">
@@ -95,7 +109,7 @@
         <target>Сер</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">91</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4409954796361883558" datatype="html">
@@ -103,7 +117,7 @@
         <target>Четв</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">102</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5651951128882735477" datatype="html">
@@ -111,7 +125,7 @@
         <target>П'ятн</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">93</context>
+          <context context-type="linenumber">103</context>
         </context-group>
       </trans-unit>
       <trans-unit id="93026920674143073" datatype="html">
@@ -119,7 +133,7 @@
         <target>Суб</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">94</context>
+          <context context-type="linenumber">104</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4921929243068857081" datatype="html">
@@ -127,7 +141,7 @@
         <target>Нед</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">95</context>
+          <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
     </body>

@@ -25,7 +25,7 @@ import { provideEchartsCore } from 'ngx-echarts';
   })],
   template: `
     <div class="container">
-      <h1 i18n>Hello, {{ title() }}</h1>
+      <h1 i18n="Page heading greeting">Hello, {{ title() }}</h1>
 
       <mat-card appearance="outlined" class="demo-card">
         <mat-card-header>
@@ -36,15 +36,15 @@ import { provideEchartsCore } from 'ngx-echarts';
         <mat-card-content>
           <form class="demo-form">
             <mat-form-field appearance="fill">
-              <mat-label i18n>Sample input</mat-label>
-              <input i18n-placeholder matInput placeholder="Type something..." />
+              <mat-label i18n="Form field label">Sample input</mat-label>
+              <input i18n-placeholder="Form field placeholder" matInput placeholder="Type something..." />
             </mat-form-field>
 
-            <button i18n mat-raised-button color="primary" type="button">Primary Action</button>
+            <button i18n="Form submit button" mat-raised-button color="primary" type="button">Primary Action</button>
 
             <div class="locale-examples">
-              <p i18n>Date: {{ sampleDate() | date:'longDate' }}</p>
-              <p i18n>Price: {{ samplePrice() | currency }}</p>
+              <p i18n="Date example label">Date: {{ sampleDate() | date:'longDate' }}</p>
+              <p i18n="Price example label">Price: {{ samplePrice() | currency }}</p>
             </div>
 
             <div class="chart-container">

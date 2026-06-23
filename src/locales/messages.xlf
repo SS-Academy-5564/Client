@@ -8,6 +8,7 @@
           <context context-type="sourcefile">src/app/app.ts</context>
           <context context-type="linenumber">28,30</context>
         </context-group>
+        <note priority="1" from="description">Page heading greeting</note>
       </trans-unit>
       <trans-unit id="739313073051259180" datatype="html">
         <source>Standalone components with Signals and Signals-based inputs</source>
@@ -20,8 +21,9 @@
         <source>Sample input</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">39,40</context>
         </context-group>
+        <note priority="1" from="description">Form field label</note>
       </trans-unit>
       <trans-unit id="7008764618395900070" datatype="html">
         <source>Type something...</source>
@@ -29,13 +31,15 @@
           <context context-type="sourcefile">src/app/app.ts</context>
           <context context-type="linenumber">40,41</context>
         </context-group>
+        <note priority="1" from="description">Form field placeholder</note>
       </trans-unit>
       <trans-unit id="7397760241381561901" datatype="html">
         <source>Primary Action</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">43,44</context>
+          <context context-type="linenumber">43,45</context>
         </context-group>
+        <note priority="1" from="description">Form submit button</note>
       </trans-unit>
       <trans-unit id="6531898240125800824" datatype="html">
         <source>Date: <x id="INTERPOLATION" equiv-text="{{ sampleDate() | date:&apos;longDate&apos; }}"/></source>
@@ -43,6 +47,7 @@
           <context context-type="sourcefile">src/app/app.ts</context>
           <context context-type="linenumber">46,47</context>
         </context-group>
+        <note priority="1" from="description">Date example label</note>
       </trans-unit>
       <trans-unit id="5696244706071223399" datatype="html">
         <source>Price: <x id="INTERPOLATION" equiv-text="{{ samplePrice() | currency }}"/></source>
@@ -50,6 +55,7 @@
           <context context-type="sourcefile">src/app/app.ts</context>
           <context context-type="linenumber">47,48</context>
         </context-group>
+        <note priority="1" from="description">Price example label</note>
       </trans-unit>
       <trans-unit id="2816922040873882597" datatype="html">
         <source>Series A</source>
