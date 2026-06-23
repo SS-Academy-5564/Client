@@ -29,9 +29,9 @@ import { provideEchartsCore } from 'ngx-echarts';
       <mat-card appearance="outlined" class="demo-card">
         <mat-card-header>
           <mat-card-title>Angular Material + ngx-echarts</mat-card-title>
-          <mat-card-subtitle
-            >Standalone components with Signals and Signals-based inputs</mat-card-subtitle
-          >
+          <mat-card-subtitle>
+            Standalone components with SignalsSignalsSignalsSignalsSignals and Signals-based inputs
+          </mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -48,8 +48,7 @@ import { provideEchartsCore } from 'ngx-echarts';
               <mat-progress-spinner
                 *ngIf="loading()"
                 diameter="48"
-                mode="indeterminate"
-              ></mat-progress-spinner>
+                mode="indeterminate"></mat-progress-spinner>
             </div>
           </form>
         </mat-card-content>
