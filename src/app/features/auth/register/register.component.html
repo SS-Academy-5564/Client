@@ -63,6 +63,9 @@
               <mat-error *ngIf="form.get('password')?.hasError('minlength')">
                 Password must be at least 8 characters
               </mat-error>
+              <mat-error *ngIf="form.get('password')?.hasError('pattern')">
+                Password must start with an uppercase letter
+              </mat-error>
             </mat-form-field>
           </div>
 
@@ -73,6 +76,7 @@
               <button mat-icon-button matSuffix type="button" (click)="toggleConfirmPasswordVisibility($event)" [attr.aria-label]="hideConfirmPassword() ? 'Show password' : 'Hide password'" [attr.aria-pressed]="!hideConfirmPassword()">
                 <mat-icon>{{hideConfirmPassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
+            
               <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
                 Confirmation is required
               </mat-error>
@@ -82,7 +86,7 @@
             </mat-form-field>
           </div>
 
-          <app-button label="Create account" variant="full-width" type="primary" [disabled]="form.invalid" />
+          <app-button label="Create account" variant="full-width" type="primary" buttonType="submit" [disabled]="form.invalid" />
         </form>
 
       </mat-card-content>

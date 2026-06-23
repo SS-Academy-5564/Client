@@ -11,6 +11,7 @@ import { RouterModule } from '@angular/router';
 })
 export class ButtonComponent {
   @Input() type: 'primary' | 'secondary' | 'text' = 'primary';
+  @Input() buttonType: 'button' | 'submit' = 'button';
   @Input() variant: 'full-width' | 'nav' | 'default' = 'default';
   @Input() label: string = '';
   @Input() disabled: boolean = false;
