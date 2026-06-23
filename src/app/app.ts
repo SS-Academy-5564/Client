@@ -41,12 +41,12 @@ import { provideEchartsCore } from 'ngx-echarts';
               <input matInput placeholder="Type something..." />
             </mat-form-field>
 
-            <button mat-raised-button color="primary" type="button">Primary Action</button>
+            <button color="primary" mat-raised-button type="button">Primary Action</button>
 
             <div class="chart-container">
-              <echarts [options]="chartOptions()" style="width:100%;height:360px;"></echarts>
+              <echarts style="width:100%;height:360px;" [options]="chartOptions()" />
               @if (loading()) {
-                <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+                <mat-progress-spinner diameter="48" mode="indeterminate" />
               }
             </div>
           </form>
