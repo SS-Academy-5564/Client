@@ -71,7 +71,7 @@ After adding or changing `i18n` markers in templates or `$localize` tags in Type
 ng extract-i18n --output-path src/locales
 ```
 
-This updates `src/locales/messages.xlf`. Copy any new `<trans-unit>` blocks into `src/locales/messages.uk.xlf` and add `<target>` translations.
+This updates `src/locales/messages.xlf`. Copy any new `<trans-unit>` blocks into `src/locales/messages.uk.xlf` and add `<target>` translations. You can also use external tools (like Poedit) or AI for that purpose.
 
 ### Serving a specific locale locally
 
