@@ -89,10 +89,9 @@ npm run build
 Produces a localized output per locale under `dist/Client/browser/`:
 ```
 dist/Client/browser/
-  uk/   ← Ukrainian build
+  en-US/   ← English build
+  uk/      ← Ukrainian build
 ```
-
-To also produce an English build, add `en-US` to the `localize` array in the `production` configuration in `angular.json`.
 
 ## Additional Resources
 
