@@ -1,24 +1,144 @@
 @forward '@angular/material' show define-theme, define-colors, all-component-themes;
-
 @use '@angular/material' as mat;
 
-$my-theme: mat.define-theme(
-  (
-    color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$rose-palette,
-    ),
+$my-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$violet-palette,
+    tertiary: mat.$red-palette
   )
-);
-
-@include mat.all-component-themes($my-theme);
+));
 
 @include mat.core();
+@include mat.all-component-themes($my-theme);
+
+:root {
+  color-scheme: light;
+  font-family: 'Inter', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+
+  --surface: #ffffff;
+  --surface-muted: #ffffff;
+  --surface-strong: #ffffff;
+
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+
+  --accent: #6344F5;
+  --accent-hover: #401cd8;
+  --accent-soft: rgba(80, 36, 252, 0.08);
+  --button-hover: color-mix(in srgb, var(--accent) 85%, black);
+
+  --border: #e2e8f0;
+
+  --color-nav-button: var(--accent);
+  --color-nav-button-hover: var(--accent-hover);
+  --color-nav-button-text: var(--surface);
+
+  --shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -2px rgba(0, 0, 0, 0.05);
+
+  --radius: 16px;
+
+  --mdc-filled-button-container-shape: 8px;
+  --mdc-protected-button-container-shape: 8px;
+  --mdc-outlined-button-container-shape: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 html,
 body {
   margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  min-height: 100%;
+  background-color: #f8fafc;
+  color: var(--text-primary);
+  font-family: 'Inter', Roboto, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+.mat-mdc-raised-button {
+  --mat-button-protected-container-color: var(--accent);
+  --mat-button-protected-label-text-color: #ffffff;
+  --mat-button-protected-disabled-container-color: var(--accent);
+  --mat-button-protected-disabled-label-text-color: #ffffff;
+}
+
+.mat-mdc-flat-button {
+  --mat-button-filled-container-color: var(--accent);
+  --mat-button-filled-label-text-color: #ffffff;
+  --mat-button-filled-disabled-container-color: var(--accent);
+  --mat-button-filled-disabled-label-text-color: #ffffff;
+}
+
+.mat-mdc-outlined-button {
+  --mdc-outlined-button-label-text-color: var(--accent) ;
+  --mdc-outlined-button-outline-color: var(--accent) ;
+}
+
+.mat-mdc-button {
+  --mat-text-button-label-text-color: var(--accent) ;
+}
+
+.mdc-text-field--focused .mdc-notched-outline__leading,
+.mdc-text-field--focused .mdc-notched-outline__notch,
+.mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: var(--accent) ;
+}
+
+.mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+  color: var(--accent) ;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.page-container {
+  width: min(520px, 100%);
+  margin: 0 auto;
+}
+
+.surface-card {
+  background: var(--surface) ;
+  border: 1px solid var(--border) ;
+  box-shadow: var(--shadow) ;
+  border-radius: var(--radius) ;
+}
+
+.surface-card-strong {
+  background: var(--surface-strong) ;
+  border-color: var(--border);
+  box-shadow: var(--shadow) ;
+  border-radius: var(--radius) ;
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 24px 16px;
+  }
+
+  :root {
+    --radius: 12px;
+  }
 }
