@@ -25,8 +25,8 @@ import { LoginRequest } from '@core/models/login-model';
     RouterModule,
     ButtonComponent,
   ],
-  templateUrl: './login.html',
-  styleUrl: './login.scss',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
