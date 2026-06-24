@@ -22,12 +22,8 @@
             <span class="field-label">Email</span>
             <mat-form-field appearance="outline" class="full-width">
               <input matInput type="email" formControlName="email" placeholder="you@company.com" />
-              <mat-error *ngIf="form.get('email')?.hasError('required')">
-                Email is required
-              </mat-error>
-              <mat-error *ngIf="form.get('email')?.hasError('email')">
-                Enter a valid email address
-              </mat-error>
+              <mat-error *ngIf="form.get('email')?.hasError('required')">Email is required</mat-error>
+              <mat-error *ngIf="form.get('email')?.hasError('email')">Enter a valid email address</mat-error>
             </mat-form-field>
           </div>
 
@@ -38,30 +34,21 @@
                 matInput
                 [type]="hidePassword() ? 'password' : 'text'"
                 formControlName="password"
-                placeholder="••••••••"
-              />
+                placeholder="••••••••" />
               <button
                 mat-icon-button
                 matSuffix
                 type="button"
                 (click)="togglePasswordVisibility($event)"
                 [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
-                [attr.aria-pressed]="hidePassword()"
-              >
+                [attr.aria-pressed]="hidePassword()">
                 <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
-              <mat-error *ngIf="form.get('password')?.hasError('required')">
-                Password is required
-              </mat-error>
+              <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
             </mat-form-field>
           </div>
 
-          <app-button
-            label="Sign in"
-            variant="full-width"
-            type="primary"
-            [disabled]="form.invalid"
-          />
+          <app-button label="Sign in" variant="full-width" type="primary" [disabled]="form.invalid" />
         </form>
       </mat-card-content>
     </mat-card>

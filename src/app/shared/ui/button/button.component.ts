@@ -7,13 +7,14 @@ import { RouterModule } from '@angular/router';
   selector: 'app-button',
   standalone: true,
   imports: [CommonModule, MatButtonModule, RouterModule],
-  templateUrl: './button.html',
-  styleUrls: ['./button.scss'],
+  templateUrl: './button.component.html',
+  styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
-  @Input() label = '';
   @Input() type: 'primary' | 'secondary' | 'text' = 'primary';
-  @Input() variant: 'default' | 'nav' | 'full-width' = 'default';
+  @Input() buttonType: 'button' | 'submit' = 'button';
+  @Input() variant: 'full-width' | 'nav' | 'default' = 'default';
+  @Input() label = '';
   @Input() disabled = false;
-  @Input() routerLink?: string;
+  @Input() routerLink: string | null = null;
 }

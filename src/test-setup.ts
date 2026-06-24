@@ -2,10 +2,7 @@
 import '@angular/compiler';
 import { ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
-import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting,
-} from '@angular/platform-browser-dynamic/testing';
+import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
 import { beforeAll } from 'vitest';
 import { readdirSync, readFileSync, statSync } from 'fs';
 import { basename, join, resolve } from 'path';

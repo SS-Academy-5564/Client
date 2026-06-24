@@ -6,7 +6,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule } from '@angular/forms';
-import { EChartsOption } from 'echarts';
 import { RouterModule } from '@angular/router';
 import { ButtonComponent } from '../../shared/ui/button/button.component';
 
@@ -29,8 +28,8 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
       echarts: () => import('echarts'),
     }),
   ],
-  templateUrl: './home.html',
-  styleUrl: './home.scss',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   protected readonly title = signal('Client');

@@ -1,6 +1,6 @@
 <div class="page-wrapper">
   <div class="logo-container">
-    <img src="/assets/images/Pulse-Logo.svg" alt="Pulse Logo" class="logo-icon" />
+    <app-logo />
   </div>
 
   <div class="register-container">
@@ -54,13 +54,16 @@
                 matSuffix
                 type="button"
                 (click)="togglePasswordVisibility($event)"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hidePassword()">
+                [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+                [attr.aria-pressed]="!hidePassword()">
                 <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
               <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
               <mat-error *ngIf="form.get('password')?.hasError('minlength')">
                 Password must be at least 8 characters
+              </mat-error>
+              <mat-error *ngIf="form.get('password')?.hasError('pattern')">
+                Password must start with an uppercase letter
               </mat-error>
             </mat-form-field>
           </div>
@@ -78,23 +81,26 @@
                 matSuffix
                 type="button"
                 (click)="toggleConfirmPasswordVisibility($event)"
-                [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hideConfirmPassword()">
+                [attr.aria-label]="hideConfirmPassword() ? 'Show password' : 'Hide password'"
+                [attr.aria-pressed]="!hideConfirmPassword()">
                 <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
+
               <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">Confirmation is required</mat-error>
-              <mat-error *ngIf="form.get('confirmPassword')?.hasError('passwordMismatch')">
-                Passwords do not match
-              </mat-error>
+              <mat-error *ngIf="form.hasError('passwordMismatch') && form.touched">Passwords do not match</mat-error>
             </mat-form-field>
           </div>
 
-          <app-button label="Create account" variant="full-width" type="primary" [disabled]="form.invalid"></app-button>
+          <app-button
+            label="Create account"
+            variant="full-width"
+            type="primary"
+            buttonType="submit"
+            [disabled]="form.invalid" />
         </form>
       </mat-card-content>
     </mat-card>
   </div>
-
   <mat-card-actions class="register-card-actions">
     <p class="register-note">
       Already have an account?

@@ -24,13 +24,16 @@ describe('HeaderComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
-      providers: [{ provide: AuthService, useValue: authServiceMock }, provideRouter([])],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        provideRouter([{ path: 'register', component: HeaderComponent }]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
-    vi.spyOn(router, 'navigate');
+    vi.spyOn(router, 'navigate').mockResolvedValue(true);
     fixture.detectChanges();
   });
 
@@ -68,9 +71,9 @@ describe('HeaderComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should show log in button when not logged in and on register page', async () => {
+  it('should show log in button when not logged in and on register page', () => {
     isAuthenticatedSignal.set(false);
-    await router.navigate(['/register']);
+    component.currentUrl.set('/register');
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;

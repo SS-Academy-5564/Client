@@ -8,8 +8,8 @@ export default defineConfig({
       '@core': path.resolve(__dirname, './src/app/core'),
       '@shared': path.resolve(__dirname, './src/app/shared'),
       '@features': path.resolve(__dirname, './src/app/features'),
-      '@environments': path.resolve(__dirname, './src/environments')
-    }
+      '@environments': path.resolve(__dirname, './src/environments'),
+    },
   },
   test: {
     globals: true,
