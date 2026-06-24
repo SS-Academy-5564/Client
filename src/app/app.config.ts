@@ -11,8 +11,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
-    importProvidersFrom(NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    }))
-  ]
+    importProvidersFrom(
+      NgxEchartsModule.forRoot({
+        echarts: () => import('echarts'),
+      }),
+    ),
+  ],
 };
