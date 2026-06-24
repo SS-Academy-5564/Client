@@ -2,7 +2,6 @@ import { Component, inject, signal, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { ButtonComponent } from '../ui/button/button.component';
@@ -11,7 +10,7 @@ import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, MatToolbarModule, MatButtonModule, CommonModule, ButtonComponent, LogoComponent],
+  imports: [RouterModule, MatToolbarModule, CommonModule, ButtonComponent, LogoComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
