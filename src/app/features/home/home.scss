@@ -10,7 +10,7 @@
   background-color: var(--bg-main);
 }
 
-::v-deep {
+:host ::ng-deep {
   .mdc-text-field--outlined {
     background-color: #ffffff !important;
     border-radius: 8px !important;

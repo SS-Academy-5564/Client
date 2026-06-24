@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router } from '@angular/router';
+import { Router, provideRouter } from '@angular/router';
 import { describe, expect, it, beforeEach, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 
@@ -16,7 +16,7 @@ describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;
   let component: RegisterComponent;
   let authServiceMock: AuthServiceMock;
-  let routerMock: { navigate: ReturnType<typeof vi.fn> };
+  let router: Router;
 
   beforeEach(async () => {
     authServiceMock = {
@@ -24,20 +24,15 @@ describe('RegisterComponent', () => {
       setError: vi.fn(),
     };
 
-    routerMock = {
-      navigate: vi.fn(),
-    };
-
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
-      providers: [
-        { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock },
-      ],
+      providers: [{ provide: AuthService, useValue: authServiceMock }, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -104,7 +99,7 @@ describe('RegisterComponent', () => {
       password: 'StrongPassw0rd!',
       confirmPassword: 'StrongPassw0rd!',
     });
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/login']);
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
   it('should handle service error by calling authService.setError', () => {

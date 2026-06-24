@@ -90,5 +90,23 @@ describe('AuthService', () => {
     localStorage.setItem('token', 'mock-token');
     service.logout();
     expect(localStorage.getItem('token')).toBeNull();
+    expect(service.isAuthenticated()).toBe(false);
+  });
+
+  it('should update isAuthenticated state on login and logout', () => {
+    expect(service.isAuthenticated()).toBe(false);
+
+    const payload = { email: 'test@test.com', password: 'password' };
+    const responseMock = {
+      success: true,
+      data: { accessToken: 'mock-token' },
+    };
+    httpMock.post.mockReturnValue(of(responseMock));
+    service.login(payload).subscribe();
+
+    expect(service.isAuthenticated()).toBe(true);
+
+    service.logout();
+    expect(service.isAuthenticated()).toBe(false);
   });
 });

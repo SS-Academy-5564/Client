@@ -15,6 +15,9 @@ export class AuthService {
 
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly isAuthenticated = signal<boolean>(
+    typeof localStorage !== 'undefined' ? !!localStorage.getItem('token') : false,
+  );
 
   register(payload: RegisterRequest) {
     this.isLoading.set(true);
@@ -23,10 +26,6 @@ export class AuthService {
     return this.http.post(this.apiUrl, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
-  // TODO: Once the C# backend PR is merged, run both servers locally
-  // and test this endpoint end-to-end.
-  // The C# backend expects a JSON payload matching LoginRequest and
-  // returns a JSON object with a 'token' property.
   login(payload: LoginRequest) {
     this.isLoading.set(true);
     this.error.set(null);
@@ -35,6 +34,7 @@ export class AuthService {
       tap((response) => {
         if (response.success && response.data?.accessToken) {
           localStorage.setItem('token', response.data.accessToken);
+          this.isAuthenticated.set(true);
         }
       }),
       finalize(() => this.isLoading.set(false)),
@@ -46,5 +46,6 @@ export class AuthService {
   }
   logout() {
     localStorage.removeItem('token');
+    this.isAuthenticated.set(false);
   }
 }
