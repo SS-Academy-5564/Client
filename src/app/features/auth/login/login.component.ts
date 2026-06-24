@@ -52,7 +52,6 @@ export class LoginComponent {
 
     this.authService.login(this.form.getRawValue() as LoginRequest).subscribe({
       next: () => {
-        console.log('Login successful');
         this.router.navigate(['/']);
       },
       error: (err) => {

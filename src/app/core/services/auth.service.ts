@@ -1,10 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { finalize } from 'rxjs/internal/operators/finalize';
+import { finalize, tap } from 'rxjs';
 import { RegisterRequest } from '@core/models/register-model';
 import { environment } from '@environments/environment';
 import { LoginRequest, LoginResponse } from '@core/models/login-model';
-import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable({
   providedIn: 'root',
