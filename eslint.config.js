@@ -65,7 +65,7 @@ module.exports = defineConfig([
       '@typescript-eslint/no-empty-interface': 'error',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-inferrable-types': 'warn',
-      '@typescript-eslint/no-shadow': 'warn',
+      '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-unused-vars': 'warn',
 
       // JavaScript best practices
@@ -88,7 +88,7 @@ module.exports = defineConfig([
       'no-useless-concat': 'error',
       'no-var': 'error',
       'no-restricted-syntax': 'off',
-      'no-shadow': 'error',
+      'no-shadow': 'off',
       'one-var': ['error', 'never'],
       'prefer-arrow-callback': 'error',
       'prefer-const': 'error',
