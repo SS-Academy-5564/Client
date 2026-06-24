@@ -25,19 +25,19 @@ describe('LoginComponent', () => {
       login: vi.fn(),
       setError: vi.fn(),
       error: signal<string | null>(null),
-      isLoading: signal<boolean>(false)
+      isLoading: signal<boolean>(false),
     };
 
     routerMock = {
-      navigate: vi.fn()
+      navigate: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent, NoopAnimationsModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
@@ -83,7 +83,13 @@ describe('LoginComponent', () => {
   });
 
   it('should call authService.login and redirect to / on successful login', () => {
-    authServiceMock.login.mockReturnValue(of({ token: 'mock-jwt-token' }));
+    authServiceMock.login.mockReturnValue(
+      of({
+        success: true,
+        data: { accessToken: 'mock-jwt-token', expiresAt: '2026-06-24T16:01:54Z' },
+        errors: [],
+      }),
+    );
 
     component.form.get('email')?.setValue('user@company.com');
     component.form.get('password')?.setValue('password123');
@@ -93,13 +99,19 @@ describe('LoginComponent', () => {
     expect(authServiceMock.login).toHaveBeenCalledTimes(1);
     expect(authServiceMock.login).toHaveBeenCalledWith({
       email: 'user@company.com',
-      password: 'password123'
+      password: 'password123',
     });
     expect(routerMock.navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('should handle API errors by calling authService.setError', () => {
-    const errorResponse = { error: { message: 'Invalid credentials' } };
+    const errorResponse = {
+      error: {
+        success: false,
+        data: null,
+        errors: [{ code: 'Unauthorized', message: 'Invalid credentials' }],
+      },
+    };
     authServiceMock.login.mockReturnValue(throwError(() => errorResponse));
 
     component.form.get('email')?.setValue('user@company.com');

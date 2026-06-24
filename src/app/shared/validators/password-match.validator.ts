@@ -13,6 +13,6 @@ export function passwordMatchValidator(control: AbstractControl): ValidationErro
     if (confirmPassword.hasError('passwordMismatch')) {
       confirmPassword.setErrors(null);
     }
-    return null; 
+    return null;
   }
 }

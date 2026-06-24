@@ -1,15 +1,14 @@
-import { inject, Injectable, signal } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { finalize } from "rxjs/internal/operators/finalize";
-import { RegisterRequest } from "@core/models/register-model";
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs/internal/operators/finalize';
+import { RegisterRequest } from '@core/models/register-model';
 import { environment } from '@environments/environment';
-import { LoginRequest, LoginResponse } from "@core/models/login-model";
-import { tap } from "rxjs/internal/operators/tap";
+import { LoginRequest, LoginResponse } from '@core/models/login-model';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
-
 export class AuthService {
   private readonly http = inject(HttpClient);
 
@@ -22,8 +21,7 @@ export class AuthService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.post(this.apiUrl, payload)
-      .pipe(finalize(() => this.isLoading.set(false)));
+    return this.http.post(this.apiUrl, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
   // TODO: Once the C# backend PR is merged, run both servers locally
@@ -34,13 +32,14 @@ export class AuthService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, payload)
-      .pipe(
-        tap(response => {
-          localStorage.setItem('token', response.token);
-        }),
-        finalize(() => this.isLoading.set(false))
-      );
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, payload).pipe(
+      tap((response) => {
+        if (response.success && response.data?.accessToken) {
+          localStorage.setItem('token', response.data.accessToken);
+        }
+      }),
+      finalize(() => this.isLoading.set(false)),
+    );
   }
 
   setError(message: string) {

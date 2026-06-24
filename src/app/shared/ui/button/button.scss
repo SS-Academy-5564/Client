@@ -14,11 +14,9 @@ button,
   border-color: var(--accent) !important;
 }
 
-
 button:hover {
   background-color: #4b3df0 !important;
 }
-
 
 button:disabled {
   opacity: 0.5;
@@ -44,7 +42,9 @@ button.nav-button {
   align-items: center;
   justify-content: center;
   letter-spacing: 0.01em;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 button.nav-button:hover {

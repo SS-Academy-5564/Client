@@ -1,181 +1,179 @@
 :host {
-    --primary-purple: var(--accent);
-    --text-dark: var(--text-primary);
-    --text-gray: var(--text-secondary);
-    --input-bg: #f8fafc;
+  --primary-purple: var(--accent);
+  --text-dark: var(--text-primary);
+  --text-gray: var(--text-secondary);
+  --input-bg: #f8fafc;
 
-    display: block;
-    min-height: 100vh;
-    background-color: #f8fafc;
-    font-family: 'Inter', sans-serif;
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
 }
 
 // Angular Material component deep overrides for icons & toggle buttons
 :host ::ng-deep {
-    .mat-mdc-form-field-icon-suffix {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        height: 100% !important;
-        padding-right: 12px !important;
-    }
+  .mat-mdc-form-field-icon-suffix {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    padding-right: 12px !important;
+  }
 
-    .mat-icon {
-        font-family: 'Material Icons' !important;
-        display: inline-block !important;
-        font-size: 22px !important;
-        width: 22px !important;
-        height: 22px !important;
-        line-height: 1 !important;
-        color: var(--text-gray) !important;
-    }
+  .mat-icon {
+    font-family: 'Material Icons' !important;
+    display: inline-block !important;
+    font-size: 22px !important;
+    width: 22px !important;
+    height: 22px !important;
+    line-height: 1 !important;
+    color: var(--text-gray) !important;
+  }
 
-    .mat-mdc-icon-button.mat-mdc-form-field-icon-button {
-        width: 24px !important;
-        height: 24px !important;
-        padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
+  .mat-mdc-icon-button.mat-mdc-form-field-icon-button {
+    width: 24px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
 }
 
 .logo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
 }
 
 .logo-icon {
-    width: 300px !important;
-    height: 112px !important;
-    max-width: 300px !important;
-    max-height: 112px !important;
-    object-fit: contain;
-    display: block;
+  width: 300px !important;
+  height: 112px !important;
+  max-width: 300px !important;
+  max-height: 112px !important;
+  object-fit: contain;
+  display: block;
 }
 
 // Custom padding for the card header
 .surface-card mat-card-header {
-    padding: 32px 32px 0;
+  padding: 32px 32px 0;
 }
 
 .login-title-group {
-    mat-card-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--text-dark);
-        margin-bottom: 6px;
-    }
-
-    .login-subtitle {
-        font-size: 14px;
-        color: var(--text-gray);
-        margin: 0;
-    }
-}
-
-mat-card-content {
-    padding: 24px 32px 16px;
-}
-
-.login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.field-label {
-    font-size: 17px;
-    font-weight: 500;
+  mat-card-title {
+    font-size: 24px;
+    font-weight: 700;
     color: var(--text-dark);
-}
+    margin-bottom: 6px;
+  }
 
-.full-width {
-    width: 100%;
-}
-
-:host ::ng-deep {
-    .mat-mdc-text-field-wrapper {
-        background-color: var(--input-bg) !important;
-        border-radius: 6px !important;
-    }
-
-    .mdc-notched-outline {
-
-        __leading,
-        __notch,
-        __trailing {
-            border-color: var(--border) !important;
-        }
-    }
-
-    .mdc-text-field--focused .mdc-notched-outline__leading,
-    .mdc-text-field--focused .mdc-notched-outline__notch,
-    .mdc-text-field--focused .mdc-notched-outline__trailing {
-        border-color: var(--primary-purple) !important;
-        border-width: 1px !important;
-    }
-
-    .mat-mdc-form-field-has-error .mat-mdc-form-field-subscript-wrapper {
-        display: block;
-        padding-top: 4px;
-    }
-
-    .mat-mdc-flat-button.mat-primary {
-        --mdc-filled-button-container-color: var(--primary-purple) !important;
-        border-radius: 6px !important;
-        height: 44px;
-    }
-}
-
-.login-card-actions {
-    padding: 24px 32px 32px;
-    justify-content: center;
-    display: flex;
-}
-
-.login-note {
+  .login-subtitle {
     font-size: 14px;
     color: var(--text-gray);
     margin: 0;
+  }
+}
+
+mat-card-content {
+  padding: 24px 32px 16px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.full-width {
+  width: 100%;
+}
+
+:host ::ng-deep {
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--input-bg) !important;
+    border-radius: 6px !important;
+  }
+
+  .mdc-notched-outline {
+    __leading,
+    __notch,
+    __trailing {
+      border-color: var(--border) !important;
+    }
+  }
+
+  .mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: var(--primary-purple) !important;
+    border-width: 1px !important;
+  }
+
+  .mat-mdc-form-field-has-error .mat-mdc-form-field-subscript-wrapper {
+    display: block;
+    padding-top: 4px;
+  }
+
+  .mat-mdc-flat-button.mat-primary {
+    --mdc-filled-button-container-color: var(--primary-purple) !important;
+    border-radius: 6px !important;
+    height: 44px;
+  }
+}
+
+.login-card-actions {
+  padding: 24px 32px 32px;
+  justify-content: center;
+  display: flex;
+}
+
+.login-note {
+  font-size: 14px;
+  color: var(--text-gray);
+  margin: 0;
 }
 
 .link-primary {
-    color: var(--primary-purple);
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 4px;
+  color: var(--primary-purple);
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 4px;
 }
 
 .link-primary:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .error-banner {
-    background-color: #fee2e2;
-    color: #991b1b;
-    border: 1px solid #fca5a5;
-    padding: 12px 16px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    font-weight: 500;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 // Media Query for smaller screens
 @media (max-width: 480px) {
-
-    mat-card-content,
-    .login-card-actions,
-    .surface-card mat-card-header {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
+  mat-card-content,
+  .login-card-actions,
+  .surface-card mat-card-header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }

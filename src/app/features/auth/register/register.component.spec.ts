@@ -66,7 +66,7 @@ describe('RegisterComponent', () => {
 
     expect(component.form.valid).toBe(true);
     expect(component.form.hasError('passwordMismatch')).toBe(false);
-});
+  });
   it('should not call authService.register when form is invalid', () => {
     component.form.get('email')?.setValue('');
     component.form.get('password')?.setValue('');
@@ -98,19 +98,19 @@ describe('RegisterComponent', () => {
     });
   });
 
-it('should handle service error by calling authService.setError', () => {
-  const errorResponse = { error: { message: 'Email already exists' } };
-  authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
+  it('should handle service error by calling authService.setError', () => {
+    const errorResponse = { error: { message: 'Email already exists' } };
+    authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
 
-  component.form.get('firstName')?.setValue('Jane');
-  component.form.get('lastName')?.setValue('Smith');
-  component.form.get('email')?.setValue('user@example.com');
-  component.form.get('password')?.setValue('StrongPassw0rd!');
-  component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
+    component.form.get('firstName')?.setValue('Jane');
+    component.form.get('lastName')?.setValue('Smith');
+    component.form.get('email')?.setValue('user@example.com');
+    component.form.get('password')?.setValue('StrongPassw0rd!');
+    component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
 
-  component.onSubmit();
+    component.onSubmit();
 
-  expect(authServiceMock.register).toHaveBeenCalledTimes(1);
-  expect(authServiceMock.setError).toHaveBeenCalledWith('Email already exists');
-});
+    expect(authServiceMock.register).toHaveBeenCalledTimes(1);
+    expect(authServiceMock.setError).toHaveBeenCalledWith('Email already exists');
+  });
 });

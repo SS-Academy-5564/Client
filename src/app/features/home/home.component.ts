@@ -22,11 +22,13 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
     MatCardModule,
     FormsModule,
     RouterModule,
-    ButtonComponent
+    ButtonComponent,
   ],
-  providers: [provideEchartsCore({
-    echarts: () => import('echarts')
-  })],
+  providers: [
+    provideEchartsCore({
+      echarts: () => import('echarts'),
+    }),
+  ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -37,29 +39,29 @@ export class HomeComponent {
   protected readonly chartOptions = signal({
     backgroundColor: 'transparent',
     tooltip: {
-      trigger: 'axis'
+      trigger: 'axis',
     },
     legend: {
-      data: ['Series A', 'Series B']
+      data: ['Series A', 'Series B'],
     },
     xAxis: {
       type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
     },
     series: [
       {
         name: 'Series A',
         type: 'bar',
-        data: [120, 200, 150, 80, 70, 110, 130]
+        data: [120, 200, 150, 80, 70, 110, 130],
       },
       {
         name: 'Series B',
         type: 'line',
-        data: [60, 120, 100, 140, 90, 80, 150]
-      }
-    ]
+        data: [60, 120, 100, 140, 90, 80, 150],
+      },
+    ],
   });
 }

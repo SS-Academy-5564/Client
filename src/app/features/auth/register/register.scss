@@ -1,5 +1,5 @@
 :host {
-  --primary-purple: #6366f1; 
+  --primary-purple: #6366f1;
   --bg-main: #f8fafc;
   --text-dark: #0f172a;
   --text-gray: #64748b;
@@ -17,19 +17,18 @@
     align-items: center !important;
     justify-content: center !important;
     height: 100% !important;
-    padding-right: 12px !important; 
+    padding-right: 12px !important;
   }
 
   .mat-icon {
-    font-family: 'Material Icons' !important; 
+    font-family: 'Material Icons' !important;
     display: inline-block !important;
-    font-size: 22px !important; 
+    font-size: 22px !important;
     width: 22px !important;
     height: 22px !important;
     line-height: 1 !important;
-    color: var(--text-gray) !important; 
+    color: var(--text-gray) !important;
   }
-
 
   .mat-mdc-icon-button.mat-mdc-form-field-icon-button {
     width: 24px !important;
@@ -50,26 +49,25 @@
   padding: 40px 20px;
 }
 
-
-  .logo-icon {
-    width: 300px !important;
-    height: 112px !important;
-    max-width: 300px !important;
-    max-height: 112px !important;
-    object-fit: contain; 
-    display: block;
-  }
-
- 
+.logo-icon {
+  width: 300px !important;
+  height: 112px !important;
+  max-width: 300px !important;
+  max-height: 112px !important;
+  object-fit: contain;
+  display: block;
+}
 
 .register-container {
-  width: min(480px, 100%); 
+  width: min(480px, 100%);
 }
 
 .register-card {
   background: #ffffff !important;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05) !important;
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.05),
+    0 2px 4px -2px rgb(0 0 0 / 0.05) !important;
   border-radius: 12px !important;
   padding-bottom: 24px;
 }
@@ -107,7 +105,6 @@ mat-card-content {
   gap: 16px;
 }
 
-
 .input-group {
   display: flex;
   flex-direction: column;
@@ -122,15 +119,14 @@ mat-card-content {
 
 .name-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)); 
-  gap: 16px; 
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
   width: 100%;
 }
 
 .full-width {
   width: 100%;
 }
-
 
 :host ::ng-deep {
   .mat-mdc-text-field-wrapper {
@@ -139,7 +135,9 @@ mat-card-content {
   }
 
   .mdc-notched-outline {
-    __leading, __notch, __trailing {
+    __leading,
+    __notch,
+    __trailing {
       border-color: #e2e8f0 !important;
     }
   }
@@ -190,7 +188,7 @@ mat-card-content {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   mat-card-content,
   .register-card-actions,
   .register-card mat-card-header {

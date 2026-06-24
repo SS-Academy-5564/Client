@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import { HomeComponent } from "./home.component";
+import { HomeComponent } from './home.component';
 
 describe('Home', () => {
   let component: HomeComponent;

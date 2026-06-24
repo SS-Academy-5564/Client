@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, it, expect, beforeEach } from 'vitest';
 
-import { HeaderComponent } from "./header.component";
+import { HeaderComponent } from './header.component';
 
 describe('Header', () => {
   let component: HeaderComponent;

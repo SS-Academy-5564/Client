@@ -22,12 +22,11 @@ import { LoginRequest } from '@core/models/login-model';
     MatIconModule,
     MatButtonModule,
     RouterModule,
-    ButtonComponent
+    ButtonComponent,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
@@ -37,11 +36,11 @@ export class LoginComponent {
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
 
   togglePasswordVisibility(event: MouseEvent): void {
-    this.hidePassword.update(value => !value);
+    this.hidePassword.update((value) => !value);
     event.stopPropagation();
   }
 
@@ -51,16 +50,15 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.form.getRawValue() as LoginRequest)
-      .subscribe({
-        next: () => {
-          console.log('Login successful');
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          const errorMessage = err.error?.message ?? 'Invalid email or password';
-          this.authService.setError(errorMessage);
-        }
-      });
+    this.authService.login(this.form.getRawValue() as LoginRequest).subscribe({
+      next: () => {
+        console.log('Login successful');
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        const errorMessage = err.error?.errors?.[0]?.message ?? 'Invalid email or password';
+        this.authService.setError(errorMessage);
+      },
+    });
   }
 }

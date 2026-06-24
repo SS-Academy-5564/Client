@@ -15,10 +15,7 @@ describe('AuthService', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [
-        AuthService,
-        { provide: HttpClient, useValue: httpMock },
-      ],
+      providers: [AuthService, { provide: HttpClient, useValue: httpMock }],
     });
 
     service = TestBed.inject(AuthService);
@@ -41,10 +38,7 @@ describe('AuthService', () => {
 
     service.register(payload).subscribe();
 
-   expect(httpMock.post).toHaveBeenCalledWith(
-      expect.stringContaining('/auth/register'),
-      payload
-    );
+    expect(httpMock.post).toHaveBeenCalledWith(expect.stringContaining('/auth/register'), payload);
   });
 
   it('should set isLoading true then false after finalize', () => {
