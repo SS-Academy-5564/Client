@@ -11,7 +11,6 @@ import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [RouterModule, MatToolbarModule, MatButtonModule, CommonModule, ButtonComponent, LogoComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

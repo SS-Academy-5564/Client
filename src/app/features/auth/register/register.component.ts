@@ -15,7 +15,6 @@ import { passwordMatchValidator } from '@shared/validators/password-match.valida
 
 @Component({
   selector: 'app-register',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,

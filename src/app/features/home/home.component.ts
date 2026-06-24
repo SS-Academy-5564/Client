@@ -11,7 +11,6 @@ import { ButtonComponent } from '../../shared/ui/button/button.component';
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   imports: [
     CommonModule,
     NgxEchartsModule,

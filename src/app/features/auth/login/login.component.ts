@@ -13,7 +13,6 @@ import { LoginRequest } from '@core/models/login-model';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
