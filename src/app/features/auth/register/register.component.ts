@@ -12,10 +12,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button.component';
+import { LogoComponent } from '@shared/ui/logo/logo.component';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, RouterModule, ButtonComponent, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, RouterModule, ButtonComponent, MatIconModule, LogoComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })

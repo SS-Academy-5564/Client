@@ -4,6 +4,7 @@ import {RouterModule} from "@angular/router";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import {ButtonComponent} from "../ui/button/button.component";
+import {LogoComponent} from "../ui/logo/logo.component";
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,8 @@ import {ButtonComponent} from "../ui/button/button.component";
     MatToolbarModule,
     MatButtonModule,
     CommonModule,
-    ButtonComponent
+    ButtonComponent,
+    LogoComponent
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

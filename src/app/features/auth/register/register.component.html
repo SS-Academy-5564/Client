@@ -1,6 +1,6 @@
 <div class="page-wrapper">
   <div class="logo-container">
-    <img src="/assets/images/Pulse-Logo.svg" alt="Pulse Logo" class="logo-icon">
+    <app-logo />
   </div>
 
   <div class="register-container">
@@ -11,10 +11,9 @@
           <p class="register-subtitle">Start monitoring your metrics today.</p>
         </div>
       </mat-card-header>
-      
+
       <mat-card-content>
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
-          
           <div class="name-row">
             <div class="input-group">
               <span class="field-label">First name</span>
@@ -88,13 +87,9 @@
 
           <app-button label="Create account" variant="full-width" type="primary" buttonType="submit" [disabled]="form.invalid" />
         </form>
-
       </mat-card-content>
-      
-      
     </mat-card> 
   </div>
-
   <mat-card-actions class="register-card-actions">
         <p class="register-note">
           Already have an account?

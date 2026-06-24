@@ -5,16 +5,13 @@
   --text-gray: #64748b;
   --input-bg: #f8fafc;
   --border-color: #e2e8f0;
-
   display: block;
   min-height: 100vh;
   background-color: var(--bg-main);
   font-family: 'Inter', sans-serif;
 }
 
-
 :host ::ng-deep {
-  
   .mat-mdc-form-field-icon-suffix {
     display: flex;
     align-items: center;
@@ -92,15 +89,6 @@
   justify-content: center;
   min-height: 100vh;
   padding: 40px 20px;
-}
-
-.logo-icon {
-  width: 300px;
-  height: 112px;
-  max-width: 300px;
-  max-height: 112px;
-  object-fit: contain; 
-  display: block;
 }
 
 .register-container {

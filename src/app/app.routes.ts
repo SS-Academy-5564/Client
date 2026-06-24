@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { loggedOutOnlyGuard } from '@core/guards/logged-out-only-guard';
 
 export const routes: Routes = [
   {
@@ -10,7 +9,6 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    canActivate: [loggedOutOnlyGuard],
     loadComponent: () =>
       import('./features/auth/register/register.component')
         .then(m => m.RegisterComponent)
