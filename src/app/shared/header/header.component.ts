@@ -1,0 +1,22 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {RouterModule} from "@angular/router";
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatButtonModule} from "@angular/material/button";
+import {ButtonComponent} from "../ui/button/button.component";
+import {LogoComponent} from "../ui/logo/logo.component";
+
+@Component({
+  selector: 'app-header',
+  imports: [
+    RouterModule,
+    MatToolbarModule,
+    MatButtonModule,
+    CommonModule,
+    ButtonComponent,
+    LogoComponent
+  ],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
+})
+export class HeaderComponent {}
