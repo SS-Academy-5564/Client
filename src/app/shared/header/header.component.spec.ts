@@ -4,28 +4,28 @@ import { provideRouter, Router } from '@angular/router';
 import { signal } from '@angular/core';
 
 import { HeaderComponent } from './header.component';
-import { AuthService } from '@core/services/auth.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let authServiceMock: any;
+  let tokenStorageMock: any;
   let router: Router;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let isAuthenticatedSignal: any;
 
   beforeEach(async () => {
     isAuthenticatedSignal = signal(false);
-    authServiceMock = {
+    tokenStorageMock = {
       isAuthenticated: isAuthenticatedSignal,
-      logout: vi.fn(),
+      clearToken: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: TokenStorageService, useValue: tokenStorageMock },
         provideRouter([{ path: 'register', component: HeaderComponent }]),
       ],
     }).compileComponents();
@@ -62,12 +62,12 @@ describe('HeaderComponent', () => {
     expect(buttons[0].getAttribute('label')).toBe('Log out');
   });
 
-  it('should call authService.logout and navigate on logout click', () => {
+  it('should call tokenStorage.clearToken and navigate on logout click', () => {
     isAuthenticatedSignal.set(true);
     fixture.detectChanges();
 
     component.onLogout();
-    expect(authServiceMock.logout).toHaveBeenCalled();
+    expect(tokenStorageMock.clearToken).toHaveBeenCalled();
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 

@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
+import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
 import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
@@ -26,6 +27,7 @@ import { passwordMatchValidator } from '@shared/validators/password-match.valida
     ButtonComponent,
     MatIconModule,
     LogoComponent,
+    ErrorMessageComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -70,11 +72,11 @@ export class RegisterComponent {
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => {
-        console.log('Registration successful');
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        this.authService.setError(err.error?.message ?? 'Registration failed');
+        const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';
+        this.authService.setError(errorMessage);
       },
     });
   }

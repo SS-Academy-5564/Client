@@ -1,34 +1,35 @@
-<ng-container [ngSwitch]="type">
-  <button
-    [type]="buttonType"
-    *ngSwitchCase="'primary'"
-    mat-raised-button
-    [class.full-width]="variant === 'full-width'"
-    [class.nav-button]="variant === 'nav'"
-    [disabled]="disabled"
-    [routerLink]="routerLink">
-    {{ label }}
-  </button>
-
-  <button
-    [type]="buttonType"
-    *ngSwitchCase="'secondary'"
-    mat-stroked-button
-    [class.full-width]="variant === 'full-width'"
-    [class.nav-button]="variant === 'nav'"
-    [disabled]="disabled"
-    [routerLink]="routerLink">
-    {{ label }}
-  </button>
-
-  <button
-    [type]="buttonType"
-    *ngSwitchDefault
-    mat-button
-    [class.full-width]="variant === 'full-width'"
-    [class.nav-button]="variant === 'nav'"
-    [disabled]="disabled"
-    [routerLink]="routerLink">
-    {{ label }}
-  </button>
-</ng-container>
+@switch (type) {
+  @case ('primary') {
+    <button
+      mat-raised-button
+      [class.full-width]="variant === 'full-width'"
+      [class.nav-button]="variant === 'nav'"
+      [disabled]="disabled"
+      [routerLink]="routerLink"
+      [type]="buttonType">
+      {{ label }}
+    </button>
+  }
+  @case ('secondary') {
+    <button
+      mat-stroked-button
+      [class.full-width]="variant === 'full-width'"
+      [class.nav-button]="variant === 'nav'"
+      [disabled]="disabled"
+      [routerLink]="routerLink"
+      [type]="buttonType">
+      {{ label }}
+    </button>
+  }
+  @default {
+    <button
+      mat-button
+      [class.full-width]="variant === 'full-width'"
+      [class.nav-button]="variant === 'nav'"
+      [disabled]="disabled"
+      [routerLink]="routerLink"
+      [type]="buttonType">
+      {{ label }}
+    </button>
+  }
+}

@@ -1,16 +1,18 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Router, provideRouter } from '@angular/router';
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { provideRouter, Router } from '@angular/router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../../core/services/auth.service';
 
-interface AuthServiceMock {
+type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
   setError: ReturnType<typeof vi.fn>;
-}
+  error: ReturnType<typeof signal<string | null>>;
+};
 
 describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;
@@ -22,6 +24,7 @@ describe('RegisterComponent', () => {
     authServiceMock = {
       register: vi.fn(),
       setError: vi.fn(),
+      error: signal<string | null>(null),
     };
 
     await TestBed.configureTestingModule({

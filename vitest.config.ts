@@ -1,4 +1,4 @@
-/// <reference types="vitest" />                                                                                                          
+/// <reference types="vitest" />
 import { defineConfig } from 'vitest/config';
 import path from 'path';
 
@@ -21,4 +21,4 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
     },
   },
-});                
+});

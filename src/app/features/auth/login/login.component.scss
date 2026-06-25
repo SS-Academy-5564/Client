@@ -10,33 +10,35 @@
   font-family: 'Inter', sans-serif;
 }
 
-// Angular Material component deep overrides for icons & toggle buttons
+// Angular Material component deep overrides for icons & toggle buttons scoped to password-field
 :host ::ng-deep {
-  .mat-mdc-form-field-icon-suffix {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    height: 100% !important;
-    padding-right: 12px !important;
-  }
+  .password-field {
+    .mat-mdc-form-field-icon-suffix {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding-right: 12px;
+    }
 
-  .mat-icon {
-    font-family: 'Material Icons' !important;
-    display: inline-block !important;
-    font-size: 22px !important;
-    width: 22px !important;
-    height: 22px !important;
-    line-height: 1 !important;
-    color: var(--text-gray) !important;
-  }
+    .mat-icon {
+      font-family: 'Material Icons';
+      display: inline-block;
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+      line-height: 1;
+      color: var(--text-gray);
+    }
 
-  .mat-mdc-icon-button.mat-mdc-form-field-icon-button {
-    width: 24px !important;
-    height: 24px !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    .mat-mdc-icon-button.mat-mdc-form-field-icon-button {
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 }
 
@@ -155,17 +157,6 @@ mat-card-content {
 
 .link-primary:hover {
   text-decoration: underline;
-}
-
-.error-banner {
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-  padding: 12px 16px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  font-size: 14px;
-  font-weight: 500;
 }
 
 // Media Query for smaller screens

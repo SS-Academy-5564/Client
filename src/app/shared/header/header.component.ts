@@ -1,12 +1,12 @@
-import { Component, inject, signal, DestroyRef } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { ButtonComponent } from '../ui/button/button.component';
 import { LogoComponent } from '../ui/logo/logo.component';
-import { AuthService } from '@core/services/auth.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { AuthService } from '@core/services/auth.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  protected readonly authService = inject(AuthService);
+  protected readonly tokenStorage = inject(TokenStorageService);
   protected readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -33,7 +33,7 @@ export class HeaderComponent {
   }
 
   onLogout(): void {
-    this.authService.logout();
+    this.tokenStorage.clearToken();
     this.router.navigate(['/login']);
   }
 }

@@ -1,23 +1,23 @@
-export interface LoginRequest {
+export type LoginRequest = {
   email: string;
   password: string;
-}
+};
 
-export interface ApiError {
+export type ApiError = {
   code: string;
   field?: string;
   message: string;
-}
+};
 
-export interface ApiResponse<T> {
+export type ApiResponse<T> = {
   success: boolean;
   data: T | null;
   errors: ApiError[];
-}
+};
 
-export interface LoginResult {
+export type LoginResult = {
   accessToken: string;
   expiresAt: string;
-}
+};
 
 export type LoginResponse = ApiResponse<LoginResult>;

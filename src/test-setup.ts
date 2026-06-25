@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import '@angular/localize/init';
 import '@angular/compiler';
 import { ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
 import { getTestBed } from '@angular/core/testing';
