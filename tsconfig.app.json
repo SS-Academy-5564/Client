@@ -5,7 +5,7 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "rootDir": "./src",
-    "types": [],
+    "types": ["@angular/localize"],
     "baseUrl": ".",
     "paths": {
       "@core/*": ["./src/app/core/*"],
