@@ -18,11 +18,13 @@ import { provideEchartsCore } from 'ngx-echarts';
     MatInputModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    NgxEchartsModule
+    NgxEchartsModule,
   ],
-  providers: [provideEchartsCore({
-    echarts: () => import('echarts')
-  })],
+  providers: [
+    provideEchartsCore({
+      echarts: () => import('echarts'),
+    }),
+  ],
   template: `
     <div class="container">
       <h1 i18n="Page heading greeting">Hello, {{ title() }}</h1>
@@ -48,36 +50,40 @@ import { provideEchartsCore } from 'ngx-echarts';
             </div>
 
             <div class="chart-container">
-              <echarts [options]="chartOptions()" style="width:100%;height:360px;"></echarts>
-              <mat-progress-spinner *ngIf="loading()" diameter="48" mode="indeterminate"></mat-progress-spinner>
+              <echarts style="width:100%;height:360px;" [options]="chartOptions()" />
+              @if (loading()) {
+                <mat-progress-spinner diameter="48" mode="indeterminate" />
+              }
             </div>
           </form>
         </mat-card-content>
       </mat-card>
     </div>
   `,
-  styles: [`
-    .container {
-      padding: 24px;
-      max-width: 960px;
-      margin: 0 auto;
-      box-sizing: border-box;
-    }
+  styles: [
+    `
+      .container {
+        padding: 24px;
+        max-width: 960px;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
 
-    .demo-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+      .demo-form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
 
-    .demo-card {
-      margin-top: 16px;
-    }
+      .demo-card {
+        margin-top: 16px;
+      }
 
-    .chart-container {
-      margin-top: 16px;
-    }
-  `]
+      .chart-container {
+        margin-top: 16px;
+      }
+    `,
+  ],
 })
 export class App {
   protected readonly title = signal('Client');
@@ -88,7 +94,7 @@ export class App {
   protected readonly chartOptions = signal({
     backgroundColor: 'transparent',
     tooltip: {
-      trigger: 'axis'
+      trigger: 'axis',
     },
     legend: {
       data: [$localize`Series A`, $localize`Series B`]
@@ -106,19 +112,19 @@ export class App {
       ]
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
     },
     series: [
       {
         name: $localize`Series A`,
         type: 'bar',
-        data: [120, 200, 150, 80, 70, 110, 130]
+        data: [120, 200, 150, 80, 70, 110, 130],
       },
       {
         name: $localize`Series B`,
         type: 'line',
-        data: [60, 120, 100, 140, 90, 80, 150]
-      }
-    ]
+        data: [60, 120, 100, 140, 90, 80, 150],
+      },
+    ],
   });
 }
