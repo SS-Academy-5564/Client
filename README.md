@@ -1,3 +1,5 @@
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/SS-Academy-5564/Client?utm_source=oss&utm_medium=github&utm_campaign=SS-Academy-5564%2FClient&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 # Client
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
