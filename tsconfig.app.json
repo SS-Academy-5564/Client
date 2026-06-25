@@ -6,8 +6,8 @@
     "outDir": "./out-tsc/app",
     "rootDir": "./src",
     "types": ["@angular/localize"],
-    "baseUrl": ".",
     "paths": {
+      "@/*": ["./src/*"],
       "@core/*": ["./src/app/core/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@features/*": ["./src/app/features/*"]
