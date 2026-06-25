@@ -6,8 +6,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideAnimations(),
-    importProvidersFrom(NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    })),
-  ]
+    importProvidersFrom(
+      NgxEchartsModule.forRoot({
+        echarts: () => import('echarts'),
+      }),
+    ),
+  ],
 };
