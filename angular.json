@@ -9,6 +9,12 @@
   "newProjectRoot": "projects",
   "projects": {
     "Client": {
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "uk": "src/locales/messages.uk.xlf"
+        }
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -30,10 +36,19 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "polyfills": [
+              "@angular/localize/init"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
+              "localize": [
+                "en-US",
+                "uk"
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -52,6 +67,14 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "uk": {
+              "localize": [
+                "uk"
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -64,6 +87,9 @@
             },
             "development": {
               "buildTarget": "Client:build:development"
+            },
+            "uk": {
+              "buildTarget": "Client:build:uk"
             }
           },
           "defaultConfiguration": "development"
