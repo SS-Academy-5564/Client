@@ -1,35 +1,41 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
-import { describe, expect, it, beforeEach, vi } from 'vitest';
+import { provideRouter, Router } from '@angular/router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../../core/services/auth.service';
 
-interface AuthServiceMock {
+type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
   setError: ReturnType<typeof vi.fn>;
-}
+  error: ReturnType<typeof signal<string | null>>;
+};
 
 describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;
   let component: RegisterComponent;
   let authServiceMock: AuthServiceMock;
+  let router: Router;
 
   beforeEach(async () => {
     authServiceMock = {
       register: vi.fn(),
       setError: vi.fn(),
+      error: signal<string | null>(null),
     };
 
     await TestBed.configureTestingModule({
-      imports: [RegisterComponent, RouterTestingModule, NoopAnimationsModule],
-      providers: [{ provide: AuthService, useValue: authServiceMock }],
+      imports: [RegisterComponent, NoopAnimationsModule],
+      providers: [{ provide: AuthService, useValue: authServiceMock }, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -66,7 +72,7 @@ describe('RegisterComponent', () => {
 
     expect(component.form.valid).toBe(true);
     expect(component.form.hasError('passwordMismatch')).toBe(false);
-});
+  });
   it('should not call authService.register when form is invalid', () => {
     component.form.get('email')?.setValue('');
     component.form.get('password')?.setValue('');
@@ -96,21 +102,22 @@ describe('RegisterComponent', () => {
       password: 'StrongPassw0rd!',
       confirmPassword: 'StrongPassw0rd!',
     });
+    expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-it('should handle service error by calling authService.setError', () => {
-  const errorResponse = { error: { message: 'Email already exists' } };
-  authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
+  it('should handle service error by calling authService.setError', () => {
+    const errorResponse = { error: { message: 'Email already exists' } };
+    authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
 
-  component.form.get('firstName')?.setValue('Jane');
-  component.form.get('lastName')?.setValue('Smith');
-  component.form.get('email')?.setValue('user@example.com');
-  component.form.get('password')?.setValue('StrongPassw0rd!');
-  component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
+    component.form.get('firstName')?.setValue('Jane');
+    component.form.get('lastName')?.setValue('Smith');
+    component.form.get('email')?.setValue('user@example.com');
+    component.form.get('password')?.setValue('StrongPassw0rd!');
+    component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
 
-  component.onSubmit();
+    component.onSubmit();
 
-  expect(authServiceMock.register).toHaveBeenCalledTimes(1);
-  expect(authServiceMock.setError).toHaveBeenCalledWith('Email already exists');
-});
+    expect(authServiceMock.register).toHaveBeenCalledTimes(1);
+    expect(authServiceMock.setError).toHaveBeenCalledWith('Email already exists');
+  });
 });

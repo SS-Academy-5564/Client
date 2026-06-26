@@ -1,0 +1,79 @@
+<div class="page-shell">
+  <div class="logo-container">
+    <img alt="Pulse Logo" class="logo-icon" src="/assets/images/Pulse-Logo.svg" />
+  </div>
+
+  <div class="page-container">
+    <mat-card class="surface-card">
+      <mat-card-header>
+        <div class="login-title-group">
+          <mat-card-title i18n="@@loginTitle">Sign in to your account</mat-card-title>
+          <p class="login-subtitle" i18n="@@loginSubtitle">Welcome back! Please enter your details.</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <app-error-message [message]="authService.error()" />
+
+        <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <span class="field-label" i18n="@@loginEmailLabel">Email</span>
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                formControlName="email"
+                matInput
+                placeholder="you@company.com"
+                i18n-placeholder="@@loginEmailPlaceholder"
+                type="email" />
+              @if (form.get('email')?.hasError('required')) {
+                <mat-error i18n="@@loginEmailRequired">Email is required</mat-error>
+              }
+              @if (form.get('email')?.hasError('email')) {
+                <mat-error i18n="@@loginEmailInvalid">Enter a valid email address</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="input-group">
+            <span class="field-label" i18n="@@loginPasswordLabel">Password</span>
+            <mat-form-field appearance="outline" class="full-width password-field">
+              <input
+                formControlName="password"
+                matInput
+                placeholder="••••••••"
+                i18n-placeholder="@@loginPasswordPlaceholder"
+                [type]="hidePassword() ? 'password' : 'text'" />
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+                [attr.aria-pressed]="hidePassword()"
+                (click)="togglePasswordVisibility($event)">
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              @if (form.get('password')?.hasError('required')) {
+                <mat-error i18n="@@loginPasswordRequired">Password is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <app-button
+            buttonType="submit"
+            label="Sign in"
+            i18n-label="@@loginSubmitButton"
+            type="primary"
+            variant="full-width"
+            [disabled]="form.invalid" />
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card-actions class="login-card-actions">
+    <p class="login-note">
+      <span i18n="@@loginRegisterPrompt">Don't have an account?</span>
+      <a class="link-primary" i18n="@@loginRegisterLink" routerLink="/register">Sign up</a>
+    </p>
+  </mat-card-actions>
+</div>

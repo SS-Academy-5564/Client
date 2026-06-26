@@ -3,64 +3,46 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button.component';
-import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
-import { RegisterRequest } from '@core/models/register-model';
-import { passwordMatchValidator } from '@shared/validators/password-match.validator';
+import { LoginRequest } from '@core/models/login-model';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-login',
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     MatCardModule,
+    MatIconModule,
+    MatButtonModule,
     RouterModule,
     ButtonComponent,
-    MatIconModule,
-    LogoComponent,
     ErrorMessageComponent,
   ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
 })
-export class RegisterComponent {
+export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   protected readonly authService = inject(AuthService);
 
   protected readonly hidePassword = signal<boolean>(true);
-  protected readonly hideConfirmPassword = signal<boolean>(true);
 
-  readonly form = this.fb.group(
-    {
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[A-Z].*/)]],
-      confirmPassword: ['', [Validators.required]],
-    },
-    {
-      validators: passwordMatchValidator,
-      updateOn: 'change',
-    },
-  );
+  readonly form = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
+  });
 
   togglePasswordVisibility(event: MouseEvent): void {
     this.hidePassword.update((value) => !value);
-    event.stopPropagation();
-  }
-
-  toggleConfirmPasswordVisibility(event: MouseEvent): void {
-    this.hideConfirmPassword.update((value) => !value);
     event.stopPropagation();
   }
 
@@ -70,12 +52,12 @@ export class RegisterComponent {
       return;
     }
 
-    this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
+    this.authService.login(this.form.getRawValue() as LoginRequest).subscribe({
       next: () => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       },
       error: (err) => {
-        const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';
+        const errorMessage = err.error?.errors?.[0]?.message ?? 'Invalid email or password';
         this.authService.setError(errorMessage);
       },
     });

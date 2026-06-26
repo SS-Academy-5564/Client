@@ -1,13 +1,15 @@
 @forward '@angular/material' show define-theme, define-colors, all-component-themes;
 @use '@angular/material' as mat;
 
-$my-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$violet-palette,
-    tertiary: mat.$red-palette
+$my-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$violet-palette,
+      tertiary: mat.$red-palette,
+    ),
   )
-));
+);
 
 @include mat.core();
 @include mat.all-component-themes($my-theme);
@@ -25,7 +27,7 @@ $my-theme: mat.define-theme((
   --text-primary: #0f172a;
   --text-secondary: #64748b;
 
-  --accent: #6344F5;
+  --accent: #6344f5;
   --accent-hover: #401cd8;
   --accent-soft: rgba(80, 36, 252, 0.08);
   --button-hover: color-mix(in srgb, var(--accent) 85%, black);
@@ -36,9 +38,7 @@ $my-theme: mat.define-theme((
   --color-nav-button-hover: var(--accent-hover);
   --color-nav-button-text: var(--surface);
 
-  --shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 
   --radius: 16px;
 
@@ -64,7 +64,10 @@ body {
   min-height: 100vh;
 }
 
-button, input, textarea, select {
+button,
+input,
+textarea,
+select {
   font: inherit;
 }
 
@@ -83,22 +86,22 @@ button, input, textarea, select {
 }
 
 .mat-mdc-outlined-button {
-  --mdc-outlined-button-label-text-color: var(--accent) ;
-  --mdc-outlined-button-outline-color: var(--accent) ;
+  --mdc-outlined-button-label-text-color: var(--accent);
+  --mdc-outlined-button-outline-color: var(--accent);
 }
 
 .mat-mdc-button {
-  --mat-text-button-label-text-color: var(--accent) ;
+  --mat-text-button-label-text-color: var(--accent);
 }
 
 .mdc-text-field--focused .mdc-notched-outline__leading,
 .mdc-text-field--focused .mdc-notched-outline__notch,
 .mdc-text-field--focused .mdc-notched-outline__trailing {
-  border-color: var(--accent) ;
+  border-color: var(--accent);
 }
 
 .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
-  color: var(--accent) ;
+  color: var(--accent);
 }
 
 .page-shell {
@@ -116,17 +119,17 @@ button, input, textarea, select {
 }
 
 .surface-card {
-  background: var(--surface) ;
-  border: 1px solid var(--border) ;
-  box-shadow: var(--shadow) ;
-  border-radius: var(--radius) ;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
 }
 
 .surface-card-strong {
-  background: var(--surface-strong) ;
+  background: var(--surface-strong);
   border-color: var(--border);
-  box-shadow: var(--shadow) ;
-  border-radius: var(--radius) ;
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
 }
 
 .text-muted {

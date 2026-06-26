@@ -1,15 +1,16 @@
 /// <reference types="vitest" />
-import { resolve } from 'path/win32';
 import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
-      '@core': resolve(__dirname, 'src/app/core'),
-      '@shared': resolve(__dirname, 'src/app/shared'),
-      '@features': resolve(__dirname, 'src/app/features'),
-    }
+      '@': path.resolve(__dirname, './src'),
+      '@core': path.resolve(__dirname, './src/app/core'),
+      '@shared': path.resolve(__dirname, './src/app/shared'),
+      '@features': path.resolve(__dirname, './src/app/features'),
+      '@environments': path.resolve(__dirname, './src/environments'),
+    },
   },
   test: {
     globals: true,

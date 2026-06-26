@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { ButtonComponent } from "./button.component";
+import { ButtonComponent } from './button.component';
 
 describe('Button', () => {
   let component: ButtonComponent;
@@ -10,6 +11,7 @@ describe('Button', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ButtonComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ButtonComponent);

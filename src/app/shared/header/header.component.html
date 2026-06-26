@@ -1,9 +1,17 @@
-<mat-toolbar color="primary" class="mat-elevation-z0">
-    <div class="header-logo">
-      <app-logo />
-    </div>
+<mat-toolbar class="mat-elevation-z0" color="primary">
+  <div class="header-logo">
+    <app-logo />
+  </div>
 
   <span style="flex: 1"></span>
 
-  <app-button label="Register" type="primary" buttonType="button"  variant="nav" routerLink="/register" /> 
+  @if (tokenStorage.isAuthenticated()) {
+    <app-button label="Log out" type="primary" variant="nav" (click)="onLogout()" />
+  } @else {
+    @if (currentUrl() === '/register') {
+      <app-button label="Log in" routerLink="/login" type="primary" variant="nav" />
+    } @else {
+      <app-button label="Register" routerLink="/register" type="primary" variant="nav" />
+    }
+  }
 </mat-toolbar>
