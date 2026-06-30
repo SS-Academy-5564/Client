@@ -41,6 +41,23 @@ describe('TokenStorageService', () => {
     expect(service.isAuthenticated()).toBe(false);
   });
 
+  it('should automatically clear token when expiration timer fires', () => {
+    vi.useFakeTimers();
+    const expiryDelay = 10000;
+    const expiresAt = new Date(Date.now() + expiryDelay).toISOString();
+
+    service.setToken('expiring-token', expiresAt);
+    expect(service.getToken()).toBe('expiring-token');
+    expect(service.isAuthenticated()).toBe(true);
+
+    vi.advanceTimersByTime(expiryDelay + 1000);
+
+    expect(service.getToken()).toBeNull();
+    expect(service.isAuthenticated()).toBe(false);
+
+    vi.useRealTimers();
+  });
+
   it('should clear token', () => {
     service.setToken('test-token');
     service.clearToken();

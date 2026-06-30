@@ -9,6 +9,8 @@ export class TokenStorageService {
   private readonly token = signal<string | null>(null);
   private readonly expiry = signal<string | null>(null);
 
+  private expiryTimeoutId: any = null;
+
   readonly isAuthenticated = computed(() => {
     const token = this.token();
     const expiry = this.expiry();
@@ -24,6 +26,22 @@ export class TokenStorageService {
   setToken(token: string | null, expiresAt?: string | null): void {
     this.token.set(token);
     this.expiry.set(expiresAt || null);
+
+    if (this.expiryTimeoutId) {
+      clearTimeout(this.expiryTimeoutId);
+      this.expiryTimeoutId = null;
+    }
+
+    if (token && expiresAt) {
+      const delay = new Date(expiresAt).getTime() - Date.now();
+      if (delay > 0) {
+        this.expiryTimeoutId = setTimeout(() => {
+          this.clearToken();
+        }, delay);
+      } else {
+        this.clearToken();
+      }
+    }
   }
 
   getToken(): string | null {
@@ -37,5 +55,9 @@ export class TokenStorageService {
   clearToken(): void {
     this.token.set(null);
     this.expiry.set(null);
+    if (this.expiryTimeoutId) {
+      clearTimeout(this.expiryTimeoutId);
+      this.expiryTimeoutId = null;
+    }
   }
 }
