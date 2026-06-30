@@ -32,7 +32,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(this.loginEndpoint, payload).pipe(
       tap((response) => {
         if (response?.success && response?.data?.accessToken) {
-          this.tokenStorage.setToken(response.data.accessToken);
+          this.tokenStorage.setToken(response.data.accessToken, response.data.expiresAt);
         }
       }),
       finalize(() => this.isLoading.set(false)),

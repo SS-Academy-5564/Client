@@ -67,7 +67,13 @@ describe('AuthService', () => {
   });
 
   it('should store token in memory on login success', () => {
-    httpMock.post.mockReturnValue(of({ success: true, data: { accessToken: 'token123' } }));
+    httpMock.post.mockReturnValue(
+      of({
+        success: true,
+        data: { accessToken: 'token123', expiresAt: new Date(Date.now() + 3600000).toISOString() },
+        errors: [],
+      }),
+    );
     service.login({ email: 'a@b.com', password: '123' }).subscribe();
     expect(tokenStorage.getToken()).toBe('token123');
     expect(tokenStorage.isAuthenticated()).toBe(true);

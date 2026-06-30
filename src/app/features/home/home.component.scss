@@ -57,19 +57,9 @@
   width: 100%;
 }
 
-.demo-form mat-form-field,
-.demo-form button[mat-raised-button] {
+.demo-form mat-form-field {
   margin-left: 32px;
   margin-right: 32px;
-}
-
-.demo-form button[mat-raised-button] {
-  min-height: 48px;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 8px !important;
-  align-self: flex-start;
-  padding: 0 24px;
 }
 
 .button-wrapper {

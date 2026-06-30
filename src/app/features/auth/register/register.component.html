@@ -17,10 +17,11 @@
         <form class="register-form" [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="name-row">
             <div class="input-group">
-              <span class="field-label" i18n="@@registerFirstNameLabel">First name</span>
+              <label class="field-label" for="firstName" i18n="@@registerFirstNameLabel">First name</label>
               <mat-form-field appearance="outline" class="full-width">
                 <input
                   formControlName="firstName"
+                  id="firstName"
                   matInput
                   placeholder="Jane"
                   i18n-placeholder="@@registerFirstNamePlaceholder"
@@ -32,10 +33,11 @@
             </div>
 
             <div class="input-group">
-              <span class="field-label" i18n="@@registerLastNameLabel">Last name</span>
+              <label class="field-label" for="lastName" i18n="@@registerLastNameLabel">Last name</label>
               <mat-form-field appearance="outline" class="full-width">
                 <input
                   formControlName="lastName"
+                  id="lastName"
                   matInput
                   placeholder="Smith"
                   i18n-placeholder="@@registerLastNamePlaceholder"
@@ -48,10 +50,11 @@
           </div>
 
           <div class="input-group">
-            <span class="field-label" i18n="@@registerEmailLabel">Email</span>
+            <label class="field-label" for="email" i18n="@@registerEmailLabel">Email</label>
             <mat-form-field appearance="outline" class="full-width">
               <input
                 formControlName="email"
+                id="email"
                 matInput
                 placeholder="you@company.com"
                 i18n-placeholder="@@registerEmailPlaceholder"
@@ -66,23 +69,38 @@
           </div>
 
           <div class="input-group">
-            <span class="field-label" i18n="@@registerPasswordLabel">Password</span>
+            <label class="field-label" for="password" i18n="@@registerPasswordLabel">Password</label>
             <mat-form-field appearance="outline" class="full-width password-field">
               <input
                 formControlName="password"
+                id="password"
                 matInput
                 placeholder="Min. 8 characters"
                 i18n-placeholder="@@registerPasswordPlaceholder"
                 [type]="hidePassword() ? 'password' : 'text'" />
-              <button
-                mat-icon-button
-                matSuffix
-                type="button"
-                [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
-                [attr.aria-pressed]="!hidePassword()"
-                (click)="togglePasswordVisibility($event)">
-                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-              </button>
+              @if (hidePassword()) {
+                <button
+                  aria-label="Show password"
+                  i18n-aria-label="@@showPasswordAria"
+                  aria-pressed="false"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility($event)">
+                  <mat-icon>visibility_off</mat-icon>
+                </button>
+              } @else {
+                <button
+                  aria-label="Hide password"
+                  i18n-aria-label="@@hidePasswordAria"
+                  aria-pressed="true"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility($event)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              }
               @if (form.get('password')?.hasError('required')) {
                 <mat-error i18n="@@registerPasswordRequired">Password is required</mat-error>
               }
@@ -96,23 +114,40 @@
           </div>
 
           <div class="input-group">
-            <span class="field-label" i18n="@@registerConfirmPasswordLabel">Confirm password</span>
+            <label class="field-label" for="confirmPassword" i18n="@@registerConfirmPasswordLabel">
+              Confirm password
+            </label>
             <mat-form-field appearance="outline" class="full-width password-field">
               <input
                 formControlName="confirmPassword"
+                id="confirmPassword"
                 matInput
                 placeholder="••••••••"
                 i18n-placeholder="@@registerConfirmPasswordPlaceholder"
                 [type]="hideConfirmPassword() ? 'password' : 'text'" />
-              <button
-                mat-icon-button
-                matSuffix
-                type="button"
-                [attr.aria-label]="hideConfirmPassword() ? 'Show password' : 'Hide password'"
-                [attr.aria-pressed]="!hideConfirmPassword()"
-                (click)="toggleConfirmPasswordVisibility($event)">
-                <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-              </button>
+              @if (hideConfirmPassword()) {
+                <button
+                  aria-label="Show password"
+                  i18n-aria-label="@@showPasswordAria"
+                  aria-pressed="false"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="toggleConfirmPasswordVisibility($event)">
+                  <mat-icon>visibility_off</mat-icon>
+                </button>
+              } @else {
+                <button
+                  aria-label="Hide password"
+                  i18n-aria-label="@@hidePasswordAria"
+                  aria-pressed="true"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="toggleConfirmPasswordVisibility($event)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              }
 
               @if (form.get('confirmPassword')?.hasError('required')) {
                 <mat-error i18n="@@registerConfirmPasswordRequired">Confirmation is required</mat-error>

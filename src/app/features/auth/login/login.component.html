@@ -17,10 +17,11 @@
 
         <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="input-group">
-            <span class="field-label" i18n="@@loginEmailLabel">Email</span>
+            <label class="field-label" for="email" i18n="@@loginEmailLabel">Email</label>
             <mat-form-field appearance="outline" class="full-width">
               <input
                 formControlName="email"
+                id="email"
                 matInput
                 placeholder="you@company.com"
                 i18n-placeholder="@@loginEmailPlaceholder"
@@ -35,23 +36,38 @@
           </div>
 
           <div class="input-group">
-            <span class="field-label" i18n="@@loginPasswordLabel">Password</span>
+            <label class="field-label" for="password" i18n="@@loginPasswordLabel">Password</label>
             <mat-form-field appearance="outline" class="full-width password-field">
               <input
                 formControlName="password"
+                id="password"
                 matInput
                 placeholder="••••••••"
                 i18n-placeholder="@@loginPasswordPlaceholder"
                 [type]="hidePassword() ? 'password' : 'text'" />
-              <button
-                mat-icon-button
-                matSuffix
-                type="button"
-                [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
-                [attr.aria-pressed]="hidePassword()"
-                (click)="togglePasswordVisibility($event)">
-                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
-              </button>
+              @if (hidePassword()) {
+                <button
+                  aria-label="Show password"
+                  i18n-aria-label="@@showPasswordAria"
+                  aria-pressed="false"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility($event)">
+                  <mat-icon>visibility_off</mat-icon>
+                </button>
+              } @else {
+                <button
+                  aria-label="Hide password"
+                  i18n-aria-label="@@hidePasswordAria"
+                  aria-pressed="true"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility($event)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              }
               @if (form.get('password')?.hasError('required')) {
                 <mat-error i18n="@@loginPasswordRequired">Password is required</mat-error>
               }

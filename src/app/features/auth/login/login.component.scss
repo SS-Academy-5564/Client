@@ -104,9 +104,9 @@ mat-card-content {
   }
 
   .mdc-notched-outline {
-    __leading,
-    __notch,
-    __trailing {
+    &__leading,
+    &__notch,
+    &__trailing {
       border-color: var(--border) !important;
     }
   }

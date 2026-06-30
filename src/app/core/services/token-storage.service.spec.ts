@@ -29,6 +29,18 @@ describe('TokenStorageService', () => {
     expect(service.isAuthenticated()).toBe(true);
   });
 
+  it('should handle token expiration correctly', () => {
+    const futureDate = new Date(Date.now() + 60000).toISOString();
+    service.setToken('test-token', futureDate);
+    expect(service.getToken()).toBe('test-token');
+    expect(service.isAuthenticated()).toBe(true);
+
+    const pastDate = new Date(Date.now() - 60000).toISOString();
+    service.setToken('expired-token', pastDate);
+    expect(service.getToken()).toBeNull();
+    expect(service.isAuthenticated()).toBe(false);
+  });
+
   it('should clear token', () => {
     service.setToken('test-token');
     service.clearToken();

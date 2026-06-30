@@ -46,14 +46,15 @@ beforeAll(async () => {
   await resolveComponentResources((url: string) => {
     const fileName = basename(url);
     const filePath = findFileRecursively(resolve(process.cwd(), 'src'), fileName);
-    if (filePath) {
-      try {
-        const content = readFileSync(filePath, 'utf-8');
-        return Promise.resolve(new Response(content));
-      } catch {
-        return Promise.resolve(new Response(''));
-      }
+    if (!filePath) {
+      throw new Error(`Unable to resolve component resource: ${url}`);
     }
-    return Promise.resolve(new Response(''));
+
+    try {
+      const content = readFileSync(filePath, 'utf-8');
+      return Promise.resolve(new Response(content));
+    } catch (error) {
+      throw new Error(`Failed to read component resource "${url}": ${String(error)}`, { cause: error });
+    }
   });
 });
