@@ -64,6 +64,4 @@ reviews:
         - Use type instead of interface for type definitions.
 knowledge_base:
   code_guidelines:
-    enabled: true
-    filePatterns:
-      - '.github/pull_request_template.md'
+    enabled: false
