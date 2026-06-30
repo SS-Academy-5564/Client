@@ -58,6 +58,18 @@ describe('TokenStorageService', () => {
     vi.useRealTimers();
   });
 
+  it('should not set a timer and keep token valid if expiry exceeds maximum signed 32-bit integer', () => {
+    vi.useFakeTimers();
+    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+    const expiresAt = new Date(Date.now() + thirtyDaysMs).toISOString();
+
+    service.setToken('long-lived-token', expiresAt);
+    expect(service.getToken()).toBe('long-lived-token');
+    expect(service.isAuthenticated()).toBe(true);
+
+    vi.useRealTimers();
+  });
+
   it('should clear token', () => {
     service.setToken('test-token');
     service.clearToken();

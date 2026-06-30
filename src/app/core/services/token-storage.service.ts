@@ -35,9 +35,12 @@ export class TokenStorageService {
     if (token && expiresAt) {
       const delay = new Date(expiresAt).getTime() - Date.now();
       if (delay > 0) {
-        this.expiryTimeoutId = setTimeout(() => {
-          this.clearToken();
-        }, delay);
+        const MAX_TIMEOUT = 2147483647; // ~24.8 days max delay for 32-bit signed int
+        if (delay <= MAX_TIMEOUT) {
+          this.expiryTimeoutId = setTimeout(() => {
+            this.clearToken();
+          }, delay);
+        }
       } else {
         this.clearToken();
       }
