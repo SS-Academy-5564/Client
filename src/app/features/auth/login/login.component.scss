@@ -46,15 +46,9 @@
   display: flex;
   justify-content: center;
   margin-bottom: 24px;
-}
-
-.logo-icon {
-  width: 300px !important;
-  height: 112px !important;
-  max-width: 300px !important;
-  max-height: 112px !important;
-  object-fit: contain;
-  display: block;
+  width: min(300px, 100%);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 // Custom padding for the card header

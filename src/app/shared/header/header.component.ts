@@ -5,12 +5,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter } from 'rxjs';
 import { ButtonComponent } from '../ui/button/button.component';
-import { LogoComponent } from '../ui/logo/logo.component';
 import { TokenStorageService } from '@core/services/token-storage.service';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, MatToolbarModule, CommonModule, ButtonComponent, LogoComponent],
+  imports: [RouterModule, MatToolbarModule, CommonModule, ButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

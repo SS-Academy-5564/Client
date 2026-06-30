@@ -136,6 +136,13 @@ select {
   color: var(--text-secondary);
 }
 
+.logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 @media (max-width: 640px) {
   .page-shell {
     padding: 24px 16px;

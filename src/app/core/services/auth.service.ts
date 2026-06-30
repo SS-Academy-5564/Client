@@ -12,7 +12,8 @@ import { TokenStorageService } from '@core/services/token-storage.service';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenStorage = inject(TokenStorageService);
-  private readonly apiUrl = `${environment.apiBaseUrl}/auth/register`;
+  private readonly registerEndpoint = `${environment.apiBaseUrl}/auth/register`;
+  private readonly loginEndpoint = `${environment.apiBaseUrl}/auth/login`;
 
   readonly isLoading = signal(false);
   readonly error = signal<string | null>(null);
@@ -21,16 +22,16 @@ export class AuthService {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.post(this.apiUrl, payload).pipe(finalize(() => this.isLoading.set(false)));
+    return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
   login(payload: LoginRequest): Observable<LoginResponse> {
     this.isLoading.set(true);
     this.error.set(null);
 
-    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, payload).pipe(
+    return this.http.post<LoginResponse>(this.loginEndpoint, payload).pipe(
       tap((response) => {
-        if (response.success && response.data?.accessToken) {
+        if (response?.success && response?.data?.accessToken) {
           this.tokenStorage.setToken(response.data.accessToken);
         }
       }),
