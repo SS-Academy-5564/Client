@@ -47,11 +47,13 @@ describe('TokenStorageService', () => {
     const expiresAt = new Date(Date.now() + expiryDelay).toISOString();
 
     service.setToken('expiring-token', expiresAt);
+    expect(vi.getTimerCount()).toBe(1);
     expect(service.getToken()).toBe('expiring-token');
     expect(service.isAuthenticated()).toBe(true);
 
     vi.advanceTimersByTime(expiryDelay + 1000);
 
+    expect(vi.getTimerCount()).toBe(0);
     expect(service.getToken()).toBeNull();
     expect(service.isAuthenticated()).toBe(false);
 
@@ -64,6 +66,7 @@ describe('TokenStorageService', () => {
     const expiresAt = new Date(Date.now() + thirtyDaysMs).toISOString();
 
     service.setToken('long-lived-token', expiresAt);
+    expect(vi.getTimerCount()).toBe(0);
     expect(service.getToken()).toBe('long-lived-token');
     expect(service.isAuthenticated()).toBe(true);
 
