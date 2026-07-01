@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button.component';
+import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
 import { RegisterRequest } from '@core/models/register-model';
@@ -25,6 +26,7 @@ import { passwordMatchValidator } from '@shared/validators/password-match.valida
     RouterModule,
     ButtonComponent,
     MatIconModule,
+    LogoComponent,
     ErrorMessageComponent,
   ],
   templateUrl: './register.component.html',

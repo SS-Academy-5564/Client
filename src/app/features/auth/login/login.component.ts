@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonComponent } from '@shared/ui/button/button.component';
+import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
 import { LoginRequest } from '@core/models/login-model';
@@ -24,6 +25,7 @@ import { LoginRequest } from '@core/models/login-model';
     MatButtonModule,
     RouterModule,
     ButtonComponent,
+    LogoComponent,
     ErrorMessageComponent,
   ],
   templateUrl: './login.component.html',
