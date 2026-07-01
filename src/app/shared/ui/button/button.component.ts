@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/prefer-signals */
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';

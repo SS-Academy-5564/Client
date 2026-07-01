@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/prefer-signals */
 import { Component, Input } from '@angular/core';
 
 @Component({
