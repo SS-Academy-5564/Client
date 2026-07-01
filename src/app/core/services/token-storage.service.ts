@@ -9,7 +9,7 @@ export class TokenStorageService {
   private readonly token = signal<string | null>(null);
   private readonly expiry = signal<string | null>(null);
 
-  private expiryTimeoutId: any = null;
+  private expiryTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   readonly isAuthenticated = computed(() => {
     const token = this.token();
