@@ -1,0 +1,39 @@
+<div class="page-wrapper">
+  <div class="logo-container-new-organization">
+    <app-logo />
+  </div>
+
+  <div class="new-organization-container">
+    <mat-card class="new-organization-card">
+     <mat-card-header>
+        <div class="custom-home-badge">
+           <svg width="24" height="24" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M38,5 L73,35 L73,65 Q73,71 67,71 L9,71 Q3,71 3,65 L3,35 Z" fill="none" stroke="#5B52E0" stroke-width="5" stroke-linejoin="round"/>
+                <rect x="26" y="45" width="24" height="26" rx="4" fill="none" stroke="#5B52E0" stroke-width="5"/>
+            </svg>
+        </div>
+      
+        <div class="new-organization-title-group">
+          <mat-card-title>Create your organization</mat-card-title>
+          <p class="new-organization-subtitle">You`re not part of any organization yet. Create one to get started.</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="new-organization-form">
+          <div class="input-group">
+            <span class="field-label">Organization name</span>
+            <mat-form-field appearance="outline" class="full-width">
+              <input matInput type="text" formControlName="organizationName" placeholder="Acme Corp" />
+              <mat-error *ngIf="form.get('organizationName')?.hasError('required')">
+                Organization name is required
+              </mat-error>
+            </mat-form-field>
+            <p class="new-organization-subtitle">You can rename it later in Settings</p>
+          </div>
+          <app-button label="Create organization" variant="full-width" type="primary" buttonType="submit" [disabled]="form.invalid" />
+        </form>
+      </mat-card-content>
+    </mat-card> 
+  </div>
+</div>

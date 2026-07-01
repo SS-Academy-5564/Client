@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from "../../../core/services/auth.service";
 import { FormBuilder, Validators } from '@angular/forms';
 import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';

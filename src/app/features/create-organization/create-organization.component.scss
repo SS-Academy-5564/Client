@@ -1,0 +1,114 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f8f9fa; 
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", Roboto, sans-serif;
+}
+
+.logo-container-new-organization {
+  width: 300px;
+  height: 24px;
+  margin-bottom: 90px;
+}
+
+
+.new-organization-container {
+  width: 100%;
+  max-width: 480px; 
+}
+
+.new-organization-container {
+  mat-card.new-organization-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 32px; 
+
+    .mat-mdc-card-header {
+      display: flex;
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 20px; 
+      margin: 0 0 28px 0; 
+      padding: 0;
+    }
+
+    .new-organization-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .mat-mdc-card-title {
+        margin: 0;
+        font-size: 24px; 
+        font-weight: 700;
+        color: #0c111d;
+        line-height: 1.2;
+      }
+
+      .new-organization-subtitle {
+        margin: 0;
+        font-size: 15px;
+        color: #475467;
+        line-height: 1.4;
+      }
+    }
+
+    .mat-mdc-card-content {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
+.custom-home-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;  
+  height: 60px;
+  border-radius: 10px;
+  background-color: #f1effd;
+  flex-shrink: 0;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+.new-organization-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; 
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+
+    .field-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #344054;
+      margin-bottom: 6px;
+    }
+
+    .new-organization-subtitle {
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      color: #667085;
+    }
+  }
+
+  .full-width {
+    width: 100%;
+
+    ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+      margin-bottom: -4px;
+    }
+  }
+}

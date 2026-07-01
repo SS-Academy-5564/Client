@@ -24,6 +24,18 @@ export class AuthService {
       .pipe(finalize(() => this.isLoading.set(false)));
   }
 
+  setToken(token: string): void{
+    localStorage.setItem('access_token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('access_token');
+  }
+
+  clear(): void {
+    localStorage.removeItem('access_token');
+  }
+  
   setError(message: string) {
     this.error.set(message);
   }
