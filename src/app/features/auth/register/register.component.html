@@ -1,4 +1,4 @@
-<!-- eslint-disable @angular-eslint/template/cyclomatic-complexity -->
+
 <div class="page-wrapper">
   <div class="logo-container">
     <app-logo />
@@ -79,29 +79,15 @@
                 placeholder="Min. 8 characters"
                 i18n-placeholder="@@registerPasswordPlaceholder"
                 [type]="hidePassword() ? 'password' : 'text'" />
-              @if (hidePassword()) {
-                <button
-                  aria-label="Show password"
-                  i18n-aria-label="@@showPasswordAria"
-                  aria-pressed="false"
-                  mat-icon-button
-                  matSuffix
-                  type="button"
-                  (click)="togglePasswordVisibility($event)">
-                  <mat-icon>visibility_off</mat-icon>
-                </button>
-              } @else {
-                <button
-                  aria-label="Hide password"
-                  i18n-aria-label="@@hidePasswordAria"
-                  aria-pressed="true"
-                  mat-icon-button
-                  matSuffix
-                  type="button"
-                  (click)="togglePasswordVisibility($event)">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-              }
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                [attr.aria-label]="hidePassword() ? showPasswordAria : hidePasswordAria"
+                [attr.aria-pressed]="!hidePassword()"
+                (click)="togglePasswordVisibility($event)">
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
               @if (form.get('password')?.hasError('required')) {
                 <mat-error i18n="@@registerPasswordRequired">Password is required</mat-error>
               }
@@ -126,29 +112,15 @@
                 placeholder="••••••••"
                 i18n-placeholder="@@registerConfirmPasswordPlaceholder"
                 [type]="hideConfirmPassword() ? 'password' : 'text'" />
-              @if (hideConfirmPassword()) {
-                <button
-                  aria-label="Show password"
-                  i18n-aria-label="@@showPasswordAria"
-                  aria-pressed="false"
-                  mat-icon-button
-                  matSuffix
-                  type="button"
-                  (click)="toggleConfirmPasswordVisibility($event)">
-                  <mat-icon>visibility_off</mat-icon>
-                </button>
-              } @else {
-                <button
-                  aria-label="Hide password"
-                  i18n-aria-label="@@hidePasswordAria"
-                  aria-pressed="true"
-                  mat-icon-button
-                  matSuffix
-                  type="button"
-                  (click)="toggleConfirmPasswordVisibility($event)">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-              }
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                [attr.aria-label]="hideConfirmPassword() ? showPasswordAria : hidePasswordAria"
+                [attr.aria-pressed]="!hideConfirmPassword()"
+                (click)="toggleConfirmPasswordVisibility($event)">
+                <mat-icon>{{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
 
               @if (form.get('confirmPassword')?.hasError('required')) {
                 <mat-error i18n="@@registerConfirmPasswordRequired">Confirmation is required</mat-error>
