@@ -45,6 +45,8 @@ $my-theme: mat.define-theme((
   --mdc-filled-button-container-shape: 8px;
   --mdc-protected-button-container-shape: 8px;
   --mdc-outlined-button-container-shape: 8px;
+
+  --header-height: 80px;
 }
 
 * {

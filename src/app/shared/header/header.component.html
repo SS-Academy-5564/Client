@@ -1,9 +1,9 @@
-<mat-toolbar color="primary" class="mat-elevation-z0">
-    <div class="header-logo">
-      <app-logo />
-    </div>
+<header class="app-header">
+  <a class="header-logo" routerLink="/overview" aria-label="Pulse overview">
+    <app-logo />
+  </a>
 
-  <span style="flex: 1"></span>
+  <span class="header-spacer"></span>
 
-  <app-button label="Register" type="primary" buttonType="button"  variant="nav" routerLink="/register" /> 
-</mat-toolbar>
+  <app-button label="Register" type="primary" buttonType="button" variant="nav" routerLink="/register" />
+</header>

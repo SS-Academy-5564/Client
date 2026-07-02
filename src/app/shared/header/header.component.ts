@@ -1,22 +1,13 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {RouterModule} from "@angular/router";
-import {MatToolbarModule} from "@angular/material/toolbar";
-import {MatButtonModule} from "@angular/material/button";
-import {ButtonComponent} from "../ui/button/button.component";
-import {LogoComponent} from "../ui/logo/logo.component";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { LogoComponent } from '../ui/logo/logo.component';
+import { ButtonComponent } from '../ui/button/button.component';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    RouterModule,
-    MatToolbarModule,
-    MatButtonModule,
-    CommonModule,
-    ButtonComponent,
-    LogoComponent
-  ],
+  imports: [RouterLink, LogoComponent, ButtonComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {}
