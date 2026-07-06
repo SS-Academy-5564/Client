@@ -1,9 +1,15 @@
 <header class="app-header">
-  <a class="header-logo" routerLink="/overview" aria-label="Pulse overview">
+  <div class="header-logo" routerLink="/overview" aria-label="Pulse overview">
     <app-logo />
-  </a>
+  </div>
 
-  <span class="header-spacer"></span>
-
-  <app-button label="Register" type="primary" buttonType="button" variant="nav" routerLink="/register" />
+  @if (tokenStorage.isAuthenticated()) {
+    <app-button label="Log out" type="primary" variant="nav" (click)="onLogout()" />
+  } @else {
+    @if (currentUrl() === '/register') {
+      <app-button label="Log in" routerLink="/login" type="primary" variant="nav" />
+    } @else {
+      <app-button label="Register" routerLink="/register" type="primary" variant="nav" />
+    }
+  }
 </header>

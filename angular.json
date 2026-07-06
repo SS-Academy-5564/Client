@@ -36,19 +36,12 @@
                 "input": "public"
               }
             ],
-            "polyfills": [
-              "@angular/localize/init"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "polyfills": ["@angular/localize/init"],
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
-              "localize": [
-                "en-US",
-                "uk"
-              ],
+              "localize": ["en-US", "uk"],
               "budgets": [
                 {
                   "type": "initial",
@@ -69,9 +62,7 @@
               "sourceMap": true
             },
             "uk": {
-              "localize": [
-                "uk"
-              ],
+              "localize": ["uk"],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true

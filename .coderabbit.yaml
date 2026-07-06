@@ -1,0 +1,67 @@
+language: 'en-US'
+reviews:
+  profile: 'chill'
+  auto_review:
+    enabled: true
+    drafts: true
+  path_instructions:
+    - path: 'src/app/core/**/*.ts'
+      instructions: |
+        - Use inject() for dependency injection. Do not use constructor injection.
+        - Use Angular Signals (signal, computed) for state management in services.
+        - Use path aliases (@core, @shared, @features) for imports. No relative paths across boundaries.
+        - Use providedIn: "root" for services.
+        - Always declare explicit return types on methods and functions.
+        - Avoid using the public keyword for members.
+        - Use type instead of interface for type definitions.
+    - path: 'src/app/features/**/*.ts'
+      instructions: |
+        - Use standalone components. List imports in the component decorator.
+        - Use inject() for dependency injection. Do not use constructor injection.
+        - Use Angular Signals (signal, computed) for local component state.
+        - Prefer signal-based inputs (input, input.required) and outputs (output).
+        - Manage forms using ReactiveFormsModule (FormBuilder, FormGroup).
+        - Import shared UI components from @shared.
+        - Use path aliases (@core, @shared, @features) for imports. No relative paths across boundaries.
+        - Always declare explicit return types on methods and functions.
+        - Avoid using the public keyword for members.
+        - Use type instead of interface for type definitions.
+    - path: 'src/app/shared/**/*.ts'
+      instructions: |
+        - Follow standalone component, directive, pipe rules.
+        - Use inject() for dependency injection. Do not use constructor injection.
+        - Prefer signals for state, inputs, and outputs.
+        - Keep shared components reusable and logic-light.
+        - Use path aliases (@core, @shared, @features) for imports. No relative paths across boundaries.
+        - Always declare explicit return types on methods and functions.
+        - Avoid using the public keyword for members.
+        - Use type instead of interface for type definitions.
+    - path: 'src/**/*.html'
+      instructions: |
+        - Use modern control flow syntax (@if, @for, @switch) instead of legacy structural directives (*ngIf, *ngFor).
+        - Ensure all interactive elements have correct accessibility attributes (e.g., [attr.aria-label], [attr.aria-pressed]).
+        - Explicitly declare button types (e.g., type="button", type="submit").
+        - Use Angular Material components (mat-card, mat-form-field, matInput) properly.
+        - Reuse shared design system components (app-button, app-logo) where applicable.
+    - path: 'src/**/*.spec.ts'
+      instructions: |
+        - Use Vitest (describe, it, expect, vi) for unit tests. Do not use Jest or Jasmine globals.
+        - Use vi.fn() for mocking.
+        - Configure TestBed for Angular components/services testing.
+        - Follow Arrange-Act-Assert.
+        - Always declare explicit return types on functions/hooks.
+    - path: 'e2e/**/*.ts'
+      instructions: |
+        - Use Playwright (@playwright/test) for E2E tests.
+        - Use Playwright locator assertions (expect().toHaveText, etc.).
+    - path: '**/*.ts'
+      instructions: |
+        - Use path aliases (@core, @shared, @features) for cross-module imports.
+        - Avoid constructor injection. Use inject().
+        - Maintain strict typescript types. Avoid any.
+        - Always declare explicit return types on methods and functions.
+        - Avoid using the public keyword for members.
+        - Use type instead of interface for type definitions.
+knowledge_base:
+  code_guidelines:
+    enabled: false

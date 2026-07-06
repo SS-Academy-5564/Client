@@ -1,0 +1,95 @@
+<div class="page-shell">
+  <div class="logo-container">
+    <app-logo />
+  </div>
+
+  <div class="page-container">
+    <mat-card class="surface-card">
+      <mat-card-header>
+        <div class="login-title-group">
+          <mat-card-title i18n="@@loginTitle">Sign in to your account</mat-card-title>
+          <p class="login-subtitle" i18n="@@loginSubtitle">Welcome back! Please enter your details.</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <app-error-message [message]="authService.error()" />
+
+        <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="input-group">
+            <label class="field-label" for="email" i18n="@@loginEmailLabel">Email</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <input
+                formControlName="email"
+                id="email"
+                matInput
+                placeholder="you@company.com"
+                i18n-placeholder="@@loginEmailPlaceholder"
+                type="email" />
+              @if (form.get('email')?.hasError('required')) {
+                <mat-error i18n="@@loginEmailRequired">Email is required</mat-error>
+              }
+              @if (form.get('email')?.hasError('email')) {
+                <mat-error i18n="@@loginEmailInvalid">Enter a valid email address</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="input-group">
+            <label class="field-label" for="password" i18n="@@loginPasswordLabel">Password</label>
+            <mat-form-field appearance="outline" class="full-width password-field">
+              <input
+                formControlName="password"
+                id="password"
+                matInput
+                placeholder="••••••••"
+                i18n-placeholder="@@loginPasswordPlaceholder"
+                [type]="hidePassword() ? 'password' : 'text'" />
+              @if (hidePassword()) {
+                <button
+                  aria-label="Show password"
+                  i18n-aria-label="@@showPasswordAria"
+                  aria-pressed="false"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility($event)">
+                  <mat-icon>visibility_off</mat-icon>
+                </button>
+              } @else {
+                <button
+                  aria-label="Hide password"
+                  i18n-aria-label="@@hidePasswordAria"
+                  aria-pressed="true"
+                  mat-icon-button
+                  matSuffix
+                  type="button"
+                  (click)="togglePasswordVisibility($event)">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              }
+              @if (form.get('password')?.hasError('required')) {
+                <mat-error i18n="@@loginPasswordRequired">Password is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <app-button
+            buttonType="submit"
+            label="Sign in"
+            i18n-label="@@loginSubmitButton"
+            type="primary"
+            variant="full-width"
+            [disabled]="form.invalid" />
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card-actions class="login-card-actions">
+    <p class="login-note">
+      <span i18n="@@loginRegisterPrompt">Don't have an account?</span>
+      <a class="link-primary" i18n="@@loginRegisterLink" routerLink="/register">Sign up</a>
+    </p>
+  </mat-card-actions>
+</div>
