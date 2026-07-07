@@ -11,6 +11,13 @@
   font-family: 'Inter', sans-serif;
 }
 
+.logo-container app-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
 :host ::ng-deep {
   .password-field {
     .mat-mdc-form-field-icon-suffix {
