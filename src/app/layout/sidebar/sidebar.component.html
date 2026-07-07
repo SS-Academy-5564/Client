@@ -36,7 +36,7 @@
 
   <div class="org-switcher">
     <mat-icon>business</mat-icon>
-    <span class="org-name">Acme Inc.</span>
+    <span class="org-name">{{ tokenStorage.organizationName() || 'Organization' }}</span>
     <mat-icon class="chevron">expand_more</mat-icon>
   </div>
 </aside>

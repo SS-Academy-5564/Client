@@ -4,12 +4,25 @@
   </div>
 
   @if (tokenStorage.isAuthenticated()) {
-    <app-button label="Log out" type="primary" variant="nav" (click)="onLogout()" />
-  } @else {
-    @if (currentUrl() === '/register') {
-      <app-button label="Log in" routerLink="/login" type="primary" variant="nav" />
-    } @else {
-      <app-button label="Register" routerLink="/register" type="primary" variant="nav" />
-    }
+    <div class="header-user-actions">
+      <button class="user-menu-button" [matMenuTriggerFor]="userMenu">
+        <div class="user-avatar">
+          {{ userDisplayInitials() }}
+        </div>
+
+        <span class="user-name">
+          {{ userDisplayName() }}
+        </span>
+
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
+    </div>
   }
 </header>

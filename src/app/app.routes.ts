@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 import { loggedOutOnlyGuard } from './core/guards/logged-out-only-guard';
+import { authenticatedGuard } from './core/guards/authenticated-guard';
 
 export const routes: Routes = [
   {
     path: '',
+    canActivate: [authenticatedGuard],
     loadComponent: () => import('./layout/layout/layout').then((m) => m.LayoutComponent),
     children: [
       {
