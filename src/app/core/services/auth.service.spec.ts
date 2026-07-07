@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClient } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AuthService } from './auth.service';
@@ -143,5 +143,31 @@ describe('AuthService', () => {
 
     expect(tokenStorage.getToken()).toBeNull();
     expect(service.currentUser()).toBeNull();
+  });
+
+  it('should clear token and set session error on 401 when loading current user', () => {
+    tokenStorage.setToken('token123', new Date(Date.now() + 3600000).toISOString());
+    httpMock.get.mockReturnValue(throwError(() => ({ status: 401 })));
+
+    service.loadCurrentUser().subscribe((result) => {
+      expect(result).toBeNull();
+    });
+
+    expect(tokenStorage.getToken()).toBeNull();
+    expect(service.currentUser()).toBeNull();
+    expect(service.error()).toBe('Your session has expired. Please log in again.');
+  });
+
+  it('should keep token and set generic error on non-auth loadCurrentUser failure', () => {
+    tokenStorage.setToken('token123', new Date(Date.now() + 3600000).toISOString());
+    httpMock.get.mockReturnValue(throwError(() => ({ status: 500 })));
+
+    service.loadCurrentUser().subscribe((result) => {
+      expect(result).toBeNull();
+    });
+
+    expect(tokenStorage.getToken()).toBe('token123');
+    expect(service.currentUser()).toBeNull();
+    expect(service.error()).toBe('Failed to load user profile.');
   });
 });

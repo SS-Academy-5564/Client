@@ -1,11 +1,11 @@
 <header class="app-header">
-  <div class="header-logo" routerLink="/overview" aria-label="Pulse overview">
+  <a class="header-logo" routerLink="/overview" aria-label="Pulse overview">
     <app-logo />
-  </div>
+  </a>
 
   @if (tokenStorage.isAuthenticated()) {
     <div class="header-user-actions">
-      <button class="user-menu-button" [matMenuTriggerFor]="userMenu">
+      <button type="button" class="user-menu-button" [matMenuTriggerFor]="userMenu">
         <div class="user-avatar">
           {{ userDisplayInitials() }}
         </div>
@@ -18,7 +18,7 @@
       </button>
 
       <mat-menu #userMenu="matMenu">
-        <button mat-menu-item (click)="onLogout()">
+        <button type="button" mat-menu-item (click)="onLogout()">
           <mat-icon>logout</mat-icon>
           <span>Log out</span>
         </button>

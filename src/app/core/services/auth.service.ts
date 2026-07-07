@@ -87,6 +87,7 @@ export class AuthService {
 
     if (!token) {
       this.currentUser.set(null);
+      this.error.set(null);
       return of(null);
     }
 
@@ -98,9 +99,23 @@ export class AuthService {
         map((response) => (response?.success ? response.data : null)),
         tap((user) => {
           this.currentUser.set(user);
+          this.error.set(null);
         }),
-        catchError(() => {
+        catchError((error: unknown) => {
           this.currentUser.set(null);
+
+          const status =
+            typeof error === 'object' && error !== null && 'status' in error
+              ? (error as { status?: number }).status
+              : undefined;
+
+          if (status === 401 || status === 403) {
+            this.tokenStorage.clearToken();
+            this.error.set('Your session has expired. Please log in again.');
+          } else {
+            this.error.set('Failed to load user profile.');
+          }
+
           return of(null);
         }),
       );
