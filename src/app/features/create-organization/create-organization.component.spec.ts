@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { CreateOrganizationComponent } from './create-organization.component';
 import { OrganizationService } from '../../core/services/organization.service';
-import { AuthService } from '../../core/services/auth.service';;
 import { Router } from '@angular/router';
 import { describe, it, expect, vi, beforeEach} from 'vitest';
 import { of, throwError } from 'rxjs';
+import { TokenStorageService } from '@/app/core/services/token-storage.service';
 
 describe('CreateOrganizationComponent', () => {
   let component: CreateOrganizationComponent;
@@ -13,9 +13,9 @@ describe('CreateOrganizationComponent', () => {
     createOrganization: vi.fn()
   };
 
-  const authServiceMock = {
-    setToken: vi.fn()
-  };
+ const tokenStorageMock = {
+  setToken: vi.fn()
+};
 
   const routerMock = {
     navigate: vi.fn()
@@ -26,7 +26,7 @@ describe('CreateOrganizationComponent', () => {
       imports: [CreateOrganizationComponent],
       providers: [
         { provide: OrganizationService, useValue: orgServiceMock },
-        { provide: AuthService, useValue: authServiceMock },
+        { provide: TokenStorageService, useValue: tokenStorageMock },
         { provide: Router, useValue: routerMock }
       ]
     }).compileComponents();
@@ -73,7 +73,7 @@ describe('CreateOrganizationComponent', () => {
     component.onSubmit();
 
     expect(orgServiceMock.createOrganization).toHaveBeenCalledWith('Valid Org');
-    expect(authServiceMock.setToken).toHaveBeenCalledWith('token123');
+    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token123'); 
     expect(routerMock.navigate).toHaveBeenCalledWith([
       '/organization',
       '123',

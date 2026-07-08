@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
-import { AuthService } from '@/app/core/services/auth.service';
+import { TokenStorageService } from '@/app/core/services/token-storage.service';
 import { OrganizationService } from '@/app/core/services/organization.service';
 
 @Component({
@@ -30,7 +30,7 @@ import { OrganizationService } from '@/app/core/services/organization.service';
 export class CreateOrganizationComponent {
   private readonly fb = inject(FormBuilder);
   private orgService = inject(OrganizationService);
-  private authService = inject(AuthService);
+  private tokenStorage = inject(TokenStorageService);
   private router = inject(Router);
 
   loading = false;
@@ -58,13 +58,18 @@ onSubmit(): void {
 
   this.orgService.createOrganization(name).subscribe({
   next: (res) => {
-    console.log('Response:', JSON.stringify(res, null, 2));
     this.loading = false;
-    const data = res.data;
 
-    this.authService.setToken(data.accessToken);
+    this.tokenStorage.setToken(res.data.accessToken);
 
-    this.router.navigate(['/organization', data.organizationId, 'overview']);
+    const orgId = res.data.organizationId;
+   
+    this.router.navigate([
+    '/organization',
+    orgId,
+    'overview'
+     ]);
+   
   },
     error: () => {
       this.loading = false;

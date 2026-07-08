@@ -1,3 +1,5 @@
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/SS-Academy-5564/Client?utm_source=oss&utm_medium=github&utm_campaign=SS-Academy-5564%2FClient&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
+
 # Client
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
@@ -60,6 +62,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 This project uses Angular's built-in i18n with `@angular/localize`. Translations are applied at build time — each locale produces a separate output bundle. There is no runtime language switching; to change locale the user must navigate to a different URL served from a different bundle.
 
 Supported locales:
+
 - `en-US` — source language (English)
 - `uk` — Ukrainian
 
@@ -94,9 +97,12 @@ const greeting = $localize`Hello, ${userName}`;
 For dates, numbers, and currency, use Angular's built-in pipes — they format automatically based on the active locale with no translation file entry needed:
 
 ```html
-{{ amount | currency }}           <!-- $1,234.56 (en-US) / 1 234,56 USD (uk) -->
-{{ date | date:'longDate' }}      <!-- January 15, 2024 / 15 січня 2024 р. -->
-{{ ratio | percent }}             <!-- 42% / 42 % -->
+{{ amount | currency }}
+<!-- $1,234.56 (en-US) / 1 234,56 USD (uk) -->
+{{ date | date:'longDate' }}
+<!-- January 15, 2024 / 15 січня 2024 р. -->
+{{ ratio | percent }}
+<!-- 42% / 42 % -->
 ```
 
 ### Workflow: adding or changing strings
@@ -125,6 +131,7 @@ npm run build
 ```
 
 Produces a localized output per locale under `dist/Client/browser/`:
+
 ```
 dist/Client/browser/
   en-US/   ← English build

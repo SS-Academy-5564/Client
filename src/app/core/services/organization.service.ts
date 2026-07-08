@@ -16,4 +16,10 @@ export class OrganizationService {
   createOrganization(name: string): Observable<ApiResponse<CreateOrganizationData>> {
     return this.http.post<ApiResponse<CreateOrganizationData>>(this.apiUrl, { name });
   }
+
+  getMyOrganization(): Observable<ApiResponse<{ organizationId: string }>> {
+  return this.http.get<ApiResponse<{ organizationId: string }>>(
+    `${this.apiUrl}/my`
+  );
+}
 }
