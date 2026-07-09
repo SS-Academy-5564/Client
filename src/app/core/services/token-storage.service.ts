@@ -55,37 +55,42 @@ export class TokenStorageService {
       return null;
     }
 
-    const first = user.firstName?.trim().charAt(0) ?? '';
-    const last = user.lastName?.trim().charAt(0) ?? '';
-    const fullNameInitials =
-      user.fullName
-        ?.trim()
-        .split(/\s+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((part) => part.charAt(0))
-        .join('') ?? '';
-    const emailInitial = user.email?.trim().charAt(0) ?? '';
-    const roleInitial = user.role?.trim().charAt(0) ?? '';
-
-    const displayNameInitials =
-      this.displayName()
-        ?.trim()
-        .split(/\s+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((part) => part.charAt(0))
-        .join('') ?? '';
-
-    const initials = (
-      first + last ||
-      fullNameInitials ||
-      emailInitial ||
-      displayNameInitials ||
-      roleInitial
-    ).toUpperCase();
-    return initials || null;
+    return this.buildUserInitials(user);
   });
+
+  private buildUserInitials(user: TokenUser): string | null {
+  const initials =
+    this.getNameInitials(user) ||
+    this.getWordInitials(user.fullName) ||
+    this.getFirstCharacter(user.email) ||
+    this.getWordInitials(this.displayName()) ||
+    this.getFirstCharacter(user.role);
+
+  return initials?.toUpperCase() || null;
+}
+
+private getNameInitials(user: TokenUser): string {
+  return (
+    this.getFirstCharacter(user.firstName) +
+    this.getFirstCharacter(user.lastName)
+  );
+}
+
+private getFirstCharacter(value: string | null): string {
+  return value?.trim().charAt(0) ?? '';
+}
+
+private getWordInitials(value: string | null): string {
+  return (
+    value
+      ?.trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part.charAt(0))
+      .join('') ?? ''
+  );
+}
 
   readonly organizationName = computed(() => this.decodedUser()?.organization ?? null);
 
