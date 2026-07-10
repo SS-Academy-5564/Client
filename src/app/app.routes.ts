@@ -60,4 +60,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/reset-success/reset-success.component').then((m) => m.ResetSuccessComponent),
   },
+  {
+    path: 'error/:code',
+    loadComponent: () => import('./features/error/error-page.component').then((m) => m.ErrorPageComponent),
+  },
+  {
+    path: '**',
+    data: { code: '404' },
+    loadComponent: () => import('./features/error/error-page.component').then((m) => m.ErrorPageComponent),
+  },
 ];

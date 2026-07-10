@@ -1,0 +1,11 @@
+<div class="page-shell">
+  <div class="page-container">
+    <div class="surface-card error-card">
+      <p class="error-code">{{ entry.label }}</p>
+      <h1 class="error-title">{{ entry.title }}</h1>
+      <p class="error-message text-muted">{{ entry.message }}</p>
+
+      <app-button label="Go home" i18n-label="@@errorPageGoHome" routerLink="/" type="primary" variant="full-width" />
+    </div>
+  </div>
+</div>
