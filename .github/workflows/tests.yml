@@ -2,6 +2,8 @@ name: Unit Tests & Build
 
 on:
   pull_request:
+    branches:
+      - main
 
 concurrency:
   group: tests-build-${{ github.ref }}
@@ -33,4 +35,4 @@ jobs:
           path: coverage/
           retention-days: 7
 
-      - run: npx ng build
+      - run: npm run build
