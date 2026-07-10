@@ -61,11 +61,11 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 Every pull request triggers three GitHub Actions workflows (see [`.github/workflows`](.github/workflows)):
 
-| Workflow | File | What it runs |
-| --- | --- | --- |
-| Format & Lint Check | [`format.yml`](.github/workflows/format.yml) | `npm run prettier-check`, `npm run lint-check` |
-| Unit Tests & Build | [`tests.yml`](.github/workflows/tests.yml) | `npm run typecheck`, `npm run test:coverage`, `ng build` |
-| E2E Tests | [`e2e.yml`](.github/workflows/e2e.yml) | Playwright tests via `npm run e2e` |
+| Workflow            | File                                         | What it runs                                             |
+| ------------------- | -------------------------------------------- | -------------------------------------------------------- |
+| Format & Lint Check | [`format.yml`](.github/workflows/format.yml) | `npm run prettier-check`, `npm run lint-check`           |
+| Unit Tests & Build  | [`tests.yml`](.github/workflows/tests.yml)   | `npm run typecheck`, `npm run test:coverage`, `ng build` |
+| E2E Tests           | [`e2e.yml`](.github/workflows/e2e.yml)       | Playwright tests via `npm run e2e`                       |
 
 All three must pass before a PR can be merged. To catch issues before pushing, run locally:
 
