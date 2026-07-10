@@ -1,0 +1,38 @@
+name: Format & Lint Check
+
+on:
+  pull_request:
+
+concurrency:
+  group: format-lint-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  format-lint-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - id: prettier
+        run: npm run prettier-check
+
+      - if: failure() && steps.prettier.outcome == 'failure'
+        run: echo "::error title=Formatting violations detected::Run 'npm run prettier-fix' locally to fix"
+
+      - id: lint
+        if: success() || steps.prettier.outcome == 'failure'
+        run: npm run lint-check
+
+      - if: failure() && steps.lint.outcome == 'failure'
+        run: echo "::error title=Lint violations detected::Run 'npm run lint-fix' locally to fix"
