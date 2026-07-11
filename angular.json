@@ -47,7 +47,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "localize": ["en-US", "uk"],
+              "localize": ["en-US"],
               "budgets": [
                 {
                   "type": "initial",
