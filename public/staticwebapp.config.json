@@ -1,0 +1,10 @@
+{
+  "routes": [
+    { "route": "/", "redirect": "/en-US/" },
+    { "route": "/en-US/*", "rewrite": "/en-US/index.html" },
+    { "route": "/uk/*", "rewrite": "/uk/index.html" }
+  ],
+  "navigationFallback": {
+    "rewrite": "/en-US/index.html"
+  }
+}
