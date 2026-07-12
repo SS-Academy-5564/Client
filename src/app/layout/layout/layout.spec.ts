@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { provideRouter } from '@angular/router';
 import { LayoutComponent } from './layout';
-import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('Layout', () => {
   let component: LayoutComponent;
@@ -10,6 +9,7 @@ describe('Layout', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LayoutComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutComponent);
