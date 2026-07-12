@@ -59,38 +59,35 @@ export class TokenStorageService {
   });
 
   private buildUserInitials(user: TokenUser): string | null {
-  const initials =
-    this.getNameInitials(user) ||
-    this.getWordInitials(user.fullName) ||
-    this.getFirstCharacter(user.email) ||
-    this.getWordInitials(this.displayName()) ||
-    this.getFirstCharacter(user.role);
+    const initials =
+      this.getNameInitials(user) ||
+      this.getWordInitials(user.fullName) ||
+      this.getFirstCharacter(user.email) ||
+      this.getWordInitials(this.displayName()) ||
+      this.getFirstCharacter(user.role);
 
-  return initials?.toUpperCase() || null;
-}
+    return initials?.toUpperCase() || null;
+  }
 
-private getNameInitials(user: TokenUser): string {
-  return (
-    this.getFirstCharacter(user.firstName) +
-    this.getFirstCharacter(user.lastName)
-  );
-}
+  private getNameInitials(user: TokenUser): string {
+    return this.getFirstCharacter(user.firstName) + this.getFirstCharacter(user.lastName);
+  }
 
-private getFirstCharacter(value: string | null): string {
-  return value?.trim().charAt(0) ?? '';
-}
+  private getFirstCharacter(value: string | null): string {
+    return value?.trim().charAt(0) ?? '';
+  }
 
-private getWordInitials(value: string | null): string {
-  return (
-    value
-      ?.trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part.charAt(0))
-      .join('') ?? ''
-  );
-}
+  private getWordInitials(value: string | null): string {
+    return (
+      value
+        ?.trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part.charAt(0))
+        .join('') ?? ''
+    );
+  }
 
   readonly organizationName = computed(() => this.decodedUser()?.organization ?? null);
 
@@ -177,7 +174,7 @@ private getWordInitials(value: string | null): string {
   private decodeJwtPayload(token: string): Record<string, unknown> | null {
     const parts = token.split('.');
 
-    if (parts.length < 2) {
+    if (parts.length !== 3) {
       return null;
     }
 
@@ -191,7 +188,7 @@ private getWordInitials(value: string | null): string {
       const utf8Decoded = new TextDecoder().decode(bytes);
       const payload = JSON.parse(utf8Decoded);
 
-      return typeof payload === 'object' && payload !== null ? payload : null;
+      return typeof payload === 'object' && payload !== null && !Array.isArray(payload) ? payload : null;
     } catch {
       return null;
     }
