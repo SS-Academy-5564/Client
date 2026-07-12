@@ -57,6 +57,29 @@ npm run e2e:ui # with UI
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Continuous Integration
+
+Every pull request triggers three GitHub Actions workflows (see [`.github/workflows`](.github/workflows)):
+
+| Workflow            | File                                         | What it runs                                             |
+| ------------------- | -------------------------------------------- | -------------------------------------------------------- |
+| Format & Lint Check | [`format.yml`](.github/workflows/format.yml) | `npm run prettier-check`, `npm run lint-check`           |
+| Unit Tests & Build  | [`tests.yml`](.github/workflows/tests.yml)   | `npm run typecheck`, `npm run test:coverage`, `ng build` |
+| E2E Tests           | [`e2e.yml`](.github/workflows/e2e.yml)       | Playwright tests via `npm run e2e`                       |
+
+All three must pass before a PR can be merged. To catch issues before pushing, run locally:
+
+```bash
+npm run prettier-fix   # auto-fix formatting
+npm run lint-fix       # auto-fix lint issues
+npm run typecheck      # type-check with no emit
+npm run test           # unit tests (add :coverage for a coverage report)
+npm run e2e             # end-to-end tests (Playwright starts the dev server automatically)
+npm run build           # runs lint-check + prettier-check + ng build, same gate CI uses for the build step
+```
+
+The unit-test and e2e jobs upload their coverage/report artifacts (`coverage/`, `playwright-report/`) on every run, including failures, so they can be downloaded from the workflow run summary for debugging.
+
 ## Internationalization (i18n)
 
 This project uses Angular's built-in i18n with `@angular/localize`. Translations are applied at build time — each locale produces a separate output bundle. There is no runtime language switching; to change locale the user must navigate to a different URL served from a different bundle.
