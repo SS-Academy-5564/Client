@@ -1,10 +1,23 @@
 import { Routes } from '@angular/router';
 import { loggedOutOnlyGuard } from './core/guards/logged-out-only-guard';
+import { authenticatedGuard } from './core/guards/authenticated-guard';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
+    canActivate: [authenticatedGuard],
+    loadComponent: () => import('./layout/layout/layout').then((m) => m.LayoutComponent),
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'overview',
+      },
+      {
+        path: 'overview',
+        loadComponent: () => import('./features/overview/overview.component').then((m) => m.OverviewComponent),
+      },
+    ],
   },
   {
     path: 'register',
