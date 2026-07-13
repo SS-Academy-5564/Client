@@ -36,7 +36,7 @@ export class ForgotPasswordComponent {
   });
 
   onSubmit(): void {
-    if (this.form.invalid) {
+    if (this.form.invalid || this.passwordResetService.isLoading()) {
       this.form.markAllAsTouched();
       return;
     }

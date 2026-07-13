@@ -146,6 +146,8 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
           this.router.navigate(['/reset-password'], {
             state: { resetToken: response.data.resetToken },
           });
+        } else {
+          this.passwordResetService.setError('Invalid response from server. Please try again.');
         }
       },
       error: (err) => {

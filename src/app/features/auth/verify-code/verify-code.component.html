@@ -47,7 +47,9 @@
           <p class="resend-section">
             <span class="resend-text" i18n="@@verifyCodeResendPrompt">Didn't receive a code?</span>
             @if (resendDisabled()) {
-              <span class="resend-text resend-countdown">Resend in {{ resendCountdown() }}s</span>
+              <span class="resend-text resend-countdown" i18n="@@verifyCodeResendCountdown">
+                Resend in {{ resendCountdown() }}s
+              </span>
             } @else {
               <button class="resend-button" i18n="@@verifyCodeResendButton" type="button" (click)="resendCode()">
                 Resend Code
