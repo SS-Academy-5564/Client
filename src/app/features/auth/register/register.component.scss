@@ -29,7 +29,7 @@
     }
 
     .mat-icon.mat-icon {
-      font-family: 'Material Icons';
+      font-family: 'Material Icons', sans-serif;
       display: inline-block;
       font-size: 22px;
       width: 22px;
@@ -103,7 +103,7 @@
 }
 
 .register-card {
-  background: #ffffff !important;
+  background: #ffffff;
   border: 1px solid var(--border-color);
   box-shadow:
     0 4px 6px -1px rgb(0 0 0 / 0.05),

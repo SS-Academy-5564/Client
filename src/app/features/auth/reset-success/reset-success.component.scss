@@ -1,4 +1,4 @@
-:host {
+﻿:host {
   --primary-purple: var(--accent);
   --text-dark: var(--text-primary);
   --text-gray: var(--text-secondary);
@@ -57,8 +57,8 @@ mat-card-content {
 
 :host ::ng-deep {
   .mat-mdc-flat-button.mat-primary {
-    --mdc-filled-button-container-color: var(--primary-purple) !important;
-    border-radius: 6px !important;
+    --mdc-filled-button-container-color: var(--primary-purple);
+    border-radius: 6px;
     height: 44px;
   }
 }

@@ -1,4 +1,4 @@
-@forward '@angular/material' show define-theme, define-colors, all-component-themes;
+﻿@forward '@angular/material' show define-theme, define-colors, all-component-themes;
 @use '@angular/material' as mat;
 
 $my-theme: mat.define-theme(
@@ -57,7 +57,7 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background-color: #f8fafc !important;
+  background-color: #f8fafc;
   color: var(--text-primary);
   font-family: 'Inter', Roboto, sans-serif;
 }
@@ -121,7 +121,7 @@ select {
 }
 
 .surface-card {
-  background: var(--surface) !important;
+  background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
