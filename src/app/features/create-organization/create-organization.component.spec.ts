@@ -74,7 +74,7 @@ describe('CreateOrganizationComponent', () => {
 
     expect(orgServiceMock.createOrganization).toHaveBeenCalledWith('Valid Org');
     expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token123');
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/organization', '123', 'overview']);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/overview']);
   });
 
   it('should set error message on failure', () => {
