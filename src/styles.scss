@@ -57,7 +57,7 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background-color: #f8fafc;
+  background-color: #f8fafc !important;
   color: var(--text-primary);
   font-family: 'Inter', Roboto, sans-serif;
 }
@@ -121,10 +121,11 @@ select {
 }
 
 .surface-card {
-  background: var(--surface);
+  background: var(--surface) !important;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
+  padding-bottom: 24px;
 }
 
 .surface-card-strong {
