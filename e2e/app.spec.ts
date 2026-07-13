@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test('displays the app title', async ({ page }) => {
+test('displays the login title', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('mat-card-title')).toHaveText('Angular Material + ngx-echarts');
+  await expect(page.locator('mat-card-title')).toHaveText('Sign in to your account');
 });

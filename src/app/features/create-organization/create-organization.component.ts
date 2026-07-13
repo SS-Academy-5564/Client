@@ -58,9 +58,7 @@ export class CreateOrganizationComponent {
 
         this.tokenStorage.setToken(res.data.accessToken);
 
-        const orgId = res.data.organizationId;
-
-        this.router.navigate(['/organization', orgId, 'overview']);
+        this.router.navigate(['/overview']);
       },
       error: () => {
         this.loading = false;

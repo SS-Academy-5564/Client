@@ -6,7 +6,6 @@
 
   display: block;
   min-height: 100vh;
-  background-color: #f8fafc;
   font-family: 'Inter', sans-serif;
 }
 
@@ -41,13 +40,20 @@
   }
 }
 
-.logo-container {
+.surface-card {
+  &.mat-mdc-card {
+    background-color: #ffffff !important;
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.logo-container app-logo {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-bottom: 24px;
-  width: min(300px, 100%);
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .surface-card mat-card-header {

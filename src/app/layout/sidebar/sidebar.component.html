@@ -1,0 +1,48 @@
+<aside class="sidebar">
+  <nav aria-label="Main navigation" class="sidebar-nav">
+    <ul class="nav-links">
+      <li>
+        <a class="nav-button" routerLink="/overview" routerLinkActive="active-link">
+          <mat-icon>home</mat-icon>
+          <span i18n="@@sidebarOverviewLabel">Overview</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-button" routerLink="#" routerLinkActive="active-link">
+          <mat-icon>show_chart</mat-icon>
+          <span i18n="@@sidebarMonitorsLabel">Monitors</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-button" routerLink="#" routerLinkActive="active-link">
+          <mat-icon>notifications</mat-icon>
+          <span i18n="@@sidebarAlertsLabel">Alerts</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-button" routerLink="#" routerLinkActive="active-link">
+          <mat-icon>people</mat-icon>
+          <span i18n="@@sidebarMembersLabel">Members</span>
+        </a>
+      </li>
+      <li>
+        <a class="nav-button" routerLink="#" routerLinkActive="active-link">
+          <mat-icon>settings</mat-icon>
+          <span i18n="@@sidebarSettingsLabel">Settings</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="org-switcher">
+    <mat-icon>business</mat-icon>
+    <span class="org-name">
+      @if (tokenStorage.organizationName(); as organizationName) {
+        {{ organizationName }}
+      } @else {
+        <ng-container i18n="@@sidebarOrganizationFallback">Organization</ng-container>
+      }
+    </span>
+    <mat-icon class="chevron">expand_more</mat-icon>
+  </div>
+</aside>

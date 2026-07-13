@@ -17,7 +17,7 @@ export const noOrganizationGuard = () => {
       );
 
       if (organization) {
-        router.navigate(['/organization', organization.organizationId, 'overview']);
+        router.navigate(['/overview']);
 
         return false;
       }

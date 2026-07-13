@@ -1,17 +1,28 @@
-<mat-toolbar class="mat-elevation-z0" color="primary">
-  <div class="header-logo">
+<header class="app-header">
+  <a aria-label="Pulse overview" class="header-logo" routerLink="/overview">
     <app-logo />
-  </div>
-
-  <span style="flex: 1"></span>
+  </a>
 
   @if (tokenStorage.isAuthenticated()) {
-    <app-button label="Log out" type="primary" variant="nav" (click)="onLogout()" />
-  } @else {
-    @if (currentUrl() === '/register') {
-      <app-button label="Log in" routerLink="/login" type="primary" variant="nav" />
-    } @else {
-      <app-button label="Register" routerLink="/register" type="primary" variant="nav" />
-    }
+    <div class="header-user-actions">
+      <button class="user-menu-button" type="button" [matMenuTriggerFor]="userMenu">
+        <div class="user-avatar">
+          {{ userDisplayInitials() }}
+        </div>
+
+        <span class="user-name">
+          {{ userDisplayName() }}
+        </span>
+
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item type="button" (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
+    </div>
   }
-</mat-toolbar>
+</header>
