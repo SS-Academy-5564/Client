@@ -1,0 +1,12 @@
+<ul>
+  @for (monitor of monitors(); track monitor.id) {
+    <li>
+      <p>{{ monitor.name }}</p>
+      <p>{{ monitor.url }}</p>
+      <p>{{ monitor.currentValue ?? 'No value' }}</p>
+      <p>{{ monitor.lastCheckedAt | date: 'medium' }}</p>
+      <p>{{ monitor.status }}</p>
+      <p>{{ monitor.interval }} seconds</p>
+    </li>
+  }
+</ul>

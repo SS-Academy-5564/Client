@@ -29,4 +29,9 @@ export const routes: Routes = [
     canActivate: [loggedOutOnlyGuard],
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
+  {
+    path: 'monitors',
+    canActivate: [authenticatedGuard],
+    loadComponent: () => import('./features/monitor/monitor.component').then((m) => m.MonitorComponent),
+  },
 ];
