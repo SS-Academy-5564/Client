@@ -1,6 +1,6 @@
-export interface ApiResponse<T> {
+export type ApiResponse<T> = {
   data: T;
   pagination: null;
   success: boolean;
-  errors: any[];
-}
+  errors: unknown[];
+};

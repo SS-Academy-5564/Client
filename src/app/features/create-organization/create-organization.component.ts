@@ -47,7 +47,9 @@ export class CreateOrganizationComponent {
     }
 
     const name = this.form.get('organizationName')?.value;
-    if (!name) return;
+    if (!name) {
+      return;
+    }
 
     this.loading = true;
     this.error = null;

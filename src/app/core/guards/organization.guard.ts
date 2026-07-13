@@ -1,10 +1,11 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, catchError, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { UserService } from '@core/services/user.service';
 import { DEFAULT_ORGANIZATION_ID } from '@constants/organization.constants';
+import { CanActivateFn } from '@angular/router';
 
-export const organizationGuard = () => {
+export const organizationGuard: CanActivateFn = () => {
   const userService = inject(UserService);
   const router = inject(Router);
 
