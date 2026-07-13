@@ -9,7 +9,7 @@ export class TokenStorageService {
   private readonly token = signal<string | null>(null);
   private readonly expiry = signal<string | null>(null);
 
-  private expiryTimeoutId: any = null;
+  private expiryTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   constructor() {
     const savedToken = localStorage.getItem('token');
@@ -23,7 +23,6 @@ export class TokenStorageService {
       this.expiry.set(savedExpiry);
     }
   }
-
 
   readonly isAuthenticated = computed(() => {
     const token = this.token();
@@ -72,9 +71,9 @@ export class TokenStorageService {
       }
     }
   }
-  
+
   getToken(): string | null {
-  return this.token();
+    return this.token();
   }
 
   clearToken(): void {
@@ -83,7 +82,7 @@ export class TokenStorageService {
 
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiry');
-    
+
     if (this.expiryTimeoutId) {
       clearTimeout(this.expiryTimeoutId);
       this.expiryTimeoutId = null;

@@ -40,6 +40,9 @@ export class RegisterComponent {
   protected readonly hidePassword = signal<boolean>(true);
   protected readonly hideConfirmPassword = signal<boolean>(true);
 
+  protected readonly showPasswordAria = $localize`:@@showPasswordAria:Show password`;
+  protected readonly hidePasswordAria = $localize`:@@hidePasswordAria:Hide password`;
+
   readonly form = this.fb.group(
     {
       firstName: ['', [Validators.required]],

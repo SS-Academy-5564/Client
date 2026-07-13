@@ -52,36 +52,36 @@ export class LoginComponent {
     event.stopPropagation();
   }
 
-onSubmit(): void {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-  this.loading.set(true);
-  this.error.set(null);
+    this.loading.set(true);
+    this.error.set(null);
 
-  const credentials = this.form.getRawValue() as LoginRequest;
+    const credentials = this.form.getRawValue() as LoginRequest;
 
-  this.authService.login(credentials).subscribe({
-    next: (res) => {
-      const token = res.data?.accessToken;
+    this.authService.login(credentials).subscribe({
+      next: (res) => {
+        const token = res.data?.accessToken;
 
-      if (!token) {
+        if (!token) {
+          this.loading.set(false);
+          this.error.set('Token is missing');
+          return;
+        }
+
+        this.tokenStorage.setToken(token);
         this.loading.set(false);
-        this.error.set('Token is missing');
-        return;
-      }
 
-      this.tokenStorage.setToken(token);
-      this.loading.set(false);
-
-      this.router.navigate(['/create-organization']);
-    },
-    error: () => {
-      this.loading.set(false);
-      this.error.set('Невірний email або пароль');
-    },
-  });
-}
+        this.router.navigate(['/create-organization']);
+      },
+      error: () => {
+        this.loading.set(false);
+        this.error.set('Невірний email або пароль');
+      },
+    });
+  }
 }

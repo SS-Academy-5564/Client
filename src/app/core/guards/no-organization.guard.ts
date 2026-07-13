@@ -9,30 +9,24 @@ export const noOrganizationGuard = () => {
   const router = inject(Router);
 
   return userService.getMyOrganizations().pipe(
-  map((res) => {
-    const organizations = res.data;
+    map((res) => {
+      const organizations = res.data;
 
-    const organization = organizations.find(
-      o =>
-        o.organizationId.toLowerCase() !==
-        DEFAULT_ORGANIZATION_ID.toLowerCase()
-    );
+      const organization = organizations.find(
+        (o) => o.organizationId.toLowerCase() !== DEFAULT_ORGANIZATION_ID.toLowerCase(),
+      );
 
-    if (organization) {
-      router.navigate([
-        '/organization',
-        organization.organizationId,
-        'overview',
-      ]);
+      if (organization) {
+        router.navigate(['/organization', organization.organizationId, 'overview']);
 
-      return false;
-    }
+        return false;
+      }
 
-    return true;
-  }),
-  catchError(() => {
-    router.navigate(['/login']);
-    return of(false);
-  })
-);
+      return true;
+    }),
+    catchError(() => {
+      router.navigate(['/login']);
+      return of(false);
+    }),
+  );
 };

@@ -31,30 +31,30 @@ describe('UserService', () => {
   });
 
   it('should send GET request to /users/me', () => {
-  const mockUser: CurrentUser = {
-    id: '11111111-1111-1111-1111-111111111111',
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    createdAt: '2026-01-01T00:00:00Z',
-    updatedAt: '2026-01-01T00:00:00Z',
-  };
+    const mockUser: CurrentUser = {
+      id: '11111111-1111-1111-1111-111111111111',
+      email: 'test@example.com',
+      firstName: 'Test',
+      lastName: 'User',
+      createdAt: '2026-01-01T00:00:00Z',
+      updatedAt: '2026-01-01T00:00:00Z',
+    };
 
-  const mockResponse: ApiResponse<CurrentUser> = {
-    data: mockUser,
-  } as ApiResponse<CurrentUser>;
+    const mockResponse: ApiResponse<CurrentUser> = {
+      data: mockUser,
+    } as ApiResponse<CurrentUser>;
 
-  service.getMe().subscribe((response) => {
-    expect(response).toEqual(mockResponse);
-    expect(response.data.email).toBe(mockUser.email);
-    expect(response.data.firstName).toBe(mockUser.firstName);
-    expect(response.data.lastName).toBe(mockUser.lastName);
-  });
+    service.getMe().subscribe((response) => {
+      expect(response).toEqual(mockResponse);
+      expect(response.data.email).toBe(mockUser.email);
+      expect(response.data.firstName).toBe(mockUser.firstName);
+      expect(response.data.lastName).toBe(mockUser.lastName);
+    });
 
-  const req = httpMock.expectOne(`${apiUrl}/me`);
-  expect(req.request.method).toBe('GET');
+    const req = httpMock.expectOne(`${apiUrl}/me`);
+    expect(req.request.method).toBe('GET');
 
-  req.flush(mockResponse);
+    req.flush(mockResponse);
   });
 
   it('should propagate error when request fails', () => {
@@ -62,9 +62,9 @@ describe('UserService', () => {
       next: () => {
         throw new Error('Expected request to fail');
       },
-    error: (error) => {
-      expect(error.status).toBe(401);
-    },
+      error: (error) => {
+        expect(error.status).toBe(401);
+      },
     });
 
     const req = httpMock.expectOne(`${apiUrl}/me`);

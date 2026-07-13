@@ -18,12 +18,10 @@ export const routes: Routes = [
     canActivate: [loggedOutOnlyGuard],
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
-   {
+  {
     path: 'create-organization',
     canActivate: [authGuard, noOrganizationGuard],
     loadComponent: () =>
-      import('./features/create-organization/create-organization.component')
-        .then(m => m.CreateOrganizationComponent)
+      import('./features/create-organization/create-organization.component').then((m) => m.CreateOrganizationComponent),
   },
-  
 ];

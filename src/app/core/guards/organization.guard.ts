@@ -11,9 +11,7 @@ export const organizationGuard = () => {
   return userService.getMyOrganizations().pipe(
     map((res) => {
       const organization = res.data.find(
-        o =>
-          o.organizationId.toLowerCase() !==
-          DEFAULT_ORGANIZATION_ID.toLowerCase()
+        (o) => o.organizationId.toLowerCase() !== DEFAULT_ORGANIZATION_ID.toLowerCase(),
       );
 
       if (!organization) {
@@ -26,6 +24,6 @@ export const organizationGuard = () => {
     catchError(() => {
       router.navigate(['/login']);
       return of(false);
-    })
+    }),
   );
 };

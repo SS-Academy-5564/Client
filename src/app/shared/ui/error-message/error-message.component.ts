@@ -8,5 +8,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './error-message.component.scss',
 })
 export class ErrorMessageComponent {
+  // eslint-disable-next-line @angular-eslint/prefer-signals
   @Input() message: string | null = null;
 }

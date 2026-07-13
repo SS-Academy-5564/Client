@@ -2,9 +2,9 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
-import {ReactiveFormsModule} from "@angular/forms";
-import {MatInputModule} from "@angular/material/input";
-import {MatButtonModule} from "@angular/material/button";
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonComponent } from '@shared/ui/button/button.component';
@@ -22,7 +22,7 @@ import { OrganizationService } from '@/app/core/services/organization.service';
     MatCardModule,
     MatIconModule,
     ButtonComponent,
-    LogoComponent
+    LogoComponent,
   ],
   templateUrl: './create-organization.component.html',
   styleUrl: './create-organization.component.scss',
@@ -37,44 +37,35 @@ export class CreateOrganizationComponent {
   error: string | null = null;
 
   readonly form = this.fb.group({
-    organizationName: ['', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50)
-      ]],
+    organizationName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
   });
 
-onSubmit(): void {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
-  }
-
-  const name = this.form.get('organizationName')?.value;
-  if (!name) return;
-
-  this.loading = true;
-  this.error = null;
-
-  this.orgService.createOrganization(name).subscribe({
-  next: (res) => {
-    this.loading = false;
-
-    this.tokenStorage.setToken(res.data.accessToken);
-
-    const orgId = res.data.organizationId;
-   
-    this.router.navigate([
-    '/organization',
-    orgId,
-    'overview'
-     ]);
-   
-  },
-    error: () => {
-      this.loading = false;
-      this.error = 'Failed to create organization';
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-  });
-}
+
+    const name = this.form.get('organizationName')?.value;
+    if (!name) return;
+
+    this.loading = true;
+    this.error = null;
+
+    this.orgService.createOrganization(name).subscribe({
+      next: (res) => {
+        this.loading = false;
+
+        this.tokenStorage.setToken(res.data.accessToken);
+
+        const orgId = res.data.organizationId;
+
+        this.router.navigate(['/organization', orgId, 'overview']);
+      },
+      error: () => {
+        this.loading = false;
+        this.error = 'Failed to create organization';
+      },
+    });
+  }
 }

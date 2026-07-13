@@ -42,42 +42,42 @@ describe('TokenStorageService', () => {
   });
 
   it('should automatically clear token when expiration timer fires', () => {
-  vi.useFakeTimers();
+    vi.useFakeTimers();
 
-  try {
-    const expiryDelay = 10_000;
-    const expiresAt = new Date(Date.now() + expiryDelay).toISOString();
+    try {
+      const expiryDelay = 10_000;
+      const expiresAt = new Date(Date.now() + expiryDelay).toISOString();
 
-    service.setToken('expiring-token', expiresAt);
+      service.setToken('expiring-token', expiresAt);
 
-    expect(service.getToken()).toBe('expiring-token');
-    expect(service.isAuthenticated()).toBe(true);
+      expect(service.getToken()).toBe('expiring-token');
+      expect(service.isAuthenticated()).toBe(true);
 
-    vi.advanceTimersByTime(expiryDelay + 1);
+      vi.advanceTimersByTime(expiryDelay + 1);
 
-    expect(service.getToken()).toBeNull();
-    expect(service.isAuthenticated()).toBe(false);
-  } finally {
-    vi.useRealTimers();
-  }
-});
+      expect(service.getToken()).toBeNull();
+      expect(service.isAuthenticated()).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 
-it('should keep token valid if expiry exceeds maximum signed 32-bit integer', () => {
-  vi.useFakeTimers();
+  it('should keep token valid if expiry exceeds maximum signed 32-bit integer', () => {
+    vi.useFakeTimers();
 
-  try {
-    const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
-    const expiresAt = new Date(Date.now() + thirtyDaysMs).toISOString();
+    try {
+      const thirtyDaysMs = 30 * 24 * 60 * 60 * 1000;
+      const expiresAt = new Date(Date.now() + thirtyDaysMs).toISOString();
 
-    service.setToken('long-lived-token', expiresAt);
+      service.setToken('long-lived-token', expiresAt);
 
-    vi.advanceTimersByTime(24 * 60 * 60 * 1000);
+      vi.advanceTimersByTime(24 * 60 * 60 * 1000);
 
-    expect(service.getToken()).toBe('long-lived-token');
-    expect(service.isAuthenticated()).toBe(true);
-  } finally {
-    vi.useRealTimers();
-  }
+      expect(service.getToken()).toBe('long-lived-token');
+      expect(service.isAuthenticated()).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('should clear token', () => {

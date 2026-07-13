@@ -10,7 +10,7 @@ export default defineConfig({
       '@shared': path.resolve(__dirname, './src/app/shared'),
       '@features': path.resolve(__dirname, './src/app/features'),
       '@environments': path.resolve(__dirname, './src/environments'),
-      '@constants': path.resolve(__dirname, './src/app/core/constants')
+      '@constants': path.resolve(__dirname, './src/app/core/constants'),
     },
   },
   test: {

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { describe, expect, it, beforeEach, afterEach} from 'vitest';
+import { describe, expect, it, beforeEach, afterEach } from 'vitest';
 import { OrganizationService } from './organization.service';
 import { environment } from '../../../environments/environment';
 
@@ -11,7 +11,7 @@ describe('OrganizationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [OrganizationService]
+      providers: [OrganizationService],
     });
 
     service = TestBed.inject(OrganizationService);
@@ -30,23 +30,21 @@ describe('OrganizationService', () => {
     const mockResponse = {
       data: {
         organizationId: '123',
-        accessToken: 'token'
+        accessToken: 'token',
       },
       pagination: null,
       success: true,
-      errors: []
+      errors: [],
     };
 
     const name = 'Test Org';
 
-    service.createOrganization(name).subscribe(res => {
+    service.createOrganization(name).subscribe((res) => {
       expect(res.data.organizationId).toBe('123');
       expect(res.data.accessToken).toBe('token');
     });
 
-    const req = httpMock.expectOne(
-      `${environment.apiBaseUrl}/organizations`
-    );
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/organizations`);
 
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual({ name });

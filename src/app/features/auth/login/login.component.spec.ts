@@ -99,28 +99,26 @@ describe('LoginComponent', () => {
     expect(authServiceMock.login).not.toHaveBeenCalled();
   });
 
- it('should redirect to create organization after successful login', () => {
-  authServiceMock.login.mockReturnValue(
-    of({
-      success: true,
-      data: {
-        accessToken: 'token',
-        expiresAt: '',
-      },
-      errors: [],
-    }),
-  );
+  it('should redirect to create organization after successful login', () => {
+    authServiceMock.login.mockReturnValue(
+      of({
+        success: true,
+        data: {
+          accessToken: 'token',
+          expiresAt: '',
+        },
+        errors: [],
+      }),
+    );
 
-  component.form.setValue({
-    email: 'user@test.com',
-    password: '123456',
-  });
+    component.form.setValue({
+      email: 'user@test.com',
+      password: '123456',
+    });
 
-  component.onSubmit();
+    component.onSubmit();
 
-  expect(router.navigate).toHaveBeenCalledWith([
-    '/create-organization',
-  ]);
+    expect(router.navigate).toHaveBeenCalledWith(['/create-organization']);
   });
 
   it('should set error message when login fails', () => {

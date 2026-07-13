@@ -9,7 +9,7 @@ import { TokenStorageService } from './token-storage.service';
 describe('AuthService', () => {
   let service: AuthService;
   let tokenStorage: TokenStorageService;
-  let httpMock: any;
+  let httpMock: { post: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     httpMock = {

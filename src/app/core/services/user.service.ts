@@ -9,16 +9,14 @@ import { Organization } from '../models/organization.model';
   providedIn: 'root',
 })
 export class UserService {
- private http = inject(HttpClient);
- private readonly apiUrl = `${environment.apiBaseUrl}/users`;
+  private http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiBaseUrl}/users`;
 
-getMe() {
-  return this.http.get<ApiResponse<CurrentUser>>(`${this.apiUrl}/me`);
-}
+  getMe() {
+    return this.http.get<ApiResponse<CurrentUser>>(`${this.apiUrl}/me`);
+  }
 
-getMyOrganizations() {
-  return this.http.get<ApiResponse<Organization[]>>(
-    `${this.apiUrl}/me/organizations`
-  );
-}
+  getMyOrganizations() {
+    return this.http.get<ApiResponse<Organization[]>>(`${this.apiUrl}/me/organizations`);
+  }
 }

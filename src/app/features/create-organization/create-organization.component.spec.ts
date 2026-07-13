@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { CreateOrganizationComponent } from './create-organization.component';
 import { OrganizationService } from '../../core/services/organization.service';
 import { Router } from '@angular/router';
-import { describe, it, expect, vi, beforeEach} from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { TokenStorageService } from '@/app/core/services/token-storage.service';
 
@@ -10,15 +10,15 @@ describe('CreateOrganizationComponent', () => {
   let component: CreateOrganizationComponent;
 
   const orgServiceMock = {
-    createOrganization: vi.fn()
+    createOrganization: vi.fn(),
   };
 
- const tokenStorageMock = {
-  setToken: vi.fn()
-};
+  const tokenStorageMock = {
+    setToken: vi.fn(),
+  };
 
   const routerMock = {
-    navigate: vi.fn()
+    navigate: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -27,8 +27,8 @@ describe('CreateOrganizationComponent', () => {
       providers: [
         { provide: OrganizationService, useValue: orgServiceMock },
         { provide: TokenStorageService, useValue: tokenStorageMock },
-        { provide: Router, useValue: routerMock }
-      ]
+        { provide: Router, useValue: routerMock },
+      ],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(CreateOrganizationComponent);
@@ -62,8 +62,8 @@ describe('CreateOrganizationComponent', () => {
     const mockResponse = {
       data: {
         organizationId: '123',
-        accessToken: 'token123'
-      }
+        accessToken: 'token123',
+      },
     };
 
     orgServiceMock.createOrganization.mockReturnValue(of(mockResponse));
@@ -73,18 +73,12 @@ describe('CreateOrganizationComponent', () => {
     component.onSubmit();
 
     expect(orgServiceMock.createOrganization).toHaveBeenCalledWith('Valid Org');
-    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token123'); 
-    expect(routerMock.navigate).toHaveBeenCalledWith([
-      '/organization',
-      '123',
-      'overview'
-    ]);
+    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token123');
+    expect(routerMock.navigate).toHaveBeenCalledWith(['/organization', '123', 'overview']);
   });
 
   it('should set error message on failure', () => {
-    orgServiceMock.createOrganization.mockReturnValue(
-      throwError(() => new Error('API error'))
-    );
+    orgServiceMock.createOrganization.mockReturnValue(throwError(() => new Error('API error')));
 
     component.form.setValue({ organizationName: 'Valid Org' });
 
