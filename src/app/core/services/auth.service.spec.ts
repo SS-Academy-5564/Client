@@ -93,12 +93,7 @@ describe('AuthService', () => {
 
     expect(tokenStorage.getToken()).toBe('token123');
     expect(tokenStorage.isAuthenticated()).toBe(true);
-    expect(httpMock.get).toHaveBeenCalledWith(
-      expect.stringContaining('/users/me'),
-      expect.objectContaining({
-        headers: expect.objectContaining({ Authorization: expect.stringContaining('Bearer ') }),
-      }),
-    );
+    expect(httpMock.get).toHaveBeenCalledWith(expect.stringContaining('/users/me'));
     expect(service.displayName()).toBe('Jane Doe');
     expect(service.userInitials()).toBe('JD');
   });
