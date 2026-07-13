@@ -1,4 +1,4 @@
-﻿@forward '@angular/material' show define-theme, define-colors, all-component-themes;
+@forward '@angular/material' show define-theme, define-colors, all-component-themes;
 @use '@angular/material' as mat;
 
 $my-theme: mat.define-theme(
