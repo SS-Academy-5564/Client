@@ -11,6 +11,7 @@ type PasswordResetServiceMock = {
   requestCode: ReturnType<typeof vi.fn>;
   setError: ReturnType<typeof vi.fn>;
   error: ReturnType<typeof signal<string | null>>;
+  isLoading: ReturnType<typeof signal<boolean>>;
 };
 
 describe('ForgotPasswordComponent', () => {
@@ -24,6 +25,7 @@ describe('ForgotPasswordComponent', () => {
       requestCode: vi.fn(),
       setError: vi.fn(),
       error: signal<string | null>(null),
+      isLoading: signal<boolean>(false),
     };
 
     await TestBed.configureTestingModule({
