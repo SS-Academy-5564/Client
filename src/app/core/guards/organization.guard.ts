@@ -15,12 +15,7 @@ export const organizationGuard: CanActivateFn = () => {
         (o) => o.organizationId.toLowerCase() !== DEFAULT_ORGANIZATION_ID.toLowerCase(),
       );
 
-      if (!organization) {
-        router.navigate(['/create-organization']);
-        return false;
-      }
-
-      return true;
+      return organization ? true : router.createUrlTree(['/create-organization']);
     }),
     catchError(() => {
       router.navigate(['/login']);

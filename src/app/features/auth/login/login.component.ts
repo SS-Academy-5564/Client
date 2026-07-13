@@ -81,7 +81,7 @@ export class LoginComponent {
       },
       error: () => {
         this.loading.set(false);
-        this.error.set('Невірний email або пароль');
+        this.error.set('Incorrect email or password');
       },
     });
   }
