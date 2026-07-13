@@ -29,4 +29,27 @@ export const routes: Routes = [
     canActivate: [loggedOutOnlyGuard],
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
+  {
+    path: 'forgot-password',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () =>
+      import('./features/auth/forgot-password/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+  },
+  {
+    path: 'verify-code',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () => import('./features/auth/verify-code/verify-code.component').then((m) => m.VerifyCodeComponent),
+  },
+  {
+    path: 'reset-password',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () =>
+      import('./features/auth/reset-password/reset-password.component').then((m) => m.ResetPasswordComponent),
+  },
+  {
+    path: 'reset-success',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () =>
+      import('./features/auth/reset-success/reset-success.component').then((m) => m.ResetSuccessComponent),
+  },
 ];
