@@ -29,7 +29,7 @@
       <mat-card-content>
         <form class="new-organization-form" [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="input-group">
-            <span class="field-label" i18n="@@newOrganization.organizationName">Organization name</span>
+            <mat-label i18n="@@newOrganization.organizationName">Organization name</mat-label>
             <mat-form-field appearance="outline" class="full-width">
               <input
                 formControlName="organizationName"

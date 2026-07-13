@@ -26,13 +26,23 @@ export class TokenStorageService {
     const savedToken = localStorage.getItem('token');
     const savedExpiry = localStorage.getItem('token_expiry');
 
-    if (savedToken) {
-      this.token.set(savedToken);
+    if (!savedToken) {
+      return;
     }
 
-    if (savedExpiry) {
-      this.expiry.set(savedExpiry);
+    if (savedExpiry && new Date(savedExpiry).getTime() <= Date.now()) {
+      this.clearToken();
+      return;
     }
+
+    // if (savedToken) {
+    //   this.token.set(savedToken);
+    // }
+
+    // if (savedExpiry) {
+    //   this.expiry.set(savedExpiry);
+    // }
+    this.setToken(savedToken, savedExpiry);
   }
 
   readonly isAuthenticated = computed(() => {
@@ -142,6 +152,13 @@ export class TokenStorageService {
   }
 
   getToken(): string | null {
+    const expiry = this.expiry();
+
+    if (expiry && new Date(expiry).getTime() <= Date.now()) {
+      this.clearToken();
+      return null;
+    }
+
     return this.token();
   }
 

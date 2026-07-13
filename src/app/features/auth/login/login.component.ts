@@ -12,7 +12,7 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
 import { LoginRequest } from '@core/models/login-model';
-import { TokenStorageService } from '@/app/core/services/token-storage.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -66,14 +66,15 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
       next: (res) => {
         const token = res.data?.accessToken;
+        const expiresAt = res.data?.expiresAt;
 
-        if (!token) {
+        if (!token || !expiresAt) {
           this.loading.set(false);
           this.error.set('Token is missing');
           return;
         }
 
-        this.tokenStorage.setToken(token);
+        this.tokenStorage.setToken(token, expiresAt);
         this.loading.set(false);
 
         this.router.navigate(['/create-organization']);

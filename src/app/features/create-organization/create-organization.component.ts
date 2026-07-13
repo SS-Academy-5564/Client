@@ -9,8 +9,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
-import { TokenStorageService } from '@/app/core/services/token-storage.service';
-import { OrganizationService } from '@/app/core/services/organization.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
+import { OrganizationService } from '@core/services/organization.service';
 
 @Component({
   selector: 'app-create-organization',

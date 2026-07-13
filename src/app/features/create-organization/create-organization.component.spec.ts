@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { CreateOrganizationComponent } from './create-organization.component';
-import { OrganizationService } from '../../core/services/organization.service';
+import { OrganizationService } from '@core/services/organization.service';
 import { Router } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
-import { TokenStorageService } from '@/app/core/services/token-storage.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 describe('CreateOrganizationComponent', () => {
   let component: CreateOrganizationComponent;

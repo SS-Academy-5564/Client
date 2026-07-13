@@ -4,15 +4,19 @@ import { provideRouter, Router } from '@angular/router';
 import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
-
 import { LoginComponent } from './login.component';
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
+import { TokenStorageService } from '@/app/core/services/token-storage.service';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
   error: ReturnType<typeof signal<string | null>>;
   isLoading: ReturnType<typeof signal<boolean>>;
+};
+
+const tokenStorageMock = {
+  setToken: vi.fn(),
 };
 
 describe('LoginComponent', () => {
@@ -25,6 +29,10 @@ describe('LoginComponent', () => {
   let userServiceMock: {
     getMe: ReturnType<typeof vi.fn>;
   };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   beforeEach(async () => {
     authServiceMock = {
@@ -42,6 +50,7 @@ describe('LoginComponent', () => {
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: UserService, useValue: userServiceMock },
+        { provide: TokenStorageService, useValue: tokenStorageMock },
         provideRouter([]),
       ],
     }).compileComponents();
@@ -118,6 +127,7 @@ describe('LoginComponent', () => {
 
     component.onSubmit();
 
+    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token');
     expect(router.navigate).toHaveBeenCalledWith(['/create-organization']);
   });
 
