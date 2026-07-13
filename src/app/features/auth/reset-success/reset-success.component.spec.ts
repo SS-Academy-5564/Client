@@ -21,4 +21,11 @@ describe('ResetSuccessComponent', () => {
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should contain a link to the login page', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const loginLink = compiled.querySelector('a[routerLink="/login"]');
+    expect(loginLink).toBeTruthy();
+    expect(loginLink?.textContent).toContain('Back to Login');
+  });
 });

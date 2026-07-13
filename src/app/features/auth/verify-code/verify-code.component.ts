@@ -113,7 +113,9 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
       digits.forEach((digit, i) => {
         if (i < 6) {
           newDigits[i] = digit;
-          inputs[i].nativeElement.value = digit;
+          if (inputs[i]) {
+            inputs[i].nativeElement.value = digit;
+          }
         }
       });
 
@@ -121,7 +123,9 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
 
       // Focus the next empty input or the last one
       const focusIndex = Math.min(digits.length, 5);
-      inputs[focusIndex].nativeElement.focus();
+      if (inputs[focusIndex]) {
+        inputs[focusIndex].nativeElement.focus();
+      }
     }
   }
 

@@ -129,4 +129,18 @@ describe('VerifyCodeComponent', () => {
 
     component.ngOnDestroy();
   });
+
+  it('should handle pasting a 6-digit code', () => {
+    const mockClipboardEvent = {
+      preventDefault: vi.fn(),
+      clipboardData: {
+        getData: vi.fn().mockReturnValue('123456'),
+      },
+    } as unknown as ClipboardEvent;
+
+    component.onPaste(mockClipboardEvent);
+
+    expect(mockClipboardEvent.preventDefault).toHaveBeenCalled();
+    expect(component['codeDigits']()).toEqual(['1', '2', '3', '4', '5', '6']);
+  });
 });
