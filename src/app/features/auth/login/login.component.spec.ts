@@ -7,7 +7,7 @@ import { of, throwError } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
-import { TokenStorageService } from '@/app/core/services/token-storage.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
@@ -16,7 +16,7 @@ type AuthServiceMock = {
 };
 
 const tokenStorageMock = {
-  setToken: vi.fn(),
+  setToken: vi.fn<(token: string, expiresAt: string) => void>(),
 };
 
 describe('LoginComponent', () => {
@@ -109,12 +109,13 @@ describe('LoginComponent', () => {
   });
 
   it('should redirect to create organization after successful login', () => {
+    const expiresAt = '2026-07-13T15:00:00Z';
     authServiceMock.login.mockReturnValue(
       of({
         success: true,
         data: {
           accessToken: 'token',
-          expiresAt: '',
+          expiresAt,
         },
         errors: [],
       }),
@@ -127,7 +128,7 @@ describe('LoginComponent', () => {
 
     component.onSubmit();
 
-    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token');
+    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token', expiresAt);
     expect(router.navigate).toHaveBeenCalledWith(['/create-organization']);
   });
 

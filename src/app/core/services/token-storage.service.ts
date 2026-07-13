@@ -35,13 +35,6 @@ export class TokenStorageService {
       return;
     }
 
-    // if (savedToken) {
-    //   this.token.set(savedToken);
-    // }
-
-    // if (savedExpiry) {
-    //   this.expiry.set(savedExpiry);
-    // }
     this.setToken(savedToken, savedExpiry);
   }
 
