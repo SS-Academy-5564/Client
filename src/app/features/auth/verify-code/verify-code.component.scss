@@ -1,0 +1,141 @@
+:host {
+  --primary-purple: var(--accent);
+  --text-dark: var(--text-primary);
+  --text-gray: var(--text-secondary);
+
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: Inter, sans-serif;
+}
+
+.surface-card mat-card-header {
+  padding: 32px 32px 0;
+}
+
+.title-group {
+  mat-card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin: 0;
+    word-break: break-all;
+  }
+}
+
+mat-card-content {
+  padding: 24px 32px 16px;
+}
+
+.code-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.code-input {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: Inter, sans-serif;
+  color: var(--text-dark);
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+
+  &:focus {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 2px rgba(99, 68, 245, 0.15);
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-flat-button.mat-primary {
+    --mdc-filled-button-container-color: var(--primary-purple);
+
+    border-radius: 6px;
+    height: 44px;
+  }
+}
+
+.resend-section {
+  text-align: center;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.resend-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-gray);
+}
+
+.resend-countdown {
+  color: var(--primary-purple);
+}
+
+.resend-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-purple);
+  padding: 0;
+  transition: opacity 0.2s;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.footer-link {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.link-primary {
+  color: var(--primary-purple);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  mat-card-content,
+  .surface-card mat-card-header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .code-input {
+    width: 40px;
+    height: 48px;
+    font-size: 18px;
+  }
+}
