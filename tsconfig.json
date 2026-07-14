@@ -15,12 +15,14 @@
     "target": "ES2022",
     "module": "preserve",
     "types": ["node"],
-    "baseUrl": "./",
+    // "baseUrl": "./",
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@features/*": ["src/app/features/*"],
-      "@environments/*": ["src/environments/*"]
+      "@/*": ["./src/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@features/*": ["./src/app/features/*"],
+      "@environments/*": ["./src/environments/*"],
+      "@constants/*": ["./src/app/core/constants/*"]
     }
   },
   "angularCompilerOptions": {
