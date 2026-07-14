@@ -44,7 +44,14 @@ export class ResetPasswordComponent implements OnInit {
     {
       password: [
         '',
-        [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*/)],
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(256),
+          Validators.pattern(/[A-Z]/),
+          Validators.pattern(/[a-z]/),
+          Validators.pattern(/[0-9]/),
+        ],
       ],
       confirmPassword: ['', [Validators.required]],
     },
