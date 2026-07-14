@@ -61,8 +61,7 @@
                 type="email" />
               @if (form.get('email')?.hasError('required')) {
                 <mat-error i18n="@@registerEmailRequired">Email is required</mat-error>
-              }
-              @if (form.get('email')?.hasError('email')) {
+              } @else if (form.get('email')?.hasError('email')) {
                 <mat-error i18n="@@registerEmailInvalid">Enter a valid email address</mat-error>
               }
             </mat-form-field>
@@ -89,11 +88,9 @@
               </button>
               @if (form.get('password')?.hasError('required')) {
                 <mat-error i18n="@@registerPasswordRequired">Password is required</mat-error>
-              }
-              @if (form.get('password')?.hasError('minlength')) {
+              } @else if (form.get('password')?.hasError('minlength')) {
                 <mat-error i18n="@@registerPasswordMinlength">Password must be at least 8 characters</mat-error>
-              }
-              @if (form.get('password')?.hasError('pattern')) {
+              } @else if (form.get('password')?.hasError('pattern')) {
                 <mat-error i18n="@@registerPasswordPattern">Password must start with an uppercase letter</mat-error>
               }
             </mat-form-field>
@@ -123,8 +120,7 @@
 
               @if (form.get('confirmPassword')?.hasError('required')) {
                 <mat-error i18n="@@registerConfirmPasswordRequired">Confirmation is required</mat-error>
-              }
-              @if (form.hasError('passwordMismatch') && form.touched) {
+              } @else if (form.hasError('passwordMismatch') && form.touched) {
                 <mat-error i18n="@@registerPasswordMismatch">Passwords do not match</mat-error>
               }
             </mat-form-field>

@@ -1,0 +1,79 @@
+:host {
+  --primary-purple: var(--accent);
+  --text-dark: var(--text-primary);
+  --text-gray: var(--text-secondary);
+
+  display: block;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+}
+
+mat-card-content {
+  padding: 32px 32px 16px;
+}
+
+.success-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.success-icon {
+  margin-bottom: 24px;
+}
+
+.check-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: var(--primary-purple);
+}
+
+.success-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 12px;
+}
+
+.success-message {
+  font-size: 16px;
+  color: var(--text-gray);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+:host ::ng-deep {
+  .mat-mdc-flat-button.mat-primary {
+    --mdc-filled-button-container-color: var(--primary-purple);
+
+    border-radius: 6px;
+    height: 44px;
+  }
+}
+
+.footer-link {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.link-primary {
+  color: var(--primary-purple);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  mat-card-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
