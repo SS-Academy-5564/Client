@@ -10,6 +10,8 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 
+const DEFAULT_COOLDOWN_SECONDS = 60;
+
 @Component({
   selector: 'app-forgot-password',
   imports: [
@@ -45,7 +47,7 @@ export class ForgotPasswordComponent {
 
     this.passwordResetService.requestCode(email).subscribe({
       next: (response) => {
-        const cooldown = response?.data?.resendCooldownSeconds ?? 60;
+        const cooldown = response?.data?.resendCooldownSeconds ?? DEFAULT_COOLDOWN_SECONDS;
         this.router.navigate(['/verify-code'], { state: { email, cooldown } });
       },
       error: (err) => {

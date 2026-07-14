@@ -8,6 +8,9 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 
+const DEFAULT_COOLDOWN_SECONDS = 60;
+const CODE_LENGTH = 6;
+
 @Component({
   selector: 'app-verify-code',
   imports: [
@@ -29,9 +32,9 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
   protected readonly codeInputs = viewChildren<ElementRef<HTMLInputElement>>('codeInput');
 
   protected readonly email = signal<string>('');
-  protected readonly codeDigits = signal<string[]>(['', '', '', '', '', '']);
+  protected readonly codeDigits = signal<string[]>(Array(CODE_LENGTH).fill(''));
   protected readonly resendDisabled = signal(true);
-  protected readonly resendCountdown = signal(60);
+  protected readonly resendCountdown = signal(DEFAULT_COOLDOWN_SECONDS);
   protected readonly isSubmitting = signal(false);
 
   private timerId: ReturnType<typeof setInterval> | null = null;
@@ -45,7 +48,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
     }
 
     this.email.set(state.email);
-    this.startResendTimer(state.cooldown ?? 60);
+    this.startResendTimer(state.cooldown ?? DEFAULT_COOLDOWN_SECONDS);
   }
 
   ngOnDestroy(): void {
@@ -67,7 +70,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
     this.codeDigits.set(digits);
 
     // Auto-advance to next input
-    if (input.value && index < 5) {
+    if (input.value && index < CODE_LENGTH - 1) {
       const inputs = this.codeInputs();
       inputs[index + 1].nativeElement.focus();
     }
@@ -104,14 +107,14 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
   onPaste(event: ClipboardEvent): void {
     event.preventDefault();
     const pastedText = event.clipboardData?.getData('text')?.trim() ?? '';
-    const digits = pastedText.replace(/\D/g, '').slice(0, 6).split('');
+    const digits = pastedText.replace(/\D/g, '').slice(0, CODE_LENGTH).split('');
 
     if (digits.length > 0) {
       const newDigits = [...this.codeDigits()];
       const inputs = this.codeInputs();
 
       digits.forEach((digit, i) => {
-        if (i < 6) {
+        if (i < CODE_LENGTH) {
           newDigits[i] = digit;
           if (inputs[i]) {
             inputs[i].nativeElement.value = digit;
@@ -122,7 +125,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
       this.codeDigits.set(newDigits);
 
       // Focus the next empty input or the last one
-      const focusIndex = Math.min(digits.length, 5);
+      const focusIndex = Math.min(digits.length, CODE_LENGTH - 1);
       if (inputs[focusIndex]) {
         inputs[focusIndex].nativeElement.focus();
       }
@@ -132,8 +135,8 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     const code = this.codeDigits().join('');
 
-    if (code.length !== 6) {
-      this.passwordResetService.setError('Please enter all 6 digits');
+    if (code.length !== CODE_LENGTH) {
+      this.passwordResetService.setError(`Please enter all ${CODE_LENGTH} digits`);
       return;
     }
 
@@ -165,7 +168,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
 
     this.passwordResetService.requestCode(this.email()).subscribe({
       next: (response) => {
-        const cooldown = response?.data?.resendCooldownSeconds ?? 60;
+        const cooldown = response?.data?.resendCooldownSeconds ?? DEFAULT_COOLDOWN_SECONDS;
         this.startResendTimer(cooldown);
       },
       error: () => {

@@ -27,7 +27,7 @@ export class PasswordResetService {
 
   requestCode(email: string): Observable<RequestCodeResponse> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearError();
 
     return this.http
       .post<RequestCodeResponse>(`${this.baseUrl}/request`, { email })
@@ -36,7 +36,7 @@ export class PasswordResetService {
 
   verifyCode(email: string, code: string): Observable<VerifyCodeResponse> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearError();
 
     return this.http
       .post<VerifyCodeResponse>(`${this.baseUrl}/verify`, { email, code })
@@ -45,7 +45,7 @@ export class PasswordResetService {
 
   resetPassword(resetToken: string, newPassword: string, confirmPassword: string): Observable<unknown> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearError();
 
     return this.http
       .post(`${this.baseUrl}/reset`, { resetToken, newPassword, confirmPassword })
