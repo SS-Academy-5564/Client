@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { of } from 'rxjs';
 
 import { MonitorComponent } from './monitor.component';
@@ -8,6 +9,8 @@ describe('MonitorComponent', () => {
   let component: MonitorComponent;
   let fixture: ComponentFixture<MonitorComponent>;
   const monitorServiceMock = {
+    isLoading: signal(false),
+    errors: signal<string | null>(null),
     getMonitors: vi.fn().mockReturnValue(of([])),
   };
 

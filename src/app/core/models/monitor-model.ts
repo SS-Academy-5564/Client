@@ -3,7 +3,7 @@ export type MonitorModel = {
   name: string;
   url: string;
   currentValue: string | null;
-  lastCheckedAt: string;
+  lastCheckedAt: string | null;
   status: MonitorStatus;
   interval: number;
 };

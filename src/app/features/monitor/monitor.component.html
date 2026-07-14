@@ -1,12 +1,68 @@
-<ul>
-  @for (monitor of monitors(); track monitor.id) {
-    <li>
-      <p>{{ monitor.name }}</p>
-      <p>{{ monitor.url }}</p>
-      <p>{{ monitor.currentValue ?? 'No value' }}</p>
-      <p>{{ monitor.lastCheckedAt | date: 'medium' }}</p>
-      <p>{{ monitor.status }}</p>
-      <p>{{ monitor.interval }} seconds</p>
-    </li>
-  }
-</ul>
+<section aria-labelledby="monitors-title" class="monitors-page">
+  <header class="page-header">
+    <h1 id="monitors-title">Monitors</h1>
+  </header>
+
+  <div class="page-content">
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">URL</th>
+              <th scope="col">Current value</th>
+              <th scope="col">Last check</th>
+              <th class="status-column" scope="col">Status</th>
+              <th scope="col">Interval</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @if (isLoading()) {
+              <tr>
+                <td class="table-state" colspan="6">
+                  <span aria-hidden="true" class="loading-spinner"></span>
+                  Loading monitors...
+                </td>
+              </tr>
+            } @else if (error()) {
+              <tr>
+                <td class="table-state table-state-error" colspan="6">{{ error() }}</td>
+              </tr>
+            } @else {
+              @for (monitor of monitors(); track monitor.id) {
+                <tr>
+                  <td class="monitor-name">{{ monitor.name }}</td>
+                  <td class="status-column">
+                    <a class="monitor-url" rel="noopener noreferrer" target="_blank" [href]="monitor.url">
+                      {{ monitor.url }}
+                    </a>
+                  </td>
+                  <td>{{ monitor.currentValue?.trim() ? monitor.currentValue : '—' }}</td>
+                  <td class="secondary-text">{{ monitor.lastCheckedAt | relativeTime }}</td>
+                  <td>
+                    <span
+                      class="status-badge"
+                      [class.status-disabled]="monitor.status === MonitorStatus.Disabled"
+                      [class.status-enabled]="monitor.status === MonitorStatus.Enabled"
+                      [class.status-error]="monitor.status === MonitorStatus.Error">
+                      {{ MonitorStatus[monitor.status] }}
+                    </span>
+                  </td>
+                  <td class="secondary-text">{{ monitor.interval | monitorInterval }}</td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td class="table-state" colspan="6">No monitors yet.</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="monitor-count">{{ monitors().length }} of {{ monitors().length }} monitors</p>
+  </div>
+</section>
