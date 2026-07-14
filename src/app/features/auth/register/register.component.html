@@ -18,7 +18,7 @@
           <div class="name-row">
             <div class="input-group">
               <label class="field-label" for="firstName" i18n="@@registerFirstNameLabel">First name</label>
-              <mat-form-field appearance="outline" class="full-width">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
                 <input
                   formControlName="firstName"
                   id="firstName"
@@ -28,13 +28,15 @@
                   type="text" />
                 @if (form.get('firstName')?.hasError('required')) {
                   <mat-error i18n="@@registerFirstNameRequired">First name is required</mat-error>
+                } @else if (form.get('firstName')?.hasError('maxlength')) {
+                  <mat-error i18n="@@registerFirstNameMaxlength">First name cannot exceed 100 characters</mat-error>
                 }
               </mat-form-field>
             </div>
 
             <div class="input-group">
               <label class="field-label" for="lastName" i18n="@@registerLastNameLabel">Last name</label>
-              <mat-form-field appearance="outline" class="full-width">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
                 <input
                   formControlName="lastName"
                   id="lastName"
@@ -44,6 +46,8 @@
                   type="text" />
                 @if (form.get('lastName')?.hasError('required')) {
                   <mat-error i18n="@@registerLastNameRequired">Last name is required</mat-error>
+                } @else if (form.get('lastName')?.hasError('maxlength')) {
+                  <mat-error i18n="@@registerLastNameMaxlength">Last name cannot exceed 100 characters</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -51,7 +55,7 @@
 
           <div class="input-group">
             <label class="field-label" for="email" i18n="@@registerEmailLabel">Email</label>
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width">
               <input
                 formControlName="email"
                 id="email"
@@ -63,13 +67,15 @@
                 <mat-error i18n="@@registerEmailRequired">Email is required</mat-error>
               } @else if (form.get('email')?.hasError('email')) {
                 <mat-error i18n="@@registerEmailInvalid">Enter a valid email address</mat-error>
+              } @else if (form.get('email')?.hasError('maxlength')) {
+                <mat-error i18n="@@registerEmailMaxlength">Email cannot exceed 256 characters</mat-error>
               }
             </mat-form-field>
           </div>
 
           <div class="input-group">
             <label class="field-label" for="password" i18n="@@registerPasswordLabel">Password</label>
-            <mat-form-field appearance="outline" class="full-width password-field">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width password-field">
               <input
                 formControlName="password"
                 id="password"
@@ -91,9 +97,10 @@
               } @else if (form.get('password')?.hasError('minlength')) {
                 <mat-error i18n="@@registerPasswordMinlength">Password must be at least 8 characters</mat-error>
               } @else if (form.get('password')?.hasError('pattern')) {
-                <mat-error i18n="@@registerPasswordPattern">
-                  Password must contain an uppercase letter, a lowercase letter, and a digit.
+                <mat-error i18n="@@registerPasswordPattern">Password must contain an uppercase letter, a lowercase letter, and a digit.
                 </mat-error>
+              } @else if (form.get('password')?.hasError('maxlength')) {
+                <mat-error i18n="@@registerPasswordMaxlength">Password cannot exceed 256 characters</mat-error>
               }
             </mat-form-field>
           </div>
@@ -102,7 +109,7 @@
             <label class="field-label" for="confirmPassword" i18n="@@registerConfirmPasswordLabel">
               Confirm password
             </label>
-            <mat-form-field appearance="outline" class="full-width password-field">
+            <mat-form-field appearance="outline" subscriptSizing="dynamic" class="full-width password-field">
               <input
                 formControlName="confirmPassword"
                 id="confirmPassword"
@@ -122,7 +129,7 @@
 
               @if (form.get('confirmPassword')?.hasError('required')) {
                 <mat-error i18n="@@registerConfirmPasswordRequired">Confirmation is required</mat-error>
-              } @else if (form.hasError('passwordMismatch') && form.touched) {
+              } @else if (form.get('confirmPassword')?.hasError('passwordMismatch')) {
                 <mat-error i18n="@@registerPasswordMismatch">Passwords do not match</mat-error>
               }
             </mat-form-field>
