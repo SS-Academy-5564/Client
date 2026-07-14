@@ -128,6 +128,39 @@
           <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="errorPage404Title" datatype="html">
+        <source>Page not found</source>
+      </trans-unit>
+      <trans-unit id="errorPage404Message" datatype="html">
+        <source>The page you are looking for doesn&apos;t exist or has been moved.</source>
+      </trans-unit>
+      <trans-unit id="errorPage500Title" datatype="html">
+        <source>Something went wrong</source>
+      </trans-unit>
+      <trans-unit id="errorPage500Message" datatype="html">
+        <source>An unexpected error occurred on our end. Please try again in a moment.</source>
+      </trans-unit>
+      <trans-unit id="errorPageOfflineLabel" datatype="html">
+        <source>Offline</source>
+      </trans-unit>
+      <trans-unit id="errorPageOfflineTitle" datatype="html">
+        <source>Can&apos;t reach the server</source>
+      </trans-unit>
+      <trans-unit id="errorPageOfflineMessage" datatype="html">
+        <source>Couldn&apos;t reach the server. Check your connection and try again.</source>
+      </trans-unit>
+      <trans-unit id="errorPageDefaultLabel" datatype="html">
+        <source>Error</source>
+      </trans-unit>
+      <trans-unit id="errorPageDefaultTitle" datatype="html">
+        <source>Something went wrong</source>
+      </trans-unit>
+      <trans-unit id="errorPageDefaultMessage" datatype="html">
+        <source>An unexpected error occurred. Please try again.</source>
+      </trans-unit>
+      <trans-unit id="errorPageGoHome" datatype="html">
+        <source>Go home</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
