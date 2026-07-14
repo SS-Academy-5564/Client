@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
-import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { LoginComponent } from './login.component';
@@ -11,8 +10,6 @@ import { TokenStorageService } from '@core/services/token-storage.service';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
-  error: ReturnType<typeof signal<string | null>>;
-  isLoading: ReturnType<typeof signal<boolean>>;
 };
 
 const tokenStorageMock = {
@@ -37,8 +34,6 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     authServiceMock = {
       login: vi.fn(),
-      error: signal<string | null>(null),
-      isLoading: signal<boolean>(false),
     };
 
     userServiceMock = {
@@ -151,8 +146,10 @@ describe('LoginComponent', () => {
     });
 
     component.onSubmit();
+    fixture.detectChanges();
 
     expect(authServiceMock.login).toHaveBeenCalledTimes(1);
     expect(router.navigate).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).toContain('Incorrect email or password');
   });
 });

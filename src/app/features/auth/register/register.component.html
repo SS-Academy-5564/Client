@@ -13,7 +13,7 @@
       </mat-card-header>
 
       <mat-card-content>
-        <app-error-message [message]="authService.error()" />
+        <app-error-message [message]="error()" />
         <form class="register-form" [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="name-row">
             <div class="input-group">
