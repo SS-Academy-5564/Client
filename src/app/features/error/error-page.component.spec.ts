@@ -1,22 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, provideRouter } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { ErrorPageComponent } from './error-page.component';
 
+type ParamMapStub = { get: (key: string) => string | null };
+
+function createParamMap(code: string | null): ParamMapStub {
+  return { get: (key: string): string | null => (key === 'code' ? code : null) };
+}
+
 type RouteStub = {
+  paramMap: BehaviorSubject<ParamMapStub>;
+  data: BehaviorSubject<Record<string, unknown>>;
   snapshot: {
-    paramMap: { get: (key: string) => string | null };
+    paramMap: ParamMapStub;
     data: Record<string, unknown>;
   };
 };
 
 function createRouteStub(code: string | null, data: Record<string, unknown> = {}): RouteStub {
+  const paramMap = createParamMap(code);
   return {
-    snapshot: {
-      paramMap: { get: (key: string): string | null => (key === 'code' ? code : null) },
-      data,
-    },
+    paramMap: new BehaviorSubject<ParamMapStub>(paramMap),
+    data: new BehaviorSubject<Record<string, unknown>>(data),
+    snapshot: { paramMap, data },
   };
 }
 
@@ -86,6 +95,24 @@ describe('ErrorPageComponent', () => {
     const text = fixture.nativeElement.textContent;
     expect(text).toContain('404');
     expect(text).toContain('Page not found');
+  });
+
+  it('recomputes the entry when the code param changes on a reused instance', async () => {
+    const route = createRouteStub('503');
+    const fixture = await renderWith(route);
+
+    expect(fixture.nativeElement.textContent).toContain('503');
+
+    // Simulate a same-route navigation (component instance reused) to a code
+    // that maps to a distinct page; the display must follow the new param.
+    route.paramMap.next(createParamMap('404'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('404');
+    expect(text).toContain('Page not found');
+    expect(text).not.toContain('503');
   });
 
   it('never renders stack traces or exception text', async () => {

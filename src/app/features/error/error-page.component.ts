@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { combineLatest, map } from 'rxjs';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 
 type ErrorPageEntry = {
@@ -46,11 +48,21 @@ export class ErrorPageComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly pages = buildErrorPages();
 
-  protected readonly entry: ErrorPageEntry = this.resolveEntry();
+  // Derive from the live param/data streams so a same-route navigation between
+  // codes (e.g. /error/503 -> /error/500) recomputes when Angular reuses the
+  // component instance, instead of freezing on the first snapshot.
+  protected readonly entry = toSignal(
+    combineLatest([this.route.paramMap, this.route.data]).pipe(
+      map(([paramMap, data]) => this.resolveEntry(String(paramMap.get('code') ?? data['code'] ?? '404'))),
+    ),
+    {
+      initialValue: this.resolveEntry(
+        String(this.route.snapshot.paramMap.get('code') ?? this.route.snapshot.data['code'] ?? '404'),
+      ),
+    },
+  );
 
-  private resolveEntry(): ErrorPageEntry {
-    const key = String(this.route.snapshot.paramMap.get('code') ?? this.route.snapshot.data['code'] ?? '404');
-
+  private resolveEntry(key: string): ErrorPageEntry {
     const mapped = this.pages[key];
     if (mapped) {
       return mapped;
