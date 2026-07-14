@@ -13,12 +13,12 @@
       </mat-card-header>
 
       <mat-card-content>
-        <app-error-message [message]="authService.error()" />
+        <app-error-message [message]="error()" />
 
         <form class="login-form" [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="input-group">
             <label class="field-label" for="email" i18n="@@loginEmailLabel">Email</label>
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" class="full-width" subscriptSizing="dynamic">
               <input
                 formControlName="email"
                 id="email"
@@ -37,7 +37,7 @@
 
           <div class="input-group">
             <label class="field-label" for="password" i18n="@@loginPasswordLabel">Password</label>
-            <mat-form-field appearance="outline" class="full-width password-field">
+            <mat-form-field appearance="outline" class="full-width password-field" subscriptSizing="dynamic">
               <input
                 formControlName="password"
                 id="password"
@@ -72,6 +72,11 @@
                 <mat-error i18n="@@loginPasswordRequired">Password is required</mat-error>
               }
             </mat-form-field>
+            <div class="forgot-password-link-container">
+              <a class="forgot-password-link" i18n="@@loginForgotPassword" routerLink="/forgot-password">
+                Forgot password?
+              </a>
+            </div>
           </div>
 
           <app-button

@@ -11,13 +11,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-.logo-container app-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 24px;
-}
-
 :host ::ng-deep {
   .password-field {
     .mat-mdc-form-field-icon-suffix {
@@ -29,7 +22,7 @@
     }
 
     .mat-icon.mat-icon {
-      font-family: 'Material Icons';
+      font-family: 'Material Icons', sans-serif;
       display: inline-block;
       font-size: 22px;
       width: 22px;
@@ -61,6 +54,7 @@
 
   .mat-mdc-flat-button.mat-primary {
     --mdc-filled-button-container-color: var(--primary-purple);
+
     border-radius: 6px;
     height: 44px;
   }

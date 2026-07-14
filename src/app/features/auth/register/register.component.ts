@@ -39,17 +39,28 @@ export class RegisterComponent {
 
   protected readonly hidePassword = signal<boolean>(true);
   protected readonly hideConfirmPassword = signal<boolean>(true);
+  protected readonly error = signal<string | null>(null);
 
   protected readonly showPasswordAria = $localize`:@@showPasswordAria:Show password`;
   protected readonly hidePasswordAria = $localize`:@@hidePasswordAria:Hide password`;
 
-  readonly form = this.fb.group(
+  readonly form = this.fb.nonNullable.group(
     {
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[A-Z].*/)]],
-      confirmPassword: ['', [Validators.required]],
+      firstName: ['', [Validators.required, Validators.maxLength(100)]],
+      lastName: ['', [Validators.required, Validators.maxLength(100)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(256)]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(256),
+          Validators.pattern(/[A-Z]/),
+          Validators.pattern(/[a-z]/),
+          Validators.pattern(/[0-9]/),
+        ],
+      ],
+      confirmPassword: ['', Validators.required],
     },
     {
       validators: passwordMatchValidator,
@@ -73,13 +84,15 @@ export class RegisterComponent {
       return;
     }
 
+    this.error.set(null);
+
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';
-        this.authService.setError(errorMessage);
+        this.error.set(errorMessage);
       },
     });
   }

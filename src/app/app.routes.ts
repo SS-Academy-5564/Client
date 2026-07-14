@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { loggedOutOnlyGuard } from './core/guards/logged-out-only-guard';
+import { authGuard } from '@core/guards/auth.guard';
+import { noOrganizationGuard } from '@core/guards/no-organization.guard';
 import { authenticatedGuard } from './core/guards/authenticated-guard';
 
 export const routes: Routes = [
@@ -33,5 +35,43 @@ export const routes: Routes = [
     path: 'login',
     canActivate: [loggedOutOnlyGuard],
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'create-organization',
+    canActivate: [authGuard, noOrganizationGuard],
+    loadComponent: () =>
+      import('./features/create-organization/create-organization.component').then((m) => m.CreateOrganizationComponent),
+  },
+  {
+    path: 'forgot-password',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () =>
+      import('./features/auth/forgot-password/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+  },
+  {
+    path: 'verify-code',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () => import('./features/auth/verify-code/verify-code.component').then((m) => m.VerifyCodeComponent),
+  },
+  {
+    path: 'reset-password',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () =>
+      import('./features/auth/reset-password/reset-password.component').then((m) => m.ResetPasswordComponent),
+  },
+  {
+    path: 'reset-success',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () =>
+      import('./features/auth/reset-success/reset-success.component').then((m) => m.ResetSuccessComponent),
+  },
+  {
+    path: 'error/:code',
+    loadComponent: () => import('./features/error/error-page.component').then((m) => m.ErrorPageComponent),
+  },
+  {
+    path: '**',
+    data: { code: '404' },
+    loadComponent: () => import('./features/error/error-page.component').then((m) => m.ErrorPageComponent),
   },
 ];

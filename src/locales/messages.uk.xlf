@@ -144,6 +144,50 @@
           <context context-type="linenumber">105</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="errorPage404Title" datatype="html">
+        <source>Page not found</source>
+        <target>Сторінку не знайдено</target>
+      </trans-unit>
+      <trans-unit id="errorPage404Message" datatype="html">
+        <source>The page you are looking for doesn&apos;t exist or has been moved.</source>
+        <target>Сторінка, яку ви шукаєте, не існує або була переміщена.</target>
+      </trans-unit>
+      <trans-unit id="errorPage500Title" datatype="html">
+        <source>Something went wrong</source>
+        <target>Щось пішло не так</target>
+      </trans-unit>
+      <trans-unit id="errorPage500Message" datatype="html">
+        <source>An unexpected error occurred on our end. Please try again in a moment.</source>
+        <target>На нашому боці сталася неочікувана помилка. Спробуйте ще раз за мить.</target>
+      </trans-unit>
+      <trans-unit id="errorPageOfflineLabel" datatype="html">
+        <source>Offline</source>
+        <target>Немає зв&apos;язку</target>
+      </trans-unit>
+      <trans-unit id="errorPageOfflineTitle" datatype="html">
+        <source>Can&apos;t reach the server</source>
+        <target>Не вдається з&apos;єднатися із сервером</target>
+      </trans-unit>
+      <trans-unit id="errorPageOfflineMessage" datatype="html">
+        <source>Couldn&apos;t reach the server. Check your connection and try again.</source>
+        <target>Не вдалося підключитися до сервера. Перевірте з&apos;єднання та спробуйте ще раз.</target>
+      </trans-unit>
+      <trans-unit id="errorPageDefaultLabel" datatype="html">
+        <source>Error</source>
+        <target>Помилка</target>
+      </trans-unit>
+      <trans-unit id="errorPageDefaultTitle" datatype="html">
+        <source>Something went wrong</source>
+        <target>Щось пішло не так</target>
+      </trans-unit>
+      <trans-unit id="errorPageDefaultMessage" datatype="html">
+        <source>An unexpected error occurred. Please try again.</source>
+        <target>Сталася неочікувана помилка. Спробуйте ще раз.</target>
+      </trans-unit>
+      <trans-unit id="errorPageGoHome" datatype="html">
+        <source>Go home</source>
+        <target>На головну</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

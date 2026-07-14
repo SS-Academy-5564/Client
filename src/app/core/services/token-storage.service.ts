@@ -22,6 +22,22 @@ export class TokenStorageService {
 
   private expiryTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
+  constructor() {
+    const savedToken = localStorage.getItem('token');
+    const savedExpiry = localStorage.getItem('token_expiry');
+
+    if (!savedToken) {
+      return;
+    }
+
+    if (savedExpiry && new Date(savedExpiry).getTime() <= Date.now()) {
+      this.clearToken();
+      return;
+    }
+
+    this.setToken(savedToken, savedExpiry);
+  }
+
   readonly isAuthenticated = computed(() => {
     const token = this.token();
     const expiry = this.expiry();
@@ -96,6 +112,18 @@ export class TokenStorageService {
     this.expiry.set(expiresAt || null);
     this.decodedUser.set(token ? this.extractUserFromToken(token) : null);
 
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+
+    if (expiresAt) {
+      localStorage.setItem('token_expiry', expiresAt);
+    } else {
+      localStorage.removeItem('token_expiry');
+    }
+
     if (this.expiryTimeoutId) {
       clearTimeout(this.expiryTimeoutId);
       this.expiryTimeoutId = null;
@@ -117,16 +145,23 @@ export class TokenStorageService {
   }
 
   getToken(): string | null {
-    if (!this.isAuthenticated()) {
+    const expiry = this.expiry();
+
+    if (expiry && new Date(expiry).getTime() <= Date.now()) {
       this.clearToken();
       return null;
     }
+
     return this.token();
   }
 
   clearToken(): void {
     this.token.set(null);
     this.expiry.set(null);
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('token_expiry');
+
     this.decodedUser.set(null);
     if (this.expiryTimeoutId) {
       clearTimeout(this.expiryTimeoutId);

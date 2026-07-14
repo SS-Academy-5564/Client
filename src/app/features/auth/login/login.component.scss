@@ -9,7 +9,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-// Angular Material component deep overrides for icons & toggle buttons scoped to password-field
 :host ::ng-deep {
   .password-field {
     .mat-mdc-form-field-icon-suffix {
@@ -21,7 +20,7 @@
     }
 
     .mat-icon {
-      font-family: 'Material Icons';
+      font-family: 'Material Icons', sans-serif;
       display: inline-block;
       font-size: 22px;
       width: 22px;
@@ -39,22 +38,6 @@
       justify-content: center;
     }
   }
-}
-
-.surface-card {
-  &.mat-mdc-card {
-    background-color: #ffffff !important;
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.logo-container app-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 24px;
 }
 
 // Custom padding for the card header
@@ -105,23 +88,23 @@ mat-card-content {
 
 :host ::ng-deep {
   .mat-mdc-text-field-wrapper {
-    background-color: var(--input-bg) !important;
-    border-radius: 6px !important;
+    background-color: var(--input-bg);
+    border-radius: 6px;
   }
 
   .mdc-notched-outline {
     &__leading,
     &__notch,
     &__trailing {
-      border-color: var(--border) !important;
+      border-color: var(--border);
     }
   }
 
   .mdc-text-field--focused .mdc-notched-outline__leading,
   .mdc-text-field--focused .mdc-notched-outline__notch,
   .mdc-text-field--focused .mdc-notched-outline__trailing {
-    border-color: var(--primary-purple) !important;
-    border-width: 1px !important;
+    border-color: var(--primary-purple);
+    border-width: 1px;
   }
 
   .mat-mdc-form-field-has-error .mat-mdc-form-field-subscript-wrapper {
@@ -130,8 +113,9 @@ mat-card-content {
   }
 
   .mat-mdc-flat-button.mat-primary {
-    --mdc-filled-button-container-color: var(--primary-purple) !important;
-    border-radius: 6px !important;
+    --mdc-filled-button-container-color: var(--primary-purple);
+
+    border-radius: 6px;
     height: 44px;
   }
 }
@@ -157,6 +141,23 @@ mat-card-content {
 
 .link-primary:hover {
   text-decoration: underline;
+}
+
+.forgot-password-link-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.forgot-password-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-gray);
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: var(--primary-purple);
+  }
 }
 
 // Media Query for smaller screens

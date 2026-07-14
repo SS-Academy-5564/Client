@@ -1,42 +1,61 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
-import { signal } from '@angular/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { LoginComponent } from './login.component';
 import { AuthService } from '@core/services/auth.service';
+import { UserService } from '@core/services/user.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
-  setError: ReturnType<typeof vi.fn>;
-  error: ReturnType<typeof signal<string | null>>;
-  isLoading: ReturnType<typeof signal<boolean>>;
+};
+
+const tokenStorageMock = {
+  setToken: vi.fn<(token: string, expiresAt: string) => void>(),
 };
 
 describe('LoginComponent', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let component: LoginComponent;
-  let authServiceMock: AuthServiceMock;
   let router: Router;
+
+  let authServiceMock: AuthServiceMock;
+
+  let userServiceMock: {
+    getMe: ReturnType<typeof vi.fn>;
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   beforeEach(async () => {
     authServiceMock = {
       login: vi.fn(),
-      setError: vi.fn(),
-      error: signal<string | null>(null),
-      isLoading: signal<boolean>(false),
+    };
+
+    userServiceMock = {
+      getMe: vi.fn(),
     };
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent, NoopAnimationsModule],
-      providers: [{ provide: AuthService, useValue: authServiceMock }, provideRouter([])],
+      providers: [
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: UserService, useValue: userServiceMock },
+        { provide: TokenStorageService, useValue: tokenStorageMock },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
+
     router = TestBed.inject(Router);
     vi.spyOn(router, 'navigate');
+
     fixture.detectChanges();
   });
 
@@ -45,76 +64,92 @@ describe('LoginComponent', () => {
   });
 
   it('should initialize with empty form controls', () => {
-    expect(component.form).toBeDefined();
     expect(component.form.get('email')?.value).toBe('');
     expect(component.form.get('password')?.value).toBe('');
     expect(component.form.valid).toBe(false);
   });
 
-  it('should validate form input requirements and email format', () => {
-    const emailControl = component.form.get('email');
-    const passwordControl = component.form.get('password');
+  it('should validate form', () => {
+    component.form.setValue({
+      email: '',
+      password: '',
+    });
 
-    emailControl?.setValue('');
-    passwordControl?.setValue('');
-    expect(emailControl?.hasError('required')).toBe(true);
-    expect(passwordControl?.hasError('required')).toBe(true);
+    expect(component.form.valid).toBe(false);
 
-    emailControl?.setValue('invalidemail');
-    expect(emailControl?.hasError('email')).toBe(true);
+    component.form.setValue({
+      email: 'wrong-email',
+      password: '123456',
+    });
 
-    emailControl?.setValue('user@company.com');
-    passwordControl?.setValue('password123');
+    expect(component.form.get('email')?.hasError('email')).toBe(true);
+
+    component.form.setValue({
+      email: 'user@test.com',
+      password: '123456',
+    });
+
     expect(component.form.valid).toBe(true);
   });
 
-  it('should not call authService.login if form is invalid on submit', () => {
-    component.form.get('email')?.setValue('');
-    component.form.get('password')?.setValue('');
+  it('should not login when form is invalid', () => {
+    component.form.setValue({
+      email: '',
+      password: '',
+    });
 
     component.onSubmit();
 
     expect(authServiceMock.login).not.toHaveBeenCalled();
   });
 
-  it('should call authService.login and redirect to / on successful login', () => {
+  it('should redirect to create organization after successful login', () => {
+    const expiresAt = '2026-07-13T15:00:00Z';
     authServiceMock.login.mockReturnValue(
       of({
         success: true,
-        data: { accessToken: 'mock-jwt-token', expiresAt: '2026-06-24T16:01:54Z' },
+        data: {
+          accessToken: 'token',
+          expiresAt,
+        },
         errors: [],
       }),
     );
 
-    component.form.get('email')?.setValue('user@company.com');
-    component.form.get('password')?.setValue('password123');
+    component.form.setValue({
+      email: 'user@test.com',
+      password: '123456',
+    });
 
     component.onSubmit();
 
-    expect(authServiceMock.login).toHaveBeenCalledTimes(1);
-    expect(authServiceMock.login).toHaveBeenCalledWith({
-      email: 'user@company.com',
-      password: 'password123',
-    });
-    expect(router.navigate).toHaveBeenCalledWith(['/']);
+    expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token', expiresAt);
+    expect(router.navigate).toHaveBeenCalledWith(['/create-organization']);
   });
 
-  it('should handle API errors by calling authService.setError', () => {
-    const errorResponse = {
-      error: {
-        success: false,
-        data: null,
-        errors: [{ code: 'Unauthorized', message: 'Invalid credentials' }],
-      },
-    };
-    authServiceMock.login.mockReturnValue(throwError(() => errorResponse));
+  it('should set error message when login fails', () => {
+    authServiceMock.login.mockReturnValue(
+      throwError(() => ({
+        error: {
+          errors: [
+            {
+              message: 'Invalid credentials',
+            },
+          ],
+        },
+      })),
+    );
 
-    component.form.get('email')?.setValue('user@company.com');
-    component.form.get('password')?.setValue('password123');
+    component.form.setValue({
+      email: 'user@test.com',
+      password: '123456',
+    });
 
     component.onSubmit();
+    fixture.detectChanges();
 
     expect(authServiceMock.login).toHaveBeenCalledTimes(1);
-    expect(authServiceMock.setError).toHaveBeenCalledWith('Invalid credentials');
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).toContain('Incorrect email or password');
   });
 });

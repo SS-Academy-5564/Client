@@ -1,0 +1,27 @@
+<div class="page-shell">
+  <div class="logo-container">
+    <app-logo />
+  </div>
+
+  <div class="page-container">
+    <mat-card class="surface-card">
+      <mat-card-content>
+        <div class="success-content">
+          <div class="success-icon">
+            <mat-icon class="check-icon">check_circle</mat-icon>
+          </div>
+
+          <h1 class="success-title" i18n="@@resetSuccessTitle">Password Reset Successful</h1>
+
+          <p class="success-message" i18n="@@resetSuccessMessage">
+            Your password has been updated. You can now log in to your account with your new password.
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="footer-link">
+    <a class="link-primary" i18n="@@resetSuccessLoginButton" routerLink="/login">Back to Login</a>
+  </div>
+</div>

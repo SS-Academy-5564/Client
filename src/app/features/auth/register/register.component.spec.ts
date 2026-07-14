@@ -1,4 +1,3 @@
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
@@ -10,8 +9,6 @@ import { AuthService } from '../../../core/services/auth.service';
 
 type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
-  setError: ReturnType<typeof vi.fn>;
-  error: ReturnType<typeof signal<string | null>>;
 };
 
 describe('RegisterComponent', () => {
@@ -23,8 +20,6 @@ describe('RegisterComponent', () => {
   beforeEach(async () => {
     authServiceMock = {
       register: vi.fn(),
-      setError: vi.fn(),
-      error: signal<string | null>(null),
     };
 
     await TestBed.configureTestingModule({
@@ -105,7 +100,7 @@ describe('RegisterComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/login']);
   });
 
-  it('should handle service error by calling authService.setError', () => {
+  it('should display the registration error', () => {
     const errorResponse = { error: { message: 'Email already exists' } };
     authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
 
@@ -116,8 +111,9 @@ describe('RegisterComponent', () => {
     component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
 
     component.onSubmit();
+    fixture.detectChanges();
 
     expect(authServiceMock.register).toHaveBeenCalledTimes(1);
-    expect(authServiceMock.setError).toHaveBeenCalledWith('Email already exists');
+    expect(fixture.nativeElement.textContent).toContain('Email already exists');
   });
 });
