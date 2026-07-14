@@ -64,4 +64,6 @@ reviews:
         - Use type instead of interface for type definitions.
 knowledge_base:
   code_guidelines:
-    enabled: false
+    enabled: true
+    filePatterns:
+      - "AGENTS.md"
