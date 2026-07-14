@@ -17,6 +17,11 @@ export const routes: Routes = [
         path: 'overview',
         loadComponent: () => import('./features/overview/overview.component').then((m) => m.OverviewComponent),
       },
+      {
+        path: 'monitors',
+        canActivate: [authenticatedGuard],
+        loadComponent: () => import('./features/monitor/monitor.component').then((m) => m.MonitorComponent),
+      },
     ],
   },
   {
@@ -28,10 +33,5 @@ export const routes: Routes = [
     path: 'login',
     canActivate: [loggedOutOnlyGuard],
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
-  },
-  {
-    path: 'monitors',
-    canActivate: [authenticatedGuard],
-    loadComponent: () => import('./features/monitor/monitor.component').then((m) => m.MonitorComponent),
   },
 ];
