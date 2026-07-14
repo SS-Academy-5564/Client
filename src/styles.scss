@@ -120,16 +120,18 @@ select {
   margin: 0 auto;
 }
 
-.surface-card {
-  background: var(--surface);
+.surface-card,
+.surface-card.mat-mdc-card {
+  background-color: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
   padding-bottom: 24px;
 }
 
-.surface-card-strong {
-  background: var(--surface-strong);
+.surface-card-strong,
+.surface-card-strong.mat-mdc-card {
+  background-color: var(--surface-strong);
   border-color: var(--border);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
@@ -137,6 +139,13 @@ select {
 
 .text-muted {
   color: var(--text-secondary);
+}
+
+.logo-container app-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 640px) {

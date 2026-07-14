@@ -1,4 +1,4 @@
-﻿:host {
+:host {
   --primary-purple: var(--accent);
   --text-dark: var(--text-primary);
   --text-gray: var(--text-secondary);
@@ -9,17 +9,10 @@
   font-family: 'Inter', sans-serif;
 }
 
-.logo-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 24px;
-  width: min(300px, 100%);
-  margin-left: auto;
-  margin-right: auto;
-}
+
 
 mat-card-content {
-  padding: 40px 32px 16px;
+  padding: 32px 32px 16px;
 }
 
 .success-content {
@@ -50,7 +43,7 @@ mat-card-content {
 .success-message {
   font-size: 16px;
   color: var(--text-gray);
-  margin: 0 0 32px;
+  margin: 0;
   line-height: 1.5;
   max-width: 320px;
 }
