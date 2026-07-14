@@ -39,6 +39,7 @@ export class RegisterComponent {
 
   protected readonly hidePassword = signal<boolean>(true);
   protected readonly hideConfirmPassword = signal<boolean>(true);
+  protected readonly error = signal<string | null>(null);
 
   protected readonly showPasswordAria = $localize`:@@showPasswordAria:Show password`;
   protected readonly hidePasswordAria = $localize`:@@hidePasswordAria:Hide password`;
@@ -75,13 +76,15 @@ export class RegisterComponent {
       return;
     }
 
+    this.error.set(null);
+
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';
-        this.authService.setError(errorMessage);
+        this.error.set(errorMessage);
       },
     });
   }
