@@ -1,6 +1,6 @@
 <section aria-labelledby="monitors-title" class="monitors-page">
   <header class="page-header">
-    <h1 id="monitors-title">Monitors</h1>
+    <h1 i18n="@@monitorsTitle" id="monitors-title">Monitors</h1>
   </header>
 
   <div class="page-content">
@@ -9,12 +9,12 @@
         <table>
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">URL</th>
-              <th scope="col">Current value</th>
-              <th scope="col">Last check</th>
-              <th class="status-column" scope="col">Status</th>
-              <th scope="col">Interval</th>
+              <th i18n="@@monitorsColumnName" scope="col">Name</th>
+              <th i18n="@@monitorsColumnUrl" scope="col">URL</th>
+              <th i18n="@@monitorsColumnCurrentValue" scope="col">Current value</th>
+              <th i18n="@@monitorsColumnLastCheck" scope="col">Last check</th>
+              <th class="status-column" i18n="@@monitorsColumnStatus" scope="col">Status</th>
+              <th i18n="@@monitorsColumnInterval" scope="col">Interval</th>
             </tr>
           </thead>
 
@@ -23,7 +23,7 @@
               <tr>
                 <td class="table-state" colspan="6">
                   <span aria-hidden="true" class="loading-spinner"></span>
-                  Loading monitors...
+                  <span i18n="@@monitorsLoading">Loading monitors...</span>
                 </td>
               </tr>
             } @else if (error()) {
@@ -34,14 +34,14 @@
               @for (monitor of monitors(); track monitor.id) {
                 <tr>
                   <td class="monitor-name">{{ monitor.name }}</td>
-                  <td class="status-column">
+                  <td>
                     <a class="monitor-url" rel="noopener noreferrer" target="_blank" [href]="monitor.url">
                       {{ monitor.url }}
                     </a>
                   </td>
                   <td>{{ monitor.currentValue?.trim() ? monitor.currentValue : '—' }}</td>
                   <td class="secondary-text">{{ monitor.lastCheckedAt | relativeTime }}</td>
-                  <td>
+                  <td class="status-column">
                     <span
                       class="status-badge"
                       [class.status-disabled]="monitor.status === MonitorStatus.Disabled"
@@ -54,7 +54,7 @@
                 </tr>
               } @empty {
                 <tr>
-                  <td class="table-state" colspan="6">No monitors yet.</td>
+                  <td class="table-state" colspan="6" i18n="@@monitorsEmpty">No monitors yet.</td>
                 </tr>
               }
             }
@@ -63,6 +63,6 @@
       </div>
     </div>
 
-    <p class="monitor-count">{{ monitors().length }} of {{ monitors().length }} monitors</p>
+    <p class="monitor-count" i18n="@@monitorsCount">{{ monitors().length }} of {{ monitors().length }} monitors</p>
   </div>
 </section>
