@@ -5,6 +5,7 @@
     "ng": "ng",
     "generate": "ng generate",
     "start": "ng serve",
+    "start:local": "ng serve --configuration local",
     "lint-check": "ng lint",
     "lint-fix": "ng lint --fix",
     "build": "npm run lint-check && npm run prettier-check && ng build",
