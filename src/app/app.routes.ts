@@ -3,11 +3,12 @@ import { loggedOutOnlyGuard } from './core/guards/logged-out-only-guard';
 import { authGuard } from '@core/guards/auth.guard';
 import { noOrganizationGuard } from '@core/guards/no-organization.guard';
 import { authenticatedGuard } from './core/guards/authenticated-guard';
+import { organizationGuard } from './core/guards/organization.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    canActivate: [authenticatedGuard],
+    canActivate: [authenticatedGuard, organizationGuard],
     loadComponent: () => import('./layout/layout/layout').then((m) => m.LayoutComponent),
     children: [
       {
