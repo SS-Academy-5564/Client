@@ -6,13 +6,30 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Development server
 
-To start a local development server, run:
+To start the development server with the shared `/api` configuration, run:
 
 ```bash
 npm run start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+To use a machine-specific API URL, create the ignored file `src/environments/environment.development.ts`:
+
+The following configuration works when the backend is started with Docker Compose, which exposes the API on `http://localhost:8080`:
+
+```ts
+export const environment = {
+  production: false,
+  apiBaseUrl: 'http://localhost:8080/api',
+};
+```
+
+Then start Angular with the local configuration:
+
+```bash
+npm run start:local
+```
+
+Once the server is running, open `http://localhost:4200/`. The application reloads automatically whenever you modify a source file.
 
 ## Code scaffolding
 
