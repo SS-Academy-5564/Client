@@ -12,6 +12,7 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
 import { LoginRequest } from '@core/models/login-model';
+import { TokenStorageService } from '@core/services/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -35,8 +36,11 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   protected readonly authService = inject(AuthService);
+  private tokenStorage = inject(TokenStorageService);
 
   protected readonly hidePassword = signal<boolean>(true);
+  protected readonly loading = signal(false);
+  protected readonly error = signal<string | null>(null);
 
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -54,13 +58,30 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.form.getRawValue() as LoginRequest).subscribe({
-      next: () => {
-        this.router.navigate(['/']);
+    this.loading.set(true);
+    this.error.set(null);
+
+    const credentials = this.form.getRawValue() as LoginRequest;
+
+    this.authService.login(credentials).subscribe({
+      next: (res) => {
+        const token = res.data?.accessToken;
+        const expiresAt = res.data?.expiresAt;
+
+        if (!token || !expiresAt) {
+          this.loading.set(false);
+          this.error.set('Token is missing');
+          return;
+        }
+
+        this.tokenStorage.setToken(token, expiresAt);
+        this.loading.set(false);
+
+        this.router.navigate(['/create-organization']);
       },
-      error: (err) => {
-        const errorMessage = err.error?.errors?.[0]?.message ?? 'Invalid email or password';
-        this.authService.setError(errorMessage);
+      error: () => {
+        this.loading.set(false);
+        this.error.set('Incorrect email or password');
       },
     });
   }

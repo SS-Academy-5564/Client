@@ -9,7 +9,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-// Angular Material component deep overrides for icons & toggle buttons scoped to password-field
 :host ::ng-deep {
   .password-field {
     .mat-mdc-form-field-icon-suffix {

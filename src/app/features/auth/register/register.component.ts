@@ -43,12 +43,14 @@ export class RegisterComponent {
   protected readonly showPasswordAria = $localize`:@@showPasswordAria:Show password`;
   protected readonly hidePasswordAria = $localize`:@@hidePasswordAria:Hide password`;
 
+  private readonly passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).+$/;
+
   readonly form = this.fb.group(
     {
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[A-Z].*/)]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(this.passwordPattern)]],
       confirmPassword: ['', [Validators.required]],
     },
     {

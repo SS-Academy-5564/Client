@@ -91,7 +91,9 @@
               } @else if (form.get('password')?.hasError('minlength')) {
                 <mat-error i18n="@@registerPasswordMinlength">Password must be at least 8 characters</mat-error>
               } @else if (form.get('password')?.hasError('pattern')) {
-                <mat-error i18n="@@registerPasswordPattern">Password must start with an uppercase letter</mat-error>
+                <mat-error i18n="@@registerPasswordPattern">
+                  Password must contain an uppercase letter, a lowercase letter, and a digit.
+                </mat-error>
               }
             </mat-form-field>
           </div>

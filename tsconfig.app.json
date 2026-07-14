@@ -9,7 +9,8 @@
       "@core/*": ["./src/app/core/*"],
       "@shared/*": ["./src/app/shared/*"],
       "@features/*": ["./src/app/features/*"],
-      "@environments/*": ["./src/environments/*"]
+      "@environments/*": ["./src/environments/*"],
+      "@constants/*": ["./src/app/core/constants/*"]
     }
   },
   "include": ["src/**/*.ts"],
