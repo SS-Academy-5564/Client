@@ -26,8 +26,6 @@ describe('Monitor formatting pipes', () => {
     expect(pipe.transform(900)).toBe('15m');
     expect(pipe.transform(3600)).toBe('1h');
     expect(pipe.transform(7200)).toBe('2h');
-    expect(pipe.transform(5400)).toBe('1h 30m');
-    expect(pipe.transform(7202)).toBe('2h 2s');
-    expect(pipe.transform(7262)).toBe('2h 1m 2s');
+    expect(pipe.transform(86400)).toBe('1d');
   });
 });

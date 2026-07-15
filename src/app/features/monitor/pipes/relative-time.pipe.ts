@@ -19,23 +19,23 @@ export class RelativeTimePipe implements PipeTransform {
     const elapsedSeconds = Math.max(0, Math.floor((Date.now() - timestamp) / 1000));
 
     if (elapsedSeconds < 60) {
-      return `${elapsedSeconds} sec ago`;
+      return $localize`:@@relativeTimeSeconds:${elapsedSeconds}:COUNT: sec ago`;
     }
 
     const elapsedMinutes = Math.floor(elapsedSeconds / 60);
 
     if (elapsedMinutes < 60) {
-      return `${elapsedMinutes} min ago`;
+      return $localize`:@@relativeTimeMinutes:${elapsedMinutes}:COUNT: min ago`;
     }
 
     const elapsedHours = Math.floor(elapsedMinutes / 60);
 
     if (elapsedHours < 24) {
-      return `${elapsedHours} hr ago`;
+      return $localize`:@@relativeTimeHours:${elapsedHours}:COUNT: hr ago`;
     }
 
     const elapsedDays = Math.floor(elapsedHours / 24);
 
-    return `${elapsedDays} ${elapsedDays === 1 ? 'day' : 'days'} ago`;
+    return $localize`:@@relativeTimeDays:${elapsedDays}:COUNT: ${elapsedDays === 1 ? 'day' : 'days'} ago`;
   }
 }

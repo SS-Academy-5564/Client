@@ -6,24 +6,24 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MonitorIntervalPipe implements PipeTransform {
   transform(intervalInSeconds: number): string {
-    const totalSeconds = Math.max(0, Math.floor(intervalInSeconds));
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
-    const parts: string[] = [];
-
-    if (hours > 0) {
-      parts.push($localize`:@@monitorIntervalHours:${hours}:count:h`);
+    if (intervalInSeconds < 60) {
+      return $localize`:@@monitorIntervalSeconds:${intervalInSeconds}:INTERVAL:s`;
     }
 
-    if (minutes > 0) {
-      parts.push($localize`:@@monitorIntervalMinutes:${minutes}:count:m`);
+    const minutes = Math.floor(intervalInSeconds / 60);
+
+    if (minutes < 60) {
+      return $localize`:@@monitorIntervalMinutes:${minutes}:INTERVAL:m`;
     }
 
-    if (seconds > 0 || parts.length === 0) {
-      parts.push($localize`:@@monitorIntervalSeconds:${seconds}:count:s`);
+    const hours = Math.floor(minutes / 60);
+
+    if (hours < 24) {
+      return $localize`:@@monitorIntervalHours:${hours}:INTERVAL:h`;
     }
 
-    return parts.join(' ');
+    const days = Math.floor(hours / 24);
+
+    return $localize`:@@monitorIntervalDays:${days}:INTERVAL:d`;
   }
 }
