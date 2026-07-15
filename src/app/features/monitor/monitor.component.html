@@ -3,6 +3,11 @@
     <h1 i18n="@@monitorsTitle" id="monitors-title">Monitors</h1>
   </header>
 
+  <div>
+    <button type="button" (click)="onClickStatus(null)">All</button>
+    <button type="button" (click)="onClickStatus(MonitorStatus.Enabled)">Enabled</button>
+    <button type="button" (click)="onClickStatus(MonitorStatus.Disabled)">Disabled</button>
+  </div>
   <div class="page-content">
     <div class="table-card">
       <div class="table-scroll">
@@ -63,6 +68,6 @@
       </div>
     </div>
 
-    <p class="monitor-count" i18n="@@monitorsCount">{{ monitors().length }} of {{ monitors().length }} monitors</p>
+    <p class="monitor-count" i18n="@@monitorsCount">{{ monitors().length }} of {{ allMonitors().length }} monitors</p>
   </div>
 </section>
