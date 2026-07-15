@@ -19,7 +19,7 @@ export class MonitorService {
 
     return this.http.get<ApiResponse<MonitorModel[]>>(this.monitorBaseEndpoint).pipe(
       map((response) => response.data ?? []),
-      tap(this.clearErrors),
+      tap(() => this.clearErrors),
       catchError((err) => {
         this.errors.set('Failed to load monitors');
         return throwError(() => err);
