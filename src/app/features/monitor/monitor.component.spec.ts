@@ -10,7 +10,7 @@ describe('MonitorComponent', () => {
   let fixture: ComponentFixture<MonitorComponent>;
   const monitorServiceMock = {
     isLoading: signal(false),
-    errors: signal<string | null>(null),
+    error: signal<string | null>(null),
     getMonitors: vi.fn().mockReturnValue(of([])),
   };
 
