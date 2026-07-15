@@ -129,5 +129,4 @@ export class AuthService {
   clearError(): void {
     this.error.set(null);
   }
-
 }
