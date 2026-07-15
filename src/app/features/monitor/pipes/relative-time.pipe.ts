@@ -36,6 +36,10 @@ export class RelativeTimePipe implements PipeTransform {
 
     const elapsedDays = Math.floor(elapsedHours / 24);
 
-    return $localize`:@@relativeTimeDays:${elapsedDays}:COUNT: ${elapsedDays === 1 ? 'day' : 'days'} ago`;
+    if (elapsedDays === 1) {
+      return $localize`:@@relativeTimeDay:1 day ago`;
+    }
+
+    return $localize`:@@relativeTimeDays:${elapsedDays}:COUNT: days ago`;
   }
 }
