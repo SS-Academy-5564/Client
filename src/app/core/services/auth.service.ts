@@ -56,14 +56,14 @@ export class AuthService {
 
   register(payload: RegisterRequest): Observable<unknown> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearErrors();
 
     return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
   login(payload: LoginRequest): Observable<LoginResponse> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearErrors();
 
     return this.http.post<LoginResponse>(this.loginEndpoint, payload).pipe(
       tap((response) => {
@@ -87,7 +87,7 @@ export class AuthService {
 
     if (!token) {
       this.currentUser.set(null);
-      this.error.set(null);
+      this.clearErrors();
       return of(null);
     }
 
@@ -95,7 +95,7 @@ export class AuthService {
       map((response) => (response?.success ? response.data : null)),
       tap((user) => {
         this.currentUser.set(user);
-        this.error.set(null);
+        this.clearErrors();
       }),
       catchError((error: unknown) => {
         this.currentUser.set(null);
@@ -107,9 +107,9 @@ export class AuthService {
 
         if (status === 401 || status === 403) {
           this.tokenStorage.clearToken();
-          this.error.set('Your session has expired. Please log in again.');
+          this.setError('Your session has expired. Please log in again.');
         } else {
-          this.error.set('Failed to load user profile.');
+          this.setError('Failed to load user profile.');
         }
 
         return of(null);
@@ -125,4 +125,9 @@ export class AuthService {
   setError(message: string): void {
     this.error.set(message);
   }
+
+  clearErrors(): void {
+    this.error.set(null);
+  }
+
 }
