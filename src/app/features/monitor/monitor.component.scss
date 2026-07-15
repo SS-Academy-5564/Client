@@ -25,7 +25,47 @@
 }
 
 .page-content {
-  padding: 30px;
+  padding: 20px 30px 30px;
+}
+
+.status-filters {
+  padding: 20px 30px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.status-filter {
+  min-height: 38px;
+  padding: 7px 16px;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: 1.25;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+}
+
+.status-filter-active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: var(--accent);
 }
 
 .table-card {
@@ -211,6 +251,10 @@ td.status-column {
   }
 
   .page-content {
-    padding: 20px 16px;
+    padding: 16px;
+  }
+
+  .status-filters {
+    padding: 16px 16px 0;
   }
 }
