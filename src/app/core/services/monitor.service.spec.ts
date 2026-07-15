@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { environment } from '@environments/environment';
 import { MonitorModel, MonitorStatus } from '../models/monitor-model';
 import { MonitorService } from './monitor.service';
@@ -43,6 +44,6 @@ describe('MonitorService', () => {
     request.flush({ data: monitors, pagination: null, success: true, errors: [] });
 
     expect(service.isLoading()).toBe(false);
-    expect(service.errors()).toBeNull();
+    expect(service.error()).toBeNull();
   });
 });

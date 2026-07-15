@@ -14,7 +14,7 @@ export class MonitorComponent implements OnInit {
   private readonly monitorService = inject(MonitorService);
   protected readonly MonitorStatus = MonitorStatus;
   protected readonly isLoading = this.monitorService.isLoading;
-  protected readonly error = this.monitorService.errors;
+  protected readonly error = this.monitorService.error;
   protected readonly monitors = signal<MonitorModel[]>([]);
 
   ngOnInit(): void {
