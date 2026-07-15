@@ -56,14 +56,14 @@ export class AuthService {
 
   register(payload: RegisterRequest): Observable<unknown> {
     this.isLoading.set(true);
-    this.clearErrors();
+    this.clearError();
 
     return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
   login(payload: LoginRequest): Observable<LoginResponse> {
     this.isLoading.set(true);
-    this.clearErrors();
+    this.clearError();
 
     return this.http.post<LoginResponse>(this.loginEndpoint, payload).pipe(
       tap((response) => {
@@ -87,7 +87,7 @@ export class AuthService {
 
     if (!token) {
       this.currentUser.set(null);
-      this.clearErrors();
+      this.clearError();
       return of(null);
     }
 
@@ -95,7 +95,7 @@ export class AuthService {
       map((response) => (response?.success ? response.data : null)),
       tap((user) => {
         this.currentUser.set(user);
-        this.clearErrors();
+        this.clearError();
       }),
       catchError((error: unknown) => {
         this.currentUser.set(null);
@@ -126,7 +126,7 @@ export class AuthService {
     this.error.set(message);
   }
 
-  clearErrors(): void {
+  clearError(): void {
     this.error.set(null);
   }
 

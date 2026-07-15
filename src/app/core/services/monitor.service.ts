@@ -15,11 +15,11 @@ export class MonitorService {
 
   getMonitors(): Observable<MonitorModel[]> {
     this.isLoading.set(true);
-    this.clearErrors();
+    this.clearError();
 
     return this.http.get<ApiResponse<MonitorModel[]>>(this.monitorBaseEndpoint).pipe(
       map((response) => response.data ?? []),
-      tap(() => this.clearErrors),
+      tap(() => this.clearError),
       catchError((err) => {
         this.errors.set('Failed to load monitors');
         return throwError(() => err);
@@ -28,7 +28,7 @@ export class MonitorService {
     );
   }
 
-  clearErrors(): void {
+  clearError(): void {
     this.errors.set(null);
   }
 }
