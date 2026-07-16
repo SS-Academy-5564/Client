@@ -9,3 +9,7 @@ playwright-report
 test-results
 
 package-lock.json
+
+.agents/
+.coderabbit.yaml
+/*.md
