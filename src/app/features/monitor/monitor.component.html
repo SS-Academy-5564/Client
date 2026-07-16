@@ -2,7 +2,36 @@
   <header class="page-header">
     <h1 i18n="@@monitorsTitle" id="monitors-title">Monitors</h1>
   </header>
-
+  
+ <div aria-label="Filter monitors by status" i18n-aria-label="@@monitorsStatusFilterLabel" class="status-filters">
+    <button
+      class="status-filter"
+      i18n="@@monitorsStatusAll"
+      type="button"
+      [attr.aria-pressed]="selectedStatus() === null"
+      [class.status-filter-active]="selectedStatus() === null"
+      (click)="onClickStatus(null)">
+      All
+    </button>
+    <button
+      class="status-filter"
+      i18n="@@monitorsStatusEnabled"
+      type="button"
+      [attr.aria-pressed]="selectedStatus() === MonitorStatus.Enabled"
+      [class.status-filter-active]="selectedStatus() === MonitorStatus.Enabled"
+      (click)="onClickStatus(MonitorStatus.Enabled)">
+      Enabled
+    </button>
+    <button
+      class="status-filter"
+      i18n="@@monitorsStatusDisabled"
+      type="button"
+      [attr.aria-pressed]="selectedStatus() === MonitorStatus.Disabled"
+      [class.status-filter-active]="selectedStatus() === MonitorStatus.Disabled"
+      (click)="onClickStatus(MonitorStatus.Disabled)">
+      Disabled
+    </button>
+  </div>
   <div class="page-content">
     <div class="table-card">
       <div class="table-scroll">
