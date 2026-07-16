@@ -1,0 +1,183 @@
+<section aria-label="Members page" class="members-page">
+  <header class="page-header">
+    <h1 i18n="@@membersPageTitle">Members</h1>
+
+    <button class="invite-button" color="primary" mat-flat-button type="button" (click)="handleInviteMember()">
+      <mat-icon aria-hidden="true">add</mat-icon>
+      <span i18n="@@inviteMemberButton">Invite member</span>
+    </button>
+  </header>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <mat-progress-spinner diameter="40" mode="indeterminate" />
+      <span i18n="@@membersLoading">Loading members...</span>
+    </div>
+  } @else if (hasError()) {
+    <div class="error-state" role="alert">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  } @else {
+    <article class="data-card">
+      <header class="card-header">
+        <h2 i18n="@@membersTableTitle">Members</h2>
+        <span class="card-count members-count">{{ totalMembers() }}</span>
+      </header>
+
+      <div aria-label="Members" class="data-table" role="table">
+        <div class="table-row table-header" role="row">
+          <div class="col-name" i18n="@@membersColumnName" role="columnheader">Name</div>
+          <div class="col-role" i18n="@@membersColumnRole" role="columnheader">Role</div>
+          <div class="col-joined" i18n="@@membersColumnJoined" role="columnheader">Joined</div>
+          <div class="col-actions" role="columnheader">
+            <span class="visually-hidden" i18n="@@membersActionColumn">Actions</span>
+          </div>
+        </div>
+
+        @for (member of members(); track member.userId) {
+          <div class="table-row member-row" role="row">
+            <div class="col-name" role="cell">
+              <div class="member-name-cell">
+                <span aria-hidden="true" class="member-avatar">
+                  {{ initials(member.name) }}
+                </span>
+
+                <span class="member-info">
+                  <span class="member-name">{{ member.name }}</span>
+                  <span class="member-email">{{ member.email }}</span>
+                </span>
+              </div>
+            </div>
+
+            <div
+              class="col-role"
+              role="cell"
+              [attr.aria-label]="'Role: ' + member.role"
+              i18n-attr.aria-label="@@membersRoleCellAriaLabel">
+              <span class="role-badge" [ngClass]="roleBadgeClass(member.role)">
+                {{ member.role }}
+              </span>
+            </div>
+
+            <div
+              class="col-joined"
+              role="cell"
+              [attr.aria-label]="'Joined: ' + formatJoinedDate(member.joinedAt)"
+              i18n-attr.aria-label="@@membersJoinedCellAriaLabel">
+              <span class="joined-date">
+                {{ formatJoinedDate(member.joinedAt) }}
+              </span>
+            </div>
+
+            <div class="col-actions" role="cell">
+              <button
+                class="row-action-button"
+                mat-icon-button
+                type="button"
+                [attr.aria-label]="'Actions for ' + member.name"
+                [matMenuTriggerFor]="memberMenu"
+                (click)="selectMember(member)">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <mat-menu #memberMenu="matMenu">
+        <button i18n="@@editMemberAction" mat-menu-item type="button" (click)="handleEditMemberRole()">
+          Edit role
+        </button>
+
+        <button i18n="@@removeMemberAction" mat-menu-item type="button" (click)="handleRemoveMember()">
+          Remove member
+        </button>
+      </mat-menu>
+    </article>
+
+    <article class="data-card">
+      <header class="card-header">
+        <h2 i18n="@@pendingInvitationsTitle">Pending invitations</h2>
+        <span class="card-count">{{ totalPending() }}</span>
+      </header>
+
+      @if (pendingInvitations().length === 0) {
+        <div class="empty-state" i18n="@@membersEmptyPendingInvitations">No pending invitations</div>
+      } @else {
+        <div aria-label="Pending invitations" class="data-table" role="table">
+          <div class="table-row table-header" role="row">
+            <div class="col-name" i18n="@@pendingColumnEmail" role="columnheader">Email</div>
+            <div class="col-role" i18n="@@membersColumnRole" role="columnheader">Role</div>
+            <div class="col-joined" i18n="@@membersColumnJoined" role="columnheader">Joined</div>
+            <div class="col-actions" role="columnheader">
+              <span class="visually-hidden" i18n="@@membersActionColumn">Actions</span>
+            </div>
+          </div>
+
+          @for (invite of pendingInvitations(); track invite.email) {
+            <div class="table-row pending-row" role="row">
+              <div class="col-name" role="cell">
+                <div class="pending-email-cell">
+                  <span aria-hidden="true" class="pending-icon">
+                    <mat-icon>mail_outline</mat-icon>
+                  </span>
+
+                  <span class="pending-info">
+                    <span class="pending-email">{{ invite.email }}</span>
+
+                    <span class="pending-meta">
+                      <span class="status-badge" i18n="@@pendingStatusLabel">Pending</span>
+
+                      <span class="pending-invited" i18n="@@pendingInvitedOn">Invited {{ invite.invited }}</span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div
+                class="col-role"
+                role="cell"
+                [attr.aria-label]="'Role: ' + invite.role"
+                i18n-attr.aria-label="@@membersRoleCellAriaLabel">
+                <span class="role-badge" [ngClass]="roleBadgeClass(invite.role)">
+                  {{ invite.role }}
+                </span>
+              </div>
+
+              <div
+                aria-label="Joined: not yet joined"
+                i18n-aria-label="@@membersJoinedNotYetAriaLabel"
+                class="col-joined"
+                role="cell">
+                <span aria-hidden="true" class="joined-date joined-date--empty">—</span>
+              </div>
+
+              <div class="col-actions" role="cell">
+                <button
+                  class="row-action-button"
+                  mat-icon-button
+                  type="button"
+                  [attr.aria-label]="'Actions for ' + invite.email"
+                  [matMenuTriggerFor]="inviteMenu"
+                  (click)="selectInvitation(invite)">
+                  <mat-icon>more_horiz</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <mat-menu #inviteMenu="matMenu">
+        <button i18n="@@resendInviteAction" mat-menu-item type="button" (click)="handleResendInvitation()">
+          Resend invitation
+        </button>
+
+        <button i18n="@@cancelInviteAction" mat-menu-item type="button" (click)="handleCancelInvitation()">
+          Cancel invitation
+        </button>
+      </mat-menu>
+    </article>
+  }
+</section>
