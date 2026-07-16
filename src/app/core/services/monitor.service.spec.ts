@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { environment } from '@environments/environment';
-import { MonitorModel, MonitorStatus } from '../models/monitor-model';
+import { CreateMonitorRequest, MonitorModel, MonitorStatus } from '../models/monitor-model';
 import { MonitorService } from './monitor.service';
 
 describe('MonitorService', () => {
@@ -45,5 +45,37 @@ describe('MonitorService', () => {
 
     expect(service.isLoading()).toBe(false);
     expect(service.error()).toBeNull();
+  });
+
+  it('should POST the request and return the created monitor', () => {
+    const request: CreateMonitorRequest = {
+      name: 'EUR/USD Rate',
+      url: 'https://api.example.com/data',
+      httpMethod: 'GET',
+      resultPath: 'data.usd.rate',
+      pollingIntervalSeconds: 300,
+      pollingTimeoutSeconds: 10,
+    };
+    const created: MonitorModel = {
+      id: 'new-monitor-id',
+      name: 'EUR/USD Rate',
+      url: 'https://api.example.com/data',
+      currentValue: null,
+      lastCheckedAt: null,
+      status: MonitorStatus.Enabled,
+      interval: 300,
+    };
+
+    let result: MonitorModel | undefined;
+    service.createMonitor(request).subscribe((monitor) => {
+      result = monitor;
+    });
+
+    const httpRequest = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors`);
+    expect(httpRequest.request.method).toBe('POST');
+    expect(httpRequest.request.body).toEqual(request);
+    httpRequest.flush({ data: created, pagination: null, success: true, errors: [] });
+
+    expect(result).toEqual(created);
   });
 });

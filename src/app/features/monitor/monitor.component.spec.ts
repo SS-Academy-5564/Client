@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 
 import { MonitorComponent } from './monitor.component';
@@ -42,6 +44,17 @@ describe('MonitorComponent', () => {
     isLoading: signal(false),
     error: signal<string | null>(null),
     getMonitors: vi.fn().mockReturnValue(of(monitors)),
+    createMonitor: vi.fn(),
+  };
+
+  const createdMonitor: MonitorModel = {
+    id: 'created-monitor',
+    name: 'Created monitor',
+    url: 'https://example.com/created',
+    currentValue: null,
+    lastCheckedAt: null,
+    status: MonitorStatus.Enabled,
+    interval: 300,
   };
 
   const getRenderedMonitorNames = (): string[] => {
@@ -60,7 +73,11 @@ describe('MonitorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MonitorComponent],
-      providers: [{ provide: MonitorService, useValue: monitorServiceMock }],
+      providers: [
+        { provide: MonitorService, useValue: monitorServiceMock },
+        provideNoopAnimations(),
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MonitorComponent);
@@ -87,5 +104,35 @@ describe('MonitorComponent', () => {
     selectStatus(null);
 
     expect(getRenderedMonitorNames()).toEqual(['Enabled monitor', 'Disabled monitor', 'Error monitor']);
+  });
+
+  it('opens the create panel when the New Monitor button is clicked', () => {
+    const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.new-monitor-button');
+    button?.click();
+    fixture.detectChanges();
+
+    const panel = (fixture.nativeElement as HTMLElement).querySelector('.panel');
+    expect(panel).not.toBeNull();
+  });
+
+  it('prepends the created monitor and shows a success banner', () => {
+    component.onMonitorCreated(createdMonitor);
+    fixture.detectChanges();
+
+    expect(getRenderedMonitorNames()[0]).toBe('Created monitor');
+
+    const banner = (fixture.nativeElement as HTMLElement).querySelector('.success-banner');
+    expect(banner?.textContent).toContain('Created monitor');
+  });
+
+  it('dismisses the success banner', () => {
+    component.onMonitorCreated(createdMonitor);
+    fixture.detectChanges();
+
+    const dismiss = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.success-dismiss');
+    dismiss?.click();
+    fixture.detectChanges();
+
+    expect((fixture.nativeElement as HTMLElement).querySelector('.success-banner')).toBeNull();
   });
 });

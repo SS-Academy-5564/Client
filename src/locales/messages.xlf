@@ -2,164 +2,1141 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="3724591343089785757" datatype="html">
-        <source>Hello, <x id="INTERPOLATION" equiv-text="{{ title() }}"/></source>
+      <trans-unit id="forgotPasswordTitle" datatype="html">
+        <source>Forgot Password?</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">28,30</context>
-        </context-group>
-        <note priority="1" from="description">Page heading greeting</note>
-      </trans-unit>
-      <trans-unit id="739313073051259180" datatype="html">
-        <source>Standalone components with Signals and Signals-based inputs</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">10,11</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2885313976860500121" datatype="html">
-        <source>Sample input</source>
+      <trans-unit id="forgotPasswordSubtitle" datatype="html">
+        <source>Enter your email to receive a password reset code.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">11,13</context>
         </context-group>
-        <note priority="1" from="description">Form field label</note>
       </trans-unit>
-      <trans-unit id="7008764618395900070" datatype="html">
-        <source>Type something...</source>
+      <trans-unit id="forgotPasswordEmailLabel" datatype="html">
+        <source>Email</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailPlaceholder" datatype="html">
+        <source>email@example.com</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailRequired" datatype="html">
+        <source>Email is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">30,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailInvalid" datatype="html">
+        <source>Enter a valid email address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">33,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordSubmitButton" datatype="html">
+        <source>Send Code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
           <context context-type="linenumber">40,41</context>
         </context-group>
-        <note priority="1" from="description">Form field placeholder</note>
       </trans-unit>
-      <trans-unit id="7397760241381561901" datatype="html">
-        <source>Primary Action</source>
+      <trans-unit id="forgotPasswordBackToLogin" datatype="html">
+        <source>Back to Login</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">43,45</context>
-        </context-group>
-        <note priority="1" from="description">Form submit button</note>
-      </trans-unit>
-      <trans-unit id="6531898240125800824" datatype="html">
-        <source>Date: <x id="INTERPOLATION" equiv-text="{{ sampleDate() | date:&apos;longDate&apos; }}"/></source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">46,47</context>
-        </context-group>
-        <note priority="1" from="description">Date example label</note>
-      </trans-unit>
-      <trans-unit id="5696244706071223399" datatype="html">
-        <source>Price: <x id="INTERPOLATION" equiv-text="{{ samplePrice() | currency }}"/></source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">47,48</context>
-        </context-group>
-        <note priority="1" from="description">Price example label</note>
-      </trans-unit>
-      <trans-unit id="2816922040873882597" datatype="html">
-        <source>Series A</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">113</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">51,54</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4814784078350866996" datatype="html">
-        <source>Series B</source>
+      <trans-unit id="loginTitle" datatype="html">
+        <source>Sign in to your account</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">10,11</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8563137213157122993" datatype="html">
-        <source>Mon</source>
+      <trans-unit id="loginSubtitle" datatype="html">
+        <source>Welcome back! Please enter your details.</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">11,13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8502240922750617054" datatype="html">
-        <source>Tue</source>
+      <trans-unit id="loginEmailLabel" datatype="html">
+        <source>Email</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">20,21</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7421778640995344715" datatype="html">
-        <source>Wed</source>
+      <trans-unit id="loginEmailPlaceholder" datatype="html">
+        <source>you@company.com</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">26,27</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4409954796361883558" datatype="html">
-        <source>Thu</source>
+      <trans-unit id="loginEmailRequired" datatype="html">
+        <source>Email is required</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">30,32</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5651951128882735477" datatype="html">
-        <source>Fri</source>
+      <trans-unit id="loginEmailInvalid" datatype="html">
+        <source>Enter a valid email address</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="93026920674143073" datatype="html">
-        <source>Sat</source>
+      <trans-unit id="loginPasswordLabel" datatype="html">
+        <source>Password</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">39,40</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4921929243068857081" datatype="html">
-        <source>Sun</source>
+      <trans-unit id="loginPasswordPlaceholder" datatype="html">
+        <source>••••••••</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">105</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="showPasswordAria" datatype="html">
+        <source>Show password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="hidePasswordAria" datatype="html">
+        <source>Hide password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginPasswordRequired" datatype="html">
+        <source>Password is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">72,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginForgotPassword" datatype="html">
+        <source> Forgot password? </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginSubmitButton" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginRegisterPrompt" datatype="html">
+        <source>Don&apos;t have an account?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginRegisterLink" datatype="html">
+        <source>Sign up</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">97,99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerTitle" datatype="html">
+        <source>Create your account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerSubtitle" datatype="html">
+        <source>Start monitoring your metrics today.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNameLabel" datatype="html">
+        <source>First name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNamePlaceholder" datatype="html">
+        <source>Jane</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNameRequired" datatype="html">
+        <source>First name is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNameMaxlength" datatype="html">
+        <source>First name cannot exceed 100 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">32,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNameLabel" datatype="html">
+        <source>Last name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">38,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNamePlaceholder" datatype="html">
+        <source>Smith</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNameRequired" datatype="html">
+        <source>Last name is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNameMaxlength" datatype="html">
+        <source>Last name cannot exceed 100 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">50,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailLabel" datatype="html">
+        <source>Email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailPlaceholder" datatype="html">
+        <source>you@company.com</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailRequired" datatype="html">
+        <source>Email is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailInvalid" datatype="html">
+        <source>Enter a valid email address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailMaxlength" datatype="html">
+        <source>Email cannot exceed 256 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">71,73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordLabel" datatype="html">
+        <source>Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordPlaceholder" datatype="html">
+        <source>Min. 8 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">83,84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordRequired" datatype="html">
+        <source>Password is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordMinlength" datatype="html">
+        <source>Password must be at least 8 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">98,99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordPattern" datatype="html">
+        <source> Password must contain uppercase, lowercase letter and number </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordMaxlength" datatype="html">
+        <source>Password cannot exceed 256 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">104,106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerConfirmPasswordLabel" datatype="html">
+        <source> Confirm password </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">111,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerConfirmPasswordPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">118,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerConfirmPasswordRequired" datatype="html">
+        <source>Confirmation is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">132,133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordMismatch" datatype="html">
+        <source>Passwords do not match</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">134,136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerSubmitButton" datatype="html">
+        <source>Create account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">141,142</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLoginPrompt" datatype="html">
+        <source>Already have an account?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">152,153</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLoginLink" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">153,155</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordTitle" datatype="html">
+        <source>Reset Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordSubtitle" datatype="html">
+        <source>Please enter a new password for your account.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordNewLabel" datatype="html">
+        <source>New Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordNewPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordRequired" datatype="html">
+        <source>Password is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordMinlength" datatype="html">
+        <source>Password must be at least 8 characters</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordPattern" datatype="html">
+        <source> Password must contain an uppercase letter, a lowercase letter, and a digit </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordConfirmLabel" datatype="html">
+        <source>Confirm Password</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordConfirmPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordConfirmRequired" datatype="html">
+        <source>Confirmation is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">84,85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordMismatch" datatype="html">
+        <source>Passwords do not match</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">86,88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordSubmitButton" datatype="html">
+        <source>Save changes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">93,94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordBackToLogin" datatype="html">
+        <source>Back to Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">104,107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetSuccessTitle" datatype="html">
+        <source>Password Reset Successful</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-success/reset-success.component.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetSuccessMessage" datatype="html">
+        <source> Your password has been updated. You can now log in to your account with your new password. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-success/reset-success.component.html</context>
+          <context context-type="linenumber">17,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetSuccessLoginButton" datatype="html">
+        <source>Back to Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-success/reset-success.component.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeTitle" datatype="html">
+        <source>Verify Code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeSubtitle" datatype="html">
+        <source>Code sent to</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeSubmitButton" datatype="html">
+        <source>Verify</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeResendPrompt" datatype="html">
+        <source>Didn&apos;t receive a code?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeResendCountdown" datatype="html">
+        <source> Resend in <x id="INTERPOLATION" equiv-text="{{ resendCountdown() }}"/>s </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeResendButton" datatype="html">
+        <source> Resend Code </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeBackToLogin" datatype="html">
+        <source>Back to Login</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">65,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.title" datatype="html">
+        <source>Create your organization</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.subtitle" datatype="html">
+        <source> You&apos;re not part of any organization yet. Create one to get started. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">24,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.organizationName" datatype="html">
+        <source>Organization name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.namePlaceholder" datatype="html">
+        <source>Acme Corp</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.nameRequired" datatype="html">
+        <source>Organization name is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.submitButton" datatype="html">
+        <source>Create organization</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.renameInfo" datatype="html">
+        <source>You can rename it later in Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">54,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="errorPageGoHome" datatype="html">
+        <source>Go home</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.html</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errorPage404Title" datatype="html">
         <source>Page not found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPage404Message" datatype="html">
         <source>The page you are looking for doesn&apos;t exist or has been moved.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPage500Title" datatype="html">
         <source>Something went wrong</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPage500Message" datatype="html">
         <source>An unexpected error occurred on our end. Please try again in a moment.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageOfflineLabel" datatype="html">
         <source>Offline</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageOfflineTitle" datatype="html">
         <source>Can&apos;t reach the server</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageOfflineMessage" datatype="html">
         <source>Couldn&apos;t reach the server. Check your connection and try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageDefaultLabel" datatype="html">
         <source>Error</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageDefaultTitle" datatype="html">
         <source>Something went wrong</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageDefaultMessage" datatype="html">
         <source>An unexpected error occurred. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="errorPageGoHome" datatype="html">
-        <source>Go home</source>
+      <trans-unit id="createMonitor.closeBackdrop" datatype="html">
+        <source>Close panel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">3,5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.title" datatype="html">
+        <source>New Monitor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.subtitle" datatype="html">
+        <source>Configure an endpoint to poll for a metric value.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">13,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.close" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.nameLabel" datatype="html">
+        <source>Monitor name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.namePlaceholder" datatype="html">
+        <source>EUR/USD Rate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.nameRequired" datatype="html">
+        <source>Monitor name is required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.nameMaxLength" datatype="html">
+        <source>Monitor name must be at most 64 characters.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlLabel" datatype="html">
+        <source>Endpoint URL</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.methodLabel" datatype="html">
+        <source>Request method</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlPlaceholder" datatype="html">
+        <source>https://api.example.com/data</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlRequired" datatype="html">
+        <source>Endpoint URL is required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlMaxLength" datatype="html">
+        <source>Endpoint URL is too long.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathLabel" datatype="html">
+        <source> Result path </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">87,89</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathHint" datatype="html">
+        <source>dot notation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">89,91</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathPlaceholder" datatype="html">
+        <source>data.usd.rate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathRequired" datatype="html">
+        <source>Result path is required.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathMaxLength" datatype="html">
+        <source>Result path is too long.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">103,104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.intervalLabel" datatype="html">
+        <source> Polling frequency </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">114,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeoutLabel" datatype="html">
+        <source>Timeout</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">126,127</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.cancel" datatype="html">
+        <source>Cancel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.submit" datatype="html">
+        <source>Create monitor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">147,148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.genericError" datatype="html">
+        <source>Failed to create monitor.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.ts</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval1Minute" datatype="html">
+        <source>1 minute</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval5Minutes" datatype="html">
+        <source>5 minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval15Minutes" datatype="html">
+        <source>15 minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval30Minutes" datatype="html">
+        <source>30 minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval1Hour" datatype="html">
+        <source>1 hour</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval6Hours" datatype="html">
+        <source>6 hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval12Hours" datatype="html">
+        <source>12 hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval24Hours" datatype="html">
+        <source>24 hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout5Seconds" datatype="html">
+        <source>5 seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout10Seconds" datatype="html">
+        <source>10 seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout15Seconds" datatype="html">
+        <source>15 seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout20Seconds" datatype="html">
+        <source>20 seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout30Seconds" datatype="html">
+        <source>30 seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsTitle" datatype="html">
+        <source>Monitors</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsNewButton" datatype="html">
+        <source>New Monitor</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsDismissSuccess" datatype="html">
+        <source>Dismiss</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusFilterLabel" datatype="html">
+        <source>Filter monitors by status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusAll" datatype="html">
+        <source> All </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">32,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusEnabled" datatype="html">
+        <source> Enabled </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">41,44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusDisabled" datatype="html">
+        <source> Disabled </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">50,53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnName" datatype="html">
+        <source>Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">59,60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnUrl" datatype="html">
+        <source>URL</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnCurrentValue" datatype="html">
+        <source>Current value</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnLastCheck" datatype="html">
+        <source>Last check</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">62,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnStatus" datatype="html">
+        <source>Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnInterval" datatype="html">
+        <source>Interval</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">64,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsLoading" datatype="html">
+        <source>Loading monitors...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">73,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsEmpty" datatype="html">
+        <source>No monitors yet.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">104,106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsCount" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ monitors().length }}"/> of <x id="INTERPOLATION_1" equiv-text="{{ allMonitors().length }}"/> monitors</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">113,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsCreateSuccess" datatype="html">
+        <source>Monitor &quot;<x id="name" equiv-text="monitor.name"/>&quot; created successfully.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalSeconds" datatype="html">
+        <source><x id="INTERVAL" equiv-text="intervalInSeconds"/>s</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalMinutes" datatype="html">
+        <source><x id="INTERVAL" equiv-text="minutes"/>m</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalHours" datatype="html">
+        <source><x id="INTERVAL" equiv-text="hours"/>h</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalDays" datatype="html">
+        <source><x id="INTERVAL" equiv-text="days"/>d</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeSeconds" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedSeconds"/> sec ago</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeMinutes" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedMinutes"/> min ago</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeHours" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedHours"/> hr ago</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeDay" datatype="html">
+        <source>1 day ago</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeDays" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedDays"/> days ago</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarOverviewLabel" datatype="html">
+        <source>Overview</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">7,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarMonitorsLabel" datatype="html">
+        <source>Monitors</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">13,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarAlertsLabel" datatype="html">
+        <source>Alerts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">19,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarMembersLabel" datatype="html">
+        <source>Members</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarSettingsLabel" datatype="html">
+        <source>Settings</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">31,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarOrganizationFallback" datatype="html">
+        <source>Organization</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">43,46</context>
+        </context-group>
       </trans-unit>
     </body>
   </file>
