@@ -21,7 +21,7 @@
         <div class="new-organization-title-group">
           <mat-card-title i18n="@@newOrganization.title">Create your organization</mat-card-title>
           <p class="new-organization-subtitle" i18n="@@newOrganization.subtitle">
-            You`re not part of any organization yet. Create one to get started.
+            You're not part of any organization yet. Create one to get started.
           </p>
         </div>
       </mat-card-header>
@@ -41,10 +41,8 @@
                 <mat-error i18n="@@newOrganization.nameRequired">Organization name is required</mat-error>
               }
             </mat-form-field>
-            <p class="new-organization-subtitle" i18n="@@newOrganization.renameInfo">
-              You can rename it later in Settings
-            </p>
           </div>
+
           <app-button
             buttonType="submit"
             label="Create organization"
@@ -52,6 +50,8 @@
             type="primary"
             variant="full-width"
             [disabled]="form.invalid" />
+
+          <p class="new-organization-hint" i18n="@@newOrganization.renameInfo">You can rename it later in Settings</p>
         </form>
       </mat-card-content>
     </mat-card>

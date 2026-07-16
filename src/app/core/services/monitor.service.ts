@@ -11,7 +11,7 @@ export class MonitorService {
   private readonly monitorBaseEndpoint = `${environment.apiBaseUrl}/monitors`;
 
   readonly isLoading = signal<boolean>(false);
-  readonly errors = signal<string | null>(null);
+  readonly error = signal<string | null>(null);
 
   getMonitors(): Observable<MonitorModel[]> {
     this.isLoading.set(true);
@@ -19,9 +19,9 @@ export class MonitorService {
 
     return this.http.get<ApiResponse<MonitorModel[]>>(this.monitorBaseEndpoint).pipe(
       map((response) => response.data ?? []),
-      tap(() => this.clearError),
+      tap(() => this.clearError()),
       catchError((err) => {
-        this.errors.set('Failed to load monitors');
+        this.error.set('Failed to load monitors');
         return throwError(() => err);
       }),
       finalize(() => this.isLoading.set(false)),
@@ -29,6 +29,6 @@ export class MonitorService {
   }
 
   clearError(): void {
-    this.errors.set(null);
+    this.error.set(null);
   }
 }

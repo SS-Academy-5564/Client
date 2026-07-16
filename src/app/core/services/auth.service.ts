@@ -105,7 +105,7 @@ export class AuthService {
             ? (error as { status?: number }).status
             : undefined;
 
-        if (status === 401 || status === 403) {
+        if (status === 401) {
           this.tokenStorage.clearToken();
           this.setError('Your session has expired. Please log in again.');
         } else {
