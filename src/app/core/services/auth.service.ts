@@ -56,14 +56,14 @@ export class AuthService {
 
   register(payload: RegisterRequest): Observable<unknown> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearError();
 
     return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
   login(payload: LoginRequest): Observable<LoginResponse> {
     this.isLoading.set(true);
-    this.error.set(null);
+    this.clearError();
 
     return this.http.post<LoginResponse>(this.loginEndpoint, payload).pipe(
       tap((response) => {
@@ -87,38 +87,34 @@ export class AuthService {
 
     if (!token) {
       this.currentUser.set(null);
-      this.error.set(null);
+      this.clearError();
       return of(null);
     }
 
-    return this.http
-      .get<ApiResponse<CurrentUser>>(this.currentUserEndpoint, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .pipe(
-        map((response) => (response?.success ? response.data : null)),
-        tap((user) => {
-          this.currentUser.set(user);
-          this.error.set(null);
-        }),
-        catchError((error: unknown) => {
-          this.currentUser.set(null);
+    return this.http.get<ApiResponse<CurrentUser>>(this.currentUserEndpoint).pipe(
+      map((response) => (response?.success ? response.data : null)),
+      tap((user) => {
+        this.currentUser.set(user);
+        this.clearError();
+      }),
+      catchError((error: unknown) => {
+        this.currentUser.set(null);
 
-          const status =
-            typeof error === 'object' && error !== null && 'status' in error
-              ? (error as { status?: number }).status
-              : undefined;
+        const status =
+          typeof error === 'object' && error !== null && 'status' in error
+            ? (error as { status?: number }).status
+            : undefined;
 
-          if (status === 401 || status === 403) {
-            this.tokenStorage.clearToken();
-            this.error.set('Your session has expired. Please log in again.');
-          } else {
-            this.error.set('Failed to load user profile.');
-          }
+        if (status === 401) {
+          this.tokenStorage.clearToken();
+          this.setError('Your session has expired. Please log in again.');
+        } else {
+          this.setError('Failed to load user profile.');
+        }
 
-          return of(null);
-        }),
-      );
+        return of(null);
+      }),
+    );
   }
 
   logout(): void {
@@ -128,5 +124,9 @@ export class AuthService {
 
   setError(message: string): void {
     this.error.set(message);
+  }
+
+  clearError(): void {
+    this.error.set(null);
   }
 }

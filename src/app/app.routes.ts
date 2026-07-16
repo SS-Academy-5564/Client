@@ -20,6 +20,11 @@ export const routes: Routes = [
         path: 'overview',
         loadComponent: () => import('./features/overview/overview.component').then((m) => m.OverviewComponent),
       },
+      {
+        path: 'monitors',
+        canActivate: [],
+        loadComponent: () => import('./features/monitor/monitor.component').then((m) => m.MonitorComponent),
+      },
     ],
   },
   {
