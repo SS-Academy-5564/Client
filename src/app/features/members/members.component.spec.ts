@@ -2,7 +2,6 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-
 import { environment } from '@environments/environment';
 import { MembersComponent } from './members.component';
 
@@ -63,8 +62,6 @@ describe('MembersComponent', () => {
 
     expect(request.request.method).toBe('GET');
 
-    // `body` is intentionally untyped here so this helper can also exercise
-    // malformed/invalid API responses; cast is required for TestRequest.flush().
     request.flush(body as never);
     fixture.detectChanges();
   };
