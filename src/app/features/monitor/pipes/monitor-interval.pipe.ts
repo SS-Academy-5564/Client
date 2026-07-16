@@ -1,9 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {
-  HOURS_PER_DAY,
-  MINUTES_PER_HOUR,
-  SECONDS_PER_MINUTE,
-} from '../../../core/constants/time.constants';
+import { HOURS_PER_DAY, MINUTES_PER_HOUR, SECONDS_PER_MINUTE } from '../../../core/constants/time.constants';
 
 @Pipe({
   name: 'monitorInterval',
