@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { HOURS_PER_DAY, MINUTES_PER_HOUR, SECONDS_PER_MINUTE } from '../../../core/constants/time.constants';
 
 @Pipe({
   name: 'monitorInterval',
@@ -6,23 +7,23 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MonitorIntervalPipe implements PipeTransform {
   transform(intervalInSeconds: number): string {
-    if (intervalInSeconds < 60) {
+    if (intervalInSeconds < SECONDS_PER_MINUTE) {
       return $localize`:@@monitorIntervalSeconds:${intervalInSeconds}:INTERVAL:s`;
     }
 
-    const minutes = Math.floor(intervalInSeconds / 60);
+    const minutes = Math.floor(intervalInSeconds / SECONDS_PER_MINUTE);
 
-    if (minutes < 60) {
+    if (minutes < MINUTES_PER_HOUR) {
       return $localize`:@@monitorIntervalMinutes:${minutes}:INTERVAL:m`;
     }
 
-    const hours = Math.floor(minutes / 60);
+    const hours = Math.floor(minutes / MINUTES_PER_HOUR);
 
-    if (hours < 24) {
+    if (hours < HOURS_PER_DAY) {
       return $localize`:@@monitorIntervalHours:${hours}:INTERVAL:h`;
     }
 
-    const days = Math.floor(hours / 24);
+    const days = Math.floor(hours / HOURS_PER_DAY);
 
     return $localize`:@@monitorIntervalDays:${days}:INTERVAL:d`;
   }
