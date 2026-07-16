@@ -20,18 +20,10 @@
   width: 100%;
 }
 
-.logo-container-new-organization app-logo {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 .new-organization-container {
   width: 100%;
   max-width: 480px;
-}
 
-.new-organization-container {
   mat-card.new-organization-card {
     background-color: #ffffff;
     border-radius: 16px;
@@ -98,9 +90,16 @@
   flex-direction: column;
   gap: 20px;
 
+  ::ng-deep .mat-mdc-input-element {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
   .input-group {
     display: flex;
     flex-direction: column;
+    gap: 6px;
 
     .field-label {
       font-size: 14px;
@@ -108,14 +107,15 @@
       color: #344054;
       margin-bottom: 4px;
     }
+  }
 
-    .new-organization-subtitle {
-      margin: 4px 0 0 0;
-      font-size: 13px;
-      color: #667085;
-      line-height: 1.4;
-      transition: margin 0.2s ease;
-    }
+  .new-organization-hint {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    text-align: center;
+    color: #667085;
+    line-height: 1.4;
+    transition: margin 0.2s ease;
   }
 
   mat-form-field.full-width {
@@ -137,12 +137,20 @@
         overflow: visible;
       }
 
-      mat-error,
-      .mat-mdc-form-field-error {
-        font-size: 13px;
-        line-height: 1.4;
+      .mat-mdc-form-field-bottom-align,
+      .mat-mdc-form-field-error-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .mat-mdc-form-field-error,
+      mat-error {
         display: block;
         margin: 0;
+        padding: 0;
+        text-align: left;
+        font-size: 13px;
+        line-height: 1.4;
       }
     }
   }
