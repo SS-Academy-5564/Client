@@ -151,16 +151,15 @@ describe('MembersComponent', () => {
     expect(joinedCell?.getAttribute('aria-label')).toContain('Joined:');
   });
 
-  it('should render pending invitations', () => {
+  it('should render empty pending invitations state when no invitations exist', () => {
     fixture.detectChanges();
 
     flushOk(0, []);
 
     const compiled = fixture.nativeElement as HTMLElement;
 
-    expect(compiled.querySelectorAll('.pending-row')).toHaveLength(2);
-    expect(compiled.textContent).toContain('alex@acme.com');
-    expect(compiled.textContent).toContain('recruit@partner.io');
+    expect(compiled.querySelectorAll('.pending-row')).toHaveLength(0);
+    expect(compiled.textContent).toContain('No pending invitations');
   });
 
   it('should show error when loading members fails', () => {

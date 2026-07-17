@@ -15,19 +15,6 @@ type PendingInvitation = {
   invited: string;
 };
 
-const MOCK_PENDING_INVITATIONS: PendingInvitation[] = [
-  {
-    email: 'alex@acme.com',
-    role: 'Viewer',
-    invited: '2 days ago',
-  },
-  {
-    email: 'recruit@partner.io',
-    role: 'User',
-    invited: '1 week ago',
-  },
-];
-
 @Component({
   selector: 'app-members',
   standalone: true,
@@ -41,7 +28,7 @@ export class MembersComponent {
   protected readonly hasError = signal(false);
 
   protected readonly members = signal<Member[]>([]);
-  protected readonly pendingInvitations = signal<PendingInvitation[]>(MOCK_PENDING_INVITATIONS);
+  protected readonly pendingInvitations = signal<PendingInvitation[]>([]);
 
   protected readonly totalCount = signal(0);
 
