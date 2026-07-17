@@ -25,6 +25,10 @@ export const routes: Routes = [
         canActivate: [],
         loadComponent: () => import('./features/monitor/monitor.component').then((m) => m.MonitorComponent),
       },
+      {
+        path: 'members',
+        loadComponent: () => import('./features/members/members.component').then((m) => m.MembersComponent),
+      },
     ],
   },
   {

@@ -34,6 +34,20 @@ $my-theme: mat.define-theme(
 
   --border: #e2e8f0;
 
+  --color-error-bg: #fef2f2;
+  --color-error-border: #fecaca;
+  --color-error-text: #b91c1c;
+  --color-success-bg: #dcfce7;
+  --color-success-text: #15803d;
+  --color-warning-bg: #fef3c7;
+  --color-warning-text: #92400e;
+  --color-muted-bg: #f8fafc;
+  --color-muted-border: #e5e7eb;
+  --color-muted-text: #94a3b8;
+  --color-muted-surface: #f1f5f9;
+  --color-avatar-bg: #ede9fe;
+  --color-avatar-text: #6344f5;
+
   --color-nav-button: var(--accent);
   --color-nav-button-hover: var(--accent-hover);
   --color-nav-button-text: var(--surface);
