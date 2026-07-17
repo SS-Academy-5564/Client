@@ -20,7 +20,7 @@ type PendingInvitation = {
 };
 
 type MembersComponentTestApi = {
-  initials(fullName: string): string;
+  getInitials(fullName: string): string;
   formatJoinedDate(joinedAt: string): string;
   roleBadgeClass(role: string): Record<string, boolean>;
   selectMember(member: Member): void;
@@ -236,10 +236,10 @@ describe('MembersComponent', () => {
 
     flushOk(0, []);
 
-    expect(api().initials('Jane Doe')).toBe('JD');
-    expect(api().initials('  John   Smith  ')).toBe('JS');
-    expect(api().initials('')).toBe('');
-    expect(api().initials('   ')).toBe('');
+    expect(api().getInitials('Jane Doe')).toBe('JD');
+    expect(api().getInitials('  John   Smith  ')).toBe('JS');
+    expect(api().getInitials('')).toBe('');
+    expect(api().getInitials('   ')).toBe('');
 
     expect(api().formatJoinedDate('invalid-date')).toBe('invalid-date');
 

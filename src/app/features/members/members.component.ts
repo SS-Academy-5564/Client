@@ -1,24 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { catchError, finalize, map, of } from 'rxjs';
-
-import { environment } from '@environments/environment';
-import { ApiResponse } from '@core/models/login-model';
+import { catchError, finalize, of } from 'rxjs';
+import { Member, MembersService } from '@core/services/members.service';
 
 const failedToLoadMembersMessage = $localize`:@@membersErrorFailedToLoad:Failed to load members`;
-
-type Member = {
-  userId: string;
-  name: string;
-  email: string;
-  role: string;
-  joinedAt: string;
-};
 
 type PendingInvitation = {
   email: string;
@@ -64,7 +53,7 @@ export class MembersComponent {
 
   protected readonly errorMessage = signal(failedToLoadMembersMessage);
 
-  private readonly http = inject(HttpClient);
+  private readonly membersService = inject(MembersService);
 
   constructor() {
     this.loadMembers();
@@ -74,36 +63,24 @@ export class MembersComponent {
     this.hasError.set(false);
     this.errorMessage.set(failedToLoadMembersMessage);
 
-    this.http
-      .get<ApiResponse<{ totalCount: number; members: Member[] }>>(`${environment.apiBaseUrl}/members`)
+    this.membersService
+      .getMembers()
       .pipe(
-        map((response) => {
-          if (response?.success && Array.isArray(response.data?.members)) {
-            this.totalCount.set(response.data.totalCount ?? 0);
-            return response.data.members;
-          }
-
-          this.totalCount.set(0);
-          this.hasError.set(true);
-          this.errorMessage.set(failedToLoadMembersMessage);
-
-          return [];
-        }),
         catchError(() => {
-          this.totalCount.set(0);
           this.hasError.set(true);
           this.errorMessage.set(failedToLoadMembersMessage);
 
-          return of([]);
+          return of({ members: [] as Member[], totalCount: 0 });
         }),
         finalize(() => this.isLoading.set(false)),
       )
-      .subscribe((members) => {
+      .subscribe(({ members, totalCount }) => {
         this.members.set(members);
+        this.totalCount.set(totalCount);
       });
   }
 
-  protected initials(fullName: string): string {
+  protected getInitials(fullName: string): string {
     return fullName
       .split(' ')
       .filter(Boolean)
