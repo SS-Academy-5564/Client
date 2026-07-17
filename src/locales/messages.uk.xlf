@@ -187,7 +187,163 @@
       <trans-unit id="errorPageGoHome" datatype="html">
         <source>Go home</source>
         <target>На головну</target>
+      </trans-unit>      <trans-unit id="monitorsNewButton" datatype="html">
+        <source>New Monitor</source>
+        <target>Новий монітор</target>
       </trans-unit>
+      <trans-unit id="monitorsDismissSuccess" datatype="html">
+        <source>Dismiss</source>
+        <target>Закрити</target>
+      </trans-unit>
+      <trans-unit id="monitorsCreateSuccess" datatype="html">
+        <source>Monitor &quot;<x id="name" equiv-text="monitor.name"/>&quot; created successfully.</source>
+        <target>Монітор «<x id="name" equiv-text="monitor.name"/>» успішно створено.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.title" datatype="html">
+        <source>New Monitor</source>
+        <target>Новий монітор</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.subtitle" datatype="html">
+        <source>Configure an endpoint to poll for a metric value.</source>
+        <target>Налаштуйте кінцеву точку для опитування значення метрики.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.close" datatype="html">
+        <source>Close</source>
+        <target>Закрити</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.nameLabel" datatype="html">
+        <source>Monitor name</source>
+        <target>Назва монітора</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.namePlaceholder" datatype="html">
+        <source>EUR/USD Rate</source>
+        <target>Курс EUR/USD</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.nameRequired" datatype="html">
+        <source>Monitor name is required.</source>
+        <target>Назва монітора обов’язкова.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.nameMaxLength" datatype="html">
+        <source>Monitor name must be at most 64 characters.</source>
+        <target>Назва монітора має містити щонайбільше 64 символи.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlLabel" datatype="html">
+        <source>Endpoint URL</source>
+        <target>URL кінцевої точки</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.methodLabel" datatype="html">
+        <source>Request method</source>
+        <target>Метод запиту</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlPlaceholder" datatype="html">
+        <source>https://api.example.com/data</source>
+        <target>https://api.example.com/data</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlRequired" datatype="html">
+        <source>Endpoint URL is required.</source>
+        <target>URL кінцевої точки обов’язковий.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.urlMaxLength" datatype="html">
+        <source>Endpoint URL is too long.</source>
+        <target>URL кінцевої точки задовгий.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathLabel" datatype="html">
+        <source>Result path</source>
+        <target>Шлях до значення</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathHint" datatype="html">
+        <source>dot notation</source>
+        <target>крапкова нотація</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathPlaceholder" datatype="html">
+        <source>data.usd.rate</source>
+        <target>data.usd.rate</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathRequired" datatype="html">
+        <source>Result path is required.</source>
+        <target>Шлях до значення обов’язковий.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.resultPathMaxLength" datatype="html">
+        <source>Result path is too long.</source>
+        <target>Шлях до значення задовгий.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.intervalLabel" datatype="html">
+        <source>Polling frequency</source>
+        <target>Частота опитування</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeoutLabel" datatype="html">
+        <source>Timeout</source>
+        <target>Тайм-аут</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.cancel" datatype="html">
+        <source>Cancel</source>
+        <target>Скасувати</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.submit" datatype="html">
+        <source>Create monitor</source>
+        <target>Створити монітор</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.genericError" datatype="html">
+        <source>Failed to create monitor.</source>
+        <target>Не вдалося створити монітор.</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval1Minute" datatype="html">
+        <source>1 minute</source>
+        <target>1 хвилина</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval5Minutes" datatype="html">
+        <source>5 minutes</source>
+        <target>5 хвилин</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval15Minutes" datatype="html">
+        <source>15 minutes</source>
+        <target>15 хвилин</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval30Minutes" datatype="html">
+        <source>30 minutes</source>
+        <target>30 хвилин</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval1Hour" datatype="html">
+        <source>1 hour</source>
+        <target>1 година</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval6Hours" datatype="html">
+        <source>6 hours</source>
+        <target>6 годин</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval12Hours" datatype="html">
+        <source>12 hours</source>
+        <target>12 годин</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.interval24Hours" datatype="html">
+        <source>24 hours</source>
+        <target>24 години</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout5Seconds" datatype="html">
+        <source>5 seconds</source>
+        <target>5 секунд</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout10Seconds" datatype="html">
+        <source>10 seconds</source>
+        <target>10 секунд</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout15Seconds" datatype="html">
+        <source>15 seconds</source>
+        <target>15 секунд</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout20Seconds" datatype="html">
+        <source>20 seconds</source>
+        <target>20 секунд</target>
+      </trans-unit>
+      <trans-unit id="createMonitor.timeout30Seconds" datatype="html">
+        <source>30 seconds</source>
+        <target>30 секунд</target>
+      </trans-unit>      <trans-unit id="createMonitor.closeBackdrop" datatype="html">
+        <source>Close panel</source>
+        <target>Закрити панель</target>
+      </trans-unit>
+
+
     </body>
   </file>
 </xliff>

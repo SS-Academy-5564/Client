@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, map, Observable, tap, throwError } from 'rxjs';
 import { ApiResponse } from '../models/login-model';
-import { MonitorModel } from '../models/monitor-model';
+import { CreateMonitorRequest, MonitorModel } from '../models/monitor-model';
 
 @Injectable({ providedIn: 'root' })
 export class MonitorService {
@@ -25,6 +25,17 @@ export class MonitorService {
         return throwError(() => err);
       }),
       finalize(() => this.isLoading.set(false)),
+    );
+  }
+
+  createMonitor(request: CreateMonitorRequest): Observable<MonitorModel> {
+    return this.http.post<ApiResponse<MonitorModel>>(this.monitorBaseEndpoint, request).pipe(
+      map((response) => {
+        if (!response.data) {
+          throw new Error('Monitor creation returned no data');
+        }
+        return response.data;
+      }),
     );
   }
 
