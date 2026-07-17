@@ -121,13 +121,18 @@ export class MembersComponent {
     this.selectedInvitation.set(invitation);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected handleInviteMember(): void {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected handleEditMemberRole(): void {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected handleRemoveMember(): void {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected handleResendInvitation(): void {}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected handleCancelInvitation(): void {}
 }
