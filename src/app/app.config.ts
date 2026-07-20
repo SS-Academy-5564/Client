@@ -6,13 +6,14 @@ import { routes } from './app.routes';
 import { serverErrorInterceptor } from '@core/interceptors/server-error.interceptor';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { unauthorizedInterceptor } from '@core/interceptors/unauthorized.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor, serverErrorInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, unauthorizedInterceptor, serverErrorInterceptor])),
     importProvidersFrom(
       NgxEchartsModule.forRoot({
         echarts: () => import('echarts'),
