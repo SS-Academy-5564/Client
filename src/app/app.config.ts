@@ -13,7 +13,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor, unauthorizedInterceptor, serverErrorInterceptor])),
+    provideHttpClient(withInterceptors([unauthorizedInterceptor, authInterceptor, serverErrorInterceptor])),
     importProvidersFrom(
       NgxEchartsModule.forRoot({
         echarts: () => import('echarts'),
