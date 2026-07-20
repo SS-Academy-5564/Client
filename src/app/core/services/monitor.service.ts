@@ -1,9 +1,17 @@
 import { environment } from '@/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, map, Observable, tap, throwError } from 'rxjs';
-import { ApiResponse } from '../models/login-model';
-import { CreateMonitorRequest, MonitorModel } from '../models/monitor-model';
+import { ApiResponse } from '@core/models/api-response';
+import { CreateMonitorRequest, MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+
+export type MonitorPage = {
+  items: MonitorModel[];
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+};
 
 @Injectable({ providedIn: 'root' })
 export class MonitorService {
@@ -13,12 +21,30 @@ export class MonitorService {
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
-  getMonitors(): Observable<MonitorModel[]> {
+  getMonitors(pageNumber = 1, pageSize = 10, status: MonitorStatus | null = null): Observable<MonitorPage> {
     this.isLoading.set(true);
     this.clearError();
 
-    return this.http.get<ApiResponse<MonitorModel[]>>(this.monitorBaseEndpoint).pipe(
-      map((response) => response.data ?? []),
+    let params = new HttpParams().set('pageNumber', pageNumber).set('pageSize', pageSize);
+
+    if (status !== null) {
+      params = params.set('status', status);
+    }
+
+    return this.http.get<ApiResponse<MonitorModel[]>>(this.monitorBaseEndpoint, { params }).pipe(
+      map((response) => {
+        if (!Array.isArray(response.data) || !response.pagination) {
+          throw new Error('Invalid paginated monitors response');
+        }
+
+        return {
+          items: response.data,
+          pageNumber: response.pagination.pageNumber,
+          pageSize: response.pagination.pageSize,
+          totalCount: response.pagination.totalCount,
+          totalPages: response.pagination.totalPages,
+        };
+      }),
       tap(() => this.clearError()),
       catchError((err) => {
         this.error.set('Failed to load monitors');

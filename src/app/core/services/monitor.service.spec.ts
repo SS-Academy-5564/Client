@@ -23,7 +23,7 @@ describe('MonitorService', () => {
     httpTesting.verify();
   });
 
-  it('should return monitors from the response data', () => {
+  it('should return monitors with pagination metadata', () => {
     const monitors: MonitorModel[] = [
       {
         id: 'b47c433e-f36b-1410-8416-00a08332bbd7',
@@ -36,12 +36,25 @@ describe('MonitorService', () => {
       },
     ];
 
-    service.getMonitors().subscribe((result) => {
-      expect(result).toEqual(monitors);
+    service.getMonitors(2, 10, MonitorStatus.Enabled).subscribe((result) => {
+      expect(result).toEqual({
+        items: monitors,
+        pageNumber: 2,
+        pageSize: 10,
+        totalCount: 21,
+        totalPages: 3,
+      });
     });
 
-    const request = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors`);
-    request.flush({ data: monitors, pagination: null, success: true, errors: [] });
+    const request = httpTesting.expectOne(
+      `${environment.apiBaseUrl}/monitors?pageNumber=2&pageSize=10&status=${MonitorStatus.Enabled}`,
+    );
+    request.flush({
+      data: monitors,
+      pagination: { pageNumber: 2, pageSize: 10, totalCount: 21, totalPages: 3 },
+      success: true,
+      errors: [],
+    });
 
     expect(service.isLoading()).toBe(false);
     expect(service.error()).toBeNull();

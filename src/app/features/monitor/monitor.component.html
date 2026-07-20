@@ -110,7 +110,11 @@
       </div>
     </div>
 
-    <p class="monitor-count" i18n="@@monitorsCount">{{ monitors().length }} of {{ allMonitors().length }} monitors</p>
+    <footer class="pagination">
+      <p class="monitor-count" i18n="@@monitorsCount">{{ monitors().length }} of {{ totalCount() }} monitors</p>
+
+      <app-pagination [pageNumber]="pageNumber()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)" />
+    </footer>
   </div>
 
   <app-create-monitor-panel [isOpen]="isPanelOpen()" (closed)="onClosePanel()" (created)="onMonitorCreated($event)" />

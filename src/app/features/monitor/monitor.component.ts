@@ -1,40 +1,56 @@
 import { MonitorModel, MonitorStatus } from '@/app/core/models/monitor-model';
 import { MonitorService } from '@/app/core/services/monitor.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
 
 @Component({
   selector: 'app-monitor',
-  imports: [MonitorIntervalPipe, RelativeTimePipe, CreateMonitorPanelComponent],
+  imports: [MonitorIntervalPipe, RelativeTimePipe, CreateMonitorPanelComponent, PaginationComponent],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.scss',
 })
 export class MonitorComponent implements OnInit {
   private readonly monitorService = inject(MonitorService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   protected readonly MonitorStatus = MonitorStatus;
   protected readonly isLoading = this.monitorService.isLoading;
   protected readonly error = this.monitorService.error;
-  protected readonly allMonitors = signal<MonitorModel[]>([]);
+  protected readonly monitors = signal<MonitorModel[]>([]);
   protected readonly selectedStatus = signal<MonitorStatus | null>(null);
+  protected readonly totalCount = signal(0);
+  protected readonly totalPages = signal(0);
   protected readonly isPanelOpen = signal<boolean>(false);
   protected readonly successMessage = signal<string | null>(null);
 
-  protected readonly monitors = computed(() => {
-    const status = this.selectedStatus();
-    return status === null ? this.allMonitors() : this.allMonitors().filter((monitor) => monitor.status === status);
+  private readonly queryParams = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
   });
 
+  protected readonly pageNumber = computed(() => Number(this.queryParams().get('page') ?? 1));
+  protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
+
   ngOnInit(): void {
-    this.monitorService.getMonitors().subscribe({
-      next: (monitors) => this.allMonitors.set(monitors),
-      error: () => this.allMonitors.set([]),
-    });
+    this.loadMonitors(this.pageNumber(), this.pageSize());
   }
 
   onClickStatus(status: MonitorStatus | null): void {
     this.selectedStatus.set(status);
+    this.navigateToPage(1);
+  }
+
+  onPageChange(pageNumber: number): void {
+    if (pageNumber < 1 || pageNumber > this.totalPages() || pageNumber === this.pageNumber()) {
+      return;
+    }
+
+    this.navigateToPage(pageNumber);
   }
 
   onOpenPanel(): void {
@@ -47,12 +63,38 @@ export class MonitorComponent implements OnInit {
   }
 
   onMonitorCreated(monitor: MonitorModel): void {
-    this.allMonitors.update((monitors) => [monitor, ...monitors]);
     this.isPanelOpen.set(false);
     this.successMessage.set($localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`);
+    this.navigateToPage(1);
   }
 
   onDismissSuccess(): void {
     this.successMessage.set(null);
+  }
+
+  private navigateToPage(page: number): void {
+    const pageSize = this.pageSize();
+    this.router
+      .navigate([], {
+        relativeTo: this.route,
+        queryParams: { page, pageSize },
+        queryParamsHandling: 'merge',
+      })
+      .then(() => this.loadMonitors(page, pageSize));
+  }
+
+  private loadMonitors(page: number, pageSize: number): void {
+    this.monitorService.getMonitors(page, pageSize, this.selectedStatus()).subscribe({
+      next: (result) => {
+        this.monitors.set(result.items);
+        this.totalCount.set(result.totalCount);
+        this.totalPages.set(result.totalPages);
+      },
+      error: () => {
+        this.monitors.set([]);
+        this.totalCount.set(0);
+        this.totalPages.set(0);
+      },
+    });
   }
 }
