@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '@/environments/environment';
 import { CreateOrganizationData } from '../models/create-organization-response';
 import { ApiResponse } from '../models/api-response';
+import { DefaultOrganizationResponse } from '../models/default-organization-response';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +19,9 @@ export class OrganizationService {
 
   getMyOrganization(): Observable<ApiResponse<{ organizationId: string }>> {
     return this.http.get<ApiResponse<{ organizationId: string }>>(`${this.apiUrl}/my`);
+  }
+
+  getDefaultOrganization(): Observable<ApiResponse<DefaultOrganizationResponse>> {
+    return this.http.get<ApiResponse<DefaultOrganizationResponse>>(`${this.apiUrl}/default`);
   }
 }
