@@ -24,7 +24,7 @@ export class ToastService {
       duration,
       horizontalPosition: 'end',
       verticalPosition: 'bottom',
-      panelClass: [`toast-${type}`],
+      panelClass: ['pulse-toast', `toast-${type}`],
     });
   }
 }

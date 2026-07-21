@@ -25,7 +25,7 @@ describe('ToastService', () => {
       expect.any(String),
       expect.objectContaining({
         duration: 3_500,
-        panelClass: ['toast-success'],
+        panelClass: ['pulse-toast', 'toast-success'],
       }),
     );
   });
