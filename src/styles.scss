@@ -120,6 +120,24 @@ select {
   color: var(--accent);
 }
 
+.mat-mdc-snack-bar-container.toast-success {
+  --mdc-snackbar-container-color: var(--color-success-bg);
+  --mdc-snackbar-supporting-text-color: var(--color-success-text);
+  --mat-snack-bar-button-color: var(--color-success-text);
+}
+
+.mat-mdc-snack-bar-container.toast-error {
+  --mdc-snackbar-container-color: var(--color-error-bg);
+  --mdc-snackbar-supporting-text-color: var(--color-error-text);
+  --mat-snack-bar-button-color: var(--color-error-text);
+}
+
+.mat-mdc-snack-bar-container.toast-info {
+  --mdc-snackbar-container-color: var(--accent);
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #ffffff;
+}
+
 .page-shell {
   min-height: 100vh;
   display: flex;
