@@ -11,21 +11,4 @@ export const noOrganizationGuard: CanActivateFn = () => {
   const organizationId = tokenStorageService.organizationId();
 
   return organizationId?.toLowerCase() === DEFAULT_ORGANIZATION_ID ? true : router.createUrlTree(['/overview']);
-
-  /*   userService.getMyOrganizations().pipe(
-    map((res) => {
-      const organizations = res.data;
-
-      const organization = organizations.find(
-        (o) => o.organizationId.toLowerCase() !== DEFAULT_ORGANIZATION_ID.toLowerCase(),
-      );
-
-      return organization ? router.createUrlTree(['/overview']) : true;
-    }),
-    catchError(() => {
-      router.navigate(['/login']);
-      return of(false);
-    }),
-  );
-  */
 };
