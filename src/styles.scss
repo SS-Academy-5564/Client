@@ -131,7 +131,7 @@ select {
   max-width: 440px;
 
   .mat-mdc-snackbar-surface {
-    background-color: #ffffff !important;
+    background-color: #ffffff;
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 0;
@@ -141,7 +141,7 @@ select {
   }
 
   .mdc-snackbar__surface {
-    background-color: #ffffff !important;
+    background-color: #ffffff;
     border-left-width: 4px;
     border-left-style: solid;
     padding: 12px 16px;
@@ -189,11 +189,11 @@ select {
   }
 
   .mdc-snackbar__label {
-    color: var(--color-success-text) !important;
+    color: var(--color-success-text);
   }
 
   .mat-mdc-button {
-    color: var(--color-success-text) !important;
+    color: var(--color-success-text);
   }
 }
 
@@ -207,11 +207,11 @@ select {
   }
 
   .mdc-snackbar__label {
-    color: var(--color-error-text) !important;
+    color: var(--color-error-text);
   }
 
   .mat-mdc-button {
-    color: var(--color-error-text) !important;
+    color: var(--color-error-text);
   }
 }
 
@@ -225,11 +225,11 @@ select {
   }
 
   .mdc-snackbar__label {
-    color: var(--color-warning-text) !important;
+    color: var(--color-warning-text);
   }
 
   .mat-mdc-button {
-    color: var(--color-warning-text) !important;
+    color: var(--color-warning-text);
   }
 }
 
@@ -243,11 +243,11 @@ select {
   }
 
   .mdc-snackbar__label {
-    color: var(--accent) !important;
+    color: var(--accent);
   }
 
   .mat-mdc-button {
-    color: var(--accent) !important;
+    color: var(--accent);
   }
 }
 
