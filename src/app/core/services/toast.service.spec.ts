@@ -29,4 +29,34 @@ describe('ToastService', () => {
       }),
     );
   });
+
+  it('should show a warning toast with toast-warning class', () => {
+    const service = TestBed.inject(ToastService);
+
+    service.warning('High memory usage');
+
+    expect(snackBar.open).toHaveBeenCalledWith(
+      'High memory usage',
+      expect.any(String),
+      expect.objectContaining({
+        duration: 4_000,
+        panelClass: ['pulse-toast', 'toast-warning'],
+      }),
+    );
+  });
+
+  it('should show an info toast with toast-info class', () => {
+    const service = TestBed.inject(ToastService);
+
+    service.info('Update available');
+
+    expect(snackBar.open).toHaveBeenCalledWith(
+      'Update available',
+      expect.any(String),
+      expect.objectContaining({
+        duration: 4_000,
+        panelClass: ['pulse-toast', 'toast-info'],
+      }),
+    );
+  });
 });

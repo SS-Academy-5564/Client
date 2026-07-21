@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-type ToastType = 'success' | 'error' | 'info';
+type ToastType = 'success' | 'error' | 'warning' | 'info';
 
 @Injectable({ providedIn: 'root' })
 export class ToastService {
@@ -17,6 +17,10 @@ export class ToastService {
 
   info(message: string): void {
     this.open(message, 'info', 4_000);
+  }
+
+  warning(message: string): void {
+    this.open(message, 'warning', 4_000);
   }
 
   private open(message: string, type: ToastType, duration: number): void {

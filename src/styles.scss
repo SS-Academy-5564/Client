@@ -219,39 +219,39 @@ select {
   }
 }
 
-// Warning — purple text on white card
+// Warning — amber text on white card
 .mat-mdc-snack-bar-container.toast-warning {
-  --mdc-snackbar-supporting-text-color: #7c3aed;
-  --mat-snack-bar-button-color: #7c3aed;
+  --mdc-snackbar-supporting-text-color: var(--color-warning-text);
+  --mat-snack-bar-button-color: var(--color-warning-text);
 
   .mdc-snackbar__surface {
-    border-left-color: #8b5cf6;
+    border-left-color: var(--color-warning-text);
   }
 
   .mdc-snackbar__label {
-    color: #7c3aed !important;
+    color: var(--color-warning-text) !important;
   }
 
   .mat-mdc-button {
-    color: #7c3aed !important;
+    color: var(--color-warning-text) !important;
   }
 }
 
-// Info — yellow/amber text on white card
+// Info — blue/purple text on white card
 .mat-mdc-snack-bar-container.toast-info {
-  --mdc-snackbar-supporting-text-color: #b45309;
-  --mat-snack-bar-button-color: #b45309;
+  --mdc-snackbar-supporting-text-color: var(--accent);
+  --mat-snack-bar-button-color: var(--accent);
 
   .mdc-snackbar__surface {
-    border-left-color: #f59e0b;
+    border-left-color: var(--accent);
   }
 
   .mdc-snackbar__label {
-    color: #b45309 !important;
+    color: var(--accent) !important;
   }
 
   .mat-mdc-button {
-    color: #b45309 !important;
+    color: var(--accent) !important;
   }
 }
 
