@@ -122,11 +122,7 @@ select {
 
 /* ── Toast / Snackbar ───────────────────────────────────────────────────── */
 
-.mat-mdc-snack-bar-container.pulse-toast,
-.mat-mdc-snack-bar-container.toast-success,
-.mat-mdc-snack-bar-container.toast-error,
-.mat-mdc-snack-bar-container.toast-warning,
-.mat-mdc-snack-bar-container.toast-info {
+.mat-mdc-snack-bar-container.pulse-toast {
   --mat-snack-bar-container-color: #ffffff;
   --mdc-snackbar-container-color: #ffffff;
   --mdc-snackbar-container-shape: 12px;
@@ -154,7 +150,7 @@ select {
   }
 
   .mdc-snackbar__label {
-    font-family: 'Inter', Roboto, sans-serif;
+    font-family: Inter, Roboto, sans-serif;
     font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.4;
@@ -168,7 +164,7 @@ select {
   }
 
   .mat-mdc-button {
-    font-family: 'Inter', Roboto, sans-serif;
+    font-family: Inter, Roboto, sans-serif;
     font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.02em;
