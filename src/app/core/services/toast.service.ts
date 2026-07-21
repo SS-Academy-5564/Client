@@ -23,7 +23,7 @@ export class ToastService {
     this.snackBar.open(message, $localize`:@@toast.dismiss:Dismiss`, {
       duration,
       horizontalPosition: 'end',
-      verticalPosition: 'top',
+      verticalPosition: 'bottom',
       panelClass: [`toast-${type}`],
     });
   }

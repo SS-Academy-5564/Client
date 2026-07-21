@@ -120,22 +120,73 @@ select {
   color: var(--accent);
 }
 
+/* ── Toast / Snackbar ───────────────────────────────────────────────────── */
+
+.mat-mdc-snack-bar-container.toast-success,
+.mat-mdc-snack-bar-container.toast-error,
+.mat-mdc-snack-bar-container.toast-info {
+  --mdc-snackbar-container-shape: 10px;
+
+  min-width: 280px;
+  max-width: 420px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  .mat-mdc-snack-bar-surface {
+    border-radius: 10px;
+    padding: 0;
+  }
+
+  .mdc-snackbar__surface {
+    border-left-width: 4px;
+    border-left-style: solid;
+    padding: 14px 16px;
+  }
+
+  .mdc-snackbar__label {
+    font-family: 'Inter', Roboto, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    padding: 0;
+  }
+
+  .mat-mdc-button {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 0 8px;
+    min-width: unset;
+  }
+}
+
 .mat-mdc-snack-bar-container.toast-success {
-  --mdc-snackbar-container-color: var(--color-success-bg);
-  --mdc-snackbar-supporting-text-color: var(--color-success-text);
-  --mat-snack-bar-button-color: var(--color-success-text);
+  --mdc-snackbar-container-color: #f0fdf4;
+  --mdc-snackbar-supporting-text-color: #166534;
+  --mat-snack-bar-button-color: #15803d;
+
+  .mdc-snackbar__surface {
+    border-left-color: #22c55e;
+  }
 }
 
 .mat-mdc-snack-bar-container.toast-error {
-  --mdc-snackbar-container-color: var(--color-error-bg);
-  --mdc-snackbar-supporting-text-color: var(--color-error-text);
-  --mat-snack-bar-button-color: var(--color-error-text);
+  --mdc-snackbar-container-color: #fff1f2;
+  --mdc-snackbar-supporting-text-color: #9f1239;
+  --mat-snack-bar-button-color: #be123c;
+
+  .mdc-snackbar__surface {
+    border-left-color: #f43f5e;
+  }
 }
 
 .mat-mdc-snack-bar-container.toast-info {
-  --mdc-snackbar-container-color: var(--accent);
-  --mdc-snackbar-supporting-text-color: #ffffff;
-  --mat-snack-bar-button-color: #ffffff;
+  --mdc-snackbar-container-color: #fffbeb;
+  --mdc-snackbar-supporting-text-color: #92400e;
+  --mat-snack-bar-button-color: #b45309;
+
+  .mdc-snackbar__surface {
+    border-left-color: #f59e0b;
+  }
 }
 
 .page-shell {
