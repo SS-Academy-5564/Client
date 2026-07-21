@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { MonitorComponent } from './monitor.component';
 import { MonitorService } from '@core/services/monitor.service';
 import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+import { ToastService } from '@core/services/toast.service';
 
 describe('MonitorComponent', () => {
   let component: MonitorComponent;
@@ -46,6 +47,9 @@ describe('MonitorComponent', () => {
     getMonitors: vi.fn().mockReturnValue(of(monitors)),
     createMonitor: vi.fn(),
   };
+  const toastServiceMock = {
+    success: vi.fn(),
+  };
 
   const createdMonitor: MonitorModel = {
     id: 'created-monitor',
@@ -75,6 +79,7 @@ describe('MonitorComponent', () => {
       imports: [MonitorComponent],
       providers: [
         { provide: MonitorService, useValue: monitorServiceMock },
+        { provide: ToastService, useValue: toastServiceMock },
         provideNoopAnimations(),
         provideRouter([]),
       ],
@@ -115,24 +120,11 @@ describe('MonitorComponent', () => {
     expect(panel).not.toBeNull();
   });
 
-  it('prepends the created monitor and shows a success banner', () => {
+  it('prepends the created monitor and shows a success toast', () => {
     component.onMonitorCreated(createdMonitor);
     fixture.detectChanges();
 
     expect(getRenderedMonitorNames()[0]).toBe('Created monitor');
-
-    const banner = (fixture.nativeElement as HTMLElement).querySelector('.success-banner');
-    expect(banner?.textContent).toContain('Created monitor');
-  });
-
-  it('dismisses the success banner', () => {
-    component.onMonitorCreated(createdMonitor);
-    fixture.detectChanges();
-
-    const dismiss = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.success-dismiss');
-    dismiss?.click();
-    fixture.detectChanges();
-
-    expect((fixture.nativeElement as HTMLElement).querySelector('.success-banner')).toBeNull();
+    expect(toastServiceMock.success).toHaveBeenCalledWith('Monitor "Created monitor" created successfully.');
   });
 });

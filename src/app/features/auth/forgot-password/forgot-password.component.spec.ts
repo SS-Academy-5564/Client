@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
+import { ToastService } from '@core/services/toast.service';
 
 type PasswordResetServiceMock = {
   requestCode: ReturnType<typeof vi.fn>;
@@ -19,6 +20,9 @@ describe('ForgotPasswordComponent', () => {
   let component: ForgotPasswordComponent;
   let passwordResetServiceMock: PasswordResetServiceMock;
   let router: Router;
+  const toastServiceMock = {
+    success: vi.fn(),
+  };
 
   beforeEach(async () => {
     passwordResetServiceMock = {
@@ -30,7 +34,11 @@ describe('ForgotPasswordComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [ForgotPasswordComponent, NoopAnimationsModule],
-      providers: [{ provide: PasswordResetService, useValue: passwordResetServiceMock }, provideRouter([])],
+      providers: [
+        { provide: PasswordResetService, useValue: passwordResetServiceMock },
+        { provide: ToastService, useValue: toastServiceMock },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ForgotPasswordComponent);
@@ -81,6 +89,7 @@ describe('ForgotPasswordComponent', () => {
 
     expect(passwordResetServiceMock.requestCode).toHaveBeenCalledTimes(1);
     expect(passwordResetServiceMock.requestCode).toHaveBeenCalledWith('user@company.com');
+    expect(toastServiceMock.success).toHaveBeenCalledWith('Reset code sent.');
     expect(router.navigate).toHaveBeenCalledWith(['/verify-code'], {
       state: { email: 'user@company.com', cooldown: 60 },
     });

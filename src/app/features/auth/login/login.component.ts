@@ -13,6 +13,7 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { AuthService } from '@core/services/auth.service';
 import { LoginRequest } from '@core/models/login-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ import { TokenStorageService } from '@core/services/token-storage.service';
 export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
   protected readonly authService = inject(AuthService);
   private tokenStorage = inject(TokenStorageService);
 
@@ -76,7 +78,7 @@ export class LoginComponent {
 
         this.tokenStorage.setToken(token, expiresAt);
         this.loading.set(false);
-
+        this.toastService.success($localize`:@@login.success:Login successful.`);
         this.router.navigate(['/create-organization']);
       },
       error: () => {

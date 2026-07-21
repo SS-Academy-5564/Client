@@ -7,6 +7,7 @@ import { LoginComponent } from './login.component';
 import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
 import { TokenStorageService } from '@core/services/token-storage.service';
+import { ToastService } from '@core/services/toast.service';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
@@ -14,6 +15,10 @@ type AuthServiceMock = {
 
 const tokenStorageMock = {
   setToken: vi.fn<(token: string, expiresAt: string) => void>(),
+};
+
+const toastServiceMock = {
+  success: vi.fn(),
 };
 
 describe('LoginComponent', () => {
@@ -46,6 +51,7 @@ describe('LoginComponent', () => {
         { provide: AuthService, useValue: authServiceMock },
         { provide: UserService, useValue: userServiceMock },
         { provide: TokenStorageService, useValue: tokenStorageMock },
+        { provide: ToastService, useValue: toastServiceMock },
         provideRouter([]),
       ],
     }).compileComponents();
@@ -124,6 +130,7 @@ describe('LoginComponent', () => {
     component.onSubmit();
 
     expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token', expiresAt);
+    expect(toastServiceMock.success).toHaveBeenCalledWith('Login successful.');
     expect(router.navigate).toHaveBeenCalledWith(['/create-organization']);
   });
 

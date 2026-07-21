@@ -9,6 +9,7 @@ import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
+import { ToastService } from '@core/services/toast.service';
 
 const DEFAULT_COOLDOWN_SECONDS = 60;
 
@@ -31,6 +32,7 @@ const DEFAULT_COOLDOWN_SECONDS = 60;
 export class ForgotPasswordComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
   protected readonly passwordResetService = inject(PasswordResetService);
 
   readonly form = this.fb.group({
@@ -48,6 +50,7 @@ export class ForgotPasswordComponent {
     this.passwordResetService.requestCode(email).subscribe({
       next: (response) => {
         const cooldown = response?.data?.resendCooldownSeconds ?? DEFAULT_COOLDOWN_SECONDS;
+        this.toastService.success($localize`:@@passwordReset.codeSent:Reset code sent.`);
         this.router.navigate(['/verify-code'], { state: { email, cooldown } });
       },
       error: (err) => {

@@ -191,10 +191,6 @@
         <source>New Monitor</source>
         <target>Новий монітор</target>
       </trans-unit>
-      <trans-unit id="monitorsDismissSuccess" datatype="html">
-        <source>Dismiss</source>
-        <target>Закрити</target>
-      </trans-unit>
       <trans-unit id="monitorsCreateSuccess" datatype="html">
         <source>Monitor &quot;<x id="name" equiv-text="monitor.name"/>&quot; created successfully.</source>
         <target>Монітор «<x id="name" equiv-text="monitor.name"/>» успішно створено.</target>
@@ -342,8 +338,30 @@
         <source>Close panel</source>
         <target>Закрити панель</target>
       </trans-unit>
-
-
+      <trans-unit id="toast.dismiss" datatype="html">
+        <source>Dismiss</source>
+        <target>Закрити</target>
+      </trans-unit>
+      <trans-unit id="passwordReset.codeSent" datatype="html">
+        <source>Reset code sent.</source>
+        <target>Код для скидання пароля надіслано.</target>
+      </trans-unit>
+      <trans-unit id="login.success" datatype="html">
+        <source>Login successful.</source>
+        <target>Вхід виконано успішно.</target>
+      </trans-unit>
+      <trans-unit id="register.success" datatype="html">
+        <source>Registration successful. You can now log in.</source>
+        <target>Реєстрацію завершено. Тепер ви можете увійти.</target>
+      </trans-unit>
+      <trans-unit id="passwordReset.codeResent" datatype="html">
+        <source>A new reset code was sent.</source>
+        <target>Новий код для скидання пароля надіслано.</target>
+      </trans-unit>
+      <trans-unit id="newOrganization.success" datatype="html">
+        <source>Organization created successfully.</source>
+        <target>Організацію успішно створено.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
