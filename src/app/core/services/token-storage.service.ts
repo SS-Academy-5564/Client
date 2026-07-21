@@ -6,6 +6,7 @@ type TokenUser = {
   fullName: string | null;
   email: string | null;
   organization: string | null;
+  organizationId: string | null;
   role: string | null;
   subject: string | null;
 };
@@ -37,6 +38,8 @@ export class TokenStorageService {
 
     this.setToken(savedToken, savedExpiry);
   }
+
+  readonly organizationId = computed(() => this.decodedUser()?.organizationId ?? null);
 
   readonly isAuthenticated = computed(() => {
     const token = this.token();
@@ -188,6 +191,16 @@ export class TokenStorageService {
       'tenant',
       'tenant_name',
     ]);
+    const organizationId = this.readStringClaim(payload, [
+      'organization_id',
+      'organizationId',
+      'org_id',
+      'orgId',
+      'company_id',
+      'companyId',
+      'tenant_id',
+      'tenantId',
+    ]);
     const role = this.readRoleClaim(payload, ['role', 'roles']);
     const subject = this.readStringClaim(payload, ['sub']);
 
@@ -201,6 +214,7 @@ export class TokenStorageService {
       fullName,
       email,
       organization,
+      organizationId,
       role,
       subject,
     };
