@@ -1,5 +1,6 @@
 import { MonitorModel, MonitorStatus } from '@/app/core/models/monitor-model';
 import { MonitorService } from '@/app/core/services/monitor.service';
+import { ToastService } from '@core/services/toast.service';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
@@ -13,13 +14,13 @@ import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-pan
 })
 export class MonitorComponent implements OnInit {
   private readonly monitorService = inject(MonitorService);
+  private readonly toastService = inject(ToastService);
   protected readonly MonitorStatus = MonitorStatus;
   protected readonly isLoading = this.monitorService.isLoading;
   protected readonly error = this.monitorService.error;
   protected readonly allMonitors = signal<MonitorModel[]>([]);
   protected readonly selectedStatus = signal<MonitorStatus | null>(null);
   protected readonly isPanelOpen = signal<boolean>(false);
-  protected readonly successMessage = signal<string | null>(null);
 
   protected readonly monitors = computed(() => {
     const status = this.selectedStatus();
@@ -38,7 +39,6 @@ export class MonitorComponent implements OnInit {
   }
 
   onOpenPanel(): void {
-    this.successMessage.set(null);
     this.isPanelOpen.set(true);
   }
 
@@ -49,10 +49,8 @@ export class MonitorComponent implements OnInit {
   onMonitorCreated(monitor: MonitorModel): void {
     this.allMonitors.update((monitors) => [monitor, ...monitors]);
     this.isPanelOpen.set(false);
-    this.successMessage.set($localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`);
-  }
-
-  onDismissSuccess(): void {
-    this.successMessage.set(null);
+    this.toastService.success(
+      $localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`,
+    );
   }
 }

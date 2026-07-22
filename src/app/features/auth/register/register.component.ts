@@ -13,6 +13,7 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { AuthService } from '@core/services/auth.service';
 import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
+import { ToastService } from '@core/services/toast.service';
 
 @Component({
   selector: 'app-register',
@@ -35,6 +36,7 @@ import { passwordMatchValidator } from '@shared/validators/password-match.valida
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
   protected readonly authService = inject(AuthService);
 
   protected readonly hidePassword = signal<boolean>(true);
@@ -88,6 +90,7 @@ export class RegisterComponent {
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => {
+        this.toastService.success($localize`:@@register.success:Registration successful. You can now log in.`);
         this.router.navigate(['/login']);
       },
       error: (err) => {

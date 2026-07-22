@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { VerifyCodeComponent } from './verify-code.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
+import { ToastService } from '@core/services/toast.service';
 
 type PasswordResetServiceMock = {
   verifyCode: ReturnType<typeof vi.fn>;
@@ -20,6 +21,9 @@ describe('VerifyCodeComponent', () => {
   let component: VerifyCodeComponent;
   let passwordResetServiceMock: PasswordResetServiceMock;
   let router: Router;
+  const toastServiceMock = {
+    success: vi.fn(),
+  };
 
   beforeEach(async () => {
     vi.useFakeTimers();
@@ -36,7 +40,11 @@ describe('VerifyCodeComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [VerifyCodeComponent, NoopAnimationsModule],
-      providers: [{ provide: PasswordResetService, useValue: passwordResetServiceMock }, provideRouter([])],
+      providers: [
+        { provide: PasswordResetService, useValue: passwordResetServiceMock },
+        { provide: ToastService, useValue: toastServiceMock },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(VerifyCodeComponent);
@@ -126,6 +134,7 @@ describe('VerifyCodeComponent', () => {
     expect(passwordResetServiceMock.requestCode).toHaveBeenCalledWith('user@company.com');
     expect(component['resendDisabled']()).toBe(true);
     expect(component['resendCountdown']()).toBe(60);
+    expect(toastServiceMock.success).toHaveBeenCalledWith('A new reset code was sent.');
 
     component.ngOnDestroy();
   });

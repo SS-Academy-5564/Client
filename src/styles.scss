@@ -120,6 +120,137 @@ select {
   color: var(--accent);
 }
 
+/* ── Toast / Snackbar ───────────────────────────────────────────────────── */
+
+.mat-mdc-snack-bar-container.pulse-toast {
+  --mat-snack-bar-container-color: #ffffff;
+  --mdc-snackbar-container-color: #ffffff;
+  --mdc-snackbar-container-shape: 12px;
+
+  min-width: 300px;
+  max-width: 440px;
+
+  .mat-mdc-snackbar-surface {
+    background-color: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0;
+    box-shadow:
+      0 10px 25px -5px rgba(15, 23, 42, 0.1),
+      0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  }
+
+  .mdc-snackbar__surface {
+    background-color: #ffffff;
+    border-left-width: 4px;
+    border-left-style: solid;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+  }
+
+  .mdc-snackbar__label {
+    font-family: Inter, Roboto, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+    padding: 0;
+  }
+
+  .mat-mdc-snack-bar-actions {
+    margin-left: auto;
+    padding-left: 12px;
+  }
+
+  .mat-mdc-button {
+    font-family: Inter, Roboto, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+    min-width: unset;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: rgba(15, 23, 42, 0.05);
+    }
+  }
+}
+
+// Success — green text on white card
+.mat-mdc-snack-bar-container.toast-success {
+  --mdc-snackbar-supporting-text-color: var(--color-success-text);
+  --mat-snack-bar-button-color: var(--color-success-text);
+
+  .mdc-snackbar__surface {
+    border-left-color: #16a34a;
+  }
+
+  .mdc-snackbar__label {
+    color: var(--color-success-text);
+  }
+
+  .mat-mdc-button {
+    color: var(--color-success-text);
+  }
+}
+
+// Error — red text on white card
+.mat-mdc-snack-bar-container.toast-error {
+  --mdc-snackbar-supporting-text-color: var(--color-error-text);
+  --mat-snack-bar-button-color: var(--color-error-text);
+
+  .mdc-snackbar__surface {
+    border-left-color: #ef4444;
+  }
+
+  .mdc-snackbar__label {
+    color: var(--color-error-text);
+  }
+
+  .mat-mdc-button {
+    color: var(--color-error-text);
+  }
+}
+
+// Warning — amber text on white card
+.mat-mdc-snack-bar-container.toast-warning {
+  --mdc-snackbar-supporting-text-color: var(--color-warning-text);
+  --mat-snack-bar-button-color: var(--color-warning-text);
+
+  .mdc-snackbar__surface {
+    border-left-color: var(--color-warning-text);
+  }
+
+  .mdc-snackbar__label {
+    color: var(--color-warning-text);
+  }
+
+  .mat-mdc-button {
+    color: var(--color-warning-text);
+  }
+}
+
+// Info — blue/purple text on white card
+.mat-mdc-snack-bar-container.toast-info {
+  --mdc-snackbar-supporting-text-color: var(--accent);
+  --mat-snack-bar-button-color: var(--accent);
+
+  .mdc-snackbar__surface {
+    border-left-color: var(--accent);
+  }
+
+  .mdc-snackbar__label {
+    color: var(--accent);
+  }
+
+  .mat-mdc-button {
+    color: var(--accent);
+  }
+}
+
 .page-shell {
   min-height: 100vh;
   display: flex;
