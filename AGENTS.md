@@ -145,14 +145,18 @@ npm run build          # lint-check + prettier-check + ng build (CI's build gate
   a reader cannot infer from the code itself. Do not restate *what* the code
   does, do not add section banners, and do not leave TODO/task-tracking
   comments.
-* **TSDoc/JSDoc comments (`/** … */`) are the exception** — they document API
-  surface for tooling and IDE tooltips and are not "what" comments. They are
-  allowed, but when you write one it must be **complete**: a summary line that
-  describes the function/method's purpose *and* a `@param` for every
-  parameter, a `@returns` when it returns a value, and a `@throws` for each
-  error it can throw. Partial doc comments (summary only, or documenting some
-  parameters but not others) are worse than no doc comment — either write the
-  full block or omit it entirely.
+* **TSDoc/JSDoc comments (`/** … */`) are required on every exported
+  symbol** — exported functions, classes, types, constants — and on every
+  non-private member (property, method, `input()`, `output()`, signal) of an
+  exported class, because they document API surface for tooling and IDE
+  tooltips. They are not "what" comments and are not covered by the rule
+  above. Each block must be **complete**: a summary line describing the
+  purpose, a `@param` for every parameter, a `@returns` when a value is
+  returned, and a `@throws` for each error that can be thrown. Partial doc
+  comments (summary only, or documenting some parameters but not others) are
+  not acceptable. Purely internal (non-exported, or `private`) symbols do not
+  require doc comments, but if you add one it must be complete under the same
+  rules.
 * After making changes, **offer to verify** them end-to-end (build, lint,
   tests, or the affected flow) before the user commits.
 * Once verification passes with no issues, **give the user a ready-to-use pull
