@@ -1,7 +1,7 @@
 import { MonitorModel, MonitorStatus } from '@/app/core/models/monitor-model';
 import { MonitorService } from '@/app/core/services/monitor.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
@@ -14,7 +14,7 @@ import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-pan
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.scss',
 })
-export class MonitorComponent implements OnInit {
+export class MonitorComponent {
   private readonly monitorService = inject(MonitorService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -36,13 +36,17 @@ export class MonitorComponent implements OnInit {
   protected readonly pageNumber = computed(() => Number(this.queryParams().get('page') ?? 1));
   protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
 
-  ngOnInit(): void {
-    this.loadMonitors(this.pageNumber(), this.pageSize());
+  constructor() {
+    effect(() => {
+      this.loadMonitors(this.pageNumber(), this.pageSize());
+    });
   }
 
   onClickStatus(status: MonitorStatus | null): void {
     this.selectedStatus.set(status);
-    this.navigateToPage(1);
+    if (this.pageNumber() !== 1) {
+      this.navigateToPage(1);
+    }
   }
 
   onPageChange(pageNumber: number): void {
@@ -74,13 +78,11 @@ export class MonitorComponent implements OnInit {
 
   private navigateToPage(page: number): void {
     const pageSize = this.pageSize();
-    this.router
-      .navigate([], {
-        relativeTo: this.route,
-        queryParams: { page, pageSize },
-        queryParamsHandling: 'merge',
-      })
-      .then(() => this.loadMonitors(page, pageSize));
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page, pageSize, },
+      queryParamsHandling: 'merge',
+    });
   }
 
   private loadMonitors(page: number, pageSize: number): void {
