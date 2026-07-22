@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { environment } from '@/environments/environment';
-import { CreateOrganizationData } from '../models/create-organization-response';
-import { ApiResponse } from '../models/api-response';
-import { DefaultOrganizationResponse } from '../models/default-organization-response';
+import { CreateOrganizationData } from '@core/models/create-organization-response';
+import { ApiResponse } from '@core/models/api-response';
+import { DefaultOrganizationResponse } from '@core/models/default-organization-response';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class OrganizationService {
   getDefaultOrganizationId(): Observable<string> {
     if (!this.defaultOrganizationId$) {
       this.defaultOrganizationId$ = this.getDefaultOrganization().pipe(
-        map((response) => response.data.defaultOrganizationId),
+        map((response): string => response.data.defaultOrganizationId),
         shareReplay({ bufferSize: 1, refCount: false }),
       );
     }
