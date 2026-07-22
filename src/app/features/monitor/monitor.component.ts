@@ -80,7 +80,7 @@ export class MonitorComponent {
     const pageSize = this.pageSize();
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { page, pageSize, },
+      queryParams: { page, pageSize },
       queryParamsHandling: 'merge',
     });
   }
