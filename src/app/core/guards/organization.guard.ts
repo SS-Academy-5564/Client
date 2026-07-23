@@ -1,16 +1,22 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { DEFAULT_ORGANIZATION_ID } from '@constants/organization.constants';
+import { map } from 'rxjs/operators';
 import { CanActivateFn } from '@angular/router';
-import { TokenStorageService } from '../services/token-storage.service';
+import { TokenStorageService } from '@core/services/token-storage.service';
+import { OrganizationService } from '@core/services/organization.service';
+import { UrlTree } from '@angular/router';
 
 export const organizationGuard: CanActivateFn = () => {
   const router = inject(Router);
   const tokenStorageService = inject(TokenStorageService);
+  const organizationService = inject(OrganizationService);
 
-  const organizationId = tokenStorageService.organizationId();
-
-  return organizationId?.toLowerCase() !== DEFAULT_ORGANIZATION_ID.toLowerCase()
-    ? true
-    : router.createUrlTree(['/create-organization']);
+  return organizationService.getDefaultOrganizationId().pipe(
+    map((defaultOrganizationId): boolean | UrlTree => {
+      const organizationId = tokenStorageService.organizationId();
+      return organizationId?.toLowerCase() !== defaultOrganizationId.toLowerCase()
+        ? true
+        : router.createUrlTree(['/create-organization']);
+    }),
+  );
 };
