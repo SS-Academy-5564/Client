@@ -66,7 +66,7 @@ export class ResetPasswordComponent implements OnInit {
     const state = history.state as { resetToken?: string };
 
     if (!state?.resetToken) {
-      this.router.navigate(['/forgot-password']);
+      this.router.navigate([ROUTES.FORGOT_PASSWORD]);
       return;
     }
 

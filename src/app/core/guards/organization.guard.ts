@@ -5,7 +5,7 @@ import { CanActivateFn } from '@angular/router';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { OrganizationService } from '@core/services/organization.service';
 import { UrlTree } from '@angular/router';
-import { ROUTES } from '../constants/route.constants';
+import { ROUTES } from '@core/constants/route.constants';
 
 export const organizationGuard: CanActivateFn = () => {
   const router = inject(Router);

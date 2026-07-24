@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { signal } from '@angular/core';
 import { authenticatedGuard } from './authenticated-guard';
 import { TokenStorageService } from '../services/token-storage.service';
-import { ROUTES } from '../constants/route.constants';
+import { ROUTES } from '@core/constants/route.constants';
 
 describe('authenticatedGuard', () => {
   let router: Router;

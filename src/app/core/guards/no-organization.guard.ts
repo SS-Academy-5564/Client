@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { OrganizationService } from '../services/organization.service';
 import { UrlTree } from '@angular/router';
-import { ROUTES } from '../constants/route.constants';
+import { ROUTES } from '@core/constants/route.constants';
 
 export const noOrganizationGuard: CanActivateFn = () => {
   const router = inject(Router);
