@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, UrlTree } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { signal } from '@angular/core';
-
 import { authenticatedGuard } from './authenticated-guard';
 import { TokenStorageService } from '../services/token-storage.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 describe('authenticatedGuard', () => {
   let router: Router;
@@ -41,6 +41,6 @@ describe('authenticatedGuard', () => {
     const result = TestBed.runInInjectionContext(() => authenticatedGuard(null as never, null as never));
 
     expect(result).toBeInstanceOf(UrlTree);
-    expect(createUrlTreeSpy).toHaveBeenCalledWith(['/login']);
+    expect(createUrlTreeSpy).toHaveBeenCalledWith([ROUTES.LOGIN]);
   });
 });

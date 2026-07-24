@@ -3,10 +3,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
-
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
@@ -106,7 +106,7 @@ describe('RegisterComponent', () => {
       confirmPassword: 'StrongPassw0rd!',
     });
     expect(toastServiceMock.success).toHaveBeenCalledWith('Registration successful. You can now log in.');
-    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.LOGIN]);
   });
 
   it('should display the registration error', () => {

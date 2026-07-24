@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { VerifyCodeComponent } from './verify-code.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 type PasswordResetServiceMock = {
   verifyCode: ReturnType<typeof vi.fn>;
@@ -65,7 +66,7 @@ describe('VerifyCodeComponent', () => {
   it('should redirect to forgot-password if email state is missing', () => {
     history.pushState({}, ''); // clear state
     component.ngOnInit();
-    expect(router.navigate).toHaveBeenCalledWith(['/forgot-password']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.FORGOT_PASSWORD]);
   });
 
   it('should set email from history state and start timer', () => {
@@ -102,7 +103,7 @@ describe('VerifyCodeComponent', () => {
     component.onSubmit();
 
     expect(passwordResetServiceMock.verifyCode).toHaveBeenCalledWith('user@company.com', '123456');
-    expect(router.navigate).toHaveBeenCalledWith(['/reset-password'], { state: { resetToken: mockToken } });
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.RESET_PASSWORD], { state: { resetToken: mockToken } });
   });
 
   it('should handle API errors by calling passwordResetService.setError on submit', () => {

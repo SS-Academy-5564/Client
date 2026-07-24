@@ -3,10 +3,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { provideRouter, Router } from '@angular/router';
 import { signal } from '@angular/core';
 import { of } from 'rxjs';
-
 import { HeaderComponent } from './header.component';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { AuthService } from '@core/services/auth.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -109,7 +109,7 @@ describe('HeaderComponent', () => {
 
     component.onLogout();
     expect(authServiceMock.logout).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.LOGIN]);
   });
 
   it('should show default user values when backend me data is missing', () => {

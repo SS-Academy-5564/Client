@@ -12,6 +12,7 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { OrganizationService } from '@core/services/organization.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 @Component({
   selector: 'app-create-organization',
@@ -63,7 +64,7 @@ export class CreateOrganizationComponent {
         this.tokenStorage.setToken(res.data.accessToken);
         this.toastService.success($localize`:@@newOrganization.success:Organization created successfully.`);
 
-        this.router.navigate(['/overview']);
+        this.router.navigate([ROUTES.OVERVIEW]);
       },
       error: () => {
         this.loading = false;

@@ -10,6 +10,7 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 const DEFAULT_COOLDOWN_SECONDS = 60;
 
@@ -51,7 +52,7 @@ export class ForgotPasswordComponent {
       next: (response) => {
         const cooldown = response?.data?.resendCooldownSeconds ?? DEFAULT_COOLDOWN_SECONDS;
         this.toastService.success($localize`:@@passwordReset.codeSent:Reset code sent.`);
-        this.router.navigate(['/verify-code'], { state: { email, cooldown } });
+        this.router.navigate([ROUTES.VERIFY_CODE], { state: { email, cooldown } });
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? 'Failed to send reset code. Please try again.';

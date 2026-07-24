@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { ResetPasswordComponent } from './reset-password.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 type PasswordResetServiceMock = {
   resetPassword: ReturnType<typeof vi.fn>;
@@ -47,7 +48,7 @@ describe('ResetPasswordComponent', () => {
   it('should redirect to forgot-password if resetToken state is missing', () => {
     history.pushState({}, ''); // clear state
     component.ngOnInit();
-    expect(router.navigate).toHaveBeenCalledWith(['/forgot-password']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.FORGOT_PASSWORD]);
   });
 
   it('should initialize with empty password controls', () => {
@@ -119,7 +120,7 @@ describe('ResetPasswordComponent', () => {
       'ValidPass123',
       'ValidPass123',
     );
-    expect(router.navigate).toHaveBeenCalledWith(['/reset-success']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.RESET_SUCCESS]);
   });
 
   it('should handle API errors by calling passwordResetService.setError', () => {

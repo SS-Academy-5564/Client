@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 describe('CreateOrganizationComponent', () => {
   let component: CreateOrganizationComponent;
@@ -81,7 +82,7 @@ describe('CreateOrganizationComponent', () => {
     expect(orgServiceMock.createOrganization).toHaveBeenCalledWith('Valid Org');
     expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token123');
     expect(toastServiceMock.success).toHaveBeenCalledWith('Organization created successfully.');
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/overview']);
+    expect(routerMock.navigate).toHaveBeenCalledWith([ROUTES.OVERVIEW]);
   });
 
   it('should set error message on failure', () => {

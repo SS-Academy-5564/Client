@@ -8,6 +8,7 @@ import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
@@ -131,7 +132,7 @@ describe('LoginComponent', () => {
 
     expect(tokenStorageMock.setToken).toHaveBeenCalledWith('token', expiresAt);
     expect(toastServiceMock.success).toHaveBeenCalledWith('Login successful.');
-    expect(router.navigate).toHaveBeenCalledWith(['/create-organization']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.CREATE_ORGANIZATION]);
   });
 
   it('should set error message when login fails', () => {

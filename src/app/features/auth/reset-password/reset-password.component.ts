@@ -12,6 +12,7 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
+import { ROUTES } from '@core/constants/route.constants';
 
 @Component({
   selector: 'app-reset-password',
@@ -65,7 +66,7 @@ export class ResetPasswordComponent implements OnInit {
     const state = history.state as { resetToken?: string };
 
     if (!state?.resetToken) {
-      this.router.navigate(['/forgot-password']);
+      this.router.navigate([ROUTES.FORGOT_PASSWORD]);
       return;
     }
 
@@ -92,7 +93,7 @@ export class ResetPasswordComponent implements OnInit {
 
     this.passwordResetService.resetPassword(this.resetToken, password!, confirmPassword!).subscribe({
       next: () => {
-        this.router.navigate(['/reset-success']);
+        this.router.navigate([ROUTES.RESET_SUCCESS]);
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? 'Failed to reset password. Please try again.';
