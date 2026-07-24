@@ -18,6 +18,8 @@ describe('TokenStorageService', () => {
   let service: TokenStorageService;
 
   beforeEach(() => {
+    localStorage.clear();
+
     TestBed.configureTestingModule({
       providers: [TokenStorageService],
     });
