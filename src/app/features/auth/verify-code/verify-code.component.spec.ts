@@ -155,7 +155,7 @@ describe('VerifyCodeComponent', () => {
     expect(mockClipboardEvent.preventDefault).toHaveBeenCalled();
     expect(component['codeDigits']()).toEqual(['1', '2', '3', '4', '5', '6']);
     expect(component['codeInputs']()).toHaveLength(6);
-    expect(Array.from(inputs, (input) => input.value)).toEqual(['1', '2', '3', '4', '5', '6']);
+    expect(Array.from(inputs, (input): string => input.value)).toEqual(['1', '2', '3', '4', '5', '6']);
     expect(document.activeElement).toBe(inputs[5]);
   });
 });
