@@ -14,6 +14,7 @@ import { AuthService } from '@core/services/auth.service';
 import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 @Component({
   selector: 'app-register',
@@ -91,7 +92,7 @@ export class RegisterComponent {
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => {
         this.toastService.success($localize`:@@register.success:Registration successful. You can now log in.`);
-        this.router.navigate(['/login']);
+        this.router.navigate([ROUTES.LOGIN]);
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';

@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { ForgotPasswordComponent } from './forgot-password.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 type PasswordResetServiceMock = {
   requestCode: ReturnType<typeof vi.fn>;
@@ -90,7 +91,7 @@ describe('ForgotPasswordComponent', () => {
     expect(passwordResetServiceMock.requestCode).toHaveBeenCalledTimes(1);
     expect(passwordResetServiceMock.requestCode).toHaveBeenCalledWith('user@company.com');
     expect(toastServiceMock.success).toHaveBeenCalledWith('Reset code sent.');
-    expect(router.navigate).toHaveBeenCalledWith(['/verify-code'], {
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.VERIFY_CODE], {
       state: { email: 'user@company.com', cooldown: 60 },
     });
   });

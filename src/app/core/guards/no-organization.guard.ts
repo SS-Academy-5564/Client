@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { OrganizationService } from '../services/organization.service';
 import { UrlTree } from '@angular/router';
+import { ROUTES } from '../constants/route.constants';
 
 export const noOrganizationGuard: CanActivateFn = () => {
   const router = inject(Router);
@@ -16,7 +17,7 @@ export const noOrganizationGuard: CanActivateFn = () => {
       const organizationId = tokenStorageService.organizationId();
       return organizationId?.toLowerCase() === defaultOrganizationId.toLowerCase()
         ? true
-        : router.createUrlTree(['/overview']);
+        : router.createUrlTree([ROUTES.OVERVIEW]);
     }),
   );
 };

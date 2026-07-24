@@ -9,6 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '@core/services/auth.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 @Component({
   selector: 'app-header',
@@ -42,6 +43,6 @@ export class HeaderComponent {
 
   onLogout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate([ROUTES.LOGIN]);
   }
 }

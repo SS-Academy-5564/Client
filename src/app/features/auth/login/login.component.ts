@@ -14,6 +14,7 @@ import { AuthService } from '@core/services/auth.service';
 import { LoginRequest } from '@core/models/login-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 @Component({
   selector: 'app-login',
@@ -79,7 +80,7 @@ export class LoginComponent {
         this.tokenStorage.setToken(token, expiresAt);
         this.loading.set(false);
         this.toastService.success($localize`:@@login.success:Login successful.`);
-        this.router.navigate(['/create-organization']);
+        this.router.navigate([ROUTES.CREATE_ORGANIZATION]);
       },
       error: () => {
         this.loading.set(false);

@@ -8,6 +8,7 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
 import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 const DEFAULT_COOLDOWN_SECONDS = 60;
 const CODE_LENGTH = 6;
@@ -45,7 +46,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
     const state = history.state as { email?: string; cooldown?: number };
 
     if (!state?.email) {
-      this.router.navigate(['/forgot-password']);
+      this.router.navigate([ROUTES.FORGOT_PASSWORD]);
       return;
     }
 
@@ -148,7 +149,7 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.isSubmitting.set(false);
         if (response?.data?.resetToken) {
-          this.router.navigate(['/reset-password'], {
+          this.router.navigate([ROUTES.RESET_PASSWORD], {
             state: { resetToken: response.data.resetToken },
           });
         } else {
