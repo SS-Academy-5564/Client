@@ -1,35 +1,35 @@
-@switch (type) {
+@switch (type()) {
   @case ('primary') {
     <button
       mat-raised-button
-      [class.full-width]="variant === 'full-width'"
-      [class.nav-button]="variant === 'nav'"
-      [disabled]="disabled"
-      [routerLink]="routerLink"
-      [type]="buttonType">
-      {{ label }}
+      [class.full-width]="variant() === 'full-width'"
+      [class.nav-button]="variant() === 'nav'"
+      [disabled]="disabled()"
+      [routerLink]="routerLink()"
+      [type]="buttonType()">
+      {{ label() }}
     </button>
   }
   @case ('secondary') {
     <button
       mat-stroked-button
-      [class.full-width]="variant === 'full-width'"
-      [class.nav-button]="variant === 'nav'"
-      [disabled]="disabled"
-      [routerLink]="routerLink"
-      [type]="buttonType">
-      {{ label }}
+      [class.full-width]="variant() === 'full-width'"
+      [class.nav-button]="variant() === 'nav'"
+      [disabled]="disabled()"
+      [routerLink]="routerLink()"
+      [type]="buttonType()">
+      {{ label() }}
     </button>
   }
   @default {
     <button
       mat-button
-      [class.full-width]="variant === 'full-width'"
-      [class.nav-button]="variant === 'nav'"
-      [disabled]="disabled"
-      [routerLink]="routerLink"
-      [type]="buttonType">
-      {{ label }}
+      [class.full-width]="variant() === 'full-width'"
+      [class.nav-button]="variant() === 'nav'"
+      [disabled]="disabled()"
+      [routerLink]="routerLink()"
+      [type]="buttonType()">
+      {{ label() }}
     </button>
   }
 }
