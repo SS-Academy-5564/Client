@@ -146,7 +146,7 @@ describe('MonitorComponent', () => {
     expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining(createdMonitor.name));
   });
 
-  it('navigates to page 1 with new page size on page size change', () => {
+  it('navigates to page 1 with new page size on page size change', (): void => {
     const router = TestBed.inject(Router);
     const spy = vi.spyOn(router, 'navigate');
 
