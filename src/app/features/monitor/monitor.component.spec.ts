@@ -137,10 +137,12 @@ describe('MonitorComponent', () => {
   it('closes panel and shows toast notification when a monitor is created', () => {
     component.onOpenPanel();
     fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.panel')).not.toBeNull();
 
     component.onMonitorCreated(createdMonitor);
     fixture.detectChanges();
 
-    expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining('Created monitor'));
+    expect((fixture.nativeElement as HTMLElement).querySelector('.panel')).toBeNull();
+    expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining(createdMonitor.name));
   });
 });
