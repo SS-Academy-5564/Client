@@ -3,6 +3,7 @@ import { MonitorService } from '@/app/core/services/monitor.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { ToastService } from '@core/services/toast.service';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
@@ -38,8 +39,11 @@ export class MonitorComponent {
   protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
 
   constructor() {
-    effect(() => {
-      this.loadMonitors(this.pageNumber(), this.pageSize());
+    effect((onCleanup) => {
+      const subscription = this.loadMonitors(this.pageNumber(), this.pageSize());
+      onCleanup(() => {
+        subscription.unsubscribe();
+      });
     });
   }
 
@@ -83,8 +87,8 @@ export class MonitorComponent {
     });
   }
 
-  private loadMonitors(page: number, pageSize: number): void {
-    this.monitorService.getMonitors(page, pageSize, this.selectedStatus()).subscribe({
+  private loadMonitors(page: number, pageSize: number): Subscription {
+    return this.monitorService.getMonitors(page, pageSize, this.selectedStatus()).subscribe({
       next: (result) => {
         this.monitors.set(result.items);
         this.totalCount.set(result.totalCount);

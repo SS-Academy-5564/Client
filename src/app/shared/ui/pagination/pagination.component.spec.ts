@@ -1,38 +1,45 @@
+import { Component, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PaginationComponent } from './pagination.component';
 
+@Component({
+  imports: [PaginationComponent],
+  template: `
+    <app-pagination [pageNumber]="pageNumber()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)" />
+  `,
+})
+class TestHostComponent {
+  readonly pageNumber = signal(1);
+  readonly totalPages = signal(1);
+  readonly onPageChange = vi.fn();
+}
+
 describe('PaginationComponent', () => {
-  let component: PaginationComponent;
-  let fixture: ComponentFixture<PaginationComponent>;
+  let host: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaginationComponent],
+      imports: [TestHostComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PaginationComponent);
-    component = fixture.componentInstance;
+    fixture = TestBed.createComponent(TestHostComponent);
+    host = fixture.componentInstance;
     setPagination(2, 3);
     fixture.detectChanges();
   });
 
   it('emits the previous page', () => {
-    const pageChange = vi.fn();
-    component.pageChange.subscribe(pageChange);
-
     getButtons()[0].click();
 
-    expect(pageChange).toHaveBeenCalledWith(1);
+    expect(host.onPageChange).toHaveBeenCalledWith(1);
   });
 
   it('emits the next page', () => {
-    const pageChange = vi.fn();
-    component.pageChange.subscribe(pageChange);
-
     getButtons()[1].click();
 
-    expect(pageChange).toHaveBeenCalledWith(3);
+    expect(host.onPageChange).toHaveBeenCalledWith(3);
   });
 
   it('disables navigation at the page boundaries', () => {
@@ -57,8 +64,8 @@ describe('PaginationComponent', () => {
   });
 
   function setPagination(pageNumber: number, totalPages: number): void {
-    fixture.componentRef.setInput('pageNumber', pageNumber);
-    fixture.componentRef.setInput('totalPages', totalPages);
+    host.pageNumber.set(pageNumber);
+    host.totalPages.set(totalPages);
   }
 
   function getButtons(): HTMLButtonElement[] {
