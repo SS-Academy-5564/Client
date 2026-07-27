@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
+import { ToastService } from '@core/services/toast.service';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
@@ -19,6 +20,7 @@ export class MonitorComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  private readonly toastService = inject(ToastService);
   protected readonly MonitorStatus = MonitorStatus;
   protected readonly isLoading = this.monitorService.isLoading;
   protected readonly error = this.monitorService.error;
@@ -27,7 +29,6 @@ export class MonitorComponent {
   protected readonly totalCount = signal(0);
   protected readonly totalPages = signal(0);
   protected readonly isPanelOpen = signal<boolean>(false);
-  protected readonly successMessage = signal<string | null>(null);
 
   private readonly queryParams = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -58,7 +59,6 @@ export class MonitorComponent {
   }
 
   onOpenPanel(): void {
-    this.successMessage.set(null);
     this.isPanelOpen.set(true);
   }
 
@@ -68,12 +68,10 @@ export class MonitorComponent {
 
   onMonitorCreated(monitor: MonitorModel): void {
     this.isPanelOpen.set(false);
-    this.successMessage.set($localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`);
+    this.toastService.success(
+      $localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`,
+    );
     this.navigateToPage(1);
-  }
-
-  onDismissSuccess(): void {
-    this.successMessage.set(null);
   }
 
   private navigateToPage(page: number): void {

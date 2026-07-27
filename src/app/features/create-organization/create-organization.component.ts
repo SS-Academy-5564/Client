@@ -11,6 +11,8 @@ import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { OrganizationService } from '@core/services/organization.service';
+import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 @Component({
   selector: 'app-create-organization',
@@ -32,6 +34,7 @@ export class CreateOrganizationComponent {
   private orgService = inject(OrganizationService);
   private tokenStorage = inject(TokenStorageService);
   private router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
   loading = false;
   error: string | null = null;
@@ -59,8 +62,9 @@ export class CreateOrganizationComponent {
         this.loading = false;
 
         this.tokenStorage.setToken(res.data.accessToken);
+        this.toastService.success($localize`:@@newOrganization.success:Organization created successfully.`);
 
-        this.router.navigate(['/overview']);
+        this.router.navigate([ROUTES.OVERVIEW]);
       },
       error: () => {
         this.loading = false;

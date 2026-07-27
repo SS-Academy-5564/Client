@@ -1,4 +1,3 @@
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PaginationComponent } from './pagination.component';
@@ -58,12 +57,8 @@ describe('PaginationComponent', () => {
   });
 
   function setPagination(pageNumber: number, totalPages: number): void {
-    // The project's JIT Vitest setup does not compile signal input metadata,
-    // so setInput() cannot update these inputs in an isolated component test.
-    Object.defineProperties(component, {
-      pageNumber: { value: signal(pageNumber), configurable: true },
-      totalPages: { value: signal(totalPages), configurable: true },
-    });
+    fixture.componentRef.setInput('pageNumber', pageNumber);
+    fixture.componentRef.setInput('totalPages', totalPages);
   }
 
   function getButtons(): HTMLButtonElement[] {

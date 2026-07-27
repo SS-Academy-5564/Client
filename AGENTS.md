@@ -139,6 +139,24 @@ npm run build          # lint-check + prettier-check + ng build (CI's build gate
 * Reuse existing abstractions and shared components.
 * Do not introduce new frameworks or libraries unless requested.
 * Generate production-ready code by default.
+* **Do not write comments for self-evident code** — good code is
+  self-documenting through clear names and structure. Only add a comment when
+  it explains a non-obvious architectural or design decision (the *why*) that
+  a reader cannot infer from the code itself. Do not restate *what* the code
+  does, do not add section banners, and do not leave TODO/task-tracking
+  comments.
+* **TSDoc/JSDoc comments (`/** … */`) are required on every exported
+  symbol** — exported functions, classes, types, constants — and on every
+  non-private member (property, method, `input()`, `output()`, signal) of an
+  exported class, because they document API surface for tooling and IDE
+  tooltips. They are not "what" comments and are not covered by the rule
+  above. Each block must be **complete**: a summary line describing the
+  purpose, a `@param` for every parameter, a `@returns` when a value is
+  returned, and a `@throws` for each error that can be thrown. Partial doc
+  comments (summary only, or documenting some parameters but not others) are
+  not acceptable. Purely internal (non-exported, or `private`) symbols do not
+  require doc comments, but if you add one it must be complete under the same
+  rules.
 * After making changes, **offer to verify** them end-to-end (build, lint,
   tests, or the affected flow) before the user commits.
 * Once verification passes with no issues, **give the user a ready-to-use pull

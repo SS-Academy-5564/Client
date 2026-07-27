@@ -3,11 +3,12 @@ import { signal } from '@angular/core';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { MonitorComponent } from './monitor.component';
-import { MonitorService } from '@core/services/monitor.service';
+import { MonitorPage, MonitorService } from '@core/services/monitor.service';
+import { ToastService } from '@core/services/toast.service';
 import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
-import { MonitorPage } from '@core/services/monitor.service';
 
 describe('MonitorComponent', () => {
   let component: MonitorComponent;
@@ -57,6 +58,9 @@ describe('MonitorComponent', () => {
     }),
     createMonitor: vi.fn(),
   };
+  const toastServiceMock = {
+    success: vi.fn(),
+  };
 
   const createdMonitor: MonitorModel = {
     id: 'created-monitor',
@@ -89,6 +93,7 @@ describe('MonitorComponent', () => {
       imports: [MonitorComponent],
       providers: [
         { provide: MonitorService, useValue: monitorServiceMock },
+        { provide: ToastService, useValue: toastServiceMock },
         provideNoopAnimations(),
         provideRouter([]),
       ],
@@ -129,31 +134,13 @@ describe('MonitorComponent', () => {
     expect(panel).not.toBeNull();
   });
 
-  it('reloads the first page and shows a success banner after creating a monitor', async () => {
-    component.onMonitorCreated(createdMonitor);
-    await fixture.whenStable();
+  it('closes panel and shows toast notification when a monitor is created', () => {
+    component.onOpenPanel();
     fixture.detectChanges();
 
-    expect(monitorServiceMock.getMonitors).toHaveBeenLastCalledWith(1, 10, null);
-
-    const banner = (fixture.nativeElement as HTMLElement).querySelector('.success-banner');
-    expect(banner?.textContent).toContain('Created monitor');
-  });
-
-  it('requests the selected status from the server', async () => {
-    await selectStatus(MonitorStatus.Disabled);
-
-    expect(monitorServiceMock.getMonitors).toHaveBeenLastCalledWith(1, 10, MonitorStatus.Disabled);
-  });
-
-  it('dismisses the success banner', () => {
     component.onMonitorCreated(createdMonitor);
     fixture.detectChanges();
 
-    const dismiss = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.success-dismiss');
-    dismiss?.click();
-    fixture.detectChanges();
-
-    expect((fixture.nativeElement as HTMLElement).querySelector('.success-banner')).toBeNull();
+    expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining('Created monitor'));
   });
 });

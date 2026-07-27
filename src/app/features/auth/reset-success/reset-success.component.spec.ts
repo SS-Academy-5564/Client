@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { ResetSuccessComponent } from './reset-success.component';
+import { ROUTES } from '@core/constants/route.constants';
 
 describe('ResetSuccessComponent', () => {
   let component: ResetSuccessComponent;
@@ -24,7 +25,7 @@ describe('ResetSuccessComponent', () => {
 
   it('should contain a link to the login page', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    const loginLink = compiled.querySelector('a[routerLink="/login"]');
+    const loginLink = compiled.querySelector('a[routerLink="' + ROUTES.LOGIN + '"]');
     expect(loginLink).toBeTruthy();
     expect(loginLink?.textContent).toContain('Back to Login');
   });

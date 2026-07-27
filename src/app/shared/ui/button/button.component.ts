@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
@@ -10,16 +10,15 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent {
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input() type: 'primary' | 'secondary' | 'text' = 'primary';
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input() buttonType: 'button' | 'submit' = 'button';
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input() variant: 'full-width' | 'nav' | 'default' = 'default';
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input() label = '';
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input() disabled = false;
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input() routerLink: string | null = null;
+  readonly type = input<'primary' | 'secondary' | 'text'>('primary');
+
+  readonly buttonType = input<'button' | 'submit'>('button');
+
+  readonly variant = input<'full-width' | 'nav' | 'default'>('default');
+
+  readonly label = input('');
+
+  readonly disabled = input(false);
+
+  readonly routerLink = input<string | null>(null);
 }

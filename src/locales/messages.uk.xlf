@@ -2,348 +2,1506 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" target-language="uk" datatype="plaintext" original="ng2.template">
     <body>
-      <trans-unit id="3724591343089785757" datatype="html">
-        <source>Hello, <x id="INTERPOLATION" equiv-text="{{ title() }}"/></source>
-        <target>Привіт, <x id="INTERPOLATION" equiv-text="{{ title() }}"/></target>
+      <trans-unit id="toast.dismiss" datatype="html">
+        <source>Dismiss</source>
+        <target>Закрити</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">28,30</context>
-        </context-group>
-        <note priority="1" from="description">Page heading greeting</note>
-      </trans-unit>
-      <trans-unit id="739313073051259180" datatype="html">
-        <source>Standalone components with Signals and Signals-based inputs</source>
-        <target>Автономні компоненти з Signals та полями вводу на основі Signals</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="sourcefile">src/app/core/services/toast.service.ts</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2885313976860500121" datatype="html">
-        <source>Sample input</source>
-        <target>Приклад поля вводу</target>
+      <trans-unit id="forgotPasswordTitle" datatype="html">
+        <source>Forgot Password?</source>
+        <target>Забули пароль?</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">39,40</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">10,11</context>
         </context-group>
-        <note priority="1" from="description">Form field label</note>
       </trans-unit>
-      <trans-unit id="7008764618395900070" datatype="html">
-        <source>Type something...</source>
-        <target>Введіть щось...</target>
+      <trans-unit id="forgotPasswordSubtitle" datatype="html">
+        <source>Enter your email to receive a password reset code.</source>
+        <target>Введіть свою електронну пошту, щоб отримати код для скидання пароля.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailLabel" datatype="html">
+        <source>Email</source>
+        <target>Електронна пошта</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailPlaceholder" datatype="html">
+        <source>email@example.com</source>
+        <target>email@example.com</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailRequired" datatype="html">
+        <source>Email is required</source>
+        <target>Електронна пошта обов’язкова</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">30,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordEmailInvalid" datatype="html">
+        <source>Enter a valid email address</source>
+        <target>Введіть дійсну адресу електронної пошти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">33,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="forgotPasswordSubmitButton" datatype="html">
+        <source>Send Code</source>
+        <target>Надіслати код</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
           <context context-type="linenumber">40,41</context>
         </context-group>
-        <note priority="1" from="description">Form field placeholder</note>
       </trans-unit>
-      <trans-unit id="7397760241381561901" datatype="html">
-        <source>Primary Action</source>
-        <target>Основна дія</target>
+      <trans-unit id="forgotPasswordBackToLogin" datatype="html">
+        <source>Back to Login</source>
+        <target>Назад до входу</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">43,45</context>
-        </context-group>
-        <note priority="1" from="description">Form submit button</note>
-      </trans-unit>
-      <trans-unit id="6531898240125800824" datatype="html">
-        <source>Date: <x id="INTERPOLATION" equiv-text="{{ sampleDate() | date:&apos;longDate&apos; }}"/></source>
-        <target>Дата: <x id="INTERPOLATION" equiv-text="{{ sampleDate() | date:&apos;longDate&apos; }}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">46,47</context>
-        </context-group>
-        <note priority="1" from="description">Date example label</note>
-      </trans-unit>
-      <trans-unit id="5696244706071223399" datatype="html">
-        <source>Price: <x id="INTERPOLATION" equiv-text="{{ samplePrice() | currency }}"/></source>
-        <target>Ціна: <x id="INTERPOLATION" equiv-text="{{ samplePrice() | currency }}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">47,48</context>
-        </context-group>
-        <note priority="1" from="description">Price example label</note>
-      </trans-unit>
-      <trans-unit id="2816922040873882597" datatype="html">
-        <source>Series A</source>
-        <target>Дані A</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">113</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.html</context>
+          <context context-type="linenumber">51,54</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4814784078350866996" datatype="html">
-        <source>Series B</source>
-        <target>Дані B</target>
+      <trans-unit id="passwordReset.codeSent" datatype="html">
+        <source>Reset code sent.</source>
+        <target>Код для скидання пароля надіслано.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="sourcefile">src/app/features/auth/forgot-password/forgot-password.component.ts</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8563137213157122993" datatype="html">
-        <source>Mon</source>
-        <target>Пон</target>
+      <trans-unit id="loginTitle" datatype="html">
+        <source>Sign in to your account</source>
+        <target>Увійдіть у свій обліковий запис</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">10,11</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="8502240922750617054" datatype="html">
-        <source>Tue</source>
-        <target>Вівт</target>
+      <trans-unit id="loginSubtitle" datatype="html">
+        <source>Welcome back! Please enter your details.</source>
+        <target>З поверненням! Будь ласка, введіть свої дані.</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">100</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">11,13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7421778640995344715" datatype="html">
-        <source>Wed</source>
-        <target>Сер</target>
+      <trans-unit id="loginEmailLabel" datatype="html">
+        <source>Email</source>
+        <target>Електронна пошта</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">20,21</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4409954796361883558" datatype="html">
-        <source>Thu</source>
-        <target>Четв</target>
+      <trans-unit id="loginEmailPlaceholder" datatype="html">
+        <source>you@company.com</source>
+        <target>you@company.com</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">102</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">26,27</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5651951128882735477" datatype="html">
-        <source>Fri</source>
-        <target>П'ятн</target>
+      <trans-unit id="loginEmailRequired" datatype="html">
+        <source>Email is required</source>
+        <target>Електронна пошта обов’язкова</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">30,32</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="93026920674143073" datatype="html">
-        <source>Sat</source>
-        <target>Суб</target>
+      <trans-unit id="loginEmailInvalid" datatype="html">
+        <source>Enter a valid email address</source>
+        <target>Введіть дійсну адресу електронної пошти</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">104</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">33,35</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4921929243068857081" datatype="html">
-        <source>Sun</source>
-        <target>Нед</target>
+      <trans-unit id="loginPasswordLabel" datatype="html">
+        <source>Password</source>
+        <target>Пароль</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/app.ts</context>
-          <context context-type="linenumber">105</context>
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginPasswordPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <target>••••••••</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="showPasswordAria" datatype="html">
+        <source>Show password</source>
+        <target>Показати пароль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="hidePasswordAria" datatype="html">
+        <source>Hide password</source>
+        <target>Сховати пароль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">61,62</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginPasswordRequired" datatype="html">
+        <source>Password is required</source>
+        <target>Пароль обов’язковий</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">72,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginForgotPassword" datatype="html">
+        <source> Forgot password? </source>
+        <target> Забули пароль? </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginSubmitButton" datatype="html">
+        <source>Sign in</source>
+        <target>Увійти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginRegisterPrompt" datatype="html">
+        <source>Don&apos;t have an account?</source>
+        <target>Немає облікового запису?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginRegisterLink" datatype="html">
+        <source>Sign up</source>
+        <target>Зареєструватися</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">97,99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="login.success" datatype="html">
+        <source>Login successful.</source>
+        <target>Вхід виконано успішно.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerTitle" datatype="html">
+        <source>Create your account</source>
+        <target>Створіть свій обліковий запис</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerSubtitle" datatype="html">
+        <source>Start monitoring your metrics today.</source>
+        <target>Почніть моніторинг своїх метрик вже сьогодні.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNameLabel" datatype="html">
+        <source>First name</source>
+        <target>Ім’я</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNamePlaceholder" datatype="html">
+        <source>Jane</source>
+        <target>Олена</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNameRequired" datatype="html">
+        <source>First name is required</source>
+        <target>Ім’я обов’язкове</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerFirstNameMaxlength" datatype="html">
+        <source>First name cannot exceed 100 characters</source>
+        <target>Ім’я не може перевищувати 100 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">32,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNameLabel" datatype="html">
+        <source>Last name</source>
+        <target>Прізвище</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">38,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNamePlaceholder" datatype="html">
+        <source>Smith</source>
+        <target>Коваленко</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNameRequired" datatype="html">
+        <source>Last name is required</source>
+        <target>Прізвище обов’язкове</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLastNameMaxlength" datatype="html">
+        <source>Last name cannot exceed 100 characters</source>
+        <target>Прізвище не може перевищувати 100 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">50,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailLabel" datatype="html">
+        <source>Email</source>
+        <target>Електронна пошта</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">57,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailPlaceholder" datatype="html">
+        <source>you@company.com</source>
+        <target>you@company.com</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailRequired" datatype="html">
+        <source>Email is required</source>
+        <target>Електронна пошта обов’язкова</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">67,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailInvalid" datatype="html">
+        <source>Enter a valid email address</source>
+        <target>Введіть дійсну адресу електронної пошти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">69,70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerEmailMaxlength" datatype="html">
+        <source>Email cannot exceed 256 characters</source>
+        <target>Електронна пошта не може перевищувати 256 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">71,73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordLabel" datatype="html">
+        <source>Password</source>
+        <target>Пароль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">77,78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordPlaceholder" datatype="html">
+        <source>Min. 8 characters</source>
+        <target>Мін. 8 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">83,84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordRequired" datatype="html">
+        <source>Password is required</source>
+        <target>Пароль обов’язковий</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordMinlength" datatype="html">
+        <source>Password must be at least 8 characters</source>
+        <target>Пароль має містити щонайменше 8 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">98,99</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordPattern" datatype="html">
+        <source> Password must contain uppercase, lowercase letter and number </source>
+        <target> Пароль має містити велику та малу літеру, а також цифру </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordMaxlength" datatype="html">
+        <source>Password cannot exceed 256 characters</source>
+        <target>Пароль не може перевищувати 256 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">104,106</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerConfirmPasswordLabel" datatype="html">
+        <source> Confirm password </source>
+        <target> Підтвердьте пароль </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">111,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerConfirmPasswordPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <target>••••••••</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">118,119</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerConfirmPasswordRequired" datatype="html">
+        <source>Confirmation is required</source>
+        <target>Підтвердження обов’язкове</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">132,133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerPasswordMismatch" datatype="html">
+        <source>Passwords do not match</source>
+        <target>Паролі не збігаються</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">134,136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerSubmitButton" datatype="html">
+        <source>Create account</source>
+        <target>Створити обліковий запис</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">141,142</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLoginPrompt" datatype="html">
+        <source>Already have an account?</source>
+        <target>Вже є обліковий запис?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">152,153</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="registerLoginLink" datatype="html">
+        <source>Sign in</source>
+        <target>Увійти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.html</context>
+          <context context-type="linenumber">153,155</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="register.success" datatype="html">
+        <source>Registration successful. You can now log in.</source>
+        <target>Реєстрацію завершено. Тепер ви можете увійти.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordTitle" datatype="html">
+        <source>Reset Password</source>
+        <target>Скинути пароль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordSubtitle" datatype="html">
+        <source>Please enter a new password for your account.</source>
+        <target>Будь ласка, введіть новий пароль для вашого облікового запису.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">11,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordNewLabel" datatype="html">
+        <source>New Password</source>
+        <target>Новий пароль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">20,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordNewPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <target>••••••••</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">26,27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordRequired" datatype="html">
+        <source>Password is required</source>
+        <target>Пароль обов’язковий</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">53,54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordMinlength" datatype="html">
+        <source>Password must be at least 8 characters</source>
+        <target>Пароль має містити щонайменше 8 символів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordPattern" datatype="html">
+        <source> Password must contain an uppercase letter, a lowercase letter, and a digit </source>
+        <target> Пароль має містити велику літеру, малу літеру та цифру </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">58,59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordConfirmLabel" datatype="html">
+        <source>Confirm Password</source>
+        <target>Підтвердьте новий пароль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">65,66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordConfirmPlaceholder" datatype="html">
+        <source>••••••••</source>
+        <target>••••••••</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">71,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordConfirmRequired" datatype="html">
+        <source>Confirmation is required</source>
+        <target>Підтвердження обов’язкове</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">84,85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordMismatch" datatype="html">
+        <source>Passwords do not match</source>
+        <target>Паролі не збігаються</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">86,88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordSubmitButton" datatype="html">
+        <source>Save changes</source>
+        <target>Зберегти зміни</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">93,94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetPasswordBackToLogin" datatype="html">
+        <source>Back to Login</source>
+        <target>Назад до входу</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
+          <context context-type="linenumber">104,107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetSuccessTitle" datatype="html">
+        <source>Password Reset Successful</source>
+        <target>Пароль успішно скинуто</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-success/reset-success.component.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetSuccessMessage" datatype="html">
+        <source> Your password has been updated. You can now log in to your account with your new password. </source>
+        <target> Ваш пароль оновлено. Тепер ви можете увійти до свого облікового запису з новим паролем. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-success/reset-success.component.html</context>
+          <context context-type="linenumber">17,19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resetSuccessLoginButton" datatype="html">
+        <source>Back to Login</source>
+        <target>Назад до входу</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/reset-success/reset-success.component.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeTitle" datatype="html">
+        <source>Verify Code</source>
+        <target>Підтвердження коду</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">10,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeSubtitle" datatype="html">
+        <source>Code sent to</source>
+        <target>Код надіслано на</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeSubmitButton" datatype="html">
+        <source>Verify</source>
+        <target>Підтвердити</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeResendPrompt" datatype="html">
+        <source>Didn&apos;t receive a code?</source>
+        <target>Не отримали код?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeResendCountdown" datatype="html">
+        <source> Resend in <x id="INTERPOLATION" equiv-text="{{ resendCountdown() }}"/>s </source>
+        <target> Надіслати знову через <x id="INTERPOLATION" equiv-text="{{ resendCountdown() }}"/>с </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeResendButton" datatype="html">
+        <source> Resend Code </source>
+        <target> Надіслати код знову </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyCodeBackToLogin" datatype="html">
+        <source>Back to Login</source>
+        <target>Назад до входу</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.html</context>
+          <context context-type="linenumber">65,68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="passwordReset.codeResent" datatype="html">
+        <source>A new reset code was sent.</source>
+        <target>Новий код для скидання пароля надіслано.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-code/verify-code.component.ts</context>
+          <context context-type="linenumber">175</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.title" datatype="html">
+        <source>Create your organization</source>
+        <target>Створіть свою організацію</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">22,23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.subtitle" datatype="html">
+        <source> You&apos;re not part of any organization yet. Create one to get started. </source>
+        <target> Ви ще не є учасником жодної організації. Створіть її, щоб розпочати. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">24,26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.organizationName" datatype="html">
+        <source>Organization name</source>
+        <target>Назва організації</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.namePlaceholder" datatype="html">
+        <source>Acme Corp</source>
+        <target>Acme Corp</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">37,38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.nameRequired" datatype="html">
+        <source>Organization name is required</source>
+        <target>Назва організації обов’язкова</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.submitButton" datatype="html">
+        <source>Create organization</source>
+        <target>Створити організацію</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.renameInfo" datatype="html">
+        <source>You can rename it later in Settings</source>
+        <target>Ви зможете перейменувати її пізніше в Налаштуваннях</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.html</context>
+          <context context-type="linenumber">54,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="newOrganization.success" datatype="html">
+        <source>Organization created successfully.</source>
+        <target>Організацію успішно створено.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-organization/create-organization.component.ts</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="errorPageGoHome" datatype="html">
+        <source>Go home</source>
+        <target>На головну</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.html</context>
+          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errorPage404Title" datatype="html">
         <source>Page not found</source>
         <target>Сторінку не знайдено</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPage404Message" datatype="html">
         <source>The page you are looking for doesn&apos;t exist or has been moved.</source>
         <target>Сторінка, яку ви шукаєте, не існує або була переміщена.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPage500Title" datatype="html">
         <source>Something went wrong</source>
         <target>Щось пішло не так</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPage500Message" datatype="html">
         <source>An unexpected error occurred on our end. Please try again in a moment.</source>
         <target>На нашому боці сталася неочікувана помилка. Спробуйте ще раз за мить.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageOfflineLabel" datatype="html">
         <source>Offline</source>
         <target>Немає зв&apos;язку</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageOfflineTitle" datatype="html">
         <source>Can&apos;t reach the server</source>
         <target>Не вдається з&apos;єднатися із сервером</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageOfflineMessage" datatype="html">
         <source>Couldn&apos;t reach the server. Check your connection and try again.</source>
         <target>Не вдалося підключитися до сервера. Перевірте з&apos;єднання та спробуйте ще раз.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageDefaultLabel" datatype="html">
         <source>Error</source>
         <target>Помилка</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageDefaultTitle" datatype="html">
         <source>Something went wrong</source>
         <target>Щось пішло не так</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="errorPageDefaultMessage" datatype="html">
         <source>An unexpected error occurred. Please try again.</source>
         <target>Сталася неочікувана помилка. Спробуйте ще раз.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/error/error-page.component.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="errorPageGoHome" datatype="html">
-        <source>Go home</source>
-        <target>На головну</target>
-      </trans-unit>      <trans-unit id="monitorsNewButton" datatype="html">
-        <source>New Monitor</source>
-        <target>Новий монітор</target>
+      <trans-unit id="membersPageTitle" datatype="html">
+        <source>Members</source>
+        <target>Учасники</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">3,5</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="monitorsDismissSuccess" datatype="html">
-        <source>Dismiss</source>
-        <target>Закрити</target>
+      <trans-unit id="inviteMemberButton" datatype="html">
+        <source>Invite member</source>
+        <target>Запросити учасника</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">7,9</context>
+        </context-group>
       </trans-unit>
-      <trans-unit id="monitorsCreateSuccess" datatype="html">
-        <source>Monitor &quot;<x id="name" equiv-text="monitor.name"/>&quot; created successfully.</source>
-        <target>Монітор «<x id="name" equiv-text="monitor.name"/>» успішно створено.</target>
+      <trans-unit id="membersLoading" datatype="html">
+        <source>Loading members...</source>
+        <target>Завантаження учасників...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">14,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersTableTitle" datatype="html">
+        <source>Members</source>
+        <target>Учасники</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersColumnName" datatype="html">
+        <source>Name</source>
+        <target>Ім’я</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">30,31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersColumnRole" datatype="html">
+        <source>Role</source>
+        <target>Роль</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">111,112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersColumnJoined" datatype="html">
+        <source>Joined</source>
+        <target>Приєднався</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">112,113</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersActionColumn" datatype="html">
+        <source>Actions</source>
+        <target>Дії</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">34,36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">114,116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editMemberAction" datatype="html">
+        <source> Edit role </source>
+        <target> Змінити роль </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">90,93</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="removeMemberAction" datatype="html">
+        <source> Remove member </source>
+        <target> Видалити учасника </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">94,96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="pendingInvitationsTitle" datatype="html">
+        <source>Pending invitations</source>
+        <target>Очікують підтвердження</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersEmptyPendingInvitations" datatype="html">
+        <source>No pending invitations</source>
+        <target>Немає очікуваних запрошень</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">106,108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="pendingColumnEmail" datatype="html">
+        <source>Email</source>
+        <target>Електронна пошта</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">110,111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="pendingStatusLabel" datatype="html">
+        <source>Pending</source>
+        <target>Очікує</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">130,132</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="pendingInvitedOn" datatype="html">
+        <source>Invited <x id="INTERPOLATION" equiv-text="{{ invite.invited }}"/></source>
+        <target>Запрошено <x id="INTERPOLATION" equiv-text="{{ invite.invited }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">132,133</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersJoinedNotYetAriaLabel" datatype="html">
+        <source>Joined: not yet joined</source>
+        <target>Приєднався: ще не приєднався</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">149,150</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="resendInviteAction" datatype="html">
+        <source> Resend invitation </source>
+        <target> Надіслати запрошення знову </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">174,177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="cancelInviteAction" datatype="html">
+        <source> Cancel invitation </source>
+        <target> Скасувати запрошення </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.html</context>
+          <context context-type="linenumber">178,180</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="membersErrorFailedToLoad" datatype="html">
+        <source>Failed to load members</source>
+        <target>Не вдалося завантажити учасників</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/members/members.component.ts</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createMonitor.closeBackdrop" datatype="html">
+        <source>Close panel</source>
+        <target>Закрити панель</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.title" datatype="html">
         <source>New Monitor</source>
         <target>Новий монітор</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">12,13</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.subtitle" datatype="html">
         <source>Configure an endpoint to poll for a metric value.</source>
         <target>Налаштуйте кінцеву точку для опитування значення метрики.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">13,16</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.close" datatype="html">
         <source>Close</source>
         <target>Закрити</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.nameLabel" datatype="html">
         <source>Monitor name</source>
         <target>Назва монітора</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">29,30</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.namePlaceholder" datatype="html">
         <source>EUR/USD Rate</source>
         <target>Курс EUR/USD</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.nameRequired" datatype="html">
         <source>Monitor name is required.</source>
         <target>Назва монітора обов’язкова.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">40,41</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.nameMaxLength" datatype="html">
         <source>Monitor name must be at most 64 characters.</source>
         <target>Назва монітора має містити щонайбільше 64 символи.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">42,43</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.urlLabel" datatype="html">
         <source>Endpoint URL</source>
         <target>URL кінцевої точки</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.methodLabel" datatype="html">
         <source>Request method</source>
         <target>Метод запиту</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">55,56</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.urlPlaceholder" datatype="html">
         <source>https://api.example.com/data</source>
         <target>https://api.example.com/data</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">68,69</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.urlRequired" datatype="html">
         <source>Endpoint URL is required.</source>
         <target>URL кінцевої точки обов’язковий.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.urlMaxLength" datatype="html">
         <source>Endpoint URL is too long.</source>
         <target>URL кінцевої точки задовгий.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">75,76</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.resultPathLabel" datatype="html">
-        <source>Result path</source>
-        <target>Шлях до значення</target>
+        <source> Result path </source>
+        <target> Шлях до значення </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">87,89</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.resultPathHint" datatype="html">
         <source>dot notation</source>
         <target>крапкова нотація</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">89,91</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.resultPathPlaceholder" datatype="html">
         <source>data.usd.rate</source>
         <target>data.usd.rate</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.resultPathRequired" datatype="html">
         <source>Result path is required.</source>
         <target>Шлях до значення обов’язковий.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">101,102</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.resultPathMaxLength" datatype="html">
         <source>Result path is too long.</source>
         <target>Шлях до значення задовгий.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">103,104</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.intervalLabel" datatype="html">
-        <source>Polling frequency</source>
-        <target>Частота опитування</target>
+        <source> Polling frequency </source>
+        <target> Частота опитування </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">114,116</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.timeoutLabel" datatype="html">
         <source>Timeout</source>
         <target>Тайм-аут</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">126,127</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.cancel" datatype="html">
         <source>Cancel</source>
         <target>Скасувати</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">141</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.submit" datatype="html">
         <source>Create monitor</source>
         <target>Створити монітор</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.html</context>
+          <context context-type="linenumber">147,148</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.genericError" datatype="html">
         <source>Failed to create monitor.</source>
         <target>Не вдалося створити монітор.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor-panel.component.ts</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval1Minute" datatype="html">
         <source>1 minute</source>
         <target>1 хвилина</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval5Minutes" datatype="html">
         <source>5 minutes</source>
         <target>5 хвилин</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval15Minutes" datatype="html">
         <source>15 minutes</source>
         <target>15 хвилин</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval30Minutes" datatype="html">
         <source>30 minutes</source>
         <target>30 хвилин</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval1Hour" datatype="html">
         <source>1 hour</source>
         <target>1 година</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval6Hours" datatype="html">
         <source>6 hours</source>
         <target>6 годин</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval12Hours" datatype="html">
         <source>12 hours</source>
         <target>12 годин</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.interval24Hours" datatype="html">
         <source>24 hours</source>
         <target>24 години</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.timeout5Seconds" datatype="html">
         <source>5 seconds</source>
         <target>5 секунд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.timeout10Seconds" datatype="html">
         <source>10 seconds</source>
         <target>10 секунд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.timeout15Seconds" datatype="html">
         <source>15 seconds</source>
         <target>15 секунд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.timeout20Seconds" datatype="html">
         <source>20 seconds</source>
         <target>20 секунд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="createMonitor.timeout30Seconds" datatype="html">
         <source>30 seconds</source>
         <target>30 секунд</target>
-      </trans-unit>      <trans-unit id="createMonitor.closeBackdrop" datatype="html">
-        <source>Close panel</source>
-        <target>Закрити панель</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/create-monitor/create-monitor.options.ts</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
       </trans-unit>
-
-
+      <trans-unit id="monitorsTitle" datatype="html">
+        <source>Monitors</source>
+        <target>Монітори</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">3,4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsNewButton" datatype="html">
+        <source>New Monitor</source>
+        <target>Новий монітор</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusFilterLabel" datatype="html">
+        <source>Filter monitors by status</source>
+        <target>Фільтрувати монітори за статусом</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusAll" datatype="html">
+        <source> All </source>
+        <target> Усі </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">18,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusEnabled" datatype="html">
+        <source> Enabled </source>
+        <target> Увімкнено </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">27,30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsStatusDisabled" datatype="html">
+        <source> Disabled </source>
+        <target> Вимкнено </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">36,39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnName" datatype="html">
+        <source>Name</source>
+        <target>Назва</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnUrl" datatype="html">
+        <source>URL</source>
+        <target>URL</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnCurrentValue" datatype="html">
+        <source>Current value</source>
+        <target>Поточне значення</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnLastCheck" datatype="html">
+        <source>Last check</source>
+        <target>Остання перевірка</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">48,49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnStatus" datatype="html">
+        <source>Status</source>
+        <target>Статус</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">49,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsColumnInterval" datatype="html">
+        <source>Interval</source>
+        <target>Інтервал</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">50,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsLoading" datatype="html">
+        <source>Loading monitors...</source>
+        <target>Завантаження моніторів...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">59,61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsEmpty" datatype="html">
+        <source>No monitors yet.</source>
+        <target>Моніторів поки немає.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">90,92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsCount" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ monitors().length }}"/> of <x id="INTERPOLATION_1" equiv-text="{{ allMonitors().length }}"/> monitors</source>
+        <target><x id="INTERPOLATION" equiv-text="{{ monitors().length }}"/> з <x id="INTERPOLATION_1" equiv-text="{{ allMonitors().length }}"/> моніторів</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.html</context>
+          <context context-type="linenumber">99,102</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorsCreateSuccess" datatype="html">
+        <source>Monitor &quot;<x id="name" equiv-text="monitor.name"/>&quot; created successfully.</source>
+        <target>Монітор «<x id="name" equiv-text="monitor.name"/>» успішно створено.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalSeconds" datatype="html">
+        <source><x id="INTERVAL" equiv-text="intervalInSeconds"/>s</source>
+        <target><x id="INTERVAL" equiv-text="intervalInSeconds"/>с</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalMinutes" datatype="html">
+        <source><x id="INTERVAL" equiv-text="minutes"/>m</source>
+        <target><x id="INTERVAL" equiv-text="minutes"/>хв</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalHours" datatype="html">
+        <source><x id="INTERVAL" equiv-text="hours"/>h</source>
+        <target><x id="INTERVAL" equiv-text="hours"/>год</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="monitorIntervalDays" datatype="html">
+        <source><x id="INTERVAL" equiv-text="days"/>d</source>
+        <target><x id="INTERVAL" equiv-text="days"/>д</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/monitor-interval.pipe.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeSeconds" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedSeconds"/> sec ago</source>
+        <target><x id="COUNT" equiv-text="elapsedSeconds"/> сек тому</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeMinutes" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedMinutes"/> min ago</source>
+        <target><x id="COUNT" equiv-text="elapsedMinutes"/> хв тому</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeHours" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedHours"/> hr ago</source>
+        <target><x id="COUNT" equiv-text="elapsedHours"/> год тому</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeDay" datatype="html">
+        <source>1 day ago</source>
+        <target>1 день тому</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="relativeTimeDays" datatype="html">
+        <source><x id="COUNT" equiv-text="elapsedDays"/> days ago</source>
+        <target><x id="COUNT" equiv-text="elapsedDays"/> дн тому</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/pipes/relative-time.pipe.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarOverviewLabel" datatype="html">
+        <source>Overview</source>
+        <target>Огляд</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">7,10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarMonitorsLabel" datatype="html">
+        <source>Monitors</source>
+        <target>Монітори</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">13,16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarAlertsLabel" datatype="html">
+        <source>Alerts</source>
+        <target>Сповіщення</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">19,22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarMembersLabel" datatype="html">
+        <source>Members</source>
+        <target>Учасники</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">25,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarSettingsLabel" datatype="html">
+        <source>Settings</source>
+        <target>Налаштування</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">31,34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sidebarOrganizationFallback" datatype="html">
+        <source>Organization</source>
+        <target>Організація</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/layout/sidebar/sidebar.component.html</context>
+          <context context-type="linenumber">43,46</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

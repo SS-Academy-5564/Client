@@ -62,6 +62,8 @@ reviews:
         - Always declare explicit return types on methods and functions.
         - Avoid using the public keyword for members.
         - Use type instead of interface for type definitions.
+        - Comments: Do not comment self-evident code — good code is self-documenting through clear names and structure. Only add a comment when it explains a non-obvious architectural or design decision (the *why*) that a reader cannot infer from the code itself. Do not restate *what* the code does, do not add section-banner comments, and do not leave TODO/task-tracking comments. Flag comments that add no information beyond what the identifier already says.
+        - TSDoc/JSDoc doc comments (/** ... */) are required on every exported symbol (exported functions, classes, types, constants) and on every non-private member of an exported class (properties, methods, input(), output(), signals) — they are API-surface documentation for tooling, not "what" comments, so they are not covered by the rule above. Each block must be complete: a summary line plus @param for every parameter, @returns when a value is returned, and @throws for each error that can be thrown. Flag any exported symbol or non-private member of an exported class missing a doc block, and flag partial doc blocks (summary only, or documenting some parameters but not others). Purely internal symbols (non-exported, or private) do not require doc comments, but if a doc block is present it must be complete under the same rules.
 knowledge_base:
   code_guidelines:
     enabled: true

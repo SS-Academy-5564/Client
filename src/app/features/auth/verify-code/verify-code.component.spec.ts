@@ -6,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { VerifyCodeComponent } from './verify-code.component';
 import { PasswordResetService } from '@core/services/password-reset.service';
+import { ToastService } from '@core/services/toast.service';
+import { ROUTES } from '@core/constants/route.constants';
 
 type PasswordResetServiceMock = {
   verifyCode: ReturnType<typeof vi.fn>;
@@ -20,6 +22,9 @@ describe('VerifyCodeComponent', () => {
   let component: VerifyCodeComponent;
   let passwordResetServiceMock: PasswordResetServiceMock;
   let router: Router;
+  const toastServiceMock = {
+    success: vi.fn(),
+  };
 
   beforeEach(async () => {
     vi.useFakeTimers();
@@ -36,7 +41,11 @@ describe('VerifyCodeComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [VerifyCodeComponent, NoopAnimationsModule],
-      providers: [{ provide: PasswordResetService, useValue: passwordResetServiceMock }, provideRouter([])],
+      providers: [
+        { provide: PasswordResetService, useValue: passwordResetServiceMock },
+        { provide: ToastService, useValue: toastServiceMock },
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(VerifyCodeComponent);
@@ -57,7 +66,7 @@ describe('VerifyCodeComponent', () => {
   it('should redirect to forgot-password if email state is missing', () => {
     history.pushState({}, ''); // clear state
     component.ngOnInit();
-    expect(router.navigate).toHaveBeenCalledWith(['/forgot-password']);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.FORGOT_PASSWORD]);
   });
 
   it('should set email from history state and start timer', () => {
@@ -94,7 +103,7 @@ describe('VerifyCodeComponent', () => {
     component.onSubmit();
 
     expect(passwordResetServiceMock.verifyCode).toHaveBeenCalledWith('user@company.com', '123456');
-    expect(router.navigate).toHaveBeenCalledWith(['/reset-password'], { state: { resetToken: mockToken } });
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.RESET_PASSWORD], { state: { resetToken: mockToken } });
   });
 
   it('should handle API errors by calling passwordResetService.setError on submit', () => {
@@ -126,11 +135,14 @@ describe('VerifyCodeComponent', () => {
     expect(passwordResetServiceMock.requestCode).toHaveBeenCalledWith('user@company.com');
     expect(component['resendDisabled']()).toBe(true);
     expect(component['resendCountdown']()).toBe(60);
+    expect(toastServiceMock.success).toHaveBeenCalledWith('A new reset code was sent.');
 
     component.ngOnDestroy();
   });
 
   it('should handle pasting a 6-digit code', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const inputs = compiled.querySelectorAll<HTMLInputElement>('.code-input');
     const mockClipboardEvent = {
       preventDefault: vi.fn(),
       clipboardData: {
@@ -142,5 +154,8 @@ describe('VerifyCodeComponent', () => {
 
     expect(mockClipboardEvent.preventDefault).toHaveBeenCalled();
     expect(component['codeDigits']()).toEqual(['1', '2', '3', '4', '5', '6']);
+    expect(component['codeInputs']()).toHaveLength(6);
+    expect(Array.from(inputs, (input): string => input.value)).toEqual(['1', '2', '3', '4', '5', '6']);
+    expect(document.activeElement).toBe(inputs[5]);
   });
 });

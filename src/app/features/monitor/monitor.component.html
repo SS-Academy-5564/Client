@@ -7,20 +7,6 @@
     </button>
   </header>
 
-  @if (successMessage()) {
-    <div aria-live="polite" class="success-banner" role="status">
-      <span>{{ successMessage() }}</span>
-      <button
-        aria-label="Dismiss"
-        i18n-aria-label="@@monitorsDismissSuccess"
-        class="success-dismiss"
-        type="button"
-        (click)="onDismissSuccess()">
-        &#x2715;
-      </button>
-    </div>
-  }
-
   <div aria-label="Filter monitors by status" i18n-aria-label="@@monitorsStatusFilterLabel" class="status-filters">
     <button
       class="status-filter"
