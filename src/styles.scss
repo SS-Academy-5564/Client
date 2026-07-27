@@ -293,6 +293,21 @@ select {
   margin-bottom: 24px;
 }
 
+.mat-mdc-select-panel {
+  --mat-select-panel-background-color: #ffffff;
+  --mat-option-container-color: #ffffff;
+  background-color: #ffffff;
+}
+
+.mat-mdc-select-panel .mat-mdc-option {
+  --mat-option-label-text-color: #0f172a;
+  background-color: #ffffff;
+}
+
+.mat-mdc-select-panel .mat-mdc-option:hover {
+  background-color: #f8fafc;
+}
+
 @media (max-width: 640px) {
   .page-shell {
     padding: 24px 16px;
