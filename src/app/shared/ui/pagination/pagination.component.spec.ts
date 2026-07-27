@@ -6,13 +6,20 @@ import { PaginationComponent } from './pagination.component';
 @Component({
   imports: [PaginationComponent],
   template: `
-    <app-pagination [pageNumber]="pageNumber()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)" />
+    <app-pagination
+      [pageNumber]="pageNumber()"
+      [pageSize]="pageSize()"
+      [totalPages]="totalPages()"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)" />
   `,
 })
 class TestHostComponent {
   readonly pageNumber = signal(1);
+  readonly pageSize = signal(10);
   readonly totalPages = signal(1);
   readonly onPageChange = vi.fn();
+  readonly onPageSizeChange = vi.fn();
 }
 
 describe('PaginationComponent', () => {
@@ -61,6 +68,16 @@ describe('PaginationComponent', () => {
     fixture.detectChanges();
 
     expect((fixture.nativeElement as HTMLElement).querySelector('nav')).toBeNull();
+  });
+
+  it('emits the new page size when dropdown selection changes', () => {
+    const select = (fixture.nativeElement as HTMLElement).querySelector<HTMLSelectElement>('.rows-select');
+    expect(select).not.toBeNull();
+    if (select) {
+      select.value = '20';
+      select.dispatchEvent(new Event('change'));
+      expect(host.onPageSizeChange).toHaveBeenCalledWith(20);
+    }
   });
 
   function setPagination(pageNumber: number, totalPages: number): void {

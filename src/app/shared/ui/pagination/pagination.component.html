@@ -1,21 +1,37 @@
 @if (totalPages() > 1) {
-  <nav aria-label="Pagination" i18n-aria-label="@@paginationLabel" class="pagination-controls">
-    <button
-      class="pagination-button"
-      i18n="@@paginationPrevious"
-      type="button"
-      [disabled]="pageNumber() <= 1"
-      (click)="onPreviousPage()">
-      Previous
-    </button>
-    <span i18n="@@paginationPage">Page {{ pageNumber() }} of {{ totalPages() }}</span>
-    <button
-      class="pagination-button"
-      i18n="@@paginationNext"
-      type="button"
-      [disabled]="pageNumber() >= totalPages()"
-      (click)="onNextPage()">
-      Next
-    </button>
-  </nav>
+  <div class="pagination-container">
+    <div class="rows-per-page">
+      <label for="rows-per-page-select" i18n="@@paginationRowsPerPage">Rows per page:</label>
+      <div class="select-wrapper">
+        <select class="rows-select" id="rows-per-page-select" [value]="pageSize()" (change)="onPageSizeSelect($event)">
+          @for (option of pageSizeOptions(); track option) {
+            <option [selected]="option === pageSize()" [value]="option">{{ option }}</option>
+          }
+        </select>
+        <span aria-hidden="true" class="select-arrow">▾</span>
+      </div>
+    </div>
+
+    <nav aria-label="Pagination" i18n-aria-label="@@paginationLabel" class="pagination-controls">
+      <button
+        class="pagination-button"
+        i18n="@@paginationPrevious"
+        type="button"
+        [disabled]="pageNumber() <= 1"
+        (click)="onPreviousPage()">
+        Previous
+      </button>
+
+      <span class="page-info" i18n="@@paginationPage">Page {{ pageNumber() }} of {{ totalPages() }}</span>
+
+      <button
+        class="pagination-button"
+        i18n="@@paginationNext"
+        type="button"
+        [disabled]="pageNumber() >= totalPages()"
+        (click)="onNextPage()">
+        Next
+      </button>
+    </nav>
+  </div>
 }

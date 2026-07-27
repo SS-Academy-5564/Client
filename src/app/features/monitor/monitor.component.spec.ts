@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -144,5 +144,19 @@ describe('MonitorComponent', () => {
 
     expect((fixture.nativeElement as HTMLElement).querySelector('.panel')).toBeNull();
     expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining(createdMonitor.name));
+  });
+
+  it('navigates to page 1 with new page size on page size change', () => {
+    const router = TestBed.inject(Router);
+    const spy = vi.spyOn(router, 'navigate');
+
+    component.onPageSizeChange(20);
+
+    expect(spy).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { page: 1, pageSize: 20 },
+      }),
+    );
   });
 });

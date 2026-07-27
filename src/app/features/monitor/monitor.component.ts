@@ -62,6 +62,14 @@ export class MonitorComponent {
     this.navigateToPage(pageNumber);
   }
 
+  onPageSizeChange(pageSize: number): void {
+    if (pageSize === this.pageSize()) {
+      return;
+    }
+
+    this.navigateToPage(1, pageSize);
+  }
+
   onOpenPanel(): void {
     this.isPanelOpen.set(true);
   }
@@ -78,8 +86,7 @@ export class MonitorComponent {
     this.navigateToPage(1);
   }
 
-  private navigateToPage(page: number): void {
-    const pageSize = this.pageSize();
+  private navigateToPage(page: number, pageSize: number = this.pageSize()): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { page, pageSize },

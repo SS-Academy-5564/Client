@@ -97,9 +97,12 @@
     </div>
 
     <footer class="pagination">
-      <p class="monitor-count" i18n="@@monitorsCount">{{ monitors().length }} of {{ totalCount() }} monitors</p>
-
-      <app-pagination [pageNumber]="pageNumber()" [totalPages]="totalPages()" (pageChange)="onPageChange($event)" />
+      <app-pagination
+        [pageNumber]="pageNumber()"
+        [pageSize]="pageSize()"
+        [totalPages]="totalPages()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)" />
     </footer>
   </div>
 
