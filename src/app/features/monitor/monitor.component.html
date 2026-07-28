@@ -1,9 +1,14 @@
 <section aria-labelledby="monitors-title" class="monitors-page">
   <header class="page-header">
     <h1 i18n="@@monitorsTitle" id="monitors-title">Monitors</h1>
-
-    <input class="search-monitors" placeholder="Search monitors..." type="search" [formControl]="searchControl" />
-
+    <input
+      aria-label="Search monitors"
+      i18n-aria-label="Monitor search label"
+      class="search-monitors"
+      placeholder="Search monitors..."
+      i18n-placeholder="Monitor search placeholder"
+      type="search"
+      [formControl]="searchControl" />
     <button class="new-monitor-button" type="button" (click)="onOpenPanel()">
       <span aria-hidden="true" class="new-monitor-icon">+</span>
       <span i18n="@@monitorsNewButton">New Monitor</span>

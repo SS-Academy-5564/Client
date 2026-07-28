@@ -48,6 +48,13 @@ export class MonitorComponent implements OnInit {
   protected readonly searchQuery = computed(() => this.queryParams().get('query') ?? '');
 
   constructor() {
+    effect(() => {
+      const query = this.searchQuery();
+      if (this.searchControl.value !== query) {
+        this.searchControl.setValue(query, { emitEvent: false });
+      }
+    });
+
     effect((onCleanup) => {
       const subscription = this.loadMonitors(
         this.pageNumber(),
