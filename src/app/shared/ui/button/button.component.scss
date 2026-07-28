@@ -37,4 +37,19 @@
       transform: scale(0.97);
     }
   }
+
+  button[mat-stroked-button] {
+    background-color: #ede9fe;
+    border: 1px solid transparent;
+    color: var(--accent, #7c3aed);
+
+    &:hover:not(:disabled) {
+      background-color: #ddd6fe;
+    }
+
+    &:disabled {
+      background-color: #ede9fe;
+      color: var(--accent, #7c3aed);
+    }
+  }
 }

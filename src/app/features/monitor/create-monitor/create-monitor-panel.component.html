@@ -35,16 +35,18 @@
             placeholder="EUR/USD Rate"
             i18n-placeholder="@@createMonitor.namePlaceholder"
             type="text" />
-          @if (form.get('name'); as name) {
-            @if (name.touched && name.hasError('required')) {
-              <mat-error i18n="@@createMonitor.nameRequired">Monitor name is required.</mat-error>
-            } @else if (name.touched && name.hasError('maxlength')) {
-              <mat-error i18n="@@createMonitor.nameMaxLength">Monitor name must be at most 64 characters.</mat-error>
-            } @else if (name.touched && name.hasError('server')) {
-              <mat-error>{{ name.getError('server') }}</mat-error>
-            }
-          }
         </mat-form-field>
+        @if (form.get('name'); as name) {
+          @if (name.touched && name.hasError('required')) {
+            <div class="field-error" i18n="@@createMonitor.nameRequired">Monitor name is required.</div>
+          } @else if (name.touched && name.hasError('maxlength')) {
+            <div class="field-error" i18n="@@createMonitor.nameMaxLength">
+              Monitor name must be at most 64 characters.
+            </div>
+          } @else if (name.touched && name.hasError('server')) {
+            <div class="field-error">{{ name.getError('server') }}</div>
+          }
+        }
       </div>
 
       <div class="field">
@@ -68,17 +70,17 @@
               placeholder="https://api.example.com/data"
               i18n-placeholder="@@createMonitor.urlPlaceholder"
               type="url" />
-            @if (form.get('url'); as url) {
-              @if (url.touched && url.hasError('required')) {
-                <mat-error i18n="@@createMonitor.urlRequired">Endpoint URL is required.</mat-error>
-              } @else if (url.touched && url.hasError('maxlength')) {
-                <mat-error i18n="@@createMonitor.urlMaxLength">Endpoint URL is too long.</mat-error>
-              } @else if (url.touched && url.hasError('server')) {
-                <mat-error>{{ url.getError('server') }}</mat-error>
-              }
-            }
           </mat-form-field>
         </div>
+        @if (form.get('url'); as url) {
+          @if (url.touched && url.hasError('required')) {
+            <div class="field-error-url" i18n="@@createMonitor.urlRequired">Endpoint URL is required.</div>
+          } @else if (url.touched && url.hasError('maxlength')) {
+            <div class="field-error-url" i18n="@@createMonitor.urlMaxLength">Endpoint URL is too long.</div>
+          } @else if (url.touched && url.hasError('server')) {
+            <div class="field-error-url">{{ url.getError('server') }}</div>
+          }
+        }
       </div>
 
       <div class="field">
@@ -96,16 +98,16 @@
             placeholder="data.usd.rate"
             i18n-placeholder="@@createMonitor.resultPathPlaceholder"
             type="text" />
-          @if (form.get('resultPath'); as resultPath) {
-            @if (resultPath.touched && resultPath.hasError('required')) {
-              <mat-error i18n="@@createMonitor.resultPathRequired">Result path is required.</mat-error>
-            } @else if (resultPath.touched && resultPath.hasError('maxlength')) {
-              <mat-error i18n="@@createMonitor.resultPathMaxLength">Result path is too long.</mat-error>
-            } @else if (resultPath.touched && resultPath.hasError('server')) {
-              <mat-error>{{ resultPath.getError('server') }}</mat-error>
-            }
-          }
         </mat-form-field>
+        @if (form.get('resultPath'); as resultPath) {
+          @if (resultPath.touched && resultPath.hasError('required')) {
+            <div class="field-error" i18n="@@createMonitor.resultPathRequired">Result path is required.</div>
+          } @else if (resultPath.touched && resultPath.hasError('maxlength')) {
+            <div class="field-error" i18n="@@createMonitor.resultPathMaxLength">Result path is too long.</div>
+          } @else if (resultPath.touched && resultPath.hasError('server')) {
+            <div class="field-error">{{ resultPath.getError('server') }}</div>
+          }
+        }
       </div>
 
       <div class="field-grid">
@@ -114,7 +116,7 @@
             Polling frequency
           </label>
           <mat-form-field appearance="outline" class="full-width">
-            <mat-select formControlName="pollingIntervalSeconds" id="monitor-interval">
+            <mat-select formControlName="pollingIntervalSeconds" id="monitor-interval" panelClass="white-select-panel">
               @for (option of intervalOptions; track option.value) {
                 <mat-option [value]="option.value">{{ option.label }}</mat-option>
               }
@@ -125,7 +127,7 @@
         <div class="field">
           <label class="field-label" for="monitor-timeout" i18n="@@createMonitor.timeoutLabel">Timeout</label>
           <mat-form-field appearance="outline" class="full-width">
-            <mat-select formControlName="pollingTimeoutSeconds" id="monitor-timeout">
+            <mat-select formControlName="pollingTimeoutSeconds" id="monitor-timeout" panelClass="white-select-panel">
               @for (option of timeoutOptions; track option.value) {
                 <mat-option [value]="option.value">{{ option.label }}</mat-option>
               }
