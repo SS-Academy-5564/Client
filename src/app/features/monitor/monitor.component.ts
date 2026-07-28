@@ -1,9 +1,10 @@
-import { MonitorModel, MonitorStatus } from '@/app/core/models/monitor-model';
-import { MonitorService } from '@/app/core/services/monitor.service';
+import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+import { MonitorService } from '@core/services/monitor.service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { ToastService } from '@core/services/toast.service';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
@@ -12,11 +13,17 @@ import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-pan
 
 @Component({
   selector: 'app-monitor',
-  imports: [MonitorIntervalPipe, RelativeTimePipe, CreateMonitorPanelComponent, PaginationComponent],
+  imports: [
+    MonitorIntervalPipe,
+    RelativeTimePipe,
+    CreateMonitorPanelComponent,
+    PaginationComponent,
+    ReactiveFormsModule,
+  ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.scss',
 })
-export class MonitorComponent {
+export class MonitorComponent implements OnInit {
   private readonly monitorService = inject(MonitorService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
@@ -30,6 +37,7 @@ export class MonitorComponent {
   protected readonly totalCount = signal(0);
   protected readonly totalPages = signal(0);
   protected readonly isPanelOpen = signal<boolean>(false);
+  protected readonly searchControl = new FormControl('');
 
   private readonly queryParams = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -37,14 +45,38 @@ export class MonitorComponent {
 
   protected readonly pageNumber = computed(() => Number(this.queryParams().get('page') ?? 1));
   protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
+  protected readonly searchQuery = computed(() => this.queryParams().get('query') ?? '');
 
   constructor() {
     effect((onCleanup) => {
-      const subscription = this.loadMonitors(this.pageNumber(), this.pageSize());
+      const subscription = this.loadMonitors(
+        this.pageNumber(),
+        this.pageSize(),
+        this.selectedStatus(),
+        this.searchQuery(),
+      );
       onCleanup(() => {
         subscription.unsubscribe();
       });
     });
+  }
+
+  ngOnInit(): void {
+    const initialQuery = this.searchQuery();
+    if (initialQuery) {
+      this.searchControl.setValue(initialQuery, { emitEvent: false });
+    }
+
+    this.searchControl.valueChanges
+      .pipe(debounceTime(200), distinctUntilChanged())
+      .subscribe((value: string | null) => {
+        const cleanValue = value?.trim() ?? '';
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { query: cleanValue || null, page: 1 },
+          queryParamsHandling: 'merge',
+        });
+      });
   }
 
   onClickStatus(status: MonitorStatus | null): void {
@@ -94,18 +126,25 @@ export class MonitorComponent {
     });
   }
 
-  private loadMonitors(page: number, pageSize: number): Subscription {
-    return this.monitorService.getMonitors(page, pageSize, this.selectedStatus()).subscribe({
-      next: (result) => {
-        this.monitors.set(result.items);
-        this.totalCount.set(result.totalCount);
-        this.totalPages.set(result.totalPages);
-      },
-      error: () => {
-        this.monitors.set([]);
-        this.totalCount.set(0);
-        this.totalPages.set(0);
-      },
-    });
+  private loadMonitors(
+    page: number,
+    pageSize: number,
+    status: MonitorStatus | null = null,
+    searchString: string | null = null,
+  ): Subscription {
+    return this.monitorService
+      .getMonitors(page, pageSize, status, searchString)
+      .subscribe({
+        next: (result) => {
+          this.monitors.set(result.items);
+          this.totalCount.set(result.totalCount);
+          this.totalPages.set(result.totalPages);
+        },
+        error: () => {
+          this.monitors.set([]);
+          this.totalCount.set(0);
+          this.totalPages.set(0);
+        },
+      });
   }
 }

@@ -60,6 +60,16 @@ describe('MonitorService', () => {
     expect(service.error()).toBeNull();
   });
 
+  it('should pass searchString query param when provided', () => {
+    service.getMonitors(1, 10, null, 'billing').subscribe();
+
+    const request = httpTesting.expectOne(
+      `${environment.apiBaseUrl}/monitors?pageNumber=1&pageSize=10&searchString=billing`,
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({ data: [], pagination: { pageNumber: 1, pageSize: 10, totalCount: 0, totalPages: 0 }, success: true, errors: [] });
+  });
+
   it('should POST the request and return the created monitor', () => {
     const request: CreateMonitorRequest = {
       name: 'EUR/USD Rate',
