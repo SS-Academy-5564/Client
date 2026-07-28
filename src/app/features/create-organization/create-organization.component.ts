@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -36,8 +36,8 @@ export class CreateOrganizationComponent {
   private router = inject(Router);
   private readonly toastService = inject(ToastService);
 
-  loading = false;
-  error: string | null = null;
+  readonly loading = signal(false);
+  readonly error = signal<string | null>(null);
 
   readonly form = this.fb.group({
     organizationName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -54,12 +54,12 @@ export class CreateOrganizationComponent {
       return;
     }
 
-    this.loading = true;
-    this.error = null;
+    this.loading.set(true);
+    this.error.set(null);
 
     this.orgService.createOrganization(name).subscribe({
       next: (res) => {
-        this.loading = false;
+        this.loading.set(false);
 
         this.tokenStorage.setToken(res.data.accessToken);
         this.toastService.success($localize`:@@newOrganization.success:Organization created successfully.`);
@@ -67,8 +67,8 @@ export class CreateOrganizationComponent {
         this.router.navigate([ROUTES.OVERVIEW]);
       },
       error: () => {
-        this.loading = false;
-        this.error = 'Failed to create organization';
+        this.loading.set(false);
+        this.error.set('Failed to create organization');
       },
     });
   }

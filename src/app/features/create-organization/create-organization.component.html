@@ -49,7 +49,7 @@
             i18n-label="@@newOrganization.submitButton"
             type="primary"
             variant="full-width"
-            [disabled]="form.invalid" />
+            [disabled]="form.invalid || loading()" />
 
           <p class="new-organization-hint" i18n="@@newOrganization.renameInfo">You can rename it later in Settings</p>
         </form>
