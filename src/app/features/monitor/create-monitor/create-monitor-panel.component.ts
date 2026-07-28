@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -48,10 +48,9 @@ export class CreateMonitorPanelComponent {
   private readonly fb = inject(FormBuilder);
   private readonly monitorService = inject(MonitorService);
 
-  // eslint-disable-next-line @angular-eslint/prefer-signals
-  @Input({ required: true }) isOpen = false;
-  @Output() readonly closed = new EventEmitter<void>();
-  @Output() readonly created = new EventEmitter<MonitorModel>();
+  readonly isOpen = input.required<boolean>();
+  readonly closed = output<void>();
+  readonly created = output<MonitorModel>();
 
   protected readonly httpMethods = HTTP_METHODS;
   protected readonly intervalOptions = POLLING_INTERVAL_OPTIONS;
