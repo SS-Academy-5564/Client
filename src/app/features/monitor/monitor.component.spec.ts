@@ -1,13 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { MonitorComponent } from './monitor.component';
-import { MonitorService } from '@core/services/monitor.service';
-import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+import { MonitorPage, MonitorService } from '@core/services/monitor.service';
 import { ToastService } from '@core/services/toast.service';
+import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
 
 describe('MonitorComponent', () => {
   let component: MonitorComponent;
@@ -44,7 +45,17 @@ describe('MonitorComponent', () => {
   const monitorServiceMock = {
     isLoading: signal(false),
     error: signal<string | null>(null),
-    getMonitors: vi.fn().mockReturnValue(of(monitors)),
+    getMonitors: vi.fn((pageNumber = 1, pageSize = 10, status: MonitorStatus | null = null) => {
+      const items = status === null ? monitors : monitors.filter((monitor) => monitor.status === status);
+
+      return of({
+        items,
+        pageNumber,
+        pageSize,
+        totalCount: items.length,
+        totalPages: items.length === 0 ? 0 : 1,
+      } satisfies MonitorPage);
+    }),
     createMonitor: vi.fn(),
   };
   const toastServiceMock = {
@@ -69,12 +80,15 @@ describe('MonitorComponent', () => {
     );
   };
 
-  const selectStatus = (status: MonitorStatus | null): void => {
+  const selectStatus = async (status: MonitorStatus | null): Promise<void> => {
     component.onClickStatus(status);
+    await fixture.whenStable();
     fixture.detectChanges();
   };
 
   beforeEach(async () => {
+    vi.clearAllMocks();
+
     await TestBed.configureTestingModule({
       imports: [MonitorComponent],
       providers: [
@@ -98,15 +112,15 @@ describe('MonitorComponent', () => {
   it.each([
     { tab: 'Enabled', status: MonitorStatus.Enabled, expectedNames: ['Enabled monitor'] },
     { tab: 'Disabled', status: MonitorStatus.Disabled, expectedNames: ['Disabled monitor'] },
-  ])('filters rendered monitors by the $tab tab', ({ status, expectedNames }) => {
-    selectStatus(status);
+  ])('filters rendered monitors by the $tab tab', async ({ status, expectedNames }) => {
+    await selectStatus(status);
 
     expect(getRenderedMonitorNames()).toEqual(expectedNames);
   });
 
-  it('shows monitors with every status, including Error, on the All tab', () => {
-    selectStatus(MonitorStatus.Enabled);
-    selectStatus(null);
+  it('shows monitors with every status, including Error, on the All tab', async () => {
+    await selectStatus(MonitorStatus.Enabled);
+    await selectStatus(null);
 
     expect(getRenderedMonitorNames()).toEqual(['Enabled monitor', 'Disabled monitor', 'Error monitor']);
   });
@@ -120,11 +134,29 @@ describe('MonitorComponent', () => {
     expect(panel).not.toBeNull();
   });
 
-  it('prepends the created monitor and shows a success toast', () => {
+  it('closes panel and shows toast notification when a monitor is created', () => {
+    component.onOpenPanel();
+    fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.panel')).not.toBeNull();
+
     component.onMonitorCreated(createdMonitor);
     fixture.detectChanges();
 
-    expect(getRenderedMonitorNames()[0]).toBe('Created monitor');
-    expect(toastServiceMock.success).toHaveBeenCalledWith('Monitor "Created monitor" created successfully.');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.panel')).toBeNull();
+    expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining(createdMonitor.name));
+  });
+
+  it('navigates to page 1 with new page size on page size change', (): void => {
+    const router = TestBed.inject(Router);
+    const spy = vi.spyOn(router, 'navigate');
+
+    component.onPageSizeChange(20);
+
+    expect(spy).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { page: 1, pageSize: 20 },
+      }),
+    );
   });
 });

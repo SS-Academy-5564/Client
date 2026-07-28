@@ -4,7 +4,6 @@
 }
 
 .monitors-page {
-  min-height: 100%;
   color: var(--text-primary);
 }
 
@@ -200,16 +199,11 @@ th:nth-child(6) {
   color: #526987;
 }
 
-.status-column {
-  text-align: left;
-}
-
 td.status-column {
   padding-left: 10px;
 }
 
 .status-badge {
-  width: auto;
   padding: 4px 10px;
   display: inline-flex;
   align-items: center;
@@ -262,10 +256,10 @@ td.status-column {
   }
 }
 
-.monitor-count {
-  margin: 20px 0 0;
-  color: #8294b0;
-  font-size: 14px;
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
 }
 
 @media (max-width: 720px) {
