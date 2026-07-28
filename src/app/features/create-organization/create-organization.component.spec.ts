@@ -92,7 +92,7 @@ describe('CreateOrganizationComponent', () => {
 
     component.onSubmit();
 
-    expect(component.error).toBe('Failed to create organization');
-    expect(component.loading).toBe(false);
+    expect(component.error()).toBe('Failed to create organization');
+    expect(component.loading()).toBe(false);
   });
 });
