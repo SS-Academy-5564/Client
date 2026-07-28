@@ -67,7 +67,12 @@ describe('MonitorService', () => {
       `${environment.apiBaseUrl}/monitors?pageNumber=1&pageSize=10&searchString=billing`,
     );
     expect(request.request.method).toBe('GET');
-    request.flush({ data: [], pagination: { pageNumber: 1, pageSize: 10, totalCount: 0, totalPages: 0 }, success: true, errors: [] });
+    request.flush({
+      data: [],
+      pagination: { pageNumber: 1, pageSize: 10, totalCount: 0, totalPages: 0 },
+      success: true,
+      errors: [],
+    });
   });
 
   it('should POST the request and return the created monitor', () => {

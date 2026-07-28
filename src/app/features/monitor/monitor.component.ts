@@ -68,7 +68,7 @@ export class MonitorComponent implements OnInit {
     }
 
     this.searchControl.valueChanges
-      .pipe(debounceTime(200), distinctUntilChanged())
+      .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value: string | null) => {
         const cleanValue = value?.trim() ?? '';
         this.router.navigate([], {
@@ -132,19 +132,17 @@ export class MonitorComponent implements OnInit {
     status: MonitorStatus | null = null,
     searchString: string | null = null,
   ): Subscription {
-    return this.monitorService
-      .getMonitors(page, pageSize, status, searchString)
-      .subscribe({
-        next: (result) => {
-          this.monitors.set(result.items);
-          this.totalCount.set(result.totalCount);
-          this.totalPages.set(result.totalPages);
-        },
-        error: () => {
-          this.monitors.set([]);
-          this.totalCount.set(0);
-          this.totalPages.set(0);
-        },
-      });
+    return this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
+      next: (result) => {
+        this.monitors.set(result.items);
+        this.totalCount.set(result.totalCount);
+        this.totalPages.set(result.totalPages);
+      },
+      error: () => {
+        this.monitors.set([]);
+        this.totalCount.set(0);
+        this.totalPages.set(0);
+      },
+    });
   }
 }

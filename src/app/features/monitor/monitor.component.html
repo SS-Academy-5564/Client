@@ -2,11 +2,7 @@
   <header class="page-header">
     <h1 i18n="@@monitorsTitle" id="monitors-title">Monitors</h1>
 
-    <input
-      class="search-monitors"
-      placeholder="Search monitors..."
-      type="search"
-      [formControl]="searchControl"/>
+    <input class="search-monitors" placeholder="Search monitors..." type="search" [formControl]="searchControl" />
 
     <button class="new-monitor-button" type="button" (click)="onOpenPanel()">
       <span aria-hidden="true" class="new-monitor-icon">+</span>
