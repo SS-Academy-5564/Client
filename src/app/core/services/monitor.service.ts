@@ -20,8 +20,10 @@ export class MonitorService {
 
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
-  private readonly defaultCheckErrorMessage = $localize`:@@monitorService.defaultCheckError:Unable to start the check right now.`;
-
+  private readonly defaultCheckErrorMessage = $localize`
+    :@@monitorService.defaultCheckError:
+    Unable to start the check right now.
+  `;
   getMonitors(
     pageNumber = 1,
     pageSize = 10,
