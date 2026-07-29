@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { ToastService } from '@core/services/toast.service';
@@ -19,6 +20,7 @@ import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-pan
     CreateMonitorPanelComponent,
     PaginationComponent,
     ReactiveFormsModule,
+    MatIcon,
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.scss',
