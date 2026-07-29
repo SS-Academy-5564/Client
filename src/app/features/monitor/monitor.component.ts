@@ -1,18 +1,18 @@
 import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
 import { MonitorService } from '@core/services/monitor.service';
-import { toSignal, takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ToastService } from '@core/services/toast.service';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, finalize, Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
-import { ToastService } from '@core/services/toast.service';
+import { debounceTime, distinctUntilChanged, finalize, Subscription } from 'rxjs';
+import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
-import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
 
 @Component({
   selector: 'app-monitor',
@@ -43,8 +43,7 @@ export class MonitorComponent implements OnInit {
   protected readonly selectedStatus = signal<MonitorStatus | null>(null);
   protected readonly totalCount = signal(0);
   protected readonly totalPages = signal(0);
-  protected readonly isPanelOpen = signal(false);
-
+  protected readonly isPanelOpen = signal<boolean>(false);
   protected readonly pendingMonitorCheckIds = signal<Set<string>>(new Set());
   protected readonly searchControl = new FormControl('');
 
@@ -52,17 +51,9 @@ export class MonitorComponent implements OnInit {
     initialValue: this.route.snapshot.queryParamMap,
   });
 
-  protected readonly pageNumber = computed(() =>
-    Number(this.queryParams().get('page') ?? 1),
-  );
-
-  protected readonly pageSize = computed(() =>
-    Number(this.queryParams().get('pageSize') ?? 10),
-  );
-
-  protected readonly searchQuery = computed(() =>
-    this.queryParams().get('query') ?? '',
-  );
+  protected readonly pageNumber = computed(() => Number(this.queryParams().get('page') ?? 1));
+  protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
+  protected readonly searchQuery = computed(() => this.queryParams().get('query') ?? '');
 
   constructor() {
     effect(() => {
@@ -81,7 +72,9 @@ export class MonitorComponent implements OnInit {
         this.searchQuery(),
       );
 
-      onCleanup(() => subscription.unsubscribe());
+      onCleanup(() => {
+        subscription.unsubscribe();
+      });
     });
   }
 
@@ -94,7 +87,7 @@ export class MonitorComponent implements OnInit {
 
     this.searchControl.valueChanges
       .pipe(debounceTime(400), distinctUntilChanged())
-      .subscribe((value) => {
+      .subscribe((value: string | null) => {
         const cleanValue = value?.trim() ?? '';
 
         this.router.navigate([], {
@@ -106,6 +99,48 @@ export class MonitorComponent implements OnInit {
           queryParamsHandling: 'merge',
         });
       });
+  }
+
+  onClickStatus(status: MonitorStatus | null): void {
+    this.selectedStatus.set(status);
+
+    if (this.pageNumber() !== 1) {
+      this.navigateToPage(1);
+    }
+  }
+
+  onPageChange(pageNumber: number): void {
+    if (pageNumber < 1 || pageNumber > this.totalPages() || pageNumber === this.pageNumber()) {
+      return;
+    }
+
+    this.navigateToPage(pageNumber);
+  }
+
+  onPageSizeChange(pageSize: number): void {
+    if (pageSize === this.pageSize()) {
+      return;
+    }
+
+    this.navigateToPage(1, pageSize);
+  }
+
+  onOpenPanel(): void {
+    this.isPanelOpen.set(true);
+  }
+
+  onClosePanel(): void {
+    this.isPanelOpen.set(false);
+  }
+
+  onMonitorCreated(monitor: MonitorModel): void {
+    this.isPanelOpen.set(false);
+
+    this.toastService.success(
+      $localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`,
+    );
+
+    this.navigateToPage(1);
   }
 
   onRunMonitorCheck(monitor: MonitorModel): void {
@@ -133,9 +168,7 @@ export class MonitorComponent implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.toastService.success(
-            $localize`:@@monitorsRunCheckSuccess:Check initiated successfully.`,
-          );
+          this.toastService.success($localize`:@@monitorsRunCheckSuccess:Check initiated successfully.`);
         },
         error: (err: Error) => {
           this.toastService.error(err.message);
@@ -145,5 +178,33 @@ export class MonitorComponent implements OnInit {
 
   isMonitorCheckPending(monitorId: string): boolean {
     return this.pendingMonitorCheckIds().has(monitorId);
+  }
+
+  private navigateToPage(page: number, pageSize: number = this.pageSize()): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page, pageSize },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  private loadMonitors(
+    page: number,
+    pageSize: number,
+    status: MonitorStatus | null = null,
+    searchString: string | null = null,
+  ): Subscription {
+    return this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
+      next: (result) => {
+        this.monitors.set(result.items);
+        this.totalCount.set(result.totalCount);
+        this.totalPages.set(result.totalPages);
+      },
+      error: () => {
+        this.monitors.set([]);
+        this.totalCount.set(0);
+        this.totalPages.set(0);
+      },
+    });
   }
 }
