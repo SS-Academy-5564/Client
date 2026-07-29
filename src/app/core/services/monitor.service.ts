@@ -1,8 +1,8 @@
 import { environment } from '@/environments/environment';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, map, Observable, tap, throwError } from 'rxjs';
-import { ApiResponse } from '@core/models/api-response';
+import { ApiError, ApiResponse } from '@core/models/api-response';
 import { CreateMonitorRequest, MonitorModel, MonitorStatus } from '@core/models/monitor-model';
 
 export type MonitorPage = {
@@ -54,6 +54,17 @@ export class MonitorService {
     );
   }
 
+  triggerMonitorCheck(monitorId: string): Observable<void> {
+    return this.http.post<ApiResponse<void>>(`${this.monitorBaseEndpoint}/${monitorId}/run-now`, {}).pipe(
+      map((response) => {
+        if (!response.success) {
+          throw new Error(this.extractErrorMessageFromErrors(response.errors));
+        }
+      }),
+      catchError((err: HttpErrorResponse) => throwError(() => new Error(this.extractErrorMessage(err)))),
+    );
+  }
+
   createMonitor(request: CreateMonitorRequest): Observable<MonitorModel> {
     return this.http.post<ApiResponse<MonitorModel>>(this.monitorBaseEndpoint, request).pipe(
       map((response) => {
@@ -67,5 +78,22 @@ export class MonitorService {
 
   clearError(): void {
     this.error.set(null);
+  }
+
+  private extractErrorMessage(err: HttpErrorResponse): string {
+    const body = err.error as ApiResponse<unknown> | null;
+    if (body?.errors?.length) {
+      return this.extractErrorMessageFromErrors(body.errors);
+    }
+
+    if (typeof err.message === 'string' && err.message.trim().length > 0) {
+      return err.message;
+    }
+
+    return 'Unable to start the check right now.';
+  }
+
+  private extractErrorMessageFromErrors(errors: ApiError[]): string {
+    return errors[0]?.message ?? 'Unable to start the check right now.';
   }
 }

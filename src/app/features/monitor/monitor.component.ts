@@ -1,9 +1,12 @@
 import { MonitorModel, MonitorStatus } from '@/app/core/models/monitor-model';
 import { MonitorService } from '@/app/core/services/monitor.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { ToastService } from '@core/services/toast.service';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
@@ -12,7 +15,15 @@ import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-pan
 
 @Component({
   selector: 'app-monitor',
-  imports: [MonitorIntervalPipe, RelativeTimePipe, CreateMonitorPanelComponent, PaginationComponent],
+  imports: [
+    MonitorIntervalPipe,
+    RelativeTimePipe,
+    CreateMonitorPanelComponent,
+    PaginationComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+  ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.scss',
 })
@@ -20,8 +31,9 @@ export class MonitorComponent {
   private readonly monitorService = inject(MonitorService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-
   private readonly toastService = inject(ToastService);
+  private readonly destroyRef = inject(DestroyRef);
+
   protected readonly MonitorStatus = MonitorStatus;
   protected readonly isLoading = this.monitorService.isLoading;
   protected readonly error = this.monitorService.error;
@@ -30,6 +42,7 @@ export class MonitorComponent {
   protected readonly totalCount = signal(0);
   protected readonly totalPages = signal(0);
   protected readonly isPanelOpen = signal<boolean>(false);
+  protected readonly pendingMonitorCheckIds = signal<Set<string>>(new Set());
 
   private readonly queryParams = toSignal(this.route.queryParamMap, {
     initialValue: this.route.snapshot.queryParamMap,
@@ -84,6 +97,43 @@ export class MonitorComponent {
       $localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`,
     );
     this.navigateToPage(1);
+  }
+
+  onRunMonitorCheck(monitor: MonitorModel): void {
+    if (this.pendingMonitorCheckIds().has(monitor.id)) {
+      return;
+    }
+
+    this.pendingMonitorCheckIds.update((ids) => {
+      const next = new Set(ids);
+      next.add(monitor.id);
+      return next;
+    });
+
+    this.monitorService
+      .triggerMonitorCheck(monitor.id)
+      .pipe(
+        finalize(() => {
+          this.pendingMonitorCheckIds.update((ids) => {
+            const next = new Set(ids);
+            next.delete(monitor.id);
+            return next;
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.success($localize`:@@monitorsRunCheckSuccess:Check initiated successfully.`);
+        },
+        error: (err: Error) => {
+          this.toastService.error(err.message);
+        },
+      });
+  }
+
+  isMonitorCheckPending(monitorId: string): boolean {
+    return this.pendingMonitorCheckIds().has(monitorId);
   }
 
   private navigateToPage(page: number, pageSize: number = this.pageSize()): void {

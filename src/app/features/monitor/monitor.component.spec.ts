@@ -2,9 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
 import { MonitorComponent } from './monitor.component';
 import { MonitorPage, MonitorService } from '@core/services/monitor.service';
 import { ToastService } from '@core/services/toast.service';
@@ -57,9 +56,11 @@ describe('MonitorComponent', () => {
       } satisfies MonitorPage);
     }),
     createMonitor: vi.fn(),
+    triggerMonitorCheck: vi.fn().mockReturnValue(of(undefined)),
   };
   const toastServiceMock = {
     success: vi.fn(),
+    error: vi.fn(),
   };
 
   const createdMonitor: MonitorModel = {
@@ -88,6 +89,7 @@ describe('MonitorComponent', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+    monitorServiceMock.triggerMonitorCheck.mockReturnValue(of(undefined));
 
     await TestBed.configureTestingModule({
       imports: [MonitorComponent],
@@ -157,6 +159,42 @@ describe('MonitorComponent', () => {
       expect.objectContaining({
         queryParams: { page: 1, pageSize: 20 },
       }),
+    );
+  });
+
+  it('triggers a manual check and shows a success toast', () => {
+    component.onRunMonitorCheck(monitors[0]);
+    fixture.detectChanges();
+
+    expect(monitorServiceMock.triggerMonitorCheck).toHaveBeenCalledWith('enabled-monitor');
+    expect(toastServiceMock.success).toHaveBeenCalledWith('Check initiated successfully.');
+  });
+
+  it('tracks the pending state while the manual check request is in flight', () => {
+    const triggerSubject = new Subject<void>();
+    monitorServiceMock.triggerMonitorCheck.mockReturnValue(triggerSubject.asObservable());
+
+    component.onRunMonitorCheck(monitors[0]);
+    fixture.detectChanges();
+
+    expect(component.isMonitorCheckPending('enabled-monitor')).toBe(true);
+
+    triggerSubject.next();
+    triggerSubject.complete();
+    fixture.detectChanges();
+
+    expect(component.isMonitorCheckPending('enabled-monitor')).toBe(false);
+  });
+
+  it('shows an error toast when the manual check request fails', () => {
+    monitorServiceMock.triggerMonitorCheck.mockReturnValue(
+      throwError(() => new Error('Manual check was already triggered recently. Please wait before trying again.')),
+    );
+
+    component.onRunMonitorCheck(monitors[0]);
+
+    expect(toastServiceMock.error).toHaveBeenCalledWith(
+      'Manual check was already triggered recently. Please wait before trying again.',
     );
   });
 });
