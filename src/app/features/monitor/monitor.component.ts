@@ -1,16 +1,18 @@
 import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
 import { MonitorService } from '@core/services/monitor.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { ToastService } from '@core/services/toast.service';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatIcon } from '@angular/material/icon';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
-import { ToastService } from '@core/services/toast.service';
+import { debounceTime, distinctUntilChanged, finalize, Subscription } from 'rxjs';
+import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
-import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
 
 @Component({
   selector: 'app-monitor',
@@ -20,7 +22,9 @@ import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-pan
     CreateMonitorPanelComponent,
     PaginationComponent,
     ReactiveFormsModule,
-    MatIcon,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   templateUrl: './monitor.component.html',
   styleUrl: './monitor.component.scss',
@@ -29,8 +33,9 @@ export class MonitorComponent implements OnInit {
   private readonly monitorService = inject(MonitorService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-
   private readonly toastService = inject(ToastService);
+  private readonly destroyRef = inject(DestroyRef);
+
   protected readonly MonitorStatus = MonitorStatus;
   protected readonly isLoading = this.monitorService.isLoading;
   protected readonly error = this.monitorService.error;
@@ -39,6 +44,7 @@ export class MonitorComponent implements OnInit {
   protected readonly totalCount = signal(0);
   protected readonly totalPages = signal(0);
   protected readonly isPanelOpen = signal<boolean>(false);
+  protected readonly pendingMonitorCheckIds = signal<Set<string>>(new Set());
   protected readonly searchControl = new FormControl('');
 
   private readonly queryParams = toSignal(this.route.queryParamMap, {
@@ -52,6 +58,7 @@ export class MonitorComponent implements OnInit {
   constructor() {
     effect(() => {
       const query = this.searchQuery();
+
       if (this.searchControl.value !== query) {
         this.searchControl.setValue(query, { emitEvent: false });
       }
@@ -64,6 +71,7 @@ export class MonitorComponent implements OnInit {
         this.selectedStatus(),
         this.searchQuery(),
       );
+
       onCleanup(() => {
         subscription.unsubscribe();
       });
@@ -72,6 +80,7 @@ export class MonitorComponent implements OnInit {
 
   ngOnInit(): void {
     const initialQuery = this.searchQuery();
+
     if (initialQuery) {
       this.searchControl.setValue(initialQuery, { emitEvent: false });
     }
@@ -80,9 +89,13 @@ export class MonitorComponent implements OnInit {
       .pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((value: string | null) => {
         const cleanValue = value?.trim() ?? '';
+
         this.router.navigate([], {
           relativeTo: this.route,
-          queryParams: { query: cleanValue || null, page: 1 },
+          queryParams: {
+            query: cleanValue || null,
+            page: 1,
+          },
           queryParamsHandling: 'merge',
         });
       });
@@ -90,6 +103,7 @@ export class MonitorComponent implements OnInit {
 
   onClickStatus(status: MonitorStatus | null): void {
     this.selectedStatus.set(status);
+
     if (this.pageNumber() !== 1) {
       this.navigateToPage(1);
     }
@@ -121,10 +135,49 @@ export class MonitorComponent implements OnInit {
 
   onMonitorCreated(monitor: MonitorModel): void {
     this.isPanelOpen.set(false);
+
     this.toastService.success(
       $localize`:@@monitorsCreateSuccess:Monitor "${monitor.name}:name:" created successfully.`,
     );
+
     this.navigateToPage(1);
+  }
+
+  onRunMonitorCheck(monitor: MonitorModel): void {
+    if (this.pendingMonitorCheckIds().has(monitor.id)) {
+      return;
+    }
+
+    this.pendingMonitorCheckIds.update((ids) => {
+      const next = new Set(ids);
+      next.add(monitor.id);
+      return next;
+    });
+
+    this.monitorService
+      .triggerMonitorCheck(monitor.id)
+      .pipe(
+        finalize(() => {
+          this.pendingMonitorCheckIds.update((ids) => {
+            const next = new Set(ids);
+            next.delete(monitor.id);
+            return next;
+          });
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        next: () => {
+          this.toastService.success($localize`:@@monitorsRunCheckSuccess:Check initiated successfully.`);
+        },
+        error: (err: Error) => {
+          this.toastService.error(err.message);
+        },
+      });
+  }
+
+  isMonitorCheckPending(monitorId: string): boolean {
+    return this.pendingMonitorCheckIds().has(monitorId);
   }
 
   private navigateToPage(page: number, pageSize: number = this.pageSize()): void {

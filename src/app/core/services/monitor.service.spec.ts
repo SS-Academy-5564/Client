@@ -106,4 +106,49 @@ describe('MonitorService', () => {
 
     expect(result).toEqual(created);
   });
+
+  it('should POST to run-now and complete when the request succeeds', () => {
+    let completed = false;
+
+    service.triggerMonitorCheck('monitor-1').subscribe({
+      next: () => {
+        completed = true;
+      },
+    });
+
+    const httpRequest = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors/monitor-1/run-now`);
+    expect(httpRequest.request.method).toBe('POST');
+    expect(httpRequest.request.body).toEqual({});
+    httpRequest.flush({ data: null, pagination: null, success: true, errors: [] });
+
+    expect(completed).toBe(true);
+  });
+
+  it('should surface API error messages from run-now failures', () => {
+    let errorMessage = '';
+
+    service.triggerMonitorCheck('monitor-1').subscribe({
+      error: (err: Error) => {
+        errorMessage = err.message;
+      },
+    });
+
+    const httpRequest = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors/monitor-1/run-now`);
+    httpRequest.flush(
+      {
+        data: null,
+        pagination: null,
+        success: false,
+        errors: [
+          {
+            code: 'RateLimited',
+            message: 'Manual check was already triggered recently. Please wait before trying again.',
+          },
+        ],
+      },
+      { status: 429, statusText: 'Too Many Requests' },
+    );
+
+    expect(errorMessage).toBe('Manual check was already triggered recently. Please wait before trying again.');
+  });
 });
