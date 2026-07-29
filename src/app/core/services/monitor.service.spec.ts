@@ -23,7 +23,7 @@ describe('MonitorService', () => {
     httpTesting.verify();
   });
 
-  it('should return monitors with pagination metadata', () => {
+  it('should return monitors with pagination metadata', (): void => {
     const monitors: MonitorModel[] = [
       {
         id: 'b47c433e-f36b-1410-8416-00a08332bbd7',
@@ -36,7 +36,7 @@ describe('MonitorService', () => {
       },
     ];
 
-    service.getMonitors(2, 10, MonitorStatus.Enabled).subscribe((result) => {
+    service.getMonitors(2, 10, MonitorStatus.Enabled).subscribe((result): void => {
       expect(result).toEqual({
         items: monitors,
         pageNumber: 2,
@@ -60,7 +60,22 @@ describe('MonitorService', () => {
     expect(service.error()).toBeNull();
   });
 
-  it('should POST the request and return the created monitor', () => {
+  it('should pass searchString query param when provided', (): void => {
+    service.getMonitors(1, 10, null, 'billing').subscribe();
+
+    const request = httpTesting.expectOne(
+      `${environment.apiBaseUrl}/monitors?pageNumber=1&pageSize=10&searchString=billing`,
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({
+      data: [],
+      pagination: { pageNumber: 1, pageSize: 10, totalCount: 0, totalPages: 0 },
+      success: true,
+      errors: [],
+    });
+  });
+
+  it('should POST the request and return the created monitor', (): void => {
     const request: CreateMonitorRequest = {
       name: 'EUR/USD Rate',
       url: 'https://api.example.com/data',
@@ -80,7 +95,7 @@ describe('MonitorService', () => {
     };
 
     let result: MonitorModel | undefined;
-    service.createMonitor(request).subscribe((monitor) => {
+    service.createMonitor(request).subscribe((monitor): void => {
       result = monitor;
     });
 
