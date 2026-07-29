@@ -1,5 +1,5 @@
-@if (message) {
+@if (message()) {
   <div aria-live="assertive" class="error-banner" role="alert">
-    {{ message }}
+    {{ message() }}
   </div>
 }
