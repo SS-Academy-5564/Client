@@ -90,7 +90,7 @@ export class MonitorService {
       return err.message;
     }
 
-    return 'Unable to start the check right now.';
+    return $localize`:@@monitorService.defaultCheckError:Unable to start the check right now.`;
   }
 
   private extractErrorMessageFromErrors(errors: ApiError[]): string {
