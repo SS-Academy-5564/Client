@@ -22,6 +22,7 @@ describe('MonitorComponent', () => {
       lastCheckedAt: null,
       status: MonitorStatus.Enabled,
       interval: 60,
+      organizationId: 'org-1',
     },
     {
       id: 'disabled-monitor',
@@ -31,6 +32,7 @@ describe('MonitorComponent', () => {
       lastCheckedAt: null,
       status: MonitorStatus.Disabled,
       interval: 300,
+      organizationId: 'org-1',
     },
     {
       id: 'error-monitor',
@@ -40,6 +42,7 @@ describe('MonitorComponent', () => {
       lastCheckedAt: null,
       status: MonitorStatus.Error,
       interval: 900,
+      organizationId: 'org-1',
     },
   ];
   const monitorServiceMock = {
@@ -70,6 +73,7 @@ describe('MonitorComponent', () => {
     lastCheckedAt: null,
     status: MonitorStatus.Enabled,
     interval: 300,
+    organizationId: 'org-1',
   };
 
   const getRenderedMonitorNames = (): string[] => {

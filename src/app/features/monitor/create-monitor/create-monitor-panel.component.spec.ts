@@ -20,6 +20,7 @@ describe('CreateMonitorPanelComponent', () => {
     lastCheckedAt: null,
     status: MonitorStatus.Enabled,
     interval: 300,
+    organizationId: 'org-1',
   };
 
   const monitorServiceMock = {
