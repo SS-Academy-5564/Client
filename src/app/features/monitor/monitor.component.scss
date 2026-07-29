@@ -57,6 +57,73 @@
   line-height: 1;
 }
 
+.search-monitors-wrapper {
+  margin-left: auto;
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  color: var(--color-muted-text, #94a3b8);
+  transition: color 0.15s ease;
+
+  &:focus-within {
+    color: var(--accent);
+  }
+}
+
+.search-monitors-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.search-monitors {
+  width: 100%;
+  height: 40px;
+  padding: 8px 14px 8px 36px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--color-muted-bg, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+
+  &::placeholder {
+    color: var(--text-secondary, #64748b);
+    opacity: 0.8;
+  }
+
+  &:hover {
+    background-color: var(--surface, #ffffff);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  }
+
+  &:focus {
+    background-color: var(--surface, #ffffff);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  &::-webkit-search-cancel-button {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
 .page-content {
   padding: 20px 30px 30px;
 }

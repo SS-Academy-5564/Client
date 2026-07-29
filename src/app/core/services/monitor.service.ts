@@ -21,7 +21,12 @@ export class MonitorService {
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
-  getMonitors(pageNumber = 1, pageSize = 10, status: MonitorStatus | null = null): Observable<MonitorPage> {
+  getMonitors(
+    pageNumber = 1,
+    pageSize = 10,
+    status: MonitorStatus | null = null,
+    searchString: string | null = null,
+  ): Observable<MonitorPage> {
     this.isLoading.set(true);
     this.clearError();
 
@@ -29,6 +34,10 @@ export class MonitorService {
 
     if (status !== null) {
       params = params.set('status', status);
+    }
+
+    if (searchString) {
+      params = params.set('searchString', searchString);
     }
 
     return this.http.get<ApiResponse<MonitorModel[]>>(this.monitorBaseEndpoint, { params }).pipe(
