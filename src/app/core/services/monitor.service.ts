@@ -21,6 +21,10 @@ export class MonitorService {
   readonly isLoading = signal<boolean>(false);
   readonly error = signal<string | null>(null);
 
+  private get defaultCheckErrorMessage(): string {
+    return $localize`:@@monitorService.defaultCheckError:Unable to start the check right now.`;
+  }
+
   getMonitors(
     pageNumber = 1,
     pageSize = 10,
@@ -70,7 +74,12 @@ export class MonitorService {
           throw new Error(this.extractErrorMessageFromErrors(response.errors));
         }
       }),
-      catchError((err: HttpErrorResponse) => throwError(() => new Error(this.extractErrorMessage(err)))),
+      catchError((err: unknown) => {
+        if (err instanceof HttpErrorResponse) {
+          return throwError(() => new Error(this.extractErrorMessage(err)));
+        }
+        return throwError(() => err);
+      }),
     );
   }
 
@@ -99,10 +108,10 @@ export class MonitorService {
       return err.message;
     }
 
-    return $localize`:@@monitorService.defaultCheckError:Unable to start the check right now.`;
+    return this.defaultCheckErrorMessage;
   }
 
   private extractErrorMessageFromErrors(errors: ApiError[]): string {
-    return errors[0]?.message ?? 'Unable to start the check right now.';
+    return errors[0]?.message ?? this.defaultCheckErrorMessage;
   }
 }
