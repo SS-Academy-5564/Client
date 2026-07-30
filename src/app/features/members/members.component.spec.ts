@@ -32,6 +32,10 @@ type MembersComponentTestApi = {
   handleCancelInvitation(): void;
   selectedMember: () => Member | null;
   selectedInvitation: () => PendingInvitation | null;
+  onPageChange(pageNumber: number): void;
+  onPageSizeChange(pageSize: number): void;
+  pageNumber: () => number;
+  pageSize: () => number;
 };
 
 const SAMPLE_MEMBER: Member = {
@@ -295,23 +299,21 @@ describe('MembersComponent', () => {
     expect(() => api().handleCancelInvitation()).not.toThrow();
   });
 
-  it('should handle pagination changes', () => {
+  it('should handle pagination changes', (): void => {
     fixture.detectChanges();
     flushOk(25, [SAMPLE_MEMBER], 1, 10);
 
-    const apiAny = component as any;
-
     // Change to page 2
-    apiAny.onPageChange(2);
+    api().onPageChange(2);
     fixture.detectChanges();
     flushOk(25, [SAMPLE_MEMBER], 2, 10);
-    expect(apiAny.pageNumber()).toBe(2);
+    expect(api().pageNumber()).toBe(2);
 
     // Change page size to 20
-    apiAny.onPageSizeChange(20);
+    api().onPageSizeChange(20);
     fixture.detectChanges();
     flushOk(25, [SAMPLE_MEMBER], 1, 20);
-    expect(apiAny.pageNumber()).toBe(1);
-    expect(apiAny.pageSize()).toBe(20);
+    expect(api().pageNumber()).toBe(1);
+    expect(api().pageSize()).toBe(20);
   });
 });

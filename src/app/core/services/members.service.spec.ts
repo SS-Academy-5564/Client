@@ -9,7 +9,7 @@ describe('MembersService', () => {
   let httpTestingController: HttpTestingController;
   const apiBaseUrl = `${environment.apiBaseUrl}/members`;
 
-  beforeEach(() => {
+  beforeEach((): void => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [MembersService],
@@ -19,16 +19,16 @@ describe('MembersService', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => {
+  afterEach((): void => {
     httpTestingController.verify();
   });
 
-  it('should be created', () => {
+  it('should be created', (): void => {
     expect(service).toBeTruthy();
   });
 
-  it('should get members with default pagination', () => {
-    service.getMembers().subscribe((result) => {
+  it('should get members with default pagination', (): void => {
+    service.getMembers().subscribe((result): void => {
       expect(result.members.length).toBe(1);
       expect(result.pageNumber).toBe(1);
       expect(result.pageSize).toBe(10);
@@ -51,8 +51,8 @@ describe('MembersService', () => {
     });
   });
 
-  it('should get members with custom pagination', () => {
-    service.getMembers(2, 20).subscribe((result) => {
+  it('should get members with custom pagination', (): void => {
+    service.getMembers(2, 20).subscribe((result): void => {
       expect(result.pageNumber).toBe(2);
       expect(result.pageSize).toBe(20);
     });
@@ -72,12 +72,12 @@ describe('MembersService', () => {
     });
   });
 
-  it('should throw an error for invalid response format', () => {
+  it('should throw an error for invalid response format', (): void => {
     service.getMembers().subscribe({
-      next: () => {
+      next: (): void => {
         throw new Error('Expected error, but got success');
       },
-      error: (err) => {
+      error: (err): void => {
         expect(err.message).toBe('Invalid members response');
       },
     });

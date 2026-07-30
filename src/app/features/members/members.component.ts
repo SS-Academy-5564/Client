@@ -31,9 +31,13 @@ export class MembersComponent {
   protected readonly members = signal<Member[]>([]);
   protected readonly pendingInvitations = signal<PendingInvitation[]>([]);
 
+  /** The total number of members across all pages. */
   protected readonly totalCount = signal(0);
+  /** The current active page number (1-indexed). */
   protected readonly pageNumber = signal(1);
+  /** The number of members displayed per page. */
   protected readonly pageSize = signal(10);
+  /** The total number of available pages. */
   protected readonly totalPages = signal(0);
 
   protected readonly totalMembers = computed(() => this.totalCount());
@@ -44,23 +48,24 @@ export class MembersComponent {
 
   protected readonly errorMessage = signal(failedToLoadMembersMessage);
 
-  private readonly membersService = inject(MembersService);
-
+  /** Creates a reactive members loader tied to the current pagination state. */
   constructor() {
+    const membersService = inject(MembersService);
+
     effect((onCleanup) => {
-      const subscription = this.loadMembers(this.pageNumber(), this.pageSize());
+      const subscription = this.loadMembers(membersService, this.pageNumber(), this.pageSize());
       onCleanup(() => {
         subscription.unsubscribe();
       });
     });
   }
 
-  private loadMembers(pageNumber: number, pageSize: number): Subscription {
+  private loadMembers(membersService: MembersService, pageNumber: number, pageSize: number): Subscription {
     this.isLoading.set(true);
     this.hasError.set(false);
     this.errorMessage.set(failedToLoadMembersMessage);
 
-    return this.membersService
+    return membersService
       .getMembers(pageNumber, pageSize)
       .pipe(
         catchError(() => {
@@ -111,6 +116,37 @@ export class MembersComponent {
     };
   }
 
+  /**
+   * Builds the localized accessible label for a role cell.
+   *
+   * @param role Member or invitation role.
+   * @returns The localized role label.
+   */
+  protected getRoleAriaLabel(role: string): string {
+    return $localize`:@@membersRoleCellAriaLabel:Role: ${role}:ROLE:`;
+  }
+
+  /**
+   * Builds the localized accessible label for a member join date.
+   *
+   * @param joinedAt Member join date.
+   * @returns The localized join-date label.
+   */
+  protected getJoinedAriaLabel(joinedAt: string): string {
+    const joinedDate = this.formatJoinedDate(joinedAt);
+    return $localize`:@@membersJoinedCellAriaLabel:Joined: ${joinedDate}:JOINED_DATE:`;
+  }
+
+  /**
+   * Builds the localized accessible label for a row actions button.
+   *
+   * @param subject Member name or invitation email.
+   * @returns The localized actions label.
+   */
+  protected getActionsAriaLabel(subject: string): string {
+    return $localize`:@@membersActionsCellAriaLabel:Actions for ${subject}:SUBJECT:`;
+  }
+
   protected selectMember(member: Member): void {
     this.selectedMember.set(member);
   }
@@ -119,6 +155,11 @@ export class MembersComponent {
     this.selectedInvitation.set(invitation);
   }
 
+  /**
+   * Handles user requests to change the active page.
+   *
+   * @param pageNumber The new page number to navigate to.
+   */
   protected onPageChange(pageNumber: number): void {
     if (pageNumber < 1 || pageNumber > this.totalPages() || pageNumber === this.pageNumber()) {
       return;
@@ -127,6 +168,12 @@ export class MembersComponent {
     this.pageNumber.set(pageNumber);
   }
 
+  /**
+   * Handles user requests to change the number of items per page.
+   * Resets the active page back to 1.
+   *
+   * @param pageSize The new page size selected by the user.
+   */
   protected onPageSizeChange(pageSize: number): void {
     if (pageSize === this.pageSize()) {
       return;
