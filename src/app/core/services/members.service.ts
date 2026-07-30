@@ -28,9 +28,7 @@ export class MembersService {
   private readonly membersApiUrl = `${environment.apiBaseUrl}/members`;
 
   getMembers(pageNumber = 1, pageSize = 10): Observable<MemberPage> {
-    const params = new HttpParams()
-      .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
+    const params = new HttpParams().set('pageNumber', pageNumber).set('pageSize', pageSize);
 
     return this.http.get<ApiResponse<Member[]>>(this.membersApiUrl, { params }).pipe(
       map((response) => {

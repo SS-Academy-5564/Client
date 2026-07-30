@@ -50,19 +50,13 @@
               </div>
             </div>
 
-            <div
-              class="col-role"
-              role="cell"
-              [attr.aria-label]="'Role: ' + member.role">
+            <div class="col-role" role="cell" [attr.aria-label]="'Role: ' + member.role">
               <span class="role-badge" [ngClass]="roleBadgeClass(member.role)">
                 {{ member.role }}
               </span>
             </div>
 
-            <div
-              class="col-joined"
-              role="cell"
-              [attr.aria-label]="'Joined: ' + formatJoinedDate(member.joinedAt)">
+            <div class="col-joined" role="cell" [attr.aria-label]="'Joined: ' + formatJoinedDate(member.joinedAt)">
               <span class="joined-date">
                 {{ formatJoinedDate(member.joinedAt) }}
               </span>
@@ -142,10 +136,7 @@
                 </div>
               </div>
 
-              <div
-                class="col-role"
-                role="cell"
-                [attr.aria-label]="'Role: ' + invite.role">
+              <div class="col-role" role="cell" [attr.aria-label]="'Role: ' + invite.role">
                 <span class="role-badge" [ngClass]="roleBadgeClass(invite.role)">
                   {{ invite.role }}
                 </span>

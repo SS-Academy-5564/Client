@@ -45,9 +45,9 @@ describe('MembersService', () => {
         pageNumber: 1,
         pageSize: 10,
         totalCount: 10,
-        totalPages: 1
+        totalPages: 1,
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -66,9 +66,9 @@ describe('MembersService', () => {
         pageNumber: 2,
         pageSize: 20,
         totalCount: 0,
-        totalPages: 0
+        totalPages: 0,
       },
-      errors: []
+      errors: [],
     });
   });
 
@@ -79,7 +79,7 @@ describe('MembersService', () => {
       },
       error: (err) => {
         expect(err.message).toBe('Invalid members response');
-      }
+      },
     });
 
     const req = httpTestingController.expectOne(`${apiBaseUrl}?pageNumber=1&pageSize=10`);
@@ -87,7 +87,7 @@ describe('MembersService', () => {
       success: true,
       data: {}, // Not an array
       pagination: null,
-      errors: []
+      errors: [],
     });
   });
 });

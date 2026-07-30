@@ -300,7 +300,7 @@ describe('MembersComponent', () => {
     flushOk(25, [SAMPLE_MEMBER], 1, 10);
 
     const apiAny = component as any;
-    
+
     // Change to page 2
     apiAny.onPageChange(2);
     fixture.detectChanges();
