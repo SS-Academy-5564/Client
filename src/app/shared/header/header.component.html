@@ -3,7 +3,7 @@
     <app-logo />
   </a>
 
-  @if (tokenStorage.isAuthenticated()) {
+  @if (authService.isAuthenticated()) {
     <div class="header-user-actions">
       <button class="user-menu-button" type="button" [matMenuTriggerFor]="userMenu">
         <div class="user-avatar">

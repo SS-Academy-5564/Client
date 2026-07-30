@@ -12,10 +12,12 @@ import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { AuthService } from '@core/services/auth.service';
 import { LoginRequest } from '@core/models/login-model';
-import { TokenStorageService } from '@core/services/token-storage.service';
 import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
 
+/**
+ * Presents the login form and navigates after successful authentication.
+ */
 @Component({
   selector: 'app-login',
   imports: [
@@ -38,23 +40,38 @@ export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
-  protected readonly authService = inject(AuthService);
-  private tokenStorage = inject(TokenStorageService);
 
+  /** Authentication facade used by the login view. */
+  protected readonly authService = inject(AuthService);
+
+  /** Whether the password value is currently obscured. */
   protected readonly hidePassword = signal<boolean>(true);
+
+  /** Whether a login request is currently running. */
   protected readonly loading = signal(false);
+
+  /** Login error shown in the form. */
   protected readonly error = signal<string | null>(null);
 
+  /** Reactive login form. */
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
 
+  /**
+   * Toggles password visibility without propagating the button click.
+   *
+   * @param event Password-visibility button event.
+   */
   togglePasswordVisibility(event: MouseEvent): void {
     this.hidePassword.update((value) => !value);
     event.stopPropagation();
   }
 
+  /**
+   * Validates and submits the login form.
+   */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -77,7 +94,6 @@ export class LoginComponent {
           return;
         }
 
-        this.tokenStorage.setToken(token, expiresAt);
         this.loading.set(false);
         this.toastService.success($localize`:@@login.success:Login successful.`);
         this.router.navigate([ROUTES.CREATE_ORGANIZATION]);

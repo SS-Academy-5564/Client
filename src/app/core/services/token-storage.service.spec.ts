@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TokenStorageService } from './token-storage.service';
 
@@ -16,15 +16,31 @@ const createJwt = (payload: Record<string, unknown>): string => {
 
 describe('TokenStorageService', () => {
   let service: TokenStorageService;
+  let getItemSpy: ReturnType<typeof vi.spyOn>;
+  let setItemSpy: ReturnType<typeof vi.spyOn>;
+  let removeItemSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem('token', 'persisted-local-token');
+    sessionStorage.setItem('token', 'persisted-session-token');
+
+    getItemSpy = vi.spyOn(Storage.prototype, 'getItem');
+    setItemSpy = vi.spyOn(Storage.prototype, 'setItem');
+    removeItemSpy = vi.spyOn(Storage.prototype, 'removeItem');
 
     TestBed.configureTestingModule({
       providers: [TokenStorageService],
     });
 
     service = TestBed.inject(TokenStorageService);
+  });
+
+  afterEach(() => {
+    getItemSpy.mockRestore();
+    setItemSpy.mockRestore();
+    removeItemSpy.mockRestore();
   });
 
   it('should be created', () => {
@@ -34,6 +50,19 @@ describe('TokenStorageService', () => {
   it('should initialize with null token', () => {
     expect(service.getToken()).toBeNull();
     expect(service.isAuthenticated()).toBe(false);
+  });
+
+  it('should never read or write access tokens in browser storage', () => {
+    service.setToken('memory-only-token');
+    expect(service.getToken()).toBe('memory-only-token');
+
+    service.clearToken();
+
+    expect(getItemSpy).not.toHaveBeenCalled();
+    expect(setItemSpy).not.toHaveBeenCalled();
+    expect(removeItemSpy).not.toHaveBeenCalled();
+    expect(localStorage.getItem('token')).toBe('persisted-local-token');
+    expect(sessionStorage.getItem('token')).toBe('persisted-session-token');
   });
 
   it('should set and retrieve token', () => {
@@ -52,6 +81,24 @@ describe('TokenStorageService', () => {
     service.setToken('expired-token', pastDate);
     expect(service.getToken()).toBeNull();
     expect(service.isAuthenticated()).toBe(false);
+  });
+
+  it('should derive expiration from the JWT when the API omits expiresAt', () => {
+    vi.useFakeTimers();
+
+    try {
+      const expiresAtSeconds = Math.floor((Date.now() + 10_000) / 1_000);
+      service.setToken(createJwt({ exp: expiresAtSeconds }));
+
+      expect(service.isAuthenticated()).toBe(true);
+
+      vi.advanceTimersByTime(11_000);
+
+      expect(service.getToken()).toBeNull();
+      expect(service.isAuthenticated()).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('should automatically clear token when expiration timer fires', () => {

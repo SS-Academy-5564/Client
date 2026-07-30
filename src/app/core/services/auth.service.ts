@@ -1,11 +1,21 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { HttpClient } from '@angular/common/http';
-import { catchError, finalize, map, Observable, of, switchMap, tap } from 'rxjs';
-import { RegisterRequest } from '@core/models/register-model';
-import { environment } from '@environments/environment';
-import { ApiResponse, LoginRequest, LoginResponse } from '@core/models/login-model';
-import { TokenStorageService } from '@core/services/token-storage.service';
+import { catchError, filter, finalize, map, Observable, of, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 
+import { ApiResponse, LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
+import { RegisterRequest } from '@core/models/register-model';
+import { TokenStorageService } from '@core/services/token-storage.service';
+import { environment } from '@environments/environment';
+
+/**
+ * Final and transitional states of the frontend authentication session.
+ */
+export type AuthenticationState = 'initializing' | 'authenticated' | 'unauthenticated';
+
+/**
+ * Profile returned for the currently authenticated user.
+ */
 export type CurrentUser = {
   id: string;
   email: string;
@@ -15,6 +25,9 @@ export type CurrentUser = {
   updatedAt: string;
 };
 
+/**
+ * Coordinates login, session restoration, refresh rotation, and local authentication state.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -23,12 +36,32 @@ export class AuthService {
   private readonly tokenStorage = inject(TokenStorageService);
   private readonly registerEndpoint = `${environment.apiBaseUrl}/auth/register`;
   private readonly loginEndpoint = `${environment.apiBaseUrl}/auth/login`;
+  private readonly refreshEndpoint = `${environment.apiBaseUrl}/auth/refresh`;
+  private readonly logoutEndpoint = `${environment.apiBaseUrl}/auth/logout`;
   private readonly currentUserEndpoint = `${environment.apiBaseUrl}/users/me`;
+  private readonly authenticationStateValue = signal<AuthenticationState>('initializing');
+  private readonly authenticationStateChanges = toObservable(this.authenticationStateValue);
+  private refreshRequest$: Observable<string> | null = null;
 
+  /** Whether an interactive authentication request is in progress. */
   readonly isLoading = signal(false);
+
+  /** Authentication-related message intended for the current view. */
   readonly error = signal<string | null>(null);
+
+  /** Profile for the current authenticated user, when loaded. */
   readonly currentUser = signal<CurrentUser | null>(null);
 
+  /** Read-only authentication lifecycle state. */
+  readonly authenticationState = this.authenticationStateValue.asReadonly();
+
+  /** Whether startup session initialization is still in progress. */
+  readonly isInitializing = computed(() => this.authenticationState() === 'initializing');
+
+  /** Whether the frontend currently has an authenticated session. */
+  readonly isAuthenticated = computed(() => this.authenticationState() === 'authenticated');
+
+  /** Best available display name from the current user profile. */
   readonly displayName = computed(() => {
     const user = this.currentUser();
 
@@ -40,6 +73,7 @@ export class AuthService {
     return fullName || user.email || null;
   });
 
+  /** Best available initials from the current user profile. */
   readonly userInitials = computed(() => {
     const user = this.currentUser();
 
@@ -54,6 +88,12 @@ export class AuthService {
     return (first + last || emailInitial || '').toUpperCase() || null;
   });
 
+  /**
+   * Registers a new user account.
+   *
+   * @param payload Registration form values.
+   * @returns The backend registration request.
+   */
   register(payload: RegisterRequest): Observable<unknown> {
     this.isLoading.set(true);
     this.clearError();
@@ -61,38 +101,93 @@ export class AuthService {
     return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
   }
 
+  /**
+   * Authenticates a user and stores the returned access token in memory.
+   *
+   * @param payload User credentials.
+   * @returns The backend login response.
+   */
   login(payload: LoginRequest): Observable<LoginResponse> {
     this.isLoading.set(true);
     this.clearError();
 
-    return this.http.post<LoginResponse>(this.loginEndpoint, payload).pipe(
-      tap((response) => {
-        if (response?.success && response?.data?.accessToken) {
-          this.tokenStorage.setToken(response.data.accessToken, response.data.expiresAt);
-        }
-      }),
-      switchMap((response) => {
-        if (!response?.success || !response?.data?.accessToken) {
+    return this.http.post<LoginResponse>(this.loginEndpoint, payload, { withCredentials: true }).pipe(
+      switchMap((response): Observable<LoginResponse> => {
+        if (!response.success || !response.data?.accessToken) {
+          this.clearLocalSession();
           return of(response);
         }
 
+        this.applyAuthenticatedSession(response.data);
         return this.loadCurrentUser().pipe(map(() => response));
       }),
       finalize(() => this.isLoading.set(false)),
     );
   }
 
-  loadCurrentUser(): Observable<CurrentUser | null> {
-    const token = this.tokenStorage.getToken();
+  /**
+   * Restores the browser session before application startup completes.
+   *
+   * @returns An observable that completes after refresh and profile loading finish.
+   */
+  initializeSession(): Observable<void> {
+    this.authenticationStateValue.set('initializing');
+    this.currentUser.set(null);
+    this.tokenStorage.clearToken();
 
-    if (!token) {
+    return this.refreshAccessToken().pipe(
+      switchMap(() => this.loadCurrentUser()),
+      map((): void => undefined),
+      catchError(() => of(undefined)),
+    );
+  }
+
+  /**
+   * Starts or joins the active refresh-token rotation request.
+   *
+   * @returns A shared observable containing the newly issued access token.
+   */
+  refreshAccessToken(): Observable<string> {
+    if (this.refreshRequest$) {
+      return this.refreshRequest$;
+    }
+
+    const request$ = this.http.post<LoginResponse>(this.refreshEndpoint, {}, { withCredentials: true }).pipe(
+      switchMap((response): Observable<string> => {
+        if (!response.success || !response.data?.accessToken) {
+          return throwError(() => new Error('Refresh response did not contain an access token.'));
+        }
+
+        this.applyAuthenticatedSession(response.data);
+        return of(response.data.accessToken);
+      }),
+      catchError((error: unknown): Observable<never> => {
+        this.clearLocalSession();
+        return throwError(() => error);
+      }),
+      finalize(() => {
+        this.refreshRequest$ = null;
+      }),
+      shareReplay({ bufferSize: 1, refCount: false }),
+    );
+
+    this.refreshRequest$ = request$;
+    return request$;
+  }
+
+  /**
+   * Loads the profile associated with the current authenticated session.
+   *
+   * @returns The current user, or `null` when unavailable.
+   */
+  loadCurrentUser(): Observable<CurrentUser | null> {
+    if (this.authenticationState() === 'unauthenticated') {
       this.currentUser.set(null);
-      this.clearError();
       return of(null);
     }
 
     return this.http.get<ApiResponse<CurrentUser>>(this.currentUserEndpoint).pipe(
-      map((response) => (response?.success ? response.data : null)),
+      map((response) => (response.success ? response.data : null)),
       tap((user) => {
         this.currentUser.set(user);
         this.clearError();
@@ -100,13 +195,8 @@ export class AuthService {
       catchError((error: unknown) => {
         this.currentUser.set(null);
 
-        const status =
-          typeof error === 'object' && error !== null && 'status' in error
-            ? (error as { status?: number }).status
-            : undefined;
-
-        if (status === 401) {
-          this.tokenStorage.clearToken();
+        if (this.getHttpStatus(error) === 401) {
+          this.clearLocalSession();
           this.setError('Your session has expired. Please log in again.');
         } else {
           this.setError('Failed to load user profile.');
@@ -117,16 +207,67 @@ export class AuthService {
     );
   }
 
-  logout(): void {
-    this.currentUser.set(null);
-    this.tokenStorage.clearToken();
+  /**
+   * Revokes the backend refresh session and clears all local authentication state.
+   *
+   * @returns The backend logout request mapped to completion.
+   */
+  logout(): Observable<void> {
+    this.clearLocalSession();
+
+    return this.http.post(this.logoutEndpoint, {}, { withCredentials: true }).pipe(
+      map((): void => undefined),
+      finalize(() => this.clearLocalSession()),
+    );
   }
 
+  /**
+   * Clears the access token, current user, and authenticated state locally.
+   */
+  clearLocalSession(): void {
+    this.tokenStorage.clearToken();
+    this.currentUser.set(null);
+    this.authenticationStateValue.set('unauthenticated');
+    this.clearError();
+  }
+
+  /**
+   * Waits until startup authentication initialization reaches a final state.
+   *
+   * @returns The first authenticated or unauthenticated state.
+   */
+  waitForInitialization(): Observable<AuthenticationState> {
+    return this.authenticationStateChanges.pipe(
+      filter((state) => state !== 'initializing'),
+      take(1),
+    );
+  }
+
+  /**
+   * Replaces the current authentication error message.
+   *
+   * @param message Message to expose to the current view.
+   */
   setError(message: string): void {
     this.error.set(message);
   }
 
+  /**
+   * Clears the current authentication error message.
+   */
   clearError(): void {
     this.error.set(null);
+  }
+
+  private applyAuthenticatedSession(result: LoginResult): void {
+    this.tokenStorage.setToken(result.accessToken, result.expiresAt);
+    this.authenticationStateValue.set('authenticated');
+    this.clearError();
+  }
+
+  private getHttpStatus(error: unknown): number | undefined {
+    return typeof error === 'object' && error !== null && 'status' in error
+      ? (error as { status?: number }).status
+      : undefined;
   }
 }

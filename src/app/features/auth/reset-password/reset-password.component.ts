@@ -14,6 +14,9 @@ import { PasswordResetService } from '@core/services/password-reset.service';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
 import { ROUTES } from '@core/constants/route.constants';
 
+/**
+ * Presents the final password-reset form and returns the user to login after success.
+ */
 @Component({
   selector: 'app-reset-password',
   imports: [
@@ -35,12 +38,19 @@ import { ROUTES } from '@core/constants/route.constants';
 export class ResetPasswordComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+
+  /** Password-reset API state exposed to the template. */
   protected readonly passwordResetService = inject(PasswordResetService);
 
+  /** Whether the password input is currently obscured. */
   protected readonly hidePassword = signal<boolean>(true);
+
+  /** Whether the confirmation input is currently obscured. */
   protected readonly hideConfirmPassword = signal<boolean>(true);
+
   private resetToken = '';
 
+  /** Password and confirmation controls with complexity and match validation. */
   readonly form = this.fb.group(
     {
       password: [
@@ -62,6 +72,9 @@ export class ResetPasswordComponent implements OnInit {
     },
   );
 
+  /**
+   * Restores the verified reset token from navigation state.
+   */
   ngOnInit(): void {
     const state = history.state as { resetToken?: string };
 
@@ -73,16 +86,29 @@ export class ResetPasswordComponent implements OnInit {
     this.resetToken = state.resetToken;
   }
 
+  /**
+   * Toggles password visibility without propagating the button click.
+   *
+   * @param event Password-visibility button event.
+   */
   togglePasswordVisibility(event: MouseEvent): void {
     this.hidePassword.update((value) => !value);
     event.stopPropagation();
   }
 
+  /**
+   * Toggles confirmation visibility without propagating the button click.
+   *
+   * @param event Confirmation-visibility button event.
+   */
   toggleConfirmPasswordVisibility(event: MouseEvent): void {
     this.hideConfirmPassword.update((value) => !value);
     event.stopPropagation();
   }
 
+  /**
+   * Validates and submits the new password.
+   */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -93,7 +119,7 @@ export class ResetPasswordComponent implements OnInit {
 
     this.passwordResetService.resetPassword(this.resetToken, password!, confirmPassword!).subscribe({
       next: () => {
-        this.router.navigate([ROUTES.RESET_SUCCESS]);
+        this.router.navigate([ROUTES.LOGIN]);
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? 'Failed to reset password. Please try again.';

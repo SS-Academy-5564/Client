@@ -1,12 +1,10 @@
-import { inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { TokenStorageService } from '@core/services/token-storage.service';
 import { CanActivateFn } from '@angular/router';
-import { ROUTES } from '@core/constants/route.constants';
 
-export const authGuard: CanActivateFn = () => {
-  const tokenStorage = inject(TokenStorageService);
-  const router = inject(Router);
+import { authenticatedGuard } from '@core/guards/authenticated-guard';
 
-  return tokenStorage.getToken() ? true : router.createUrlTree([ROUTES.LOGIN]);
-};
+/**
+ * Preserves the legacy guard name while using initialization-aware authentication checks.
+ *
+ * @returns The shared authenticated-route guard result.
+ */
+export const authGuard: CanActivateFn = authenticatedGuard;

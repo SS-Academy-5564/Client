@@ -3,20 +3,27 @@ import { HttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { AuthService } from './auth.service';
 import { PasswordResetService } from './password-reset.service';
 import { environment } from '@environments/environment';
 
 describe('PasswordResetService', () => {
   let service: PasswordResetService;
   let httpMock: { post: ReturnType<typeof vi.fn> };
+  let clearLocalSession: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    clearLocalSession = vi.fn();
     httpMock = {
       post: vi.fn(),
     };
 
     TestBed.configureTestingModule({
-      providers: [PasswordResetService, { provide: HttpClient, useValue: httpMock }],
+      providers: [
+        PasswordResetService,
+        { provide: HttpClient, useValue: httpMock },
+        { provide: AuthService, useValue: { clearLocalSession } },
+      ],
     });
 
     service = TestBed.inject(PasswordResetService);
@@ -75,6 +82,7 @@ describe('PasswordResetService', () => {
         newPassword,
         confirmPassword,
       });
+      expect(clearLocalSession).toHaveBeenCalledOnce();
     });
   });
 
