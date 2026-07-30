@@ -105,7 +105,11 @@ test('restores the authenticated session after a page reload', async ({ context,
     if (path === '/api/auth/refresh') {
       refreshCount += 1;
       expect(request.method()).toBe('POST');
-      expect(request.headers()['cookie']).toContain('pulse_refresh_token=');
+      if (refreshCount === 1) {
+        expect(request.headers()['cookie']).toContain('pulse_refresh_token=refresh-before-reload');
+      } else {
+        expect(request.headers()['cookie']).toContain('pulse_refresh_token=rotated-refresh');
+      }
       expect(request.headers()['authorization']).toBeUndefined();
       await fulfillJson(
         route,
@@ -159,7 +163,9 @@ test('restores the authenticated session after a page reload', async ({ context,
 
   await expect(page).toHaveURL(/\/overview$/);
   await expect(page.locator('.user-name')).toHaveText('Jane Doe');
-  expect(await page.evaluate((): string => document.cookie)).not.toContain('pulse_refresh_token');
+  const cookies = await context.cookies();
+  const refreshToken = cookies.find((c) => c.name === 'pulse_refresh_token');
+  expect(refreshToken?.value).toBe('rotated-refresh');
   expect(refreshCount).toBe(1);
 
   await page.reload();
