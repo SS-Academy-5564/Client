@@ -292,6 +292,11 @@
   border: 0;
 }
 
+.pagination {
+  display: flex;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .members-page {
     padding: 16px;

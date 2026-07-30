@@ -53,8 +53,7 @@
             <div
               class="col-role"
               role="cell"
-              [attr.aria-label]="'Role: ' + member.role"
-              i18n-attr.aria-label="@@membersRoleCellAriaLabel">
+              [attr.aria-label]="'Role: ' + member.role">
               <span class="role-badge" [ngClass]="roleBadgeClass(member.role)">
                 {{ member.role }}
               </span>
@@ -63,8 +62,7 @@
             <div
               class="col-joined"
               role="cell"
-              [attr.aria-label]="'Joined: ' + formatJoinedDate(member.joinedAt)"
-              i18n-attr.aria-label="@@membersJoinedCellAriaLabel">
+              [attr.aria-label]="'Joined: ' + formatJoinedDate(member.joinedAt)">
               <span class="joined-date">
                 {{ formatJoinedDate(member.joinedAt) }}
               </span>
@@ -95,6 +93,15 @@
         </button>
       </mat-menu>
     </article>
+
+    <footer class="pagination">
+      <app-pagination
+        [pageNumber]="pageNumber()"
+        [pageSize]="pageSize()"
+        [totalPages]="totalPages()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)" />
+    </footer>
 
     <article class="data-card">
       <header class="card-header">
@@ -138,8 +145,7 @@
               <div
                 class="col-role"
                 role="cell"
-                [attr.aria-label]="'Role: ' + invite.role"
-                i18n-attr.aria-label="@@membersRoleCellAriaLabel">
+                [attr.aria-label]="'Role: ' + invite.role">
                 <span class="role-badge" [ngClass]="roleBadgeClass(invite.role)">
                   {{ invite.role }}
                 </span>
