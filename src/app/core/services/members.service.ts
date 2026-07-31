@@ -49,19 +49,11 @@ export class MembersService {
 
     return this.http.get<ApiResponse<Member[]>>(this.membersApiUrl, { params }).pipe(
       map((response) => {
-        const pag = response?.pagination;
-        if (
-          !response?.success ||
-          !Array.isArray(response.data) ||
-          !pag ||
-          typeof pag.pageNumber !== 'number' ||
-          typeof pag.pageSize !== 'number' ||
-          typeof pag.totalCount !== 'number' ||
-          typeof pag.totalPages !== 'number'
-        ) {
+        if (!this.isValidMembersResponse(response)) {
           throw new Error('Invalid members response');
         }
 
+        const pag = response.pagination!;
         return {
           members: response.data,
           pageNumber: pag.pageNumber,
@@ -70,6 +62,19 @@ export class MembersService {
           totalPages: pag.totalPages,
         };
       }),
+    );
+  }
+
+  private isValidMembersResponse(response: ApiResponse<Member[]>): boolean {
+    const pag = response?.pagination;
+    return (
+      response?.success &&
+      Array.isArray(response.data) &&
+      !!pag &&
+      typeof pag.pageNumber === 'number' &&
+      typeof pag.pageSize === 'number' &&
+      typeof pag.totalCount === 'number' &&
+      typeof pag.totalPages === 'number'
     );
   }
 }
