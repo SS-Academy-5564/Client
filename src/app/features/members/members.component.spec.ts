@@ -303,13 +303,11 @@ describe('MembersComponent', () => {
     fixture.detectChanges();
     flushOk(25, [SAMPLE_MEMBER], 1, 10);
 
-    // Change to page 2
     api().onPageChange(2);
     fixture.detectChanges();
     flushOk(25, [SAMPLE_MEMBER], 2, 10);
     expect(api().pageNumber()).toBe(2);
 
-    // Change page size to 20
     api().onPageSizeChange(20);
     fixture.detectChanges();
     flushOk(25, [SAMPLE_MEMBER], 1, 20);
