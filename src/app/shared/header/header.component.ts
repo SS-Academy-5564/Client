@@ -1,16 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { LogoComponent } from '../ui/logo/logo.component';
-import { DestroyRef, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { TokenStorageService } from '@core/services/token-storage.service';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
+
+import { LogoComponent } from '../ui/logo/logo.component';
 import { AuthService } from '@core/services/auth.service';
 import { ROUTES } from '@core/constants/route.constants';
 
+/**
+ * Displays the application identity and authenticated-user actions.
+ */
 @Component({
   selector: 'app-header',
   imports: [RouterLink, LogoComponent, MatIcon, MatMenuModule, MatButtonModule],
@@ -19,13 +20,16 @@ import { ROUTES } from '@core/constants/route.constants';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  protected readonly tokenStorage = inject(TokenStorageService);
+  /** Authentication state and current-user data rendered by the header. */
   protected readonly authService = inject(AuthService);
-  protected readonly router = inject(Router);
-  private readonly destroyRef = inject(DestroyRef);
 
-  readonly userDisplayName = computed(() => this.authService.displayName() || 'User');
-  readonly userDisplayInitials = computed(() => {
+  private readonly router = inject(Router);
+
+  /** Display name shown in the user menu. */
+  protected readonly userDisplayName = computed(() => this.authService.displayName() || 'User');
+
+  /** Initials shown in the user avatar. */
+  protected readonly userDisplayInitials = computed(() => {
     const initials = this.authService.userInitials();
 
     if (initials) {
@@ -35,14 +39,17 @@ export class HeaderComponent {
     return this.userDisplayName().charAt(0).toUpperCase() || 'U';
   });
 
-  constructor() {
-    if (this.tokenStorage.isAuthenticated() && !this.authService.currentUser()) {
-      this.authService.loadCurrentUser().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
-    }
-  }
-
+  /**
+   * Revokes the backend session, clears local state, and navigates to login even when logout fails.
+   */
   onLogout(): void {
-    this.authService.logout();
-    this.router.navigate([ROUTES.LOGIN]);
+    this.authService
+      .logout()
+      .pipe(
+        finalize(() => {
+          void this.router.navigate([ROUTES.LOGIN]);
+        }),
+      )
+      .subscribe({ error: (): void => undefined });
   }
 }

@@ -107,7 +107,7 @@ describe('ResetPasswordComponent', () => {
     expect(passwordResetServiceMock.resetPassword).not.toHaveBeenCalled();
   });
 
-  it('should call passwordResetService.resetPassword and redirect to /reset-success on success', () => {
+  it('should call passwordResetService.resetPassword and redirect to login on success', () => {
     passwordResetServiceMock.resetPassword.mockReturnValue(of({ success: true, data: null, errors: [] }));
 
     component.form.get('password')?.setValue('ValidPass123');
@@ -120,7 +120,7 @@ describe('ResetPasswordComponent', () => {
       'ValidPass123',
       'ValidPass123',
     );
-    expect(router.navigate).toHaveBeenCalledWith([ROUTES.RESET_SUCCESS]);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.LOGIN]);
   });
 
   it('should handle API errors by calling passwordResetService.setError', () => {
