@@ -50,21 +50,13 @@
               </div>
             </div>
 
-            <div
-              class="col-role"
-              role="cell"
-              [attr.aria-label]="'Role: ' + member.role"
-              i18n-attr.aria-label="@@membersRoleCellAriaLabel">
+            <div class="col-role" role="cell" [attr.aria-label]="getRoleAriaLabel(member.role)">
               <span class="role-badge" [ngClass]="roleBadgeClass(member.role)">
                 {{ member.role }}
               </span>
             </div>
 
-            <div
-              class="col-joined"
-              role="cell"
-              [attr.aria-label]="'Joined: ' + formatJoinedDate(member.joinedAt)"
-              i18n-attr.aria-label="@@membersJoinedCellAriaLabel">
+            <div class="col-joined" role="cell" [attr.aria-label]="getJoinedAriaLabel(member.joinedAt)">
               <span class="joined-date">
                 {{ formatJoinedDate(member.joinedAt) }}
               </span>
@@ -75,7 +67,7 @@
                 class="row-action-button"
                 mat-icon-button
                 type="button"
-                [attr.aria-label]="'Actions for ' + member.name"
+                [attr.aria-label]="getActionsAriaLabel(member.name)"
                 [matMenuTriggerFor]="memberMenu"
                 (click)="selectMember(member)">
                 <mat-icon>more_horiz</mat-icon>
@@ -95,6 +87,15 @@
         </button>
       </mat-menu>
     </article>
+
+    <footer class="pagination">
+      <app-pagination
+        [pageNumber]="pageNumber()"
+        [pageSize]="pageSize()"
+        [totalPages]="totalPages()"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)" />
+    </footer>
 
     <article class="data-card">
       <header class="card-header">
@@ -135,11 +136,7 @@
                 </div>
               </div>
 
-              <div
-                class="col-role"
-                role="cell"
-                [attr.aria-label]="'Role: ' + invite.role"
-                i18n-attr.aria-label="@@membersRoleCellAriaLabel">
+              <div class="col-role" role="cell" [attr.aria-label]="getRoleAriaLabel(invite.role)">
                 <span class="role-badge" [ngClass]="roleBadgeClass(invite.role)">
                   {{ invite.role }}
                 </span>
@@ -158,7 +155,7 @@
                   class="row-action-button"
                   mat-icon-button
                   type="button"
-                  [attr.aria-label]="'Actions for ' + invite.email"
+                  [attr.aria-label]="getActionsAriaLabel(invite.email)"
                   [matMenuTriggerFor]="inviteMenu"
                   (click)="selectInvitation(invite)">
                   <mat-icon>more_horiz</mat-icon>

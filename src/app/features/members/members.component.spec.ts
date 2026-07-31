@@ -32,6 +32,10 @@ type MembersComponentTestApi = {
   handleCancelInvitation(): void;
   selectedMember: () => Member | null;
   selectedInvitation: () => PendingInvitation | null;
+  onPageChange(pageNumber: number): void;
+  onPageSizeChange(pageSize: number): void;
+  pageNumber: () => number;
+  pageSize: () => number;
 };
 
 const SAMPLE_MEMBER: Member = {
@@ -58,7 +62,9 @@ describe('MembersComponent', () => {
   const api = (): MembersComponentTestApi => component as unknown as MembersComponentTestApi;
 
   const flushMembers = (body: unknown): void => {
-    const request = httpTestingController.expectOne(membersUrl);
+    const requests = httpTestingController.match((req) => req.url.startsWith(membersUrl));
+    expect(requests.length).toBe(1);
+    const request = requests[0];
 
     expect(request.request.method).toBe('GET');
 
@@ -66,14 +72,16 @@ describe('MembersComponent', () => {
     fixture.detectChanges();
   };
 
-  const flushOk = (totalCount: number, members: Member[]): void => {
+  const flushOk = (totalCount: number, members: Member[], pageNumber = 1, pageSize = 10): void => {
     flushMembers({
       success: true,
-      data: {
+      data: members,
+      pagination: {
+        pageNumber,
+        pageSize,
         totalCount,
-        members,
+        totalPages: Math.ceil(totalCount / pageSize) || 1,
       },
-      pagination: null,
       errors: [],
     });
   };
@@ -108,17 +116,21 @@ describe('MembersComponent', () => {
 
     expect(compiled.textContent).toContain('Loading members');
 
-    const request = httpTestingController.expectOne(membersUrl);
+    const requests = httpTestingController.match((req) => req.url.startsWith(membersUrl));
+    expect(requests.length).toBe(1);
+    const request = requests[0];
 
     expect(request.request.method).toBe('GET');
 
     request.flush({
       success: true,
-      data: {
+      data: [],
+      pagination: {
+        pageNumber: 1,
+        pageSize: 10,
         totalCount: 0,
-        members: [],
+        totalPages: 0,
       },
-      pagination: null,
       errors: [],
     });
 
@@ -165,7 +177,9 @@ describe('MembersComponent', () => {
   it('should show error when loading members fails', () => {
     fixture.detectChanges();
 
-    const request = httpTestingController.expectOne(membersUrl);
+    const requests = httpTestingController.match((req) => req.url.startsWith(membersUrl));
+    expect(requests.length).toBe(1);
+    const request = requests[0];
 
     request.flush('server error', {
       status: 500,
@@ -184,10 +198,7 @@ describe('MembersComponent', () => {
 
     flushMembers({
       success: true,
-      data: {
-        totalCount: 0,
-        members: null,
-      },
+      data: null,
       pagination: null,
       errors: [],
     });
@@ -218,10 +229,13 @@ describe('MembersComponent', () => {
 
     flushMembers({
       success: true,
-      data: {
-        members: [],
+      data: [],
+      pagination: {
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: 0,
+        totalPages: 0,
       },
-      pagination: null,
       errors: [],
     });
 
@@ -283,5 +297,21 @@ describe('MembersComponent', () => {
     expect(() => api().handleRemoveMember()).not.toThrow();
     expect(() => api().handleResendInvitation()).not.toThrow();
     expect(() => api().handleCancelInvitation()).not.toThrow();
+  });
+
+  it('should handle pagination changes', (): void => {
+    fixture.detectChanges();
+    flushOk(25, [SAMPLE_MEMBER], 1, 10);
+
+    api().onPageChange(2);
+    fixture.detectChanges();
+    flushOk(25, [SAMPLE_MEMBER], 2, 10);
+    expect(api().pageNumber()).toBe(2);
+
+    api().onPageSizeChange(20);
+    fixture.detectChanges();
+    flushOk(25, [SAMPLE_MEMBER], 1, 20);
+    expect(api().pageNumber()).toBe(1);
+    expect(api().pageSize()).toBe(20);
   });
 });
