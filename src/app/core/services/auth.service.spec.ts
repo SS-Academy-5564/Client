@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginResponse } from '@core/models/login-model';
 import { environment } from '@environments/environment';
-import { AuthenticationState, AuthService, CurrentUser } from './auth.service';
+import { AuthService, AuthState, CurrentUser } from './auth.service';
 import { TokenStorageService } from './token-storage.service';
 
 type HttpClientMock = {
@@ -51,7 +51,7 @@ describe('AuthService', () => {
   });
 
   it('should start in the initializing state without an access token', () => {
-    expect(service.authenticationState()).toBe('initializing');
+    expect(service.authenticationState()).toBe(AuthState.Initializing);
     expect(service.isInitializing()).toBe(true);
     expect(service.isAuthenticated()).toBe(false);
     expect(tokenStorage.getToken()).toBeNull();
@@ -85,7 +85,7 @@ describe('AuthService', () => {
       { withCredentials: true },
     );
     expect(tokenStorage.getToken()).toBe('access-token');
-    expect(service.authenticationState()).toBe('authenticated');
+    expect(service.authenticationState()).toBe(AuthState.Authenticated);
     expect(service.currentUser()).toEqual(currentUser);
     expect(service.displayName()).toBe('Jane Doe');
     expect(service.userInitials()).toBe('JD');
@@ -100,7 +100,7 @@ describe('AuthService', () => {
 
     expect(httpMock.post).toHaveBeenCalledWith(`${environment.apiBaseUrl}/auth/refresh`, {}, { withCredentials: true });
     expect(tokenStorage.getToken()).toBe('access-token');
-    expect(service.authenticationState()).toBe('authenticated');
+    expect(service.authenticationState()).toBe(AuthState.Authenticated);
     expect(service.currentUser()).toEqual(currentUser);
     expect(completed).toHaveBeenCalledOnce();
   });
@@ -111,7 +111,7 @@ describe('AuthService', () => {
 
     service.initializeSession().subscribe({ complete: completed });
 
-    expect(service.authenticationState()).toBe('unauthenticated');
+    expect(service.authenticationState()).toBe(AuthState.Unauthenticated);
     expect(tokenStorage.getToken()).toBeNull();
     expect(service.currentUser()).toBeNull();
     expect(httpMock.get).not.toHaveBeenCalled();
@@ -146,12 +146,12 @@ describe('AuthService', () => {
     service.refreshAccessToken().subscribe();
 
     expect(httpMock.post).toHaveBeenCalledTimes(2);
-    expect(service.authenticationState()).toBe('authenticated');
+    expect(service.authenticationState()).toBe(AuthState.Authenticated);
   });
 
   it('should wait until initialization reaches a final state', async () => {
     const refreshResponse = new Subject<LoginResponse>();
-    const observedStates: AuthenticationState[] = [];
+    const observedStates: AuthState[] = [];
     httpMock.post.mockReturnValue(refreshResponse);
 
     service.waitForInitialization().subscribe((state) => observedStates.push(state));
@@ -161,7 +161,7 @@ describe('AuthService', () => {
 
     refreshResponse.error({ status: 401 });
 
-    await vi.waitFor(() => expect(observedStates).toEqual(['unauthenticated']));
+    await vi.waitFor(() => expect(observedStates).toEqual([AuthState.Unauthenticated]));
   });
 
   it('should clear the local session even when backend logout fails', () => {
@@ -174,7 +174,7 @@ describe('AuthService', () => {
     expect(httpMock.post).toHaveBeenCalledWith(`${environment.apiBaseUrl}/auth/logout`, {}, { withCredentials: true });
     expect(tokenStorage.getToken()).toBeNull();
     expect(service.currentUser()).toBeNull();
-    expect(service.authenticationState()).toBe('unauthenticated');
+    expect(service.authenticationState()).toBe(AuthState.Unauthenticated);
   });
 
   it('should clear the authenticated session when loading the current user ends in 401', () => {
@@ -186,7 +186,7 @@ describe('AuthService', () => {
 
     expect(tokenStorage.getToken()).toBeNull();
     expect(service.currentUser()).toBeNull();
-    expect(service.authenticationState()).toBe('unauthenticated');
+    expect(service.authenticationState()).toBe(AuthState.Unauthenticated);
     expect(service.error()).toBe('Your session has expired. Please log in again.');
   });
 
@@ -198,7 +198,7 @@ describe('AuthService', () => {
     service.loadCurrentUser().subscribe((result) => expect(result).toBeNull());
 
     expect(tokenStorage.getToken()).toBe('access-token');
-    expect(service.authenticationState()).toBe('authenticated');
+    expect(service.authenticationState()).toBe(AuthState.Authenticated);
     expect(service.error()).toBe('Failed to load user profile.');
   });
 });

@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { map } from 'rxjs';
 
-import { AuthService } from '@core/services/auth.service';
+import { AuthService, AuthState } from '@core/services/auth.service';
 
 /**
  * Waits for session restoration, then prevents authenticated users from opening logged-out-only pages.
@@ -15,5 +15,5 @@ export const loggedOutOnlyGuard: CanActivateFn = () => {
 
   return authService
     .waitForInitialization()
-    .pipe(map((state) => (state === 'authenticated' ? router.createUrlTree(['/']) : true)));
+    .pipe(map((state) => (state === AuthState.Authenticated ? router.createUrlTree(['/']) : true)));
 };

@@ -4,18 +4,18 @@ import { Observable, Subject } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { ROUTES } from '@core/constants/route.constants';
-import { AuthenticationState, AuthService } from '@core/services/auth.service';
+import { AuthService, AuthState } from '@core/services/auth.service';
 import { authenticatedGuard } from './authenticated-guard';
 import { loggedOutOnlyGuard } from './logged-out-only-guard';
 
 type GuardResult = boolean | UrlTree;
 
 describe('authentication route guards', () => {
-  let initializationState: Subject<AuthenticationState>;
+  let initializationState: Subject<AuthState>;
   let router: Router;
 
   beforeEach(() => {
-    initializationState = new Subject<AuthenticationState>();
+    initializationState = new Subject<AuthState>();
 
     TestBed.configureTestingModule({
       providers: [
@@ -41,7 +41,7 @@ describe('authentication route guards', () => {
 
     expect(result).toBeUndefined();
 
-    initializationState.next('authenticated');
+    initializationState.next(AuthState.Authenticated);
 
     expect(result).toBe(true);
   });
@@ -52,7 +52,7 @@ describe('authentication route guards', () => {
       result = value;
     });
 
-    initializationState.next('authenticated');
+    initializationState.next(AuthState.Authenticated);
 
     expect(result).toBe(true);
   });
@@ -64,7 +64,7 @@ describe('authentication route guards', () => {
       result = value;
     });
 
-    initializationState.next('unauthenticated');
+    initializationState.next(AuthState.Unauthenticated);
 
     expect(result).toBeInstanceOf(UrlTree);
     expect(createUrlTreeSpy).toHaveBeenCalledWith([ROUTES.LOGIN]);
@@ -77,7 +77,7 @@ describe('authentication route guards', () => {
       result = value;
     });
 
-    initializationState.next('authenticated');
+    initializationState.next(AuthState.Authenticated);
 
     expect(result).toBeInstanceOf(UrlTree);
     expect(createUrlTreeSpy).toHaveBeenCalledWith(['/']);
@@ -89,7 +89,7 @@ describe('authentication route guards', () => {
       result = value;
     });
 
-    initializationState.next('unauthenticated');
+    initializationState.next(AuthState.Unauthenticated);
 
     expect(result).toBe(true);
   });

@@ -9,9 +9,13 @@ import { TokenStorageService } from '@core/services/token-storage.service';
 import { environment } from '@environments/environment';
 
 /**
- * Final and transitional states of the frontend authentication session.
+ * Known authentication states for the frontend session.
  */
-export type AuthenticationState = 'initializing' | 'authenticated' | 'unauthenticated';
+export enum AuthState {
+  Initializing = 'initializing',
+  Authenticated = 'authenticated',
+  Unauthenticated = 'unauthenticated',
+}
 
 /**
  * Profile returned for the currently authenticated user.
@@ -39,7 +43,7 @@ export class AuthService {
   private readonly refreshEndpoint = `${environment.apiBaseUrl}/auth/refresh`;
   private readonly logoutEndpoint = `${environment.apiBaseUrl}/auth/logout`;
   private readonly currentUserEndpoint = `${environment.apiBaseUrl}/users/me`;
-  private readonly authenticationStateValue = signal<AuthenticationState>('initializing');
+  private readonly authenticationStateValue = signal<AuthState>(AuthState.Initializing);
   private readonly authenticationStateChanges = toObservable(this.authenticationStateValue);
   private refreshRequest$: Observable<string> | null = null;
 
@@ -56,10 +60,10 @@ export class AuthService {
   readonly authenticationState = this.authenticationStateValue.asReadonly();
 
   /** Whether startup session initialization is still in progress. */
-  readonly isInitializing = computed(() => this.authenticationState() === 'initializing');
+  readonly isInitializing = computed(() => this.authenticationState() === AuthState.Initializing);
 
   /** Whether the frontend currently has an authenticated session. */
-  readonly isAuthenticated = computed(() => this.authenticationState() === 'authenticated');
+  readonly isAuthenticated = computed(() => this.authenticationState() === AuthState.Authenticated);
 
   /** Best available display name from the current user profile. */
   readonly displayName = computed(() => {
@@ -131,7 +135,7 @@ export class AuthService {
    * @returns An observable that completes after refresh and profile loading finish.
    */
   initializeSession(): Observable<void> {
-    this.authenticationStateValue.set('initializing');
+    this.authenticationStateValue.set(AuthState.Initializing);
     this.currentUser.set(null);
     this.tokenStorage.clearToken();
 
@@ -181,7 +185,7 @@ export class AuthService {
    * @returns The current user, or `null` when unavailable.
    */
   loadCurrentUser(): Observable<CurrentUser | null> {
-    if (this.authenticationState() === 'unauthenticated') {
+    if (this.authenticationState() === AuthState.Unauthenticated) {
       this.currentUser.set(null);
       return of(null);
     }
@@ -227,7 +231,7 @@ export class AuthService {
   clearLocalSession(): void {
     this.tokenStorage.clearToken();
     this.currentUser.set(null);
-    this.authenticationStateValue.set('unauthenticated');
+    this.authenticationStateValue.set(AuthState.Unauthenticated);
     this.clearError();
   }
 
@@ -236,9 +240,9 @@ export class AuthService {
    *
    * @returns The first authenticated or unauthenticated state.
    */
-  waitForInitialization(): Observable<AuthenticationState> {
+  waitForInitialization(): Observable<AuthState> {
     return this.authenticationStateChanges.pipe(
-      filter((state) => state !== 'initializing'),
+      filter((state) => state !== AuthState.Initializing),
       take(1),
     );
   }
@@ -261,7 +265,7 @@ export class AuthService {
 
   private applyAuthenticatedSession(result: LoginResult): void {
     this.tokenStorage.setToken(result.accessToken, result.expiresAt);
-    this.authenticationStateValue.set('authenticated');
+    this.authenticationStateValue.set(AuthState.Authenticated);
     this.clearError();
   }
 

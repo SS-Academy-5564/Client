@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 
 import { ROUTES } from '@core/constants/route.constants';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService, AuthState } from '@core/services/auth.service';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { environment } from '@environments/environment';
 
@@ -83,8 +83,8 @@ const shouldRefresh = (
   error instanceof HttpErrorResponse &&
   error.status === 401 &&
   !request.context.get(RETRIED_AFTER_REFRESH) &&
-  authService.authenticationState() !== 'unauthenticated' &&
-  (requestToken !== null || authService.authenticationState() === 'authenticated');
+  authService.authenticationState() !== AuthState.Unauthenticated &&
+  (requestToken !== null || authService.authenticationState() === AuthState.Authenticated);
 
 const addAccessToken = (request: HttpRequest<unknown>, token: string): HttpRequest<unknown> =>
   request.clone({
