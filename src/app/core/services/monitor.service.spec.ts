@@ -33,6 +33,7 @@ describe('MonitorService', () => {
         lastCheckedAt: '2026-07-13T10:11:04.5066667+00:00',
         status: MonitorStatus.Enabled,
         interval: 60,
+        organizationId: 'org-1',
       },
     ];
 
@@ -92,6 +93,7 @@ describe('MonitorService', () => {
       lastCheckedAt: null,
       status: MonitorStatus.Enabled,
       interval: 300,
+      organizationId: 'org-1',
     };
 
     let result: MonitorModel | undefined;

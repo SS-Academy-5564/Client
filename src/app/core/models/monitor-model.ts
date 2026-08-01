@@ -6,6 +6,7 @@ export type MonitorModel = {
   lastCheckedAt: string | null;
   status: MonitorStatus;
   interval: number;
+  organizationId: string;
 };
 
 export enum MonitorStatus {
