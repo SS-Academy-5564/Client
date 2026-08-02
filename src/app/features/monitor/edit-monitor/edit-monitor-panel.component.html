@@ -1,6 +1,9 @@
-@if (isOpen()) {
+@if (monitorId() !== null) {
   <app-monitor-form-panel
+    [initialValue]="initialValue()"
+    [isLoadingInitial]="isLoadingDetail()"
     [serverErrors]="serverErrors()"
+    [showStatus]="true"
     [submitLabel]="panelSubmitLabel"
     [submitting]="submitting()"
     [subtitle]="panelSubtitle"

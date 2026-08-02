@@ -3,7 +3,13 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, finalize, map, Observable, tap, throwError } from 'rxjs';
 import { ApiError, ApiResponse } from '@core/models/api-response';
-import { CreateMonitorRequest, MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+import {
+  CreateMonitorRequest,
+  MonitorDetail,
+  MonitorModel,
+  MonitorStatus,
+  UpdateMonitorRequest,
+} from '@core/models/monitor-model';
 
 export type MonitorPage = {
   items: MonitorModel[];
@@ -82,11 +88,49 @@ export class MonitorService {
     );
   }
 
+  /**
+   * Creates a new monitor.
+   * @param request - The monitor creation payload.
+   * @returns The newly created monitor in list-projection shape.
+   */
   createMonitor(request: CreateMonitorRequest): Observable<MonitorModel> {
     return this.http.post<ApiResponse<MonitorModel>>(this.monitorBaseEndpoint, request).pipe(
       map((response) => {
         if (!response.data) {
           throw new Error('Monitor creation returned no data');
+        }
+        return response.data;
+      }),
+    );
+  }
+
+  /**
+   * Fetches the full detail for a single monitor.
+   * @param id - The monitor GUID.
+   * @returns The full {@link MonitorDetail} record.
+   */
+  getMonitorById(id: string): Observable<MonitorDetail> {
+    return this.http.get<ApiResponse<MonitorDetail>>(`${this.monitorBaseEndpoint}/${id}`).pipe(
+      map((response) => {
+        if (!response.data) {
+          throw new Error('Monitor detail returned no data');
+        }
+        return response.data;
+      }),
+    );
+  }
+
+  /**
+   * Updates an existing monitor.
+   * @param id - The monitor GUID.
+   * @param request - The update payload.
+   * @returns The updated monitor in list-projection shape.
+   */
+  updateMonitor(id: string, request: UpdateMonitorRequest): Observable<MonitorModel> {
+    return this.http.put<ApiResponse<MonitorModel>>(`${this.monitorBaseEndpoint}/${id}`, request).pipe(
+      map((response) => {
+        if (!response.data) {
+          throw new Error('Monitor update returned no data');
         }
         return response.data;
       }),
