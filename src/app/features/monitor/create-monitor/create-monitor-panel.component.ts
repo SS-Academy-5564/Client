@@ -36,8 +36,8 @@ export class CreateMonitorPanelComponent {
   protected readonly serverErrors = signal<readonly MonitorFormServerError[] | null>(null);
 
   protected readonly panelTitle = $localize`:@@createMonitor.title:New Monitor`;
-  protected readonly panelSubtitle = 
-    $localize`:@@createMonitor.subtitle:Configure an endpoint to poll for a metric value.`;
+  // eslint-disable-next-line max-len
+  protected readonly panelSubtitle = $localize`:@@createMonitor.subtitle:Configure an endpoint to poll for a metric value.`;
   protected readonly panelSubmitLabel = $localize`:@@createMonitor.submit:Create monitor`;
 
   /** Clears errors and notifies the parent that the panel was closed. */
