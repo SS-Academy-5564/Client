@@ -164,4 +164,14 @@ describe('MonitorFormPanelComponent', () => {
 
     expect(component['form'].get('url')?.hasError('url')).toBe(false);
   });
+
+  it('emits closed when Escape key is pressed', () => {
+    const closedSpy = vi.fn();
+    component.closed.subscribe(closedSpy);
+
+    const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
+    fixture.nativeElement.dispatchEvent(event);
+
+    expect(closedSpy).toHaveBeenCalled();
+  });
 });

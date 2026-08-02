@@ -5,7 +5,13 @@
   type="button"
   (click)="onClose()"></button>
 
-<aside aria-labelledby="monitor-form-panel-title" aria-modal="true" class="panel" role="dialog">
+<aside
+  aria-labelledby="monitor-form-panel-title"
+  aria-modal="true"
+  cdkTrapFocus
+  cdkTrapFocusAutoCapture
+  class="panel"
+  role="dialog">
   <header class="panel-header">
     <div class="panel-heading">
       <h2 id="monitor-form-panel-title">{{ title() }}</h2>

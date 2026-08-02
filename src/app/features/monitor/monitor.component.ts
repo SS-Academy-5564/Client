@@ -146,7 +146,10 @@ export class MonitorComponent implements OnInit {
     this.navigateToPage(1);
   }
 
-  /** @param monitor - The row the user activated the Edit action on. */
+  /**
++   * Opens the edit panel for the given monitor.
++   * `@param` monitor - The row the user activated the Edit action on.
++   */
   onOpenEditPanel(monitor: MonitorModel): void {
     this.editingMonitorId.set(monitor.id);
   }

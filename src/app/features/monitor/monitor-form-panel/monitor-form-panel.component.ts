@@ -1,5 +1,6 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { A11yModule } from '@angular/cdk/a11y';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -15,7 +16,7 @@ import {
   HTTP_METHODS,
   POLLING_INTERVAL_OPTIONS,
   POLLING_TIMEOUT_OPTIONS,
-} from '../create-monitor/create-monitor.options';
+} from './monitor-form.options';
 
 /** The value shape emitted by {@link MonitorFormPanelComponent} on submission. */
 export type MonitorFormValue = {
@@ -68,6 +69,7 @@ const FIELD_TO_CONTROL: Readonly<Record<string, string>> = {
 @Component({
   selector: 'app-monitor-form-panel',
   imports: [
+    A11yModule,
     NgTemplateOutlet,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -76,6 +78,9 @@ const FIELD_TO_CONTROL: Readonly<Record<string, string>> = {
     ButtonComponent,
     ErrorMessageComponent,
   ],
+  host: {
+    '(keydown.escape)': 'onClose()',
+  },
   templateUrl: './monitor-form-panel.component.html',
   styleUrl: './monitor-form-panel.component.scss',
 })
@@ -125,14 +130,22 @@ export class MonitorFormPanelComponent {
   /** Emitted with the valid form value when the user submits. */
   readonly submitted = output<MonitorFormValue>();
 
+  /** Selectable HTTP methods for the request-method dropdown. */
   protected readonly httpMethods = HTTP_METHODS;
+
+  /** Selectable polling-interval options for the dropdown. */
   protected readonly intervalOptions = POLLING_INTERVAL_OPTIONS;
+
+  /** Selectable polling-timeout options for the dropdown. */
   protected readonly timeoutOptions = POLLING_TIMEOUT_OPTIONS;
+
   /** Exposed for template comparisons in the status dropdown. */
   protected readonly MonitorStatus = MonitorStatus;
 
+  /** Banner message shown above the form when server-side validation fails. */
   protected readonly bannerError = signal<string | null>(null);
 
+  /** Reactive form group backing all monitor fields. */
   protected readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.maxLength(64)]],
     httpMethod: [DEFAULT_HTTP_METHOD as HttpMethod, [Validators.required]],
@@ -143,6 +156,7 @@ export class MonitorFormPanelComponent {
     pollingTimeoutSeconds: [DEFAULT_POLLING_TIMEOUT_SECONDS, [Validators.required]],
   });
 
+  /** `@returns` The localized name-field error message, or `null` when the field has no visible error. */
   get nameError(): string | null {
     const c = this.form.get('name');
     if (!c?.touched || !c.errors) {
@@ -160,6 +174,7 @@ export class MonitorFormPanelComponent {
     return null;
   }
 
+  /** `@returns` The localized URL-field error message, or `null` when the field has no visible error. */
   get urlError(): string | null {
     const c = this.form.get('url');
     if (!c?.touched || !c.errors) {
@@ -180,6 +195,7 @@ export class MonitorFormPanelComponent {
     return null;
   }
 
+  /** `@returns` The localized result-path error message, or `null` when the field has no visible error. */
   get resultPathError(): string | null {
     const c = this.form.get('resultPath');
     if (!c?.touched || !c.errors) {
@@ -197,6 +213,7 @@ export class MonitorFormPanelComponent {
     return null;
   }
 
+  /** `@returns` The localized status-field error message, or `null` when the field has no visible error. */
   get statusError(): string | null {
     const c = this.form.get('status');
     if (!c?.touched || !c.errors) {

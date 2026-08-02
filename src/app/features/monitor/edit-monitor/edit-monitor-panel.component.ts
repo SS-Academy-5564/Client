@@ -1,5 +1,6 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { MonitorService } from '@core/services/monitor.service';
 import { EditableMonitorStatus, MonitorModel, MonitorStatus } from '@core/models/monitor-model';
 import { ToastService } from '@core/services/toast.service';
@@ -37,20 +38,35 @@ export class EditMonitorPanelComponent {
   /** Emitted with the updated monitor in list-projection shape on successful submission. */
   readonly updated = output<MonitorModel>();
 
+  /** Signal indicating whether the form is currently being submitted. */
   protected readonly submitting = signal<boolean>(false);
+
+  /** Signal indicating whether the monitor details are currently being loaded. */
   protected readonly isLoadingDetail = signal<boolean>(false);
+
+  /** Signal containing the list of validation or submission errors returned by the server, or `null`. */
   protected readonly serverErrors = signal<readonly MonitorFormServerError[] | null>(null);
+
+  /** Signal containing the initial values to populate the form with, or `null` if not loaded yet. */
   protected readonly initialValue = signal<MonitorFormValue | null>(null);
 
+  /** The title text displayed in the panel header. */
   protected readonly panelTitle = $localize`:@@editMonitor.title:Edit Monitor`;
+
+  /** The subtitle/description text displayed in the panel header. */
   protected readonly panelSubtitle = $localize`:@@editMonitor.subtitle:Update the monitor configuration.`;
+
+  /** The text label displayed on the submit/save button. */
   protected readonly panelSubmitLabel = $localize`:@@editMonitor.submit:Save changes`;
 
   constructor() {
-    effect(() => {
+    effect((onCleanup) => {
       const id = this.monitorId();
       if (id) {
-        this.loadDetail(id);
+        const subscription = this.loadDetail(id);
+        onCleanup(() => {
+          subscription.unsubscribe();
+        });
       } else {
         this.initialValue.set(null);
         this.serverErrors.set(null);
@@ -108,12 +124,17 @@ export class EditMonitorPanelComponent {
       });
   }
 
-  private loadDetail(id: string): void {
+  /**
+   * Fetches the detail for the given monitor ID.
+   * @param id - The ID of the monitor to fetch details for.
+   * @returns The active subscription for the detail request.
+   */
+  private loadDetail(id: string): Subscription {
     this.isLoadingDetail.set(true);
     this.initialValue.set(null);
     this.serverErrors.set(null);
 
-    this.monitorService.getMonitorById(id).subscribe({
+    return this.monitorService.getMonitorById(id).subscribe({
       next: (detail) => {
         this.isLoadingDetail.set(false);
         this.initialValue.set({

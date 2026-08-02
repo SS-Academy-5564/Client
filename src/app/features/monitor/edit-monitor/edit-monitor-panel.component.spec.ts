@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { EditMonitorPanelComponent } from './edit-monitor-panel.component';
 import { MonitorService } from '@core/services/monitor.service';
@@ -75,12 +75,32 @@ describe('EditMonitorPanelComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('fetches monitor detail when monitorId becomes non-null', async () => {
+  it('fetches monitor detail when monitorId becomes non-null', async (): Promise<void> => {
     fixture.componentRef.setInput('monitorId', 'monitor-1');
     fixture.detectChanges();
     await fixture.whenStable();
 
     expect(monitorServiceMock.getMonitorById).toHaveBeenCalledWith('monitor-1');
+  });
+
+  it('cancels in-flight detail request when monitorId changes', async (): Promise<void> => {
+    const detailSubject1 = new Subject<MonitorDetail>();
+    const detailSubject2 = new Subject<MonitorDetail>();
+    monitorServiceMock.getMonitorById.mockImplementation((id: string) =>
+      id === 'monitor-1' ? detailSubject1 : detailSubject2,
+    );
+
+    fixture.componentRef.setInput('monitorId', 'monitor-1');
+    fixture.detectChanges();
+
+    expect(detailSubject1.observed).toBe(true);
+
+    fixture.componentRef.setInput('monitorId', 'monitor-2');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(detailSubject1.observed).toBe(false);
+    expect(detailSubject2.observed).toBe(true);
   });
 
   it('pre-fills the form from the fetched detail', async () => {
