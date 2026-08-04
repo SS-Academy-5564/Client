@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
@@ -91,13 +92,53 @@ export class RegisterComponent {
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => {
-        this.toastService.success($localize`:@@register.success:Registration successful. You can now log in.`);
+        const successMessage = $localize`:@@register.neutralSuccess:${
+          'If this email address is not already registered, ' +
+          'a confirmation email has been sent. Please check your inbox.'
+        }`;
+        this.toastService.success(successMessage);
         this.router.navigate([ROUTES.LOGIN]);
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
+        if (err.status === 429) {
+          const retryAfter = err.headers.get('Retry-After');
+          const retryMessage = retryAfter
+            ? this.formatRetryAfterMessage(retryAfter)
+            : $localize`:@@register.rateLimit:Too many registration attempts. Please try again later.`;
+
+          this.error.set(retryMessage);
+          return;
+        }
+
         const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';
         this.error.set(errorMessage);
       },
     });
+  }
+
+  private formatRetryAfterMessage(retryAfter: string): string {
+    const seconds = Number(retryAfter);
+
+    if (!Number.isNaN(seconds)) {
+      return $localize`
+        :@@register.rateLimitRetrySeconds:Too many registration attempts. Please try again later.
+        Retry after ${seconds} seconds.
+      `;
+    }
+
+    const retryDate = Date.parse(retryAfter);
+
+    if (!Number.isNaN(retryDate)) {
+      const remainingSeconds = Math.max(0, Math.round((retryDate - Date.now()) / 1000));
+      return $localize`
+        :@@register.rateLimitRetryDate:Too many registration attempts. Please try again later.
+        Retry after ${remainingSeconds} seconds.
+      `;
+    }
+
+    return $localize`
+      :@@register.rateLimitRetryRaw:Too many registration attempts. Please try again later.
+      Retry after ${retryAfter}.
+    `;
   }
 }

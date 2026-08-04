@@ -3,6 +3,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter, Router } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastService } from '@core/services/toast.service';
@@ -11,6 +12,9 @@ import { ROUTES } from '@core/constants/route.constants';
 type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
 };
+
+const NEUTRAL_SUCCESS_MESSAGE =
+  'If this email address is not already registered, a confirmation email has been sent. Please check your inbox.';
 
 describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;
@@ -21,10 +25,19 @@ describe('RegisterComponent', () => {
     success: vi.fn(),
   };
 
+  const fillValidForm = (): void => {
+    component.form.get('firstName')?.setValue('Jane');
+    component.form.get('lastName')?.setValue('Smith');
+    component.form.get('email')?.setValue('user@example.com');
+    component.form.get('password')?.setValue('StrongPassw0rd!');
+    component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
+  };
+
   beforeEach(async () => {
     authServiceMock = {
       register: vi.fn(),
     };
+    toastServiceMock.success.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
@@ -67,15 +80,12 @@ describe('RegisterComponent', () => {
   });
 
   it('should validate form valid when all fields are correct', () => {
-    component.form.get('firstName')?.setValue('Jane');
-    component.form.get('lastName')?.setValue('Smith');
-    component.form.get('email')?.setValue('user@example.com');
-    component.form.get('password')?.setValue('StrongPassw0rd!');
-    component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
+    fillValidForm();
 
     expect(component.form.valid).toBe(true);
     expect(component.form.hasError('passwordMismatch')).toBe(false);
   });
+
   it('should not call authService.register when form is invalid', () => {
     component.form.get('email')?.setValue('');
     component.form.get('password')?.setValue('');
@@ -89,12 +99,7 @@ describe('RegisterComponent', () => {
   it('should call authService.register with payload when the form is valid', () => {
     authServiceMock.register.mockReturnValue(of({}));
 
-    component.form.get('firstName')?.setValue('Jane');
-    component.form.get('lastName')?.setValue('Smith');
-    component.form.get('email')?.setValue('user@example.com');
-    component.form.get('password')?.setValue('StrongPassw0rd!');
-    component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
-
+    fillValidForm();
     component.onSubmit();
 
     expect(authServiceMock.register).toHaveBeenCalledTimes(1);
@@ -105,24 +110,78 @@ describe('RegisterComponent', () => {
       password: 'StrongPassw0rd!',
       confirmPassword: 'StrongPassw0rd!',
     });
-    expect(toastServiceMock.success).toHaveBeenCalledWith('Registration successful. You can now log in.');
+  });
+
+  it('should show a neutral success message and navigate to login on success, regardless of whether the email already existed', () => {
+    authServiceMock.register.mockReturnValue(of({}));
+
+    fillValidForm();
+    component.onSubmit();
+
+    expect(toastServiceMock.success).toHaveBeenCalledWith(NEUTRAL_SUCCESS_MESSAGE);
     expect(router.navigate).toHaveBeenCalledWith([ROUTES.LOGIN]);
   });
 
-  it('should display the registration error', () => {
-    const errorResponse = { error: { message: 'Email already exists' } };
+  it('should display a generic error message for non-429 failures', () => {
+    const errorResponse = { error: { message: 'Something went wrong' } };
     authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
 
-    component.form.get('firstName')?.setValue('Jane');
-    component.form.get('lastName')?.setValue('Smith');
-    component.form.get('email')?.setValue('user@example.com');
-    component.form.get('password')?.setValue('StrongPassw0rd!');
-    component.form.get('confirmPassword')?.setValue('StrongPassw0rd!');
-
+    fillValidForm();
     component.onSubmit();
     fixture.detectChanges();
 
     expect(authServiceMock.register).toHaveBeenCalledTimes(1);
-    expect(fixture.nativeElement.textContent).toContain('Email already exists');
+    expect(fixture.nativeElement.textContent).toContain('Something went wrong');
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should show a rate limit message with retry seconds when 429 is returned with a numeric Retry-After header', () => {
+    const errorResponse = new HttpErrorResponse({
+      status: 429,
+      headers: new HttpHeaders({ 'Retry-After': '60' }),
+    });
+    authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
+
+    fillValidForm();
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('60');
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should show a rate limit message with a computed retry countdown when Retry-After is an HTTP date', () => {
+    const retryDate = new Date(Date.now() + 30_000).toUTCString();
+    const errorResponse = new HttpErrorResponse({
+      status: 429,
+      headers: new HttpHeaders({ 'Retry-After': retryDate }),
+    });
+    authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
+
+    fillValidForm();
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Too many registration attempts');
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should show a generic rate limit message when 429 is returned without a Retry-After header', () => {
+    const errorResponse = new HttpErrorResponse({
+      status: 429,
+      headers: new HttpHeaders(),
+    });
+    authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
+
+    fillValidForm();
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Too many registration attempts');
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
   });
 });
