@@ -1,0 +1,113 @@
+import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+
+import { ButtonComponent } from '@shared/ui/button/button.component';
+import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { MatIconModule } from '@angular/material/icon';
+import { CreateWidgetRequest } from '@/app/core/models/widget.model';
+
+@Component({
+  selector: 'app-create-widget',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    ButtonComponent,
+    ErrorMessageComponent,
+    MatIconModule,
+  ],
+  templateUrl: './create-widget.component.html',
+  styleUrl: './create-widget.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class CreateWidgetComponent {
+  private readonly fb = inject(FormBuilder);
+
+  readonly isOpen = input(false);
+  readonly dashboardTabId = input.required<string>();
+
+  readonly closed = output<void>();
+  readonly created = output<CreateWidgetRequest>();
+
+  readonly submitting = signal(false);
+  readonly error = signal<string | null>(null);
+
+  readonly widgetTypes = [
+    { value: 'stat-card', label: 'Statistic Card' },
+    { value: 'line-chart', label: 'Line Chart' },
+    { value: 'bar-chart', label: 'Bar Chart' },
+    { value: 'donut-chart', label: 'Donut Chart' },
+    { value: 'horizontal-bar-chart', label: 'Horizontal Bar Chart' },
+  ];
+
+  readonly metrics = [
+    { value: 'responseTime', label: 'Response Time' },
+    { value: 'availability', label: 'Availability' },
+    { value: 'requests', label: 'Requests' },
+    { value: 'errors', label: 'Errors' },
+  ];
+
+  readonly timeRanges = [
+    { value: '1h', label: 'Last hour' },
+    { value: '24h', label: 'Last 24 hours' },
+    { value: '7d', label: 'Last 7 days' },
+    { value: '30d', label: 'Last 30 days' },
+  ];
+
+  readonly form = this.fb.nonNullable.group({
+    type: ['', Validators.required],
+    title: [''],
+    subtitle: [''],
+    metric: ['', Validators.required],
+    timeRange: ['', Validators.required],
+    settings: [''],
+  });
+
+  constructor() {
+    effect(() => {
+      if (this.isOpen()) {
+        this.form.reset({
+          type: '',
+          title: '',
+          subtitle: '',
+          metric: '',
+          timeRange: '',
+          settings: '',
+        });
+
+        this.error.set(null);
+        this.submitting.set(false);
+      }
+    });
+  }
+
+  onClose(): void {
+    if (this.submitting()) {
+      return;
+    }
+
+    this.closed.emit();
+  }
+
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.submitting.set(true);
+
+    this.created.emit({
+      dashboardTabId: this.dashboardTabId(),
+      ...this.form.getRawValue(),
+    });
+
+    this.submitting.set(false);
+    this.closed.emit();
+  }
+}

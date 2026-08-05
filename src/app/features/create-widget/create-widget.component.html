@@ -1,0 +1,127 @@
+@if (isOpen()) {
+  <button aria-label="Close panel" class="panel-backdrop" type="button" (click)="onClose()"></button>
+
+  <aside aria-labelledby="create-widget-title" aria-modal="true" class="panel" role="dialog">
+    <header class="panel-header">
+      <div class="panel-heading">
+        <h2 id="create-widget-title">Add New Widget</h2>
+        <p class="panel-subtitle">Configure a widget for the active dashboard tab.</p>
+      </div>
+
+      <button aria-label="Close" class="panel-close" type="button" (click)="onClose()">&#10005;</button>
+    </header>
+
+    <form class="panel-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <app-error-message [message]="error()" />
+
+      <div class="field">
+        <label class="field-label" for="widget-type">Widget type</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="type"
+            id="widget-type"
+            panelClass="white-select-panel"
+            placeholder="Select widget type">
+            @for (type of widgetTypes; track type.value) {
+              <mat-option [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('type'); as type) {
+          @if (type.touched && type.hasError('required')) {
+            <div class="field-error">Widget type is required.</div>
+          }
+        }
+      </div>
+
+      @if (form.value.type === 'stat-card') {
+        <div class="field">
+          <label class="field-label" for="widget-title">Title</label>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <input formControlName="title" id="widget-title" matInput placeholder="Enter title" />
+          </mat-form-field>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="widget-subtitle">Subtitle</label>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <input formControlName="subtitle" id="widget-subtitle" matInput placeholder="Enter subtitle" />
+          </mat-form-field>
+        </div>
+      }
+
+      <div class="field">
+        <label class="field-label" for="widget-metric">Metric</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="metric"
+            id="widget-metric"
+            panelClass="white-select-panel"
+            placeholder="Select a metric">
+            @for (metric of metrics; track metric.value) {
+              <mat-option [value]="metric.value">
+                {{ metric.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('metric'); as metric) {
+          @if (metric.touched && metric.hasError('required')) {
+            <div class="field-error">Metric is required.</div>
+          }
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="widget-time-range">Time range</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="timeRange"
+            id="widget-time-range"
+            panelClass="white-select-panel"
+            placeholder="Select a time range">
+            @for (range of timeRanges; track range.value) {
+              <mat-option [value]="range.value">
+                {{ range.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('timeRange'); as timeRange) {
+          @if (timeRange.touched && timeRange.hasError('required')) {
+            <div class="field-error">Time range is required.</div>
+          }
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="widget-settings">Settings</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea
+            formControlName="settings"
+            id="widget-settings"
+            matInput
+            placeholder="Optional widget settings"
+            rows="4"></textarea>
+        </mat-form-field>
+      </div>
+
+      <footer class="panel-footer">
+        <app-button buttonType="button" label="Cancel" type="secondary" [disabled]="submitting()" (click)="onClose()" />
+
+        <app-button buttonType="submit" label="Add widget" type="primary" [disabled]="submitting()" />
+      </footer>
+    </form>
+  </aside>
+}

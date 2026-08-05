@@ -1,1 +1,40 @@
-<section aria-label="Overview content" class="overview-page"></section>
+<section aria-label="Overview content" class="overview-page">
+  <header class="page-header">
+    <h1>Overview</h1>
+
+    <div class="page-actions">
+      <button class="add-widget-button" color="primary" mat-flat-button type="button" (click)="openCreateWidget()">
+        <mat-icon>add</mat-icon>
+        Add widget
+      </button>
+
+      <mat-form-field appearance="outline" class="time-range-select">
+        <mat-icon class="time-range-select__icon" matPrefix>calendar_today</mat-icon>
+
+        <mat-select disableRipple panelClass="time-range-select__panel" [(value)]="selectedTimeRange">
+          <mat-option value="24h">Last 24 hours</mat-option>
+          <mat-option value="7d">Last 7 days</mat-option>
+          <mat-option value="30d">Last 30 days</mat-option>
+          <mat-option value="90d">Last 90 days</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </header>
+
+  <app-create-widget
+    [dashboardTabId]="dashboardTabId"
+    [isOpen]="isCreateWidgetOpen()"
+    (closed)="closeCreateWidget()"
+    (created)="onWidgetCreated($event)" />
+
+  <div class="widgets-grid">
+    @for (widget of widgets(); track widget.id) {
+      <app-widget-card
+        class="widget"
+        [class.widget--full]="widget.type === 'line-chart' || widget.type === 'bar-chart'"
+        [class.widget--half]="widget.type === 'donut-chart' || widget.type === 'horizontal-bar-chart'"
+        [class.widget--stat]="widget.type === 'stat-card'"
+        [widget]="widget" />
+    }
+  </div>
+</section>
