@@ -6,6 +6,7 @@ import { catchError, filter, finalize, map, Observable, of, shareReplay, switchM
 import { ApiResponse, LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
 import { RegisterRequest } from '@core/models/register-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
+import { SignalrService } from '@core/services/signalr.service';
 import { environment } from '@environments/environment';
 
 /**
@@ -38,6 +39,7 @@ export type CurrentUser = {
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenStorage = inject(TokenStorageService);
+  private readonly signalrService = inject(SignalrService);
   private readonly registerEndpoint = `${environment.apiBaseUrl}/auth/register`;
   private readonly loginEndpoint = `${environment.apiBaseUrl}/auth/login`;
   private readonly refreshEndpoint = `${environment.apiBaseUrl}/auth/refresh`;
@@ -229,6 +231,7 @@ export class AuthService {
    * Clears the access token, current user, and authenticated state locally.
    */
   clearLocalSession(): void {
+    this.signalrService.stop().subscribe({ error: (): void => undefined });
     this.tokenStorage.clearToken();
     this.currentUser.set(null);
     this.authenticationStateValue.set(AuthState.Unauthenticated);

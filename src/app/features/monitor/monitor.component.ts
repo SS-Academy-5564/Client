@@ -1,5 +1,6 @@
-import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+import { MonitorModel, MonitorStatus, UpdateMonitorPayload } from '@core/models/monitor-model';
 import { MonitorService } from '@core/services/monitor.service';
+import { SignalrService } from '@core/services/signalr.service';
 import { ToastService } from '@core/services/toast.service';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
@@ -34,6 +35,7 @@ export class MonitorComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
+  private readonly signalrService = inject(SignalrService);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly MonitorStatus = MonitorStatus;
@@ -79,6 +81,24 @@ export class MonitorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const monitorUpdatedSubscription = this.signalrService.onMonitorUpdated((update: UpdateMonitorPayload): void =>
+      this.handleMonitorUpdated(update),
+    );
+
+    this.signalrService
+      .start()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (): void => {
+          this.toastService.error($localize`:@@monitorsRealtimeConnectionError:Real-time updates are unavailable.`);
+        },
+      });
+
+    this.destroyRef.onDestroy((): void => {
+      monitorUpdatedSubscription.unsubscribe();
+      this.signalrService.stop().subscribe({ error: (): void => undefined });
+    });
+
     const initialQuery = this.searchQuery();
 
     if (initialQuery) {
@@ -178,6 +198,33 @@ export class MonitorComponent implements OnInit {
 
   isMonitorCheckPending(monitorId: string): boolean {
     return this.pendingMonitorCheckIds().has(monitorId);
+  }
+
+  private handleMonitorUpdated(update: UpdateMonitorPayload): void {
+    this.monitors.update((monitors: MonitorModel[]): MonitorModel[] =>
+      monitors.map((monitor: MonitorModel): MonitorModel => {
+        if (monitor.id.toLowerCase() !== update.monitorId.toLowerCase()) {
+          return monitor;
+        }
+
+        return {
+          ...monitor,
+          currentValue: update.currentValue,
+          lastCheckedAt: update.lastCheckedAt,
+          status: this.parseMonitorStatus(update.status),
+        };
+      }),
+    );
+
+    this.refreshCurrentPage();
+  }
+
+  private parseMonitorStatus(status: string): MonitorStatus {
+    return MonitorStatus[status as keyof typeof MonitorStatus] ?? MonitorStatus.Error;
+  }
+
+  private refreshCurrentPage(): void {
+    this.loadMonitors(this.pageNumber(), this.pageSize(), this.selectedStatus(), this.searchQuery());
   }
 
   private navigateToPage(page: number, pageSize: number = this.pageSize()): void {

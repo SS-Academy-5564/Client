@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LoginResponse } from '@core/models/login-model';
 import { environment } from '@environments/environment';
 import { AuthService, AuthState, CurrentUser } from './auth.service';
+import { SignalrService } from './signalr.service';
 import { TokenStorageService } from './token-storage.service';
 
 type HttpClientMock = {
@@ -165,6 +166,8 @@ describe('AuthService', () => {
   });
 
   it('should clear the local session even when backend logout fails', () => {
+    const signalrService = TestBed.inject(SignalrService);
+    const stopSignalrSpy = vi.spyOn(signalrService, 'stop').mockReturnValue(of(undefined));
     tokenStorage.setToken('access-token');
     service.currentUser.set(currentUser);
     httpMock.post.mockReturnValue(throwError(() => ({ status: 500 })));
@@ -175,6 +178,7 @@ describe('AuthService', () => {
     expect(tokenStorage.getToken()).toBeNull();
     expect(service.currentUser()).toBeNull();
     expect(service.authenticationState()).toBe(AuthState.Unauthenticated);
+    expect(stopSignalrSpy).toHaveBeenCalled();
   });
 
   it('should clear the authenticated session when loading the current user ends in 401', () => {
