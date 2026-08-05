@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { CreateWidgetComponent } from '../create-widget/create-widget.component';
+import { CreateWidgetComponent } from '@features/create-widget/create-widget.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { Widget } from '@/app/core/models/widget.model';
-import { CreateWidgetRequest } from '@/app/core/models/widget.model';
-import { WidgetService } from '@/app/core/services/widget.service';
-import { WidgetCardComponent } from '@/app/shared/ui/widget-card/widget-card.component';
-import { DEFAULT_DASHBOARD_TAB_ID } from '@/app/core/constants/default-dashboard.constants';
+import { Widget } from '@core/models/widget.model';
+import { CreateWidgetRequest } from '@core/models/widget.model';
+import { WidgetService } from '@core/services/widget.service';
+import { WidgetCardComponent } from '@shared/ui/widget-card/widget-card.component';
+import { DEFAULT_DASHBOARD_TAB_ID } from '@core/constants/default-dashboard.constants';
 
 @Component({
   selector: 'app-overview',
@@ -25,6 +25,9 @@ export class OverviewComponent {
 
   // Temporary default dashboard tab. Will be replaced with the active tab ID once dashboard tabs are supported.
   readonly dashboardTabId = DEFAULT_DASHBOARD_TAB_ID;
+
+  readonly submitting = signal(false);
+  readonly createError = signal<string | null>(null);
 
   readonly widgets = computed(() => {
     const priority: Record<string, number> = {
@@ -51,17 +54,22 @@ export class OverviewComponent {
   }
 
   onWidgetCreated(request: CreateWidgetRequest): void {
+    this.submitting.set(true);
+    this.createError.set(null);
+
     this.widgetService.createWidget(request).subscribe({
       next: () => {
+        this.submitting.set(false);
         this.closeCreateWidget();
         this.loadWidgets();
       },
       error: (error) => {
+        this.submitting.set(false);
+        this.createError.set('Failed to create widget.');
         console.error(error);
       },
     });
   }
-
   private loadWidgets(): void {
     this.widgetService.getWidgets(this.dashboardTabId).subscribe({
       next: (response) => {

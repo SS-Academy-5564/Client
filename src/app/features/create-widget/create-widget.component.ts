@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -7,7 +7,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { MatIconModule } from '@angular/material/icon';
-import { CreateWidgetRequest } from '@/app/core/models/widget.model';
+import { CreateWidgetRequest } from '@core/models/widget.model';
 
 @Component({
   selector: 'app-create-widget',
@@ -34,8 +34,8 @@ export class CreateWidgetComponent {
   readonly closed = output<void>();
   readonly created = output<CreateWidgetRequest>();
 
-  readonly submitting = signal(false);
-  readonly error = signal<string | null>(null);
+  readonly submitting = input(false);
+  readonly error = input<string | null>(null);
 
   readonly widgetTypes = [
     { value: 'stat-card', label: 'Statistic Card' },
@@ -79,9 +79,6 @@ export class CreateWidgetComponent {
           timeRange: '',
           settings: '',
         });
-
-        this.error.set(null);
-        this.submitting.set(false);
       }
     });
   }
@@ -100,14 +97,9 @@ export class CreateWidgetComponent {
       return;
     }
 
-    this.submitting.set(true);
-
     this.created.emit({
       dashboardTabId: this.dashboardTabId(),
       ...this.form.getRawValue(),
     });
-
-    this.submitting.set(false);
-    this.closed.emit();
   }
 }

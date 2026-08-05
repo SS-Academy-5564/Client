@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { OverviewComponent } from './overview.component';
-import { WidgetService } from '@/app/core/services/widget.service';
+import { WidgetService } from '@core/services/widget.service';
 import { of } from 'rxjs';
 
 describe('OverviewComponent', () => {

@@ -88,7 +88,8 @@ describe('CreateWidgetComponent', () => {
 
     component.closed.subscribe(closedSpy);
 
-    component.submitting.set(true);
+    fixture.componentRef.setInput('submitting', true);
+    fixture.detectChanges();
 
     component.onClose();
 

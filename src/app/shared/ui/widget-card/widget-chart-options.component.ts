@@ -250,7 +250,7 @@ export function createDonutChartOptions(data: ChartData): EChartsOption {
           return name;
         }
 
-        const pct = ((item.value / total) * 100).toFixed(1);
+        const pct = total === 0 ? '0.0' : ((item.value / total) * 100).toFixed(1);
 
         return `${name} ${item.value} (${pct}%)`;
       },

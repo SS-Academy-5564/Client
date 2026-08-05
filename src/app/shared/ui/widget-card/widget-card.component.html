@@ -10,17 +10,23 @@
       }
     </div>
 
-    <button class="widget-menu" mat-icon-button type="button" [matMenuTriggerFor]="menu">
+    <button
+      aria-label="Widget actions"
+      i18n-aria-label="@@widgetActions"
+      class="widget-menu"
+      mat-icon-button
+      type="button"
+      [matMenuTriggerFor]="menu">
       <mat-icon>more_horiz</mat-icon>
     </button>
 
     <mat-menu #menu="matMenu">
       <button mat-menu-item type="button" (click)="editWidget()">
-        <span>Edit widget</span>
+        <span i18n="@@editWidget">Edit widget</span>
       </button>
 
       <button mat-menu-item type="button" (click)="deleteWidget()">
-        <span>Remove widget</span>
+        <span i18n="@@removeWidget">Remove widget</span>
       </button>
     </mat-menu>
   </div>
@@ -51,7 +57,10 @@
             }
 
             @if (widget().timeRange) {
-              <span class="trend-period">vs {{ widget().timeRange }}</span>
+              <span class="trend-period">
+                <span i18n="@@vsLabel">vs</span>
+                {{ widget().timeRange }}
+              </span>
             }
           </div>
         </div>
