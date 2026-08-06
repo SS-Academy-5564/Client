@@ -30,7 +30,7 @@ export class AuthRateLimitMessageService {
     const retryDate = Date.parse(retryAfter);
 
     if (!Number.isNaN(retryDate)) {
-      const remainingSeconds = Math.max(0, Math.round((retryDate - Date.now()) / 1000));
+      const remainingSeconds = Math.max(0, Math.ceil((retryDate - Date.now()) / 1000));
       return this.buildRetrySecondsMessage(remainingSeconds);
     }
 
@@ -68,6 +68,6 @@ export class AuthRateLimitMessageService {
   }
 
   private buildRetryRawMessage(retryAfter: string): string {
-    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. Please try again later.`;
+    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. Try again after ${retryAfter} .`;
   }
 }

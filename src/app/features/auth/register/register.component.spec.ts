@@ -184,7 +184,7 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Retry after 30 seconds');
+    expect(fixture.nativeElement.textContent).toContain('Retry in 30s');
     expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
