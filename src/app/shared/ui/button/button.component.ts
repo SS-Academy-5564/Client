@@ -14,7 +14,7 @@ export class ButtonComponent {
 
   readonly buttonType = input<'button' | 'submit'>('button');
 
-  readonly variant = input<'full-width' | 'nav' | 'default'>('default');
+  readonly variant = input<'full-width' | 'nav' | 'default' | 'toolbar'>('default');
 
   readonly label = input('');
 

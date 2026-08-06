@@ -1,0 +1,159 @@
+@if (isCreateWidgetDrawerOpen()) {
+  <button
+    aria-label="Close panel"
+    i18n-aria-label="@@closePanel"
+    class="panel-backdrop"
+    type="button"
+    (click)="onClose()"></button>
+
+  <aside aria-labelledby="create-widget-title" aria-modal="true" class="panel" role="dialog">
+    <header class="panel-header">
+      <div class="panel-heading">
+        <h2 i18n="@@addNewWidget" id="create-widget-title">Add New Widget</h2>
+        <p class="panel-subtitle" i18n="@@configureWidget">Configure a widget for the active dashboard tab.</p>
+      </div>
+
+      <button aria-label="Close" i18n-aria-label="@@closePanel" class="panel-close" type="button" (click)="onClose()">
+        &#10005;
+      </button>
+    </header>
+
+    <form class="panel-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <app-error-message [message]="error()" />
+
+      <div class="field">
+        <label class="field-label" for="widget-type" i18n="@@widgetType">Widget type</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="type"
+            id="widget-type"
+            panelClass="white-select-panel"
+            placeholder="Select widget type"
+            i18n-placeholder="@@selectWidgetType">
+            @for (type of widgetTypes; track type.value) {
+              <mat-option [value]="type.value">
+                {{ type.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('type'); as type) {
+          @if (type.touched && type.hasError('required')) {
+            <div class="field-error" i18n="@@widgetTypeRequired">Widget type is required.</div>
+          }
+        }
+      </div>
+
+      @if (form.value.type === 'stat-card') {
+        <div class="field">
+          <label class="field-label" for="widget-title" i18n="@@title">Title</label>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              formControlName="title"
+              id="widget-title"
+              matInput
+              placeholder="Enter title"
+              i18n-placeholder="@@enterTitle" />
+          </mat-form-field>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="widget-subtitle" i18n="@@subtitle">Subtitle</label>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <input
+              formControlName="subtitle"
+              id="widget-subtitle"
+              matInput
+              placeholder="Enter subtitle"
+              i18n-placeholder="@@enterSubtitle" />
+          </mat-form-field>
+        </div>
+      }
+
+      <div class="field">
+        <label class="field-label" for="widget-metric" i18n="@@metric">Metric</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="metric"
+            id="widget-metric"
+            panelClass="white-select-panel"
+            placeholder="Select a metric"
+            i18n-placeholder="@@selectMetric">
+            @for (metric of metrics; track metric.value) {
+              <mat-option [value]="metric.value">
+                {{ metric.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('metric'); as metric) {
+          @if (metric.touched && metric.hasError('required')) {
+            <div class="field-error" i18n="@@metricRequired">Metric is required.</div>
+          }
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="widget-time-range" i18n="@@timeRange">Time range</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="timeRange"
+            id="widget-time-range"
+            panelClass="white-select-panel"
+            placeholder="Select a time range"
+            i18n-placeholder="@@selectTimeRange">
+            @for (range of timeRanges; track range.value) {
+              <mat-option [value]="range.value">
+                {{ range.label }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('timeRange'); as timeRange) {
+          @if (timeRange.touched && timeRange.hasError('required')) {
+            <div class="field-error" i18n="@@timeRangeRequired">Time range is required.</div>
+          }
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="widget-settings" i18n="@@settings">Settings</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea
+            formControlName="settings"
+            id="widget-settings"
+            matInput
+            placeholder="Optional widget settings"
+            i18n-placeholder="@@enterSettings"
+            rows="4"></textarea>
+        </mat-form-field>
+      </div>
+
+      <footer class="panel-footer">
+        <app-button
+          buttonType="button"
+          label="Cancel"
+          i18n-label="@@cancel"
+          type="secondary"
+          [disabled]="submitting()"
+          (click)="onClose()" />
+
+        <app-button
+          buttonType="submit"
+          label="Add widget"
+          i18n-label="@@addWidget"
+          type="primary"
+          [disabled]="submitting()" />
+      </footer>
+    </form>
+  </aside>
+}
