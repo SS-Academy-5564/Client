@@ -201,4 +201,29 @@ describe('MonitorComponent', () => {
       'Manual check was already triggered recently. Please wait before trying again.',
     );
   });
+
+  it('redirects to the clamped page number when requested page exceeds total pages', () => {
+    const router = TestBed.inject(Router);
+    const spy = vi.spyOn(router, 'navigate');
+
+    monitorServiceMock.getMonitors.mockReturnValueOnce(
+      of({
+        items: monitors,
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: monitors.length,
+        totalPages: 1,
+      }),
+    );
+
+    component['loadMonitors'](5, 10);
+
+    expect(spy).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { page: 1, pageSize: 10 },
+        replaceUrl: true,
+      }),
+    );
+  });
 });
