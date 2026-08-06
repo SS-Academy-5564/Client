@@ -134,6 +134,10 @@ describe('MonitorComponent', () => {
     await fixture.whenStable();
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -146,7 +150,7 @@ describe('MonitorComponent', () => {
     );
   });
 
-  it('reloads the current monitor page when SignalR sends an update', (): void => {
+  it('updates the monitor in local state when SignalR sends an update without triggering HTTP refresh', (): void => {
     const initialRequestCount = monitorServiceMock.getMonitors.mock.calls.length;
 
     monitorUpdatedHandler?.({
@@ -157,7 +161,12 @@ describe('MonitorComponent', () => {
       status: 'Enabled',
     });
 
-    expect(monitorServiceMock.getMonitors).toHaveBeenCalledTimes(initialRequestCount + 1);
+    const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
+      .monitors()
+      .find((m) => m.id === 'enabled-monitor');
+    expect(updatedMonitor?.currentValue).toBe('healthy');
+    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-05T08:00:00Z');
+    expect(monitorServiceMock.getMonitors).toHaveBeenCalledTimes(initialRequestCount);
   });
 
   it.each([
