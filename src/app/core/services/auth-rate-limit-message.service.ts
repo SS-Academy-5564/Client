@@ -64,12 +64,10 @@ export class AuthRateLimitMessageService {
   }
 
   private buildRetrySecondsMessage(seconds: number): string {
-    // eslint-disable-next-line max-len
-    return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. Please try again later. Retry after ${seconds} seconds.`;
+    return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. Retry in ${seconds}s.`;
   }
 
   private buildRetryRawMessage(retryAfter: string): string {
-    // eslint-disable-next-line max-len
-    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. Please try again later. Retry after ${retryAfter}.`;
+    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. Please try again later.`;
   }
 }

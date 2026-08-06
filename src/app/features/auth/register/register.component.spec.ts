@@ -13,8 +13,7 @@ type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
 };
 
-const NEUTRAL_SUCCESS_MESSAGE =
-  'If this email address is not already registered, a confirmation email has been sent. Please check your inbox.';
+const NEUTRAL_SUCCESS_MESSAGE = 'If not registered, a confirmation email has been sent.';
 
 describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;

@@ -115,7 +115,6 @@ export class RegisterComponent {
   }
 
   private buildNeutralSuccessMessage(): string {
-    // eslint-disable-next-line max-len
-    return $localize`:@@register.neutralSuccess:If this email address is not already registered, a confirmation email has been sent. Please check your inbox.`;
+    return $localize`:@@register.neutralSuccess:If not registered, a confirmation email has been sent.`;
   }
 }
