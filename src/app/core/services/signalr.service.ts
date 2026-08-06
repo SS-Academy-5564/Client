@@ -101,7 +101,7 @@ export class SignalrService {
     }
 
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl(`${environment.hubBaseUrl}/monitors`, {
+      .withUrl(`${environment.hubsBaseUrl}/monitors`, {
         accessTokenFactory: (): string => this.tokenStorage.getToken() ?? '',
       })
       .withAutomaticReconnect()
