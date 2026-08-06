@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AUTH_RATE_LIMIT_MESSAGES } from '@core/constants/auth-rate-limit.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthRateLimitMessageService {
+  /** Builds a user-facing message for rate-limit errors. */
   build(err: HttpErrorResponse): string {
     const bodyMessage = err.error?.errors?.[0]?.message ?? err.error?.message;
     const retrySeconds = this.extractRetrySecondsFromMessage(bodyMessage);
@@ -17,7 +19,7 @@ export class AuthRateLimitMessageService {
       return this.formatRetryAfterMessage(retryAfter);
     }
 
-    return $localize`:@@register.rateLimit:Too many registration attempts. Please try again later.`;
+    return AUTH_RATE_LIMIT_MESSAGES.generic;
   }
 
   private formatRetryAfterMessage(retryAfter: string): string {
@@ -64,10 +66,13 @@ export class AuthRateLimitMessageService {
   }
 
   private buildRetrySecondsMessage(seconds: number): string {
-    return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. Retry in ${seconds}s.`;
+    const minutes = Math.max(1, Math.ceil(seconds / 60));
+    const unit = minutes === 1 ? 'minute' : 'minutes';
+
+    return `${AUTH_RATE_LIMIT_MESSAGES.retryPrefix}${minutes} ${unit}.`;
   }
 
   private buildRetryRawMessage(retryAfter: string): string {
-    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. Try again after ${retryAfter} .`;
+    return `${AUTH_RATE_LIMIT_MESSAGES.retryRawPrefix}${retryAfter}.`;
   }
 }

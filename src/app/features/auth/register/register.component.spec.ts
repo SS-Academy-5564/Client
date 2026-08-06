@@ -150,7 +150,8 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('900');
+    expect(fixture.nativeElement.textContent).toContain('15');
+    expect(fixture.nativeElement.textContent).toContain('minutes');
     expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
@@ -166,7 +167,8 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('60');
+    expect(fixture.nativeElement.textContent).toContain('1');
+    expect(fixture.nativeElement.textContent).toContain('minute');
     expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
@@ -184,7 +186,8 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Retry in 30s');
+    expect(fixture.nativeElement.textContent).toContain('1');
+    expect(fixture.nativeElement.textContent).toContain('minute');
     expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });

@@ -16,6 +16,7 @@ import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
 import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
+import { RATE_LIMIT_STATUS_CODE } from '@core/constants/auth-rate-limit.constants';
 import { AuthRateLimitMessageService } from '@core/services/auth-rate-limit-message.service';
 
 @Component({
@@ -105,7 +106,7 @@ export class RegisterComponent {
   }
 
   private handleRegisterError(err: HttpErrorResponse): void {
-    if (err.status === 429) {
+    if (err.status === RATE_LIMIT_STATUS_CODE) {
       this.error.set(this.authRateLimitMessageService.build(err));
       return;
     }
