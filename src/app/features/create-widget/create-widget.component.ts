@@ -28,7 +28,7 @@ import { CreateWidgetRequest } from '@core/models/widget.model';
 export class CreateWidgetComponent {
   private readonly fb = inject(FormBuilder);
 
-  readonly isOpen = input(false);
+  readonly isCreateWidgetDrawerOpen = input(false);
   readonly dashboardTabId = input.required<string>();
 
   readonly closed = output<void>();
@@ -70,7 +70,7 @@ export class CreateWidgetComponent {
 
   constructor() {
     effect(() => {
-      if (this.isOpen()) {
+      if (this.isCreateWidgetDrawerOpen()) {
         this.form.reset({
           type: '',
           title: '',

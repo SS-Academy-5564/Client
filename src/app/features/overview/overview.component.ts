@@ -70,6 +70,7 @@ export class OverviewComponent {
       },
     });
   }
+
   private loadWidgets(): void {
     this.widgetService.getWidgets(this.dashboardTabId).subscribe({
       next: (response) => {

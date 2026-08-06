@@ -30,7 +30,7 @@
   <app-create-widget
     [dashboardTabId]="dashboardTabId"
     [error]="createError()"
-    [isOpen]="isCreateWidgetOpen()"
+    [isCreateWidgetDrawerOpen]="isCreateWidgetOpen()"
     [submitting]="submitting()"
     (closed)="closeCreateWidget()"
     (created)="onWidgetCreated($event)" />

@@ -103,7 +103,7 @@ describe('CreateWidgetComponent', () => {
       timeRange: '24h',
     });
 
-    fixture.componentRef.setInput('isOpen', true);
+    fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
 
     fixture.detectChanges();
     await fixture.whenStable();

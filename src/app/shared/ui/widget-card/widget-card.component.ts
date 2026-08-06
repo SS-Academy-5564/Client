@@ -48,6 +48,7 @@ export class WidgetCardComponent {
         return {};
     }
   });
+
   editWidget(): void {
     console.log('Edit', this.widget());
   }
