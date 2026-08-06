@@ -55,6 +55,10 @@ describe('RegisterComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('should create the component', () => {
     expect(component).toBeTruthy();
   });
@@ -169,6 +173,7 @@ describe('RegisterComponent', () => {
   });
 
   it('should show a rate limit message with a computed retry countdown when Retry-After is an HTTP date', () => {
+    vi.useFakeTimers();
     const retryDate = new Date(Date.now() + 30_000).toUTCString();
     const errorResponse = new HttpErrorResponse({
       status: 429,
@@ -180,7 +185,7 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Too many registration attempts');
+    expect(fixture.nativeElement.textContent).toContain('Retry after 30 seconds');
     expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });

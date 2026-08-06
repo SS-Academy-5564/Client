@@ -16,6 +16,7 @@ import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
 import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
+import { AuthRateLimitMessageService } from '@core/services/auth-rate-limit-message.service';
 
 @Component({
   selector: 'app-register',
@@ -39,14 +40,16 @@ export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
+  private readonly authRateLimitMessageService = inject(AuthRateLimitMessageService);
   protected readonly authService = inject(AuthService);
 
   protected readonly hidePassword = signal<boolean>(true);
   protected readonly hideConfirmPassword = signal<boolean>(true);
   protected readonly error = signal<string | null>(null);
-
   protected readonly showPasswordAria = $localize`:@@showPasswordAria:Show password`;
   protected readonly hidePasswordAria = $localize`:@@hidePasswordAria:Hide password`;
+
+  private readonly registrationFailedMessage = $localize`:@@register.failed:Registration failed`;
 
   readonly form = this.fb.nonNullable.group(
     {
@@ -91,89 +94,28 @@ export class RegisterComponent {
     this.error.set(null);
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
-      next: () => {
-        const successMessage = $localize`:@@register.neutralSuccess:${
-          'If this email address is not already registered, ' +
-          'a confirmation email has been sent. Please check your inbox.'
-        }`;
-        this.toastService.success(successMessage);
-        this.router.navigate([ROUTES.LOGIN]);
-      },
-      error: (err: HttpErrorResponse) => {
-        if (err.status === 429) {
-          const retryMessage = this.buildRateLimitMessage(err);
-          this.error.set(retryMessage);
-          return;
-        }
-
-        const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';
-        this.error.set(errorMessage);
-      },
+      next: () => this.handleRegisterSuccess(),
+      error: (err: HttpErrorResponse) => this.handleRegisterError(err),
     });
   }
 
-  private buildRateLimitMessage(err: HttpErrorResponse): string {
-    const bodyMessage = err.error?.errors?.[0]?.message ?? err.error?.message;
-    const retrySeconds = this.extractRetrySecondsFromMessage(bodyMessage);
-
-    if (retrySeconds !== null) {
-      return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. \
-Please try again later. Retry after ${retrySeconds} seconds.`;
-    }
-
-    const retryAfter = err.headers.get('Retry-After');
-
-    if (retryAfter) {
-      return this.formatRetryAfterMessage(retryAfter);
-    }
-
-    return $localize`:@@register.rateLimit:Too many registration attempts. \
-Please try again later.`;
+  private handleRegisterSuccess(): void {
+    this.toastService.success(this.buildNeutralSuccessMessage());
+    this.router.navigate([ROUTES.LOGIN]);
   }
 
-  private formatRetryAfterMessage(retryAfter: string): string {
-    const seconds = Number(retryAfter);
-
-    if (!Number.isNaN(seconds)) {
-      return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. \
-Please try again later. Retry after ${seconds} seconds.`;
+  private handleRegisterError(err: HttpErrorResponse): void {
+    if (err.status === 429) {
+      this.error.set(this.authRateLimitMessageService.build(err));
+      return;
     }
 
-    const retryDate = Date.parse(retryAfter);
-
-    if (!Number.isNaN(retryDate)) {
-      const remainingSeconds = Math.max(0, Math.round((retryDate - Date.now()) / 1000));
-      return $localize`:@@register.rateLimitRetryDate:Too many registration attempts. \
-Please try again later. Retry after ${remainingSeconds} seconds.`;
-    }
-
-    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. \
-Please try again later. Retry after ${retryAfter}.`;
+    const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? this.registrationFailedMessage;
+    this.error.set(errorMessage);
   }
 
-  private extractRetrySecondsFromMessage(message: unknown): number | null {
-    if (typeof message !== 'string') {
-      return null;
-    }
-
-    const match = message.match(/(\d+)\s*(second|seconds|minute|minutes|hour|hours)/i);
-
-    if (!match) {
-      return null;
-    }
-
-    const value = Number(match[1]);
-    const unit = match[2].toLowerCase();
-
-    switch (unit) {
-      case 'minute':
-      case 'minutes':
-        return value * 60;
-      case 'hour':
-      case 'hours':
-        return value * 60 * 60;
-      default:
-        return value;
-    }
+  private buildNeutralSuccessMessage(): string {
+    // eslint-disable-next-line max-len
+    return $localize`:@@register.neutralSuccess:If this email address is not already registered, a confirmation email has been sent. Please check your inbox.`;
   }
 }
