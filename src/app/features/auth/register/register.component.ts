@@ -101,11 +101,7 @@ export class RegisterComponent {
       },
       error: (err: HttpErrorResponse) => {
         if (err.status === 429) {
-          const retryAfter = err.headers.get('Retry-After');
-          const retryMessage = retryAfter
-            ? this.formatRetryAfterMessage(retryAfter)
-            : $localize`:@@register.rateLimit:Too many registration attempts. Please try again later.`;
-
+          const retryMessage = this.buildRateLimitMessage(err);
           this.error.set(retryMessage);
           return;
         }
@@ -116,29 +112,68 @@ export class RegisterComponent {
     });
   }
 
+  private buildRateLimitMessage(err: HttpErrorResponse): string {
+    const bodyMessage = err.error?.errors?.[0]?.message ?? err.error?.message;
+    const retrySeconds = this.extractRetrySecondsFromMessage(bodyMessage);
+
+    if (retrySeconds !== null) {
+      return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. \
+Please try again later. Retry after ${retrySeconds} seconds.`;
+    }
+
+    const retryAfter = err.headers.get('Retry-After');
+
+    if (retryAfter) {
+      return this.formatRetryAfterMessage(retryAfter);
+    }
+
+    return $localize`:@@register.rateLimit:Too many registration attempts. \
+Please try again later.`;
+  }
+
   private formatRetryAfterMessage(retryAfter: string): string {
     const seconds = Number(retryAfter);
 
     if (!Number.isNaN(seconds)) {
-      return $localize`
-        :@@register.rateLimitRetrySeconds:Too many registration attempts. Please try again later.
-        Retry after ${seconds} seconds.
-      `;
+      return $localize`:@@register.rateLimitRetrySeconds:Too many registration attempts. \
+Please try again later. Retry after ${seconds} seconds.`;
     }
 
     const retryDate = Date.parse(retryAfter);
 
     if (!Number.isNaN(retryDate)) {
       const remainingSeconds = Math.max(0, Math.round((retryDate - Date.now()) / 1000));
-      return $localize`
-        :@@register.rateLimitRetryDate:Too many registration attempts. Please try again later.
-        Retry after ${remainingSeconds} seconds.
-      `;
+      return $localize`:@@register.rateLimitRetryDate:Too many registration attempts. \
+Please try again later. Retry after ${remainingSeconds} seconds.`;
     }
 
-    return $localize`
-      :@@register.rateLimitRetryRaw:Too many registration attempts. Please try again later.
-      Retry after ${retryAfter}.
-    `;
+    return $localize`:@@register.rateLimitRetryRaw:Too many registration attempts. \
+Please try again later. Retry after ${retryAfter}.`;
+  }
+
+  private extractRetrySecondsFromMessage(message: unknown): number | null {
+    if (typeof message !== 'string') {
+      return null;
+    }
+
+    const match = message.match(/(\d+)\s*(second|seconds|minute|minutes|hour|hours)/i);
+
+    if (!match) {
+      return null;
+    }
+
+    const value = Number(match[1]);
+    const unit = match[2].toLowerCase();
+
+    switch (unit) {
+      case 'minute':
+      case 'minutes':
+        return value * 60;
+      case 'hour':
+      case 'hours':
+        return value * 60 * 60;
+      default:
+        return value;
+    }
   }
 }

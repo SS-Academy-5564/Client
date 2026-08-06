@@ -112,7 +112,7 @@ describe('RegisterComponent', () => {
     });
   });
 
-  it('should show a neutral success message and navigate to login on success, regardless of whether the email already existed', () => {
+  it('shows a neutral success message and navigates to login regardless of email existence', () => {
     authServiceMock.register.mockReturnValue(of({}));
 
     fillValidForm();
@@ -136,7 +136,23 @@ describe('RegisterComponent', () => {
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
-  it('should show a rate limit message with retry seconds when 429 is returned with a numeric Retry-After header', () => {
+  it('should show retry time for 429 with a body delay', () => {
+    const errorResponse = new HttpErrorResponse({
+      status: 429,
+      error: { errors: [{ message: 'Too many requests. Please try again in 900 seconds.' }] },
+    });
+    authServiceMock.register.mockReturnValue(throwError(() => errorResponse));
+
+    fillValidForm();
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('900');
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should show retry seconds for 429 with numeric Retry-After', () => {
     const errorResponse = new HttpErrorResponse({
       status: 429,
       headers: new HttpHeaders({ 'Retry-After': '60' }),
