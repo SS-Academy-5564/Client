@@ -1,3 +1,7 @@
+/**
+ * Defines all application route paths.
+ * Used for programmatic navigation and link generation throughout the app.
+ */
 export const ROUTES = {
   OVERVIEW: '/overview',
   MONITORS: '/monitors',

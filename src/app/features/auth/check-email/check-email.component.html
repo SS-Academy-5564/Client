@@ -12,16 +12,18 @@
         </svg>
       </div>
 
-      <h1 class="verification-title" i18n="@@checkEmailTitle">Check your email</h1>
-      <p class="verification-message" i18n="@@checkEmailMessage">
+      <h1 class="verification-title" i18n="check-email title@@checkEmailTitle">Check your email</h1>
+      <p class="verification-message" i18n="check-email message@@checkEmailMessage">
         We sent you a verification email. Open the link in that message to finish creating your Pulse account.
       </p>
-      <p class="verification-hint" i18n="@@checkEmailHint">If you don't see it, check your spam or junk folder.</p>
+      <p class="verification-hint" i18n="check-email hint@@checkEmailHint">
+        If you don't see it, check your spam or junk folder.
+      </p>
 
       <div class="verification-actions">
         <app-button
           label="Sign in"
-          i18n-label="@@checkEmailSignIn"
+          i18n-label="check-email sign in@@checkEmailSignIn"
           type="primary"
           variant="full-width"
           [routerLink]="routes.LOGIN" />
