@@ -202,7 +202,7 @@ describe('MonitorComponent', () => {
     );
   });
 
-  it('redirects to the clamped page number when requested page exceeds total pages', () => {
+  it('redirects to the clamped page number when requested page exceeds total pages', (): void => {
     const router = TestBed.inject(Router);
     const spy = vi.spyOn(router, 'navigate');
 
