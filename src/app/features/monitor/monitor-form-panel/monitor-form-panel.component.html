@@ -152,23 +152,13 @@
       </div>
     </div>
 
-    @if (lastModifiedAt()) {
-      <div class="panel-footer-wrap">
-        <span class="panel-footer-meta" i18n="@@monitorFormPanel.lastModifiedAt">
-          Last modified {{ lastModifiedAt() | date: 'medium' }}
-        </span>
-        <footer class="panel-footer">
-          <app-button
-            buttonType="button"
-            label="Cancel"
-            i18n-label="@@monitorFormPanel.cancel"
-            type="secondary"
-            [disabled]="submitting()"
-            (click)="onClose()" />
-          <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
-        </footer>
-      </div>
-    } @else {
+    <div class="panel-footer-wrap">
+      <span
+        class="panel-footer-meta"
+        i18n="@@monitorFormPanel.lastModifiedAt"
+        [hidden]="!lastModifiedAt()">
+        Last modified {{ lastModifiedAt() | date: 'medium' }}
+      </span>
       <footer class="panel-footer">
         <app-button
           buttonType="button"
@@ -179,6 +169,6 @@
           (click)="onClose()" />
         <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
       </footer>
-    }
+    </div>
   </form>
 </ng-template>
