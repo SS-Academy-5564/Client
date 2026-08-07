@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute } from '@angular/router';
 
@@ -29,7 +30,10 @@ const INVALID_TOKEN_CODES = new Set(['EMAIL_VERIFICATION_TOKEN_INVALID', 'EMAIL_
 export class VerifyEmailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly emailVerificationService = inject(EmailVerificationService);
-  private token = '';
+  private readonly queryParamMap = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
+  });
+  private readonly token = computed(() => this.queryParamMap().get('token')?.trim() ?? '');
 
   /** Current verification state rendered by the page. */
   protected readonly state = signal<VerificationState>('verifying');
@@ -48,14 +52,14 @@ export class VerifyEmailComponent implements OnInit {
 
   /** Reads the verification token and starts the one-time verification request. */
   ngOnInit(): void {
-    this.token = this.route.snapshot.queryParamMap.get('token')?.trim() ?? '';
+    const token = this.token();
 
-    if (!this.token) {
+    if (!token) {
       this.state.set('invalid');
       return;
     }
 
-    this.emailVerificationService.verify(this.token).subscribe({
+    this.emailVerificationService.verify(token).subscribe({
       next: () => this.state.set('success'),
       error: (error: unknown) => {
         this.state.set(this.getErrorCode(error) === EXPIRED_TOKEN_CODE ? 'expired' : 'invalid');
@@ -65,14 +69,16 @@ export class VerifyEmailComponent implements OnInit {
 
   /** Requests a replacement email for the expired token currently displayed. */
   protected resendEmail(): void {
-    if (!this.token || this.isResending() || this.resendComplete()) {
+    const token = this.token();
+
+    if (!token || this.isResending() || this.resendComplete()) {
       return;
     }
 
     this.isResending.set(true);
-    this.resendError.set(null);
+    this.clearError();
 
-    this.emailVerificationService.resend(this.token).subscribe({
+    this.emailVerificationService.resend(token).subscribe({
       next: () => {
         this.isResending.set(false);
         this.resendComplete.set(true);
@@ -93,6 +99,10 @@ export class VerifyEmailComponent implements OnInit {
         );
       },
     });
+  }
+
+  private clearError(): void {
+    this.resendError.set(null);
   }
 
   private getErrorCode(error: unknown): string | null {

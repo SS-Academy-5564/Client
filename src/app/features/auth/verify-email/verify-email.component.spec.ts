@@ -1,8 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, ParamMap, provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 
 import { EmailVerificationService } from '@core/services/email-verification.service';
 import { VerifyEmailComponent } from './verify-email.component';
@@ -27,10 +27,12 @@ const resendSuccessResponse = {
 describe('VerifyEmailComponent', () => {
   let fixture: ComponentFixture<VerifyEmailComponent>;
   let serviceMock: EmailVerificationServiceMock;
+  const queryParamMap = new BehaviorSubject<ParamMap>(convertToParamMap({ token: 'verification-token' }));
   const routeMock = {
     snapshot: {
       queryParamMap: convertToParamMap({ token: 'verification-token' }),
     },
+    queryParamMap: queryParamMap.asObservable(),
   };
 
   beforeEach(async () => {
@@ -93,6 +95,16 @@ describe('VerifyEmailComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Email sent');
   });
 
+  it('should use the current query token when resending', () => {
+    serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
+    createComponent('expired-token');
+    setQueryToken('updated-token');
+
+    clickButton('Resend email');
+
+    expect(serviceMock.resend).toHaveBeenCalledWith('updated-token');
+  });
+
   it('should display cooldown guidance when resend is rate limited', () => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
     serviceMock.resend.mockReturnValue(throwError(() => apiError(429, 'TOO_MANY_REQUESTS')));
@@ -105,9 +117,15 @@ describe('VerifyEmailComponent', () => {
   });
 
   function createComponent(token: string | null): void {
-    routeMock.snapshot.queryParamMap = convertToParamMap(token ? { token } : {});
+    setQueryToken(token);
     fixture = TestBed.createComponent(VerifyEmailComponent);
     fixture.detectChanges();
+  }
+
+  function setQueryToken(token: string | null): void {
+    const params = convertToParamMap(token ? { token } : {});
+    routeMock.snapshot.queryParamMap = params;
+    queryParamMap.next(params);
   }
 
   function clickButton(label: string): void {
