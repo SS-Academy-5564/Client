@@ -153,10 +153,7 @@
     </div>
 
     <div class="panel-footer-wrap">
-      <span
-        class="panel-footer-meta"
-        i18n="@@monitorFormPanel.lastModifiedAt"
-        [hidden]="!lastModifiedAt()">
+      <span class="panel-footer-meta" i18n="@@monitorFormPanel.lastModifiedAt" [hidden]="!lastModifiedAt()">
         Last modified {{ lastModifiedAt() | date: 'medium' }}
       </span>
       <footer class="panel-footer">

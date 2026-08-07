@@ -135,6 +135,7 @@ export class EditMonitorPanelComponent {
    */
   private loadDetail(id: string): Subscription {
     this.isLoadingDetail.set(true);
+    this.lastModifiedAt.set(null);
     this.initialValue.set(null);
     this.serverErrors.set(null);
 

@@ -164,9 +164,9 @@ export class MonitorFormPanelComponent {
   });
 
   /**
-    * Gets the localized name-field error message shown in the UI.
-    * @returns The error message, or `null` when the field has no visible error.
-    */
+   * Gets the localized name-field error message shown in the UI.
+   * @returns The error message, or `null` when the field has no visible error.
+   */
   get nameError(): string | null {
     const c = this.form.get('name');
     if (!c?.touched || !c.errors) {
