@@ -81,7 +81,22 @@ export class SignalrService {
   }
 
   /**
-   * Registers a handler for a completed monitor check.
+   * Registers a handler for completed monitor checks.
+   *
+   * @param handler Callback that receives an array of updated monitor payloads.
+   * @returns A subscription that unregisters the handler when unsubscribed.
+   */
+  onMonitorsUpdated(handler: (updates: UpdateMonitorPayload[]) => void): Subscription {
+    const connection = this.getOrCreateConnection();
+    connection.on('SendUpdatedMonitorsAsync', handler);
+
+    return new Subscription((): void => {
+      connection.off('SendUpdatedMonitorsAsync', handler);
+    });
+  }
+
+  /**
+   * Registers a handler for a single completed monitor check.
    *
    * @param handler Callback that receives the updated monitor payload.
    * @returns A subscription that unregisters the handler when unsubscribed.

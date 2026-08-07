@@ -81,8 +81,11 @@ export class MonitorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const monitorsUpdatedSubscription = this.signalrService.onMonitorsUpdated((updates: UpdateMonitorPayload[]): void =>
+      this.handleMonitorsUpdated(updates),
+    );
     const monitorUpdatedSubscription = this.signalrService.onMonitorUpdated((update: UpdateMonitorPayload): void =>
-      this.handleMonitorUpdated(update),
+      this.handleMonitorsUpdated([update]),
     );
 
     this.signalrService
@@ -95,6 +98,7 @@ export class MonitorComponent implements OnInit {
       });
 
     this.destroyRef.onDestroy((): void => {
+      monitorsUpdatedSubscription.unsubscribe();
       monitorUpdatedSubscription.unsubscribe();
       this.signalrService.stop().subscribe({ error: (): void => undefined });
     });
@@ -200,10 +204,22 @@ export class MonitorComponent implements OnInit {
     return this.pendingMonitorCheckIds().has(monitorId);
   }
 
-  private handleMonitorUpdated(update: UpdateMonitorPayload): void {
+  private handleMonitorsUpdated(updates: UpdateMonitorPayload[]): void {
+    if (!updates.length) {
+      return;
+    }
+
+    const updatesMap = new Map<string, UpdateMonitorPayload>(
+      updates.map((update: UpdateMonitorPayload): [string, UpdateMonitorPayload] => [
+        update.monitorId.toLowerCase(),
+        update,
+      ]),
+    );
+
     this.monitors.update((monitors: MonitorModel[]): MonitorModel[] =>
       monitors.map((monitor: MonitorModel): MonitorModel => {
-        if (monitor.id.toLowerCase() !== update.monitorId.toLowerCase()) {
+        const update = updatesMap.get(monitor.id.toLowerCase());
+        if (!update) {
           return monitor;
         }
 
@@ -215,8 +231,6 @@ export class MonitorComponent implements OnInit {
         };
       }),
     );
-
-    this.refreshCurrentPage();
   }
 
   private parseMonitorStatus(status: string): MonitorStatus {
