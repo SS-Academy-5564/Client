@@ -5,6 +5,8 @@ export const ROUTES = {
 
   LOGIN: '/login',
   REGISTER: '/register',
+  CHECK_EMAIL: '/check-email',
+  VERIFY_EMAIL: '/verify-email',
 
   CREATE_ORGANIZATION: '/create-organization',
 

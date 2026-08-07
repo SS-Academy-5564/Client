@@ -1,0 +1,123 @@
+@mixin styles {
+  :host {
+    display: block;
+    min-height: 100vh;
+    background-color: #f8fafc;
+  }
+
+  .verification-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 32px 32px;
+    text-align: center;
+    box-shadow: none;
+    border-radius: 12px;
+  }
+
+  .status-icon {
+    display: grid;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 4px;
+    place-items: center;
+    border-radius: 50%;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      fill: none;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 2;
+    }
+  }
+
+  .status-icon-info {
+    color: var(--accent);
+    background-color: var(--accent-soft);
+  }
+
+  .status-icon-success {
+    color: var(--color-success-text);
+    background-color: var(--color-success-bg);
+  }
+
+  .status-icon-warning {
+    color: var(--color-warning-text);
+    background-color: var(--color-warning-bg);
+  }
+
+  .status-icon-error {
+    color: var(--color-error-text);
+    background-color: var(--color-error-bg);
+  }
+
+  .verification-title {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .verification-message {
+    max-width: 400px;
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .verification-hint {
+    max-width: 400px;
+    margin: -4px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .verification-actions {
+    display: flex;
+    width: 100%;
+    margin-top: 8px;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .verification-feedback {
+    width: 100%;
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .verification-feedback-success {
+    color: var(--color-success-text);
+    background-color: var(--color-success-bg);
+  }
+
+  .verification-feedback-error {
+    color: var(--color-error-text);
+    background-color: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+  }
+
+  @media (max-width: 480px) {
+    .verification-card {
+      padding: 32px 20px 24px;
+    }
+
+    .verification-title {
+      font-size: 24px;
+    }
+
+    .verification-message {
+      font-size: 15px;
+    }
+  }
+}
