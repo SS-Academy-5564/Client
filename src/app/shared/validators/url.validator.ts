@@ -1,5 +1,4 @@
 ﻿import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
 /**
  * Validates that a control's string value is a syntactically valid HTTP or HTTPS URL.
  *

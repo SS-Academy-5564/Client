@@ -92,6 +92,7 @@ export class MonitorService {
    * Creates a new monitor.
    * @param request - The monitor creation payload.
    * @returns The newly created monitor in list-projection shape.
+   * @throws Error When the API response is successful but contains no data.
    */
   createMonitor(request: CreateMonitorRequest): Observable<MonitorModel> {
     return this.http.post<ApiResponse<MonitorModel>>(this.monitorBaseEndpoint, request).pipe(
@@ -108,6 +109,7 @@ export class MonitorService {
    * Fetches the full detail for a single monitor.
    * @param id - The monitor GUID.
    * @returns The full {@link MonitorDetail} record.
+   * @throws Error When the API response is successful but contains no data.
    */
   getMonitorById(id: string): Observable<MonitorDetail> {
     return this.http.get<ApiResponse<MonitorDetail>>(`${this.monitorBaseEndpoint}/${id}`).pipe(
@@ -125,6 +127,7 @@ export class MonitorService {
    * @param id - The monitor GUID.
    * @param request - The update payload.
    * @returns The updated monitor in list-projection shape.
+   * @throws Error When the API response is successful but contains no data.
    */
   updateMonitor(id: string, request: UpdateMonitorRequest): Observable<MonitorModel> {
     return this.http.put<ApiResponse<MonitorModel>>(`${this.monitorBaseEndpoint}/${id}`, request).pipe(

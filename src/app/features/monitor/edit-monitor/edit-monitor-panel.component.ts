@@ -50,6 +50,9 @@ export class EditMonitorPanelComponent {
   /** Signal containing the initial values to populate the form with, or `null` if not loaded yet. */
   protected readonly initialValue = signal<MonitorFormValue | null>(null);
 
+  /** Signal containing the ISO-8601 last-modified timestamp of the loaded monitor, or `null` when not yet loaded. */
+  protected readonly lastModifiedAt = signal<string | null>(null);
+
   /** The title text displayed in the panel header. */
   protected readonly panelTitle = $localize`:@@editMonitor.title:Edit Monitor`;
 
@@ -69,6 +72,7 @@ export class EditMonitorPanelComponent {
         });
       } else {
         this.initialValue.set(null);
+        this.lastModifiedAt.set(null);
         this.serverErrors.set(null);
       }
     });
@@ -137,6 +141,7 @@ export class EditMonitorPanelComponent {
     return this.monitorService.getMonitorById(id).subscribe({
       next: (detail) => {
         this.isLoadingDetail.set(false);
+        this.lastModifiedAt.set(detail.lastModifiedAt);
         this.initialValue.set({
           name: detail.name,
           url: detail.url,

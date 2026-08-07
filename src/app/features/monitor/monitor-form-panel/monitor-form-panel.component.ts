@@ -1,5 +1,5 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { A11yModule } from '@angular/cdk/a11y';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -70,6 +70,7 @@ const FIELD_TO_CONTROL: Readonly<Record<string, string>> = {
   selector: 'app-monitor-form-panel',
   imports: [
     A11yModule,
+    DatePipe,
     NgTemplateOutlet,
     ReactiveFormsModule,
     MatFormFieldModule,
@@ -119,6 +120,12 @@ export class MonitorFormPanelComponent {
   readonly submitting = input<boolean>(false);
 
   /**
+   * ISO-8601 timestamp of the last modification, shown in the panel footer.
+   * Pass `null` (default) to hide the label — used by the create flow.
+   */
+  readonly lastModifiedAt = input<string | null>(null);
+
+  /**
    * When `true`, the form body is replaced with a loading indicator.
    * Used by the edit wrapper while the monitor detail is being fetched.
    */
@@ -156,7 +163,10 @@ export class MonitorFormPanelComponent {
     pollingTimeoutSeconds: [DEFAULT_POLLING_TIMEOUT_SECONDS, [Validators.required]],
   });
 
-  /** `@returns` The localized name-field error message, or `null` when the field has no visible error. */
+  /**
+    * Gets the localized name-field error message shown in the UI.
+    * @returns The error message, or `null` when the field has no visible error.
+    */
   get nameError(): string | null {
     const c = this.form.get('name');
     if (!c?.touched || !c.errors) {
@@ -235,12 +245,7 @@ export class MonitorFormPanelComponent {
     });
 
     effect(() => {
-      const errors = this.serverErrors();
-      if (!errors) {
-        this.bannerError.set(null);
-        return;
-      }
-      this.applyServerErrors(errors);
+      this.applyServerErrors(this.serverErrors() ?? []);
     });
   }
 
@@ -269,14 +274,23 @@ export class MonitorFormPanelComponent {
     if (!Array.isArray(errors)) {
       return;
     }
+
+    for (const control of Object.values(this.form.controls)) {
+      if (control.hasError('server')) {
+        const rest = Object.fromEntries(Object.entries(control.errors ?? {}).filter(([k]) => k !== 'server'));
+        control.setErrors(Object.keys(rest).length > 0 ? rest : null);
+      }
+    }
+
     for (const error of errors) {
       const controlName = error.field ? FIELD_TO_CONTROL[error.field] : undefined;
       const control = controlName ? this.form.get(controlName) : null;
       if (control) {
-        control.setErrors({ server: error.message });
+        control.setErrors({ ...control.errors, server: error.message });
         control.markAsTouched();
       }
     }
+
     this.bannerError.set(
       errors.length > 0 ? $localize`:@@monitorFormPanel.genericError:Please check the form for errors.` : null,
     );

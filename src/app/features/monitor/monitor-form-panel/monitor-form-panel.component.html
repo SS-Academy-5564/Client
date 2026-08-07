@@ -152,15 +152,33 @@
       </div>
     </div>
 
-    <footer class="panel-footer">
-      <app-button
-        buttonType="button"
-        label="Cancel"
-        i18n-label="@@monitorFormPanel.cancel"
-        type="secondary"
-        [disabled]="submitting()"
-        (click)="onClose()" />
-      <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
-    </footer>
+    @if (lastModifiedAt()) {
+      <div class="panel-footer-wrap">
+        <span class="panel-footer-meta" i18n="@@monitorFormPanel.lastModifiedAt">
+          Last modified {{ lastModifiedAt() | date: 'medium' }}
+        </span>
+        <footer class="panel-footer">
+          <app-button
+            buttonType="button"
+            label="Cancel"
+            i18n-label="@@monitorFormPanel.cancel"
+            type="secondary"
+            [disabled]="submitting()"
+            (click)="onClose()" />
+          <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
+        </footer>
+      </div>
+    } @else {
+      <footer class="panel-footer">
+        <app-button
+          buttonType="button"
+          label="Cancel"
+          i18n-label="@@monitorFormPanel.cancel"
+          type="secondary"
+          [disabled]="submitting()"
+          (click)="onClose()" />
+        <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
+      </footer>
+    }
   </form>
 </ng-template>
