@@ -77,13 +77,13 @@ export class CreateWidgetComponent {
     { value: '30d', label: 'Last 30 days' },
   ];
 
-  readonly form = this.fb.nonNullable.group({
-    type: ['', Validators.required],
-    title: [''],
-    subtitle: [''],
-    metric: ['', Validators.required],
-    timeRange: ['', Validators.required],
-    settings: [''],
+  readonly form = this.fb.group({
+    type: this.fb.nonNullable.control('', Validators.required),
+    title: [null as string | null],
+    subtitle: [null as string | null],
+    metric: this.fb.nonNullable.control('', Validators.required),
+    timeRange: this.fb.nonNullable.control('', Validators.required),
+    settings: [null as string | null],
   });
 
   constructor() {
@@ -128,22 +128,22 @@ export class CreateWidgetComponent {
     if (widget) {
       this.form.patchValue({
         type: widget.type,
-        title: widget.title ?? '',
-        subtitle: widget.subtitle ?? '',
+        title: widget.title ?? null,
+        subtitle: widget.subtitle ?? null,
         metric: widget.metric,
-        timeRange: widget.timeRange ?? '',
-        settings: widget.settings ?? '',
+        timeRange: widget.timeRange,
+        settings: widget.settings ?? null,
       });
       return;
     }
 
     this.form.reset({
       type: '',
-      title: '',
-      subtitle: '',
+      title: null,
+      subtitle: null,
       metric: '',
       timeRange: '',
-      settings: '',
+      settings: null,
     });
   }
 }

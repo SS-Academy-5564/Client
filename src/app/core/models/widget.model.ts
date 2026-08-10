@@ -4,8 +4,8 @@ export type Widget = {
   id: string;
   type: string;
   metric: string;
-  title?: string;
-  subtitle?: string;
+  title?: string | null;
+  subtitle?: string | null;
   timeRange?: string;
   settings?: string | null;
   serviceName?: string;
@@ -18,8 +18,8 @@ export type Widget = {
 /** The widget configuration fields shared by the create and update forms. */
 export type WidgetFormValue = {
   type: string;
-  title?: string;
-  subtitle?: string;
+  title: string | null;
+  subtitle: string | null;
   metric: string;
   timeRange: string;
   settings: string | null;

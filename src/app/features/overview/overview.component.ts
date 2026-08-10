@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CreateWidgetComponent } from '@features/create-widget/create-widget.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -64,28 +65,18 @@ export class OverviewComponent {
   }
 
   onWidgetCreated(request: CreateWidgetRequest): void {
-    this.submitting.set(true);
-    this.formError.set(null);
-
-    this.widgetService.createWidget(request).subscribe({
-      next: () => {
-        this.submitting.set(false);
-        this.closeWidgetForm();
-        this.loadWidgets();
-      },
-      error: (error) => {
-        this.submitting.set(false);
-        this.formError.set($localize`:@@widgetCreateFailed:Failed to create widget.`);
-        console.error(error);
-      },
-    });
+    this.submit(this.widgetService.createWidget(request), $localize`:@@widgetCreateFailed:Failed to create widget.`);
   }
 
   onWidgetUpdated(request: UpdateWidgetRequest): void {
+    this.submit(this.widgetService.updateWidget(request), $localize`:@@widgetUpdateFailed:Failed to update widget.`);
+  }
+
+  private submit(operation: Observable<unknown>, errorMessage: string): void {
     this.submitting.set(true);
     this.formError.set(null);
 
-    this.widgetService.updateWidget(request).subscribe({
+    operation.subscribe({
       next: () => {
         this.submitting.set(false);
         this.closeWidgetForm();
@@ -93,7 +84,7 @@ export class OverviewComponent {
       },
       error: (error) => {
         this.submitting.set(false);
-        this.formError.set($localize`:@@widgetUpdateFailed:Failed to update widget.`);
+        this.formError.set(errorMessage);
         console.error(error);
       },
     });

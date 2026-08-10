@@ -110,11 +110,11 @@ describe('CreateWidgetComponent', () => {
 
     expect(component.form.value).toEqual({
       type: '',
-      title: '',
-      subtitle: '',
+      title: null,
+      subtitle: null,
       metric: '',
       timeRange: '',
-      settings: '',
+      settings: null,
     });
   });
 
@@ -141,6 +141,48 @@ describe('CreateWidgetComponent', () => {
       metric: 'responseTime',
       timeRange: '24h',
       settings: '{"showGrid":true}',
+    });
+  });
+
+  it('should preserve null optional fields when editing without touching them', async () => {
+    const updatedSpy = vi.fn();
+
+    component.updated.subscribe(updatedSpy);
+
+    fixture.componentRef.setInput('widget', {
+      id: '1',
+      type: 'stat-card',
+      title: null,
+      subtitle: null,
+      metric: 'availability',
+      timeRange: '24h',
+      settings: null,
+    });
+
+    fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.form.value).toEqual({
+      type: 'stat-card',
+      title: null,
+      subtitle: null,
+      metric: 'availability',
+      timeRange: '24h',
+      settings: null,
+    });
+
+    component.onSubmit();
+
+    expect(updatedSpy).toHaveBeenCalledWith({
+      widgetId: '1',
+      type: 'stat-card',
+      title: null,
+      subtitle: null,
+      metric: 'availability',
+      timeRange: '24h',
+      settings: null,
     });
   });
 
