@@ -1,0 +1,3 @@
+@use '../email-verification-page' as verification-page;
+
+@include verification-page.styles;

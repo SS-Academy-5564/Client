@@ -1,0 +1,120 @@
+<div class="page-shell">
+  <div class="logo-container">
+    <app-logo />
+  </div>
+
+  <div class="page-container">
+    <main aria-live="polite" class="surface-card verification-card">
+      @switch (state()) {
+        @case ('verifying') {
+          <mat-spinner class="verification-spinner" diameter="56" />
+          <h1 class="verification-title" i18n="@@verifyEmailVerifyingTitle">Verifying your email</h1>
+          <p class="verification-message" i18n="@@verifyEmailVerifyingMessage">
+            Please wait while we confirm your verification link.
+          </p>
+        }
+
+        @case ('success') {
+          <div aria-hidden="true" class="status-icon status-icon-success">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </div>
+          <h1 class="verification-title" i18n="@@verifyEmailSuccessTitle">Email verified</h1>
+          <p class="verification-message" i18n="@@verifyEmailSuccessMessage">
+            Your email address has been verified successfully. You can now sign in to Pulse.
+          </p>
+          <div class="verification-actions">
+            <app-button
+              label="Sign in"
+              i18n-label="@@verifyEmailSignIn"
+              type="primary"
+              variant="full-width"
+              [routerLink]="routes.LOGIN" />
+          </div>
+        }
+
+        @case ('expired') {
+          <div aria-hidden="true" class="status-icon status-icon-warning">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <h1 class="verification-title" i18n="@@verifyEmailExpiredTitle">Verification link expired</h1>
+          <p class="verification-message" i18n="@@verifyEmailExpiredMessage">
+            This link is no longer valid. Request a new verification email to finish creating your account.
+          </p>
+
+          @if (resendComplete()) {
+            <p
+              class="verification-feedback verification-feedback-success"
+              i18n="@@verifyEmailResendSuccess"
+              role="status">
+              A new verification email has been sent. Check your inbox.
+            </p>
+          }
+
+          @if (resendError(); as error) {
+            <p class="verification-feedback verification-feedback-error" role="alert">{{ error }}</p>
+          }
+
+          <div class="verification-actions">
+            @if (resendComplete()) {
+              <app-button
+                label="Email sent"
+                i18n-label="@@verifyEmailSentButton"
+                type="primary"
+                variant="full-width"
+                [disabled]="true" />
+            } @else if (isResending()) {
+              <app-button
+                label="Sending…"
+                i18n-label="@@verifyEmailSendingButton"
+                type="primary"
+                variant="full-width"
+                [disabled]="true" />
+            } @else {
+              <app-button
+                label="Resend email"
+                i18n-label="@@verifyEmailResendButton"
+                type="primary"
+                variant="full-width"
+                (click)="resendEmail()" />
+            }
+            <app-button
+              label="Sign in"
+              i18n-label="@@verifyEmailExpiredSignIn"
+              type="secondary"
+              variant="full-width"
+              [routerLink]="routes.LOGIN" />
+          </div>
+        }
+
+        @case ('invalid') {
+          <div aria-hidden="true" class="status-icon status-icon-error">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <path d="m15 9-6 6" />
+              <path d="m9 9 6 6" />
+            </svg>
+          </div>
+          <h1 class="verification-title" i18n="@@verifyEmailInvalidTitle">Invalid verification link</h1>
+          <p class="verification-message" i18n="@@verifyEmailInvalidMessage">
+            This verification link is invalid or has already been used. Check that you opened the complete link from
+            your email.
+          </p>
+          <div class="verification-actions">
+            <app-button
+              label="Sign in"
+              i18n-label="@@verifyEmailInvalidSignIn"
+              type="primary"
+              variant="full-width"
+              [routerLink]="routes.LOGIN" />
+          </div>
+        }
+      }
+    </main>
+  </div>
+</div>

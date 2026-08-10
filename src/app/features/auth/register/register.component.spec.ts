@@ -5,7 +5,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, throwError } from 'rxjs';
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
 
 type AuthServiceMock = {
@@ -17,9 +16,6 @@ describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let authServiceMock: AuthServiceMock;
   let router: Router;
-  const toastServiceMock = {
-    success: vi.fn(),
-  };
 
   beforeEach(async () => {
     authServiceMock = {
@@ -28,11 +24,7 @@ describe('RegisterComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
-      providers: [
-        { provide: AuthService, useValue: authServiceMock },
-        { provide: ToastService, useValue: toastServiceMock },
-        provideRouter([]),
-      ],
+      providers: [{ provide: AuthService, useValue: authServiceMock }, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
@@ -105,8 +97,7 @@ describe('RegisterComponent', () => {
       password: 'StrongPassw0rd!',
       confirmPassword: 'StrongPassw0rd!',
     });
-    expect(toastServiceMock.success).toHaveBeenCalledWith('Registration successful. You can now log in.');
-    expect(router.navigate).toHaveBeenCalledWith([ROUTES.LOGIN]);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.CHECK_EMAIL]);
   });
 
   it('should display the registration error', () => {

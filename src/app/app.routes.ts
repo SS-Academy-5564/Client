@@ -42,6 +42,16 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
   {
+    path: 'check-email',
+    canActivate: [loggedOutOnlyGuard],
+    loadComponent: () => import('./features/auth/check-email/check-email.component').then((m) => m.CheckEmailComponent),
+  },
+  {
+    path: 'verify-email',
+    loadComponent: () =>
+      import('./features/auth/verify-email/verify-email.component').then((m) => m.VerifyEmailComponent),
+  },
+  {
     path: 'create-organization',
     canActivate: [authGuard, noOrganizationGuard],
     loadComponent: () =>
