@@ -237,10 +237,6 @@ export class MonitorComponent implements OnInit {
     return MonitorStatus[status as keyof typeof MonitorStatus] ?? MonitorStatus.Error;
   }
 
-  private refreshCurrentPage(): void {
-    this.loadMonitors(this.pageNumber(), this.pageSize(), this.selectedStatus(), this.searchQuery());
-  }
-
   private navigateToPage(page: number, pageSize: number = this.pageSize()): void {
     this.router.navigate([], {
       relativeTo: this.route,

@@ -207,17 +207,17 @@ describe('MonitorComponent', () => {
 
     monitorUpdatedHandler?.({
       monitorId: 'enabled-monitor',
-      currentValue: '200 OK',
-      lastCheckedAt: '2026-08-05T09:00:00Z',
-      nextExecutionAt: '2026-08-05T09:01:00Z',
+      currentValue: 'healthy',
+      lastCheckedAt: '2026-08-05T08:00:00Z',
+      nextExecutionAt: '2026-08-05T08:00:00Z',
       status: 'Enabled',
     });
 
     const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
       .monitors()
       .find((m) => m.id === 'enabled-monitor');
-    expect(updatedMonitor?.currentValue).toBe('200 OK');
-    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-05T09:00:00Z');
+    expect(updatedMonitor?.currentValue).toBe('healthy');
+    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-05T08:00:00Z');
     expect(monitorServiceMock.getMonitors).toHaveBeenCalledTimes(initialRequestCount);
   });
 

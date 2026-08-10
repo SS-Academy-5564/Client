@@ -81,7 +81,7 @@ describe('SignalrService', (): void => {
   it('starts an authenticated connection to the monitor hub', async (): Promise<void> => {
     await firstValueFrom(service.start());
 
-    expect(connectionUrl).toBe(`${environment.hubBaseUrl}/monitors`);
+    expect(connectionUrl).toBe(`${environment.hubsBaseUrl}/monitors`);
     expect(accessTokenFactory?.()).toBe('access-token');
     expect(connection.start).toHaveBeenCalledOnce();
     expect(service.isConnected()).toBe(true);
