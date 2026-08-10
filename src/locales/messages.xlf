@@ -200,6 +200,34 @@
           <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="editWidgetTitle" datatype="html">
+        <source>Edit widget</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-widget/create-widget.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="updateWidget" datatype="html">
+        <source>Update widget</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/create-widget/create-widget.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="widgetCreateFailed" datatype="html">
+        <source>Failed to create widget.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/overview/overview.component.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="widgetUpdateFailed" datatype="html">
+        <source>Failed to update widget.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/overview/overview.component.ts</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="registerTitle" datatype="html">
         <source>Create your account</source>
         <context-group purpose="location">

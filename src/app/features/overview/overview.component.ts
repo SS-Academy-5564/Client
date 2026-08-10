@@ -3,8 +3,7 @@ import { CreateWidgetComponent } from '@features/create-widget/create-widget.com
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { Widget } from '@core/models/widget.model';
-import { CreateWidgetRequest } from '@core/models/widget.model';
+import { CreateWidgetRequest, UpdateWidgetRequest, Widget } from '@core/models/widget.model';
 import { WidgetService } from '@core/services/widget.service';
 import { WidgetCardComponent } from '@shared/ui/widget-card/widget-card.component';
 import { DEFAULT_DASHBOARD_TAB_ID } from '@core/constants/default-dashboard.constants';
@@ -19,7 +18,8 @@ import { DEFAULT_DASHBOARD_TAB_ID } from '@core/constants/default-dashboard.cons
 export class OverviewComponent {
   private readonly widgetService = inject(WidgetService);
 
-  readonly isCreateWidgetOpen = signal(false);
+  readonly isWidgetFormOpen = signal(false);
+  readonly editingWidget = signal<Widget | null>(null);
   readonly _widgets = signal<Widget[]>([]);
   readonly selectedTimeRange = signal('24h');
 
@@ -27,7 +27,7 @@ export class OverviewComponent {
   readonly dashboardTabId = DEFAULT_DASHBOARD_TAB_ID;
 
   readonly submitting = signal(false);
-  readonly createError = signal<string | null>(null);
+  readonly formError = signal<string | null>(null);
 
   readonly widgets = computed(() => {
     const priority: Record<string, number> = {
@@ -45,27 +45,55 @@ export class OverviewComponent {
     this.loadWidgets();
   }
 
-  openCreateWidget(): void {
-    this.isCreateWidgetOpen.set(true);
+  openWidgetForm(): void {
+    this.editingWidget.set(null);
+    this.isWidgetFormOpen.set(true);
+    this.formError.set(null);
   }
 
-  closeCreateWidget(): void {
-    this.isCreateWidgetOpen.set(false);
+  editWidget(widget: Widget): void {
+    this.editingWidget.set(widget);
+    this.isWidgetFormOpen.set(true);
+    this.formError.set(null);
+  }
+
+  closeWidgetForm(): void {
+    this.isWidgetFormOpen.set(false);
+    this.editingWidget.set(null);
+    this.formError.set(null);
   }
 
   onWidgetCreated(request: CreateWidgetRequest): void {
     this.submitting.set(true);
-    this.createError.set(null);
+    this.formError.set(null);
 
     this.widgetService.createWidget(request).subscribe({
       next: () => {
         this.submitting.set(false);
-        this.closeCreateWidget();
+        this.closeWidgetForm();
         this.loadWidgets();
       },
       error: (error) => {
         this.submitting.set(false);
-        this.createError.set('Failed to create widget.');
+        this.formError.set($localize`:@@widgetCreateFailed:Failed to create widget.`);
+        console.error(error);
+      },
+    });
+  }
+
+  onWidgetUpdated(request: UpdateWidgetRequest): void {
+    this.submitting.set(true);
+    this.formError.set(null);
+
+    this.widgetService.updateWidget(request).subscribe({
+      next: () => {
+        this.submitting.set(false);
+        this.closeWidgetForm();
+        this.loadWidgets();
+      },
+      error: (error) => {
+        this.submitting.set(false);
+        this.formError.set($localize`:@@widgetUpdateFailed:Failed to update widget.`);
         console.error(error);
       },
     });

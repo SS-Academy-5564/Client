@@ -12,6 +12,7 @@ describe('OverviewComponent', () => {
   const widgetServiceMock = {
     getWidgets: vi.fn(),
     createWidget: vi.fn(),
+    updateWidget: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -46,18 +47,40 @@ describe('OverviewComponent', () => {
     expect(widgetServiceMock.getWidgets).toHaveBeenCalledWith('00000000-0000-0000-0000-000000000001');
   });
 
-  it('should open create widget form', () => {
-    component.openCreateWidget();
+  it('should open widget form for creation', () => {
+    component.openWidgetForm();
 
-    expect(component.isCreateWidgetOpen()).toBe(true);
+    expect(component.isWidgetFormOpen()).toBe(true);
+    expect(component.editingWidget()).toBeNull();
   });
 
-  it('should close create widget form', () => {
-    component.openCreateWidget();
+  it('should close widget form', () => {
+    component.openWidgetForm();
 
-    component.closeCreateWidget();
+    component.closeWidgetForm();
 
-    expect(component.isCreateWidgetOpen()).toBe(false);
+    expect(component.isWidgetFormOpen()).toBe(false);
+    expect(component.editingWidget()).toBeNull();
+  });
+
+  it('should open widget form for editing with the selected widget', () => {
+    const widget = { id: '1', type: 'stat-card', metric: 'availability' };
+
+    component.editWidget(widget);
+
+    expect(component.isWidgetFormOpen()).toBe(true);
+    expect(component.editingWidget()).toEqual(widget);
+  });
+
+  it('should cancel editing without calling updateWidget', () => {
+    const widget = { id: '1', type: 'stat-card', metric: 'availability' };
+
+    component.editWidget(widget);
+    component.closeWidgetForm();
+
+    expect(component.isWidgetFormOpen()).toBe(false);
+    expect(component.editingWidget()).toBeNull();
+    expect(widgetServiceMock.updateWidget).not.toHaveBeenCalled();
   });
 
   it('should create widget and reload widgets', () => {
@@ -78,7 +101,30 @@ describe('OverviewComponent', () => {
 
     expect(widgetServiceMock.createWidget).toHaveBeenCalledWith(request);
 
-    expect(component.isCreateWidgetOpen()).toBe(false);
+    expect(component.isWidgetFormOpen()).toBe(false);
+
+    expect(loadSpy).toHaveBeenCalled();
+  });
+
+  it('should update widget and reload widgets', () => {
+    const request = {
+      widgetId: '1',
+      type: 'line-chart',
+      title: 'Response time',
+      subtitle: '',
+      metric: 'responseTime',
+      timeRange: '24h',
+      settings: '',
+    };
+
+    widgetServiceMock.updateWidget.mockReturnValue(of(undefined));
+
+    const loadSpy = vi.spyOn(component as unknown as { loadWidgets: () => void }, 'loadWidgets');
+    component.onWidgetUpdated(request);
+
+    expect(widgetServiceMock.updateWidget).toHaveBeenCalledWith(request);
+
+    expect(component.isWidgetFormOpen()).toBe(false);
 
     expect(loadSpy).toHaveBeenCalled();
   });

@@ -9,7 +9,7 @@
   <aside aria-labelledby="create-widget-title" aria-modal="true" class="panel" role="dialog">
     <header class="panel-header">
       <div class="panel-heading">
-        <h2 i18n="@@addNewWidget" id="create-widget-title">Add New Widget</h2>
+        <h2 id="create-widget-title">{{ formTitle() }}</h2>
         <p class="panel-subtitle" i18n="@@configureWidget">Configure a widget for the active dashboard tab.</p>
       </div>
 
@@ -147,12 +147,7 @@
           [disabled]="submitting()"
           (click)="onClose()" />
 
-        <app-button
-          buttonType="submit"
-          label="Add widget"
-          i18n-label="@@addWidget"
-          type="primary"
-          [disabled]="submitting()" />
+        <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
       </footer>
     </form>
   </aside>

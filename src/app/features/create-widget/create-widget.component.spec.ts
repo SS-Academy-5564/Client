@@ -117,4 +117,93 @@ describe('CreateWidgetComponent', () => {
       settings: '',
     });
   });
+
+  it('should prefill form with widget configuration when editing', async () => {
+    fixture.componentRef.setInput('widget', {
+      id: '1',
+      type: 'line-chart',
+      title: 'Response chart',
+      subtitle: 'Last 24 hours',
+      metric: 'responseTime',
+      timeRange: '24h',
+      settings: '{"showGrid":true}',
+    });
+
+    fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.form.value).toEqual({
+      type: 'line-chart',
+      title: 'Response chart',
+      subtitle: 'Last 24 hours',
+      metric: 'responseTime',
+      timeRange: '24h',
+      settings: '{"showGrid":true}',
+    });
+  });
+
+  it('should emit updated event when form is valid in edit mode', async () => {
+    const updatedSpy = vi.fn();
+
+    component.updated.subscribe(updatedSpy);
+
+    fixture.componentRef.setInput('widget', {
+      id: '1',
+      type: 'line-chart',
+      metric: 'responseTime',
+      timeRange: '24h',
+    });
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    component.form.setValue({
+      type: 'bar-chart',
+      title: 'Updated title',
+      subtitle: 'Updated subtitle',
+      metric: 'requests',
+      timeRange: '7d',
+      settings: '{}',
+    });
+
+    component.onSubmit();
+
+    expect(updatedSpy).toHaveBeenCalledWith({
+      widgetId: '1',
+      type: 'bar-chart',
+      title: 'Updated title',
+      subtitle: 'Updated subtitle',
+      metric: 'requests',
+      timeRange: '7d',
+      settings: '{}',
+    });
+  });
+
+  it('should not emit updated event when form is invalid in edit mode', async () => {
+    const updatedSpy = vi.fn();
+
+    component.updated.subscribe(updatedSpy);
+
+    fixture.componentRef.setInput('widget', {
+      id: '1',
+      type: 'line-chart',
+      metric: 'responseTime',
+      timeRange: '24h',
+    });
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    component.form.reset({
+      type: '',
+      metric: '',
+      timeRange: '',
+    });
+
+    component.onSubmit();
+
+    expect(updatedSpy).not.toHaveBeenCalled();
+  });
 });
