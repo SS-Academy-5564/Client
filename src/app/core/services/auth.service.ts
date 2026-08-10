@@ -96,7 +96,7 @@ export class AuthService {
    * Registers a new user account.
    *
    * @param payload Registration form values.
-   * @returns The backend registration request.
+   * @returns The backend response containing registration and resend cooldown data.
    */
   register(payload: RegisterRequest): Observable<RegistrationResponse> {
     this.isLoading.set(true);

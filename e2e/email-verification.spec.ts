@@ -141,7 +141,7 @@ test('redirects successful registration to the check-email page', async ({ page 
   await expect(page.getByRole('button', { name: 'Return to landing page' })).toHaveCount(0);
 });
 
-test('resends a verification email from the sign-in page', async ({ page }) => {
+test('resends a verification email from the sign-in page', async ({ page }): Promise<void> => {
   await mockVerificationApi(page);
   await page.goto('/login');
 
@@ -152,7 +152,7 @@ test('resends a verification email from the sign-in page', async ({ page }) => {
   await expect(page.getByText('Resend in 37s')).toBeVisible();
 });
 
-test('shows a clear rate-limit message for verification resend', async ({ page }) => {
+test('shows a clear rate-limit message for verification resend', async ({ page }): Promise<void> => {
   await mockVerificationApi(page, { resendStatus: 429 });
   await page.goto('/login');
 

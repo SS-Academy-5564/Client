@@ -7,12 +7,12 @@ import { EmailVerificationService } from '@core/services/email-verification.serv
 import { ToastService } from '@core/services/toast.service';
 import { CheckEmailComponent } from './check-email.component';
 
-describe('CheckEmailComponent', () => {
+describe('CheckEmailComponent', (): void => {
   let fixture: ComponentFixture<CheckEmailComponent>;
   let serviceMock: { requestResend: ReturnType<typeof vi.fn> };
   const toastServiceMock = { success: vi.fn() };
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     vi.clearAllMocks();
     history.replaceState({ email: 'user@example.com', cooldown: 0 }, '');
     serviceMock = {
@@ -43,12 +43,12 @@ describe('CheckEmailComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('We sent you a verification email');
   });
 
-  it('should reuse the registration email without rendering another email input', () => {
+  it('should reuse the registration email without rendering another email input', (): void => {
     expect(fixture.nativeElement.querySelector('input[type="email"]')).toBeNull();
     expect(buttonLabels()).toEqual(['Sign in', 'Resend Email']);
   });
 
-  it('should request another email and show a privacy-safe confirmation', () => {
+  it('should request another email and show a privacy-safe confirmation', (): void => {
     clickButton('Resend Email');
     fixture.detectChanges();
 
@@ -57,7 +57,7 @@ describe('CheckEmailComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Resend in 47s');
   });
 
-  it('should show a clear message when the IP rate limit is exceeded', () => {
+  it('should show a clear message when the IP rate limit is exceeded', (): void => {
     serviceMock.requestResend.mockReturnValue(throwError(() => ({ status: 429 })));
 
     clickButton('Resend Email');

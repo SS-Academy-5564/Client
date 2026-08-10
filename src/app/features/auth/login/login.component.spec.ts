@@ -166,7 +166,7 @@ describe('LoginComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Incorrect email or password');
   });
 
-  it('should request another verification email from the sign-in page', () => {
+  it('should request another verification email from the sign-in page', (): void => {
     component.form.controls.email.setValue('user@test.com');
     fixture.detectChanges();
 
@@ -183,7 +183,7 @@ describe('LoginComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Resend in 47s');
   });
 
-  it('should show rate-limit guidance for verification resend', () => {
+  it('should show rate-limit guidance for verification resend', (): void => {
     emailVerificationServiceMock.requestResend.mockReturnValue(throwError(() => ({ status: 429 })));
     component.form.controls.email.setValue('user@test.com');
     fixture.detectChanges();

@@ -11,7 +11,7 @@ describe('languageInterceptor', () => {
   let http: HttpClient;
   let httpMock: HttpTestingController;
 
-  beforeEach(() => {
+  beforeEach((): void => {
     TestBed.configureTestingModule({
       providers: [
         { provide: LOCALE_ID, useValue: 'uk' },
@@ -24,11 +24,11 @@ describe('languageInterceptor', () => {
     httpMock = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => {
+  afterEach((): void => {
     httpMock.verify();
   });
 
-  it('should send the active UI locale to the Pulse API', () => {
+  it('should send the active UI locale to the Pulse API', (): void => {
     const url = `${environment.apiBaseUrl}/auth/register`;
 
     http.post(url, {}).subscribe();
@@ -38,7 +38,7 @@ describe('languageInterceptor', () => {
     request.flush({});
   });
 
-  it('should not expose the UI locale to external services', () => {
+  it('should not expose the UI locale to external services', (): void => {
     const url = 'https://example.com/content';
 
     http.get(url).subscribe();

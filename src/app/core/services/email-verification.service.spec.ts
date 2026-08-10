@@ -32,7 +32,7 @@ describe('EmailVerificationService', () => {
     });
   });
 
-  it('should post the email to the resend endpoint', () => {
+  it('should post the email to the resend endpoint', (): void => {
     httpMock.post.mockReturnValue(
       of({
         success: true,
@@ -48,7 +48,7 @@ describe('EmailVerificationService', () => {
     });
   });
 
-  it('should post the expired token to the expired-link resend endpoint', () => {
+  it('should post the expired token to the expired-link resend endpoint', (): void => {
     httpMock.post.mockReturnValue(
       of({
         success: true,

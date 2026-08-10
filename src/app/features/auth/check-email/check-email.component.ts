@@ -8,13 +8,13 @@ import { ToastService } from '@core/services/toast.service';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
 
-/** Explains the next registration step after the initial verification email is sent. */
 @Component({
   selector: 'app-check-email',
   imports: [ButtonComponent, LogoComponent],
   templateUrl: './check-email.component.html',
   styleUrl: './check-email.component.scss',
 })
+/** Explains the next registration step after the initial verification email is sent. */
 export class CheckEmailComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly emailVerificationService = inject(EmailVerificationService);

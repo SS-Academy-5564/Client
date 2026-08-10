@@ -17,9 +17,6 @@ import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
 import { EmailVerificationService } from '@core/services/email-verification.service';
 
-/**
- * Presents the login form and navigates after successful authentication.
- */
 @Component({
   selector: 'app-login',
   imports: [
@@ -38,6 +35,7 @@ import { EmailVerificationService } from '@core/services/email-verification.serv
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
+/** Presents the login form and navigates after successful authentication. */
 export class LoginComponent implements OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);

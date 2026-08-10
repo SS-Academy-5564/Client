@@ -79,6 +79,9 @@ export class RegisterComponent {
     event.stopPropagation();
   }
 
+  /**
+   * Submits valid registration data, navigates to email confirmation on success, and surfaces response failures.
+   */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -90,7 +93,9 @@ export class RegisterComponent {
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: (response) => {
         if (!response.data) {
-          this.error.set('Registration response did not include resend cooldown guidance');
+          this.error.set(
+            $localize`:@@registrationMissingResendCooldown:Registration response is missing resend cooldown guidance`,
+          );
           return;
         }
 

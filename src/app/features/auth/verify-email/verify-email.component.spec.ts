@@ -105,7 +105,7 @@ describe('VerifyEmailComponent', () => {
     expect(serviceMock.resendExpired).toHaveBeenCalledWith('updated-token');
   });
 
-  it('should display cooldown guidance when resend is rate limited', () => {
+  it('should display cooldown guidance when resend is rate limited', (): void => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
     serviceMock.resendExpired.mockReturnValue(throwError(() => apiError(429, 'TOO_MANY_REQUESTS')));
     createComponent('expired-token');
