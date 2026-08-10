@@ -142,6 +142,7 @@ describe('MonitorComponent', () => {
         { provide: MonitorService, useValue: monitorServiceMock },
         { provide: ToastService, useValue: toastServiceMock },
         { provide: SignalrService, useValue: signalrServiceMock },
+        { provide: SignalrService, useValue: signalrServiceMock },
         provideNoopAnimations(),
         provideRouter([]),
       ],
@@ -151,6 +152,10 @@ describe('MonitorComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     await fixture.whenStable();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it('should create', () => {
