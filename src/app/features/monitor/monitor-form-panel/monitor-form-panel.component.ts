@@ -168,69 +168,69 @@ export class MonitorFormPanelComponent {
    * @returns The error message, or `null` when the field has no visible error.
    */
   get nameError(): string | null {
-    const c = this.form.get('name');
-    if (!c?.touched || !c.errors) {
+    const control = this.form.get('name');
+    if (!control?.touched || !control.errors) {
       return null;
     }
-    if (c.hasError('required')) {
+    if (control.hasError('required')) {
       return $localize`:@@monitorFormPanel.nameRequired:Monitor name is required.`;
     }
-    if (c.hasError('maxlength')) {
+    if (control.hasError('maxlength')) {
       return $localize`:@@monitorFormPanel.nameMaxLength:Monitor name must be at most 64 characters.`;
     }
-    if (c.hasError('server')) {
-      return c.getError('server');
+    if (control.hasError('server')) {
+      return control.getError('server');
     }
     return null;
   }
 
   /** `@returns` The localized URL-field error message, or `null` when the field has no visible error. */
   get urlError(): string | null {
-    const c = this.form.get('url');
-    if (!c?.touched || !c.errors) {
+    const control = this.form.get('url');
+    if (!control?.touched || !control.errors) {
       return null;
     }
-    if (c.hasError('required')) {
+    if (control.hasError('required')) {
       return $localize`:@@monitorFormPanel.urlRequired:Endpoint URL is required.`;
     }
-    if (c.hasError('maxlength')) {
+    if (control.hasError('maxlength')) {
       return $localize`:@@monitorFormPanel.urlMaxLength:Endpoint URL is too long.`;
     }
-    if (c.hasError('url')) {
+    if (control.hasError('url')) {
       return $localize`:@@monitorFormPanel.urlInvalid:Endpoint URL must be a valid HTTP or HTTPS URL.`;
     }
-    if (c.hasError('server')) {
-      return c.getError('server');
+    if (control.hasError('server')) {
+      return control.getError('server');
     }
     return null;
   }
 
   /** `@returns` The localized result-path error message, or `null` when the field has no visible error. */
   get resultPathError(): string | null {
-    const c = this.form.get('resultPath');
-    if (!c?.touched || !c.errors) {
+    const control = this.form.get('resultPath');
+    if (!control?.touched || !control.errors) {
       return null;
     }
-    if (c.hasError('required')) {
+    if (control.hasError('required')) {
       return $localize`:@@monitorFormPanel.resultPathRequired:Result path is required.`;
     }
-    if (c.hasError('maxlength')) {
+    if (control.hasError('maxlength')) {
       return $localize`:@@monitorFormPanel.resultPathMaxLength:Result path is too long.`;
     }
-    if (c.hasError('server')) {
-      return c.getError('server');
+    if (control.hasError('server')) {
+      return control.getError('server');
     }
     return null;
   }
 
   /** `@returns` The localized status-field error message, or `null` when the field has no visible error. */
   get statusError(): string | null {
-    const c = this.form.get('status');
-    if (!c?.touched || !c.errors) {
+    const control = this.form.get('status');
+    if (!control?.touched || !control.errors) {
       return null;
     }
-    if (c.hasError('server')) {
-      return c.getError('server');
+    if (control.hasError('server')) {
+      return control.getError('server');
     }
     return null;
   }
