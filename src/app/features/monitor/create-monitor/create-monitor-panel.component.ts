@@ -1,136 +1,83 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { ButtonComponent } from '@shared/ui/button/button.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { MonitorService } from '@core/services/monitor.service';
-import { CreateMonitorRequest, HttpMethod, MonitorModel } from '@core/models/monitor-model';
+import { MonitorModel } from '@core/models/monitor-model';
 import {
-  DEFAULT_HTTP_METHOD,
-  DEFAULT_POLLING_INTERVAL_SECONDS,
-  DEFAULT_POLLING_TIMEOUT_SECONDS,
-  HTTP_METHODS,
-  POLLING_INTERVAL_OPTIONS,
-  POLLING_TIMEOUT_OPTIONS,
-} from './create-monitor.options';
+  MonitorFormPanelComponent,
+  MonitorFormServerError,
+  MonitorFormValue,
+} from '../monitor-form-panel/monitor-form-panel.component';
 
-type ApiErrorBody = {
-  errors?: { field?: string; message: string }[];
-};
-
-// Maps backend field names (PascalCase) to reactive-form control names.
-const FIELD_TO_CONTROL: Readonly<Record<string, string>> = {
-  Name: 'name',
-  Url: 'url',
-  HttpMethod: 'httpMethod',
-  ResultPath: 'resultPath',
-  PollingIntervalSeconds: 'pollingIntervalSeconds',
-  PollingTimeoutSeconds: 'pollingTimeoutSeconds',
-};
-
+/**
+ * Thin wrapper around {@link MonitorFormPanelComponent} for the **create** flow.
+ *
+ * Manages submission state, delegates the POST request to {@link MonitorService},
+ * and forwards the created monitor to the parent via `created`.
+ * The public API (inputs/outputs) is unchanged from before the refactor.
+ */
 @Component({
   selector: 'app-create-monitor-panel',
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    ButtonComponent,
-    ErrorMessageComponent,
-  ],
+  imports: [MonitorFormPanelComponent],
   templateUrl: './create-monitor-panel.component.html',
-  styleUrl: './create-monitor-panel.component.scss',
 })
 export class CreateMonitorPanelComponent {
-  private readonly fb = inject(FormBuilder);
   private readonly monitorService = inject(MonitorService);
 
+  /** Whether the create panel is open. */
   readonly isOpen = input.required<boolean>();
+
+  /** Emitted when the user dismisses the panel. */
   readonly closed = output<void>();
+
+  /** Emitted with the newly created monitor on successful submission. */
   readonly created = output<MonitorModel>();
 
-  protected readonly httpMethods = HTTP_METHODS;
-  protected readonly intervalOptions = POLLING_INTERVAL_OPTIONS;
-  protected readonly timeoutOptions = POLLING_TIMEOUT_OPTIONS;
-
   protected readonly submitting = signal<boolean>(false);
-  protected readonly error = signal<string | null>(null);
+  protected readonly serverErrors = signal<readonly MonitorFormServerError[] | null>(null);
 
-  protected readonly form = this.fb.nonNullable.group({
-    name: ['', [Validators.required, Validators.maxLength(64)]],
-    httpMethod: [DEFAULT_HTTP_METHOD as HttpMethod, [Validators.required]],
-    url: ['', [Validators.required, Validators.maxLength(2083)]],
-    resultPath: ['', [Validators.required, Validators.maxLength(255)]],
-    pollingIntervalSeconds: [DEFAULT_POLLING_INTERVAL_SECONDS, [Validators.required]],
-    pollingTimeoutSeconds: [DEFAULT_POLLING_TIMEOUT_SECONDS, [Validators.required]],
-  });
+  protected readonly panelTitle = $localize`:@@createMonitor.title:New Monitor`;
+  // eslint-disable-next-line max-len
+  protected readonly panelSubtitle = $localize`:@@createMonitor.subtitle:Configure an endpoint to poll for a metric value.`;
+  protected readonly panelSubmitLabel = $localize`:@@createMonitor.submit:Create monitor`;
 
+  /** Clears errors and notifies the parent that the panel was closed. */
   onClose(): void {
-    if (this.submitting()) {
-      return;
-    }
-
-    this.resetForm();
+    this.serverErrors.set(null);
     this.closed.emit();
   }
 
-  onSubmit(): void {
-    if (this.submitting()) {
-      return;
-    }
-
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
+  /**
+   * Calls the create API with the validated form value.
+   * @param value - The validated form value emitted by the form panel.
+   */
+  onSubmit(value: MonitorFormValue): void {
     this.submitting.set(true);
-    this.error.set(null);
+    this.serverErrors.set(null);
 
-    const request: CreateMonitorRequest = this.form.getRawValue();
-
-    this.monitorService.createMonitor(request).subscribe({
-      next: (monitor) => {
-        this.submitting.set(false);
-        this.created.emit(monitor);
-        this.resetForm();
-      },
-      error: (err: HttpErrorResponse) => {
-        this.submitting.set(false);
-        this.applyServerErrors(err);
-      },
-    });
-  }
-
-  private applyServerErrors(err: HttpErrorResponse): void {
-    const body = err.error as ApiErrorBody | null;
-    const fieldErrors = body?.errors ?? [];
-
-    for (const fieldError of fieldErrors) {
-      const controlName = fieldError.field ? FIELD_TO_CONTROL[fieldError.field] : undefined;
-      const control = controlName ? this.form.get(controlName) : null;
-
-      if (control) {
-        control.setErrors({ server: fieldError.message });
-        control.markAsTouched();
-      }
-    }
-
-    this.error.set(fieldErrors[0]?.message ?? $localize`:@@createMonitor.genericError:Failed to create monitor.`);
-  }
-
-  private resetForm(): void {
-    this.error.set(null);
-    this.form.reset({
-      name: '',
-      httpMethod: DEFAULT_HTTP_METHOD,
-      url: '',
-      resultPath: '',
-      pollingIntervalSeconds: DEFAULT_POLLING_INTERVAL_SECONDS,
-      pollingTimeoutSeconds: DEFAULT_POLLING_TIMEOUT_SECONDS,
-    });
+    this.monitorService
+      .createMonitor({
+        name: value.name,
+        url: value.url,
+        httpMethod: value.httpMethod,
+        resultPath: value.resultPath,
+        pollingIntervalSeconds: value.pollingIntervalSeconds,
+        pollingTimeoutSeconds: value.pollingTimeoutSeconds,
+      })
+      .subscribe({
+        next: (monitor) => {
+          this.submitting.set(false);
+          this.created.emit(monitor);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.submitting.set(false);
+          const rawErrors = (err.error as { errors?: unknown } | null)?.errors;
+          const fieldErrors = Array.isArray(rawErrors) ? (rawErrors as MonitorFormServerError[]) : [];
+          this.serverErrors.set(
+            fieldErrors.length > 0
+              ? fieldErrors
+              : [{ message: $localize`:@@createMonitor.genericError:Failed to create monitor.` }],
+          );
+        },
+      });
   }
 }
