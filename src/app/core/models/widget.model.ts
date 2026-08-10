@@ -1,5 +1,6 @@
 import { ChartData } from './chart-data-model';
 
+/** A dashboard widget and the data it renders. */
 export type Widget = {
   id: string;
   type: string;
@@ -25,6 +26,7 @@ export type WidgetFormValue = {
   settings: string | null;
 };
 
+/** The request to create a new widget. */
 export type CreateWidgetRequest = WidgetFormValue & {
   dashboardTabId: string;
 };
@@ -34,6 +36,7 @@ export type UpdateWidgetRequest = WidgetFormValue & {
   widgetId: string;
 };
 
+/** The result returned after a widget is created. */
 export type CreateWidgetResult = {
   widgetId: string;
 };

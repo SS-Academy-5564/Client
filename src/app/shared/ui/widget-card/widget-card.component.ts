@@ -21,11 +21,13 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetCardComponent {
+  /** The widget rendered by the card. */
   readonly widget = input.required<Widget>();
 
   /** Emits the widget when its edit action is triggered. */
   readonly edit = output<Widget>();
 
+  /** The ECharts options for the widget's chart. */
   readonly chartOptions = computed<EChartsOption>(() => {
     const widget = this.widget();
 
@@ -52,10 +54,12 @@ export class WidgetCardComponent {
     }
   });
 
+  /** Triggers the edit action for the widget. */
   editWidget(): void {
     this.edit.emit(this.widget());
   }
 
+  /** Triggers the delete action for the widget. */
   deleteWidget(): void {
     console.log('Delete', this.widget());
   }

@@ -28,18 +28,24 @@ import { CreateWidgetRequest, UpdateWidgetRequest, Widget } from '@core/models/w
 export class CreateWidgetComponent {
   private readonly fb = inject(FormBuilder);
 
+  /** Whether the widget drawer is open. */
   readonly isCreateWidgetDrawerOpen = input(false);
+  /** The identifier of the dashboard tab the widget belongs to. */
   readonly dashboardTabId = input.required<string>();
 
   /** The widget being edited; when set, the drawer runs in edit mode. */
   readonly widget = input<Widget | null>(null);
 
+  /** Emits when the drawer requests to be closed. */
   readonly closed = output<void>();
+  /** Emits the widget configuration to persist when the form is submitted in create mode. */
   readonly created = output<CreateWidgetRequest>();
   /** Emits the widget configuration to persist when the form is submitted in edit mode. */
   readonly updated = output<UpdateWidgetRequest>();
 
+  /** Whether a widget submission is in progress. */
   readonly submitting = input(false);
+  /** The error message shown when a submission fails. */
   readonly error = input<string | null>(null);
 
   /** Whether the drawer is editing an existing widget rather than creating a new one. */
@@ -55,6 +61,7 @@ export class CreateWidgetComponent {
     this.isEditMode() ? $localize`:@@editWidgetTitle:Edit widget` : $localize`:@@addNewWidget:Add New Widget`,
   );
 
+  /** The selectable widget types. */
   readonly widgetTypes = [
     { value: 'stat-card', label: 'Statistic Card' },
     { value: 'line-chart', label: 'Line Chart' },
@@ -63,6 +70,7 @@ export class CreateWidgetComponent {
     { value: 'horizontal-bar-chart', label: 'Horizontal Bar Chart' },
   ];
 
+  /** The selectable metrics. */
   readonly metrics = [
     { value: 'responseTime', label: 'Response Time' },
     { value: 'availability', label: 'Availability' },
@@ -70,6 +78,7 @@ export class CreateWidgetComponent {
     { value: 'errors', label: 'Errors' },
   ];
 
+  /** The selectable time ranges. */
   readonly timeRanges = [
     { value: '1h', label: 'Last hour' },
     { value: '24h', label: 'Last 24 hours' },
@@ -77,6 +86,7 @@ export class CreateWidgetComponent {
     { value: '30d', label: 'Last 30 days' },
   ];
 
+  /** The widget configuration form. */
   readonly form = this.fb.group({
     type: this.fb.nonNullable.control('', Validators.required),
     title: [null as string | null],
@@ -86,6 +96,7 @@ export class CreateWidgetComponent {
     settings: [null as string | null],
   });
 
+  /** Prepares the form each time the drawer opens. */
   constructor() {
     effect(() => {
       if (this.isCreateWidgetDrawerOpen()) {
@@ -94,6 +105,7 @@ export class CreateWidgetComponent {
     });
   }
 
+  /** Requests to close the drawer unless a submission is in progress. */
   onClose(): void {
     if (this.submitting()) {
       return;
@@ -102,6 +114,7 @@ export class CreateWidgetComponent {
     this.closed.emit();
   }
 
+  /** Validates the form and emits the collected values for the current mode. */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
