@@ -6,23 +6,17 @@ import { of, throwError } from 'rxjs';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { RegisterComponent } from './register.component';
 import { AuthService } from '../../../core/services/auth.service';
-import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
 
 type AuthServiceMock = {
   register: ReturnType<typeof vi.fn>;
 };
 
-const NEUTRAL_SUCCESS_MESSAGE = 'If not registered, a confirmation email has been sent.';
-
 describe('RegisterComponent', () => {
   let fixture: ComponentFixture<RegisterComponent>;
   let component: RegisterComponent;
   let authServiceMock: AuthServiceMock;
   let router: Router;
-  const toastServiceMock = {
-    success: vi.fn(),
-  };
 
   const fillValidForm = (): void => {
     component.form.get('firstName')?.setValue('Jane');
@@ -36,15 +30,10 @@ describe('RegisterComponent', () => {
     authServiceMock = {
       register: vi.fn(),
     };
-    toastServiceMock.success.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
-      providers: [
-        { provide: AuthService, useValue: authServiceMock },
-        { provide: ToastService, useValue: toastServiceMock },
-        provideRouter([]),
-      ],
+      providers: [{ provide: AuthService, useValue: authServiceMock }, provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterComponent);
@@ -113,16 +102,7 @@ describe('RegisterComponent', () => {
       password: 'StrongPassw0rd!',
       confirmPassword: 'StrongPassw0rd!',
     });
-  });
-
-  it('shows a neutral success message and navigates to login regardless of email existence', () => {
-    authServiceMock.register.mockReturnValue(of({}));
-
-    fillValidForm();
-    component.onSubmit();
-
-    expect(toastServiceMock.success).toHaveBeenCalledWith(NEUTRAL_SUCCESS_MESSAGE);
-    expect(router.navigate).toHaveBeenCalledWith([ROUTES.LOGIN]);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.CHECK_EMAIL]);
   });
 
   it('should display a generic error message for non-429 failures', () => {
@@ -135,7 +115,6 @@ describe('RegisterComponent', () => {
 
     expect(authServiceMock.register).toHaveBeenCalledTimes(1);
     expect(fixture.nativeElement.textContent).toContain('Something went wrong');
-    expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
@@ -152,7 +131,6 @@ describe('RegisterComponent', () => {
 
     expect(fixture.nativeElement.textContent).toContain('15');
     expect(fixture.nativeElement.textContent).toContain('minutes');
-    expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
@@ -169,7 +147,6 @@ describe('RegisterComponent', () => {
 
     expect(fixture.nativeElement.textContent).toContain('1');
     expect(fixture.nativeElement.textContent).toContain('minute');
-    expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
@@ -188,7 +165,6 @@ describe('RegisterComponent', () => {
 
     expect(fixture.nativeElement.textContent).toContain('1');
     expect(fixture.nativeElement.textContent).toContain('minute');
-    expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
@@ -204,7 +180,6 @@ describe('RegisterComponent', () => {
     fixture.detectChanges();
 
     expect(fixture.nativeElement.textContent).toContain('Too many registration attempts');
-    expect(toastServiceMock.success).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
 });

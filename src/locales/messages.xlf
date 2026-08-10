@@ -434,13 +434,6 @@
           <context context-type="linenumber">153,155</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="register.success" datatype="html">
-        <source>Registration successful. You can now log in.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">94</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="resetPasswordTitle" datatype="html">
         <source>Reset Password</source>
         <context-group purpose="location">
@@ -1559,6 +1552,132 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/ui/pagination/pagination.component.html</context>
           <context context-type="linenumber">33,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="checkEmailTitle" datatype="html">
+        <source>Check your email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="checkEmailMessage" datatype="html">
+        <source> We sent you a verification email. Open the link in that message to finish creating your Pulse account. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="checkEmailHint" datatype="html">
+        <source> If you don&apos;t see it, check your spam or junk folder. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="checkEmailSignIn" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailVerifyingTitle" datatype="html">
+        <source>Verifying your email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailVerifyingMessage" datatype="html">
+        <source> Please wait while we confirm your verification link. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSuccessTitle" datatype="html">
+        <source>Email verified</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSuccessMessage" datatype="html">
+        <source> Your email address has been verified successfully. You can now sign in to Pulse. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSignIn" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailExpiredTitle" datatype="html">
+        <source>Verification link expired</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailExpiredMessage" datatype="html">
+        <source> This link is no longer valid. Request a new verification email to finish creating your account. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendSuccess" datatype="html">
+        <source> A new verification email has been sent. Check your inbox. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSentButton" datatype="html">
+        <source>Email sent</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSendingButton" datatype="html">
+        <source>Sending…</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendButton" datatype="html">
+        <source>Resend email</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailExpiredSignIn" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailInvalidTitle" datatype="html">
+        <source>Invalid verification link</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailInvalidMessage" datatype="html">
+        <source> This verification link is invalid or has already been used. Check that you opened the complete link from your email. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailInvalidSignIn" datatype="html">
+        <source>Sign in</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendCooldown" datatype="html">
+        <source>Please wait before requesting another verification email.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.ts</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendError" datatype="html">
+        <source>We couldn&apos;t send another email. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.ts</context>
         </context-group>
       </trans-unit>
     </body>

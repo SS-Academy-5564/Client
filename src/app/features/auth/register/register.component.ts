@@ -14,7 +14,6 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { AuthService } from '@core/services/auth.service';
 import { RegisterRequest } from '@core/models/register-model';
 import { passwordMatchValidator } from '@shared/validators/password-match.validator';
-import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
 import { RATE_LIMIT_STATUS_CODE } from '@core/constants/auth-rate-limit.constants';
 import { AuthRateLimitMessageService } from '@core/services/auth-rate-limit-message.service';
@@ -40,7 +39,6 @@ import { AuthRateLimitMessageService } from '@core/services/auth-rate-limit-mess
 export class RegisterComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
-  private readonly toastService = inject(ToastService);
   private readonly authRateLimitMessageService = inject(AuthRateLimitMessageService);
   protected readonly authService = inject(AuthService);
 
@@ -86,6 +84,9 @@ export class RegisterComponent {
     event.stopPropagation();
   }
 
+  /**
+   * Submits valid registration data, navigates to email confirmation on success, and surfaces response failures.
+   */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -95,14 +96,11 @@ export class RegisterComponent {
     this.error.set(null);
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
-      next: () => this.handleRegisterSuccess(),
+      next: () => {
+        this.router.navigate([ROUTES.CHECK_EMAIL]);
+      },
       error: (err: HttpErrorResponse) => this.handleRegisterError(err),
     });
-  }
-
-  private handleRegisterSuccess(): void {
-    this.toastService.success(this.buildNeutralSuccessMessage());
-    this.router.navigate([ROUTES.LOGIN]);
   }
 
   private handleRegisterError(err: HttpErrorResponse): void {
@@ -113,9 +111,5 @@ export class RegisterComponent {
 
     const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? this.registrationFailedMessage;
     this.error.set(errorMessage);
-  }
-
-  private buildNeutralSuccessMessage(): string {
-    return $localize`:@@register.neutralSuccess:If not registered, a confirmation email has been sent.`;
   }
 }
