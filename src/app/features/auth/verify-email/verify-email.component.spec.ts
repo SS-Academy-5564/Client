@@ -9,7 +9,7 @@ import { VerifyEmailComponent } from './verify-email.component';
 
 type EmailVerificationServiceMock = {
   verify: ReturnType<typeof vi.fn>;
-  resend: ReturnType<typeof vi.fn>;
+  resendExpired: ReturnType<typeof vi.fn>;
 };
 
 const successResponse = {
@@ -38,7 +38,7 @@ describe('VerifyEmailComponent', () => {
   beforeEach(async () => {
     serviceMock = {
       verify: vi.fn().mockReturnValue(of(successResponse)),
-      resend: vi.fn().mockReturnValue(of(resendSuccessResponse)),
+      resendExpired: vi.fn().mockReturnValue(of(resendSuccessResponse)),
     };
 
     await TestBed.configureTestingModule({
@@ -90,7 +90,7 @@ describe('VerifyEmailComponent', () => {
     clickButton('Resend email');
     fixture.detectChanges();
 
-    expect(serviceMock.resend).toHaveBeenCalledWith('expired-token');
+    expect(serviceMock.resendExpired).toHaveBeenCalledWith('expired-token');
     expect(fixture.nativeElement.textContent).toContain('A new verification email has been sent');
     expect(fixture.nativeElement.textContent).toContain('Email sent');
   });
@@ -102,12 +102,12 @@ describe('VerifyEmailComponent', () => {
 
     clickButton('Resend email');
 
-    expect(serviceMock.resend).toHaveBeenCalledWith('updated-token');
+    expect(serviceMock.resendExpired).toHaveBeenCalledWith('updated-token');
   });
 
   it('should display cooldown guidance when resend is rate limited', () => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
-    serviceMock.resend.mockReturnValue(throwError(() => apiError(429, 'TOO_MANY_REQUESTS')));
+    serviceMock.resendExpired.mockReturnValue(throwError(() => apiError(429, 'TOO_MANY_REQUESTS')));
     createComponent('expired-token');
 
     clickButton('Resend email');

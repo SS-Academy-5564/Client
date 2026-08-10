@@ -32,7 +32,7 @@ describe('EmailVerificationService', () => {
     });
   });
 
-  it('should post the expired token to the resend endpoint', () => {
+  it('should post the email to the resend endpoint', () => {
     httpMock.post.mockReturnValue(
       of({
         success: true,
@@ -41,9 +41,25 @@ describe('EmailVerificationService', () => {
       }),
     );
 
-    service.resend('expired-token').subscribe();
+    service.requestResend('user@example.com').subscribe();
 
     expect(httpMock.post).toHaveBeenCalledWith(`${environment.apiBaseUrl}/auth/email-verification/resend`, {
+      email: 'user@example.com',
+    });
+  });
+
+  it('should post the expired token to the expired-link resend endpoint', () => {
+    httpMock.post.mockReturnValue(
+      of({
+        success: true,
+        data: { resendCooldownSeconds: 60 },
+        errors: [],
+      }),
+    );
+
+    service.resendExpired('expired-token').subscribe();
+
+    expect(httpMock.post).toHaveBeenCalledWith(`${environment.apiBaseUrl}/auth/email-verification/resend-expired`, {
       token: 'expired-token',
     });
   });

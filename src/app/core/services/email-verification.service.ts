@@ -32,12 +32,22 @@ export class EmailVerificationService {
   }
 
   /**
+   * Requests another verification email without exposing account state.
+   *
+   * @param email Email address supplied by the requester.
+   * @returns The backend response containing resend cooldown guidance.
+   */
+  requestResend(email: string): Observable<ResendEmailVerificationResponse> {
+    return this.http.post<ResendEmailVerificationResponse>(`${this.baseUrl}/resend`, { email });
+  }
+
+  /**
    * Requests a replacement verification link for an expired token.
    *
    * @param token Expired token received through the verification link.
    * @returns The backend response containing resend cooldown guidance.
    */
-  resend(token: string): Observable<ResendEmailVerificationResponse> {
-    return this.http.post<ResendEmailVerificationResponse>(`${this.baseUrl}/resend`, { token });
+  resendExpired(token: string): Observable<ResendEmailVerificationResponse> {
+    return this.http.post<ResendEmailVerificationResponse>(`${this.baseUrl}/resend-expired`, { token });
   }
 }

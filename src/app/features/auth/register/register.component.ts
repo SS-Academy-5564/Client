@@ -88,8 +88,18 @@ export class RegisterComponent {
     this.error.set(null);
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
-      next: () => {
-        this.router.navigate([ROUTES.CHECK_EMAIL]);
+      next: (response) => {
+        if (!response.data) {
+          this.error.set('Registration response did not include resend cooldown guidance');
+          return;
+        }
+
+        this.router.navigate([ROUTES.CHECK_EMAIL], {
+          state: {
+            email: this.form.controls.email.value,
+            cooldown: response.data.resendCooldownSeconds,
+          },
+        });
       },
       error: (err) => {
         const errorMessage = err.error?.errors?.[0]?.message ?? err.error?.message ?? 'Registration failed';

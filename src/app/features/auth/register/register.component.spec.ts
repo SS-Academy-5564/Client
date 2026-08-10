@@ -79,7 +79,7 @@ describe('RegisterComponent', () => {
   });
 
   it('should call authService.register with payload when the form is valid', () => {
-    authServiceMock.register.mockReturnValue(of({}));
+    authServiceMock.register.mockReturnValue(of({ success: true, data: { resendCooldownSeconds: 47 }, errors: [] }));
 
     component.form.get('firstName')?.setValue('Jane');
     component.form.get('lastName')?.setValue('Smith');
@@ -97,7 +97,9 @@ describe('RegisterComponent', () => {
       password: 'StrongPassw0rd!',
       confirmPassword: 'StrongPassw0rd!',
     });
-    expect(router.navigate).toHaveBeenCalledWith([ROUTES.CHECK_EMAIL]);
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.CHECK_EMAIL], {
+      state: { email: 'user@example.com', cooldown: 47 },
+    });
   });
 
   it('should display the registration error', () => {
