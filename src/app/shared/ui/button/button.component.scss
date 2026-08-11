@@ -17,6 +17,26 @@
     transition: background-color 0.2s ease;
   }
 
+  button.toolbar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 44px;
+    min-width: unset;
+    width: auto;
+    padding: 10px 20px;
+    border-radius: 8px;
+    --mdc-filled-button-container-shape: 8px;
+    --mdc-outlined-button-container-shape: 8px;
+    --mdc-text-button-container-shape: 8px;
+
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
   button.nav-button {
     background-color: var(--color-nav-button);
     color: var(--color-nav-button-text);

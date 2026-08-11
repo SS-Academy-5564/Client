@@ -61,6 +61,8 @@ describe('MonitorComponent', () => {
     }),
     createMonitor: vi.fn(),
     triggerMonitorCheck: vi.fn().mockReturnValue(of(undefined)),
+    getMonitorById: vi.fn(),
+    updateMonitor: vi.fn(),
   };
   const toastServiceMock = {
     success: vi.fn(),
@@ -300,4 +302,69 @@ describe('MonitorComponent', () => {
       'Manual check was already triggered recently. Please wait before trying again.',
     );
   });
+
+  it('redirects to the clamped page number when requested page exceeds total pages', (): void => {
+    const router = TestBed.inject(Router);
+    const spy = vi.spyOn(router, 'navigate');
+
+    monitorServiceMock.getMonitors.mockReturnValueOnce(
+      of({
+        items: monitors,
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: monitors.length,
+        totalPages: 1,
+      }),
+    );
+
+    component['loadMonitors'](5, 10);
+
+    expect(spy).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { page: 1, pageSize: 10 },
+        replaceUrl: true,
+      }),
+    );
+  });
+
+  it('sets editingMonitorId when onOpenEditPanel is called', () => {
+    component.onOpenEditPanel(monitors[0]);
+
+    expect(component['editingMonitorId']()).toBe('enabled-monitor');
+  });
+
+  it('clears editingMonitorId when onCloseEditPanel is called', () => {
+    component.onOpenEditPanel(monitors[0]);
+    component.onCloseEditPanel();
+
+    expect(component['editingMonitorId']()).toBeNull();
+  });
+
+  it('replaces the updated monitor in the list and shows a success toast', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const updatedMonitor: MonitorModel = {
+      ...monitors[0],
+      name: 'Renamed monitor',
+    };
+
+    component.onMonitorUpdated(updatedMonitor);
+    fixture.detectChanges();
+
+    expect(getRenderedMonitorNames()).toContain('Renamed monitor');
+    expect(getRenderedMonitorNames()).not.toContain('Enabled monitor');
+    expect(toastServiceMock.success).toHaveBeenCalledWith(expect.stringContaining('Renamed monitor'));
+  });
+
+  it('closes the edit panel after a successful update', () => {
+    component.onOpenEditPanel(monitors[0]);
+    expect(component['editingMonitorId']()).not.toBeNull();
+
+    component.onMonitorUpdated(monitors[0]);
+
+    expect(component['editingMonitorId']()).toBeNull();
+  });
+  
 });

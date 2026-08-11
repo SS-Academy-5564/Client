@@ -3,7 +3,7 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
-
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { CreateMonitorPanelComponent } from './create-monitor-panel.component';
 import { MonitorService } from '@core/services/monitor.service';
 import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
@@ -27,17 +27,6 @@ describe('CreateMonitorPanelComponent', () => {
     createMonitor: vi.fn(),
   };
 
-  const fillValidForm = (): void => {
-    component['form'].setValue({
-      name: 'EUR/USD Rate',
-      httpMethod: 'GET',
-      url: 'https://api.example.com/data',
-      resultPath: 'data.usd.rate',
-      pollingIntervalSeconds: 300,
-      pollingTimeoutSeconds: 10,
-    });
-  };
-
   beforeEach(async () => {
     monitorServiceMock.createMonitor.mockReset();
 
@@ -54,25 +43,27 @@ describe('CreateMonitorPanelComponent', () => {
     fixture.componentRef.setInput('isOpen', true);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('does not submit when required fields are empty', () => {
-    component.onSubmit();
-
-    expect(monitorServiceMock.createMonitor).not.toHaveBeenCalled();
-  });
-
-  it('emits created and resets on successful submit', () => {
+  it('emits created with the new monitor on successful submission', () => {
     monitorServiceMock.createMonitor.mockReturnValue(of(createdMonitor));
     const createdSpy = vi.fn();
     component.created.subscribe(createdSpy);
 
-    fillValidForm();
-    component.onSubmit();
+    component.onSubmit({
+      name: 'EUR/USD Rate',
+      httpMethod: 'GET',
+      url: 'https://api.example.com/data',
+      resultPath: 'data.usd.rate',
+      status: MonitorStatus.Enabled,
+      pollingIntervalSeconds: 300,
+      pollingTimeoutSeconds: 10,
+    });
 
     expect(monitorServiceMock.createMonitor).toHaveBeenCalledWith({
       name: 'EUR/USD Rate',
@@ -83,29 +74,42 @@ describe('CreateMonitorPanelComponent', () => {
       pollingTimeoutSeconds: 10,
     });
     expect(createdSpy).toHaveBeenCalledWith(createdMonitor);
-    expect(component['form'].getRawValue().name).toBe('');
   });
 
-  it('maps server field errors onto the form controls', () => {
+  it('sets serverErrors from the response body on a 400 error', () => {
     const errorResponse = new HttpErrorResponse({
       status: 400,
       error: { errors: [{ field: 'Name', message: 'Monitor name is required.' }] },
     });
     monitorServiceMock.createMonitor.mockReturnValue(throwError(() => errorResponse));
 
-    fillValidForm();
-    component.onSubmit();
+    component.onSubmit({
+      name: 'EUR/USD Rate',
+      httpMethod: 'GET',
+      url: 'https://api.example.com/data',
+      resultPath: 'data.usd.rate',
+      status: MonitorStatus.Enabled,
+      pollingIntervalSeconds: 300,
+      pollingTimeoutSeconds: 10,
+    });
 
-    expect(component['form'].get('name')?.getError('server')).toBe('Monitor name is required.');
-    expect(component['error']()).toBe('Monitor name is required.');
+    expect(component['serverErrors']()).toEqual([{ field: 'Name', message: 'Monitor name is required.' }]);
   });
 
-  it('emits closed when cancelled', () => {
+  it('emits closed when onClose is called', () => {
     const closedSpy = vi.fn();
     component.closed.subscribe(closedSpy);
 
     component.onClose();
 
     expect(closedSpy).toHaveBeenCalled();
+  });
+
+  it('clears serverErrors when onClose is called', () => {
+    component['serverErrors'].set([{ message: 'some error' }]);
+
+    component.onClose();
+
+    expect(component['serverErrors']()).toBeNull();
   });
 });

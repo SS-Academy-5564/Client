@@ -1,0 +1,171 @@
+<button
+  aria-label="Close panel"
+  i18n-aria-label="@@monitorFormPanel.closeBackdrop"
+  class="panel-backdrop"
+  type="button"
+  (click)="onClose()"></button>
+
+<aside
+  aria-labelledby="monitor-form-panel-title"
+  aria-modal="true"
+  cdkTrapFocus
+  cdkTrapFocusAutoCapture
+  class="panel"
+  role="dialog">
+  <header class="panel-header">
+    <div class="panel-heading">
+      <h2 id="monitor-form-panel-title">{{ title() }}</h2>
+      @if (subtitle()) {
+        <p class="panel-subtitle">{{ subtitle() }}</p>
+      }
+    </div>
+    <button
+      aria-label="Close"
+      i18n-aria-label="@@monitorFormPanel.close"
+      class="panel-close"
+      type="button"
+      (click)="onClose()">
+      &#x2715;
+    </button>
+  </header>
+
+  @if (isLoadingInitial()) {
+    <div class="panel-loading">
+      <span aria-hidden="true" class="loading-spinner"></span>
+      <span i18n="@@monitorFormPanel.loading">Loading monitor...</span>
+    </div>
+  } @else {
+    <ng-container *ngTemplateOutlet="formTemplate" />
+  }
+</aside>
+
+<ng-template #formTemplate>
+  <form class="panel-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-error-message [message]="bannerError()" />
+
+    <div class="field">
+      <label class="field-label" for="monitor-name" i18n="@@monitorFormPanel.nameLabel">Monitor name</label>
+      <mat-form-field appearance="outline" class="full-width">
+        <input
+          formControlName="name"
+          id="monitor-name"
+          matInput
+          placeholder="EUR/USD Rate"
+          i18n-placeholder="@@monitorFormPanel.namePlaceholder"
+          type="text" />
+      </mat-form-field>
+      @if (nameError) {
+        <div class="field-error">{{ nameError }}</div>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="monitor-url" i18n="@@monitorFormPanel.urlLabel">Endpoint URL</label>
+      <div class="endpoint-row">
+        <mat-form-field appearance="outline" class="method-field">
+          <mat-select
+            aria-label="Request method"
+            i18n-aria-label="@@monitorFormPanel.methodLabel"
+            formControlName="httpMethod">
+            @for (method of httpMethods; track method) {
+              <mat-option [value]="method">{{ method }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <input
+            formControlName="url"
+            id="monitor-url"
+            matInput
+            placeholder="https://api.example.com/data"
+            i18n-placeholder="@@monitorFormPanel.urlPlaceholder"
+            type="url" />
+        </mat-form-field>
+      </div>
+      @if (urlError) {
+        <div class="field-error-url">{{ urlError }}</div>
+      }
+    </div>
+
+    <div class="field">
+      <div class="field-label-row">
+        <label class="field-label" for="monitor-result-path" i18n="@@monitorFormPanel.resultPathLabel">
+          Result path
+        </label>
+        <span class="field-hint" i18n="@@monitorFormPanel.resultPathHint">dot notation</span>
+      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <input
+          formControlName="resultPath"
+          id="monitor-result-path"
+          matInput
+          placeholder="data.usd.rate"
+          i18n-placeholder="@@monitorFormPanel.resultPathPlaceholder"
+          type="text" />
+      </mat-form-field>
+      @if (resultPathError) {
+        <div class="field-error">{{ resultPathError }}</div>
+      }
+    </div>
+
+    @if (showStatus()) {
+      <div class="field">
+        <label class="field-label" for="monitor-status" i18n="@@monitorFormPanel.statusLabel">Status</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="status" id="monitor-status" panelClass="white-select-panel">
+            <mat-option i18n="@@monitorFormPanel.statusError" [disabled]="true" [value]="MonitorStatus.Error">
+              Error
+            </mat-option>
+            <mat-option i18n="@@monitorFormPanel.statusEnabled" [value]="MonitorStatus.Enabled">Enabled</mat-option>
+            <mat-option i18n="@@monitorFormPanel.statusDisabled" [value]="MonitorStatus.Disabled">Disabled</mat-option>
+          </mat-select>
+        </mat-form-field>
+        @if (statusError) {
+          <div class="field-error">{{ statusError }}</div>
+        }
+      </div>
+    }
+
+    <div class="field-grid">
+      <div class="field">
+        <label class="field-label" for="monitor-interval" i18n="@@monitorFormPanel.intervalLabel">
+          Polling frequency
+        </label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="pollingIntervalSeconds" id="monitor-interval" panelClass="white-select-panel">
+            @for (option of intervalOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="monitor-timeout" i18n="@@monitorFormPanel.timeoutLabel">Timeout</label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select formControlName="pollingTimeoutSeconds" id="monitor-timeout" panelClass="white-select-panel">
+            @for (option of timeoutOptions; track option.value) {
+              <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="panel-footer-wrap">
+      <span class="panel-footer-meta" i18n="@@monitorFormPanel.lastModifiedAt" [hidden]="!lastModifiedAt()">
+        Last modified {{ lastModifiedAt() | date: 'medium' }}
+      </span>
+      <footer class="panel-footer">
+        <app-button
+          buttonType="button"
+          label="Cancel"
+          i18n-label="@@monitorFormPanel.cancel"
+          type="secondary"
+          [disabled]="submitting()"
+          (click)="onClose()" />
+        <app-button buttonType="submit" type="primary" [disabled]="submitting()" [label]="submitLabel()" />
+      </footer>
+    </div>
+  </form>
+</ng-template>
