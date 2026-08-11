@@ -111,6 +111,9 @@
                     </button>
 
                     <mat-menu #monitorMenu="matMenu">
+                      <button mat-menu-item type="button" (click)="onOpenEditPanel(monitor)">
+                        <span i18n="@@monitorsEditButton">Edit</span>
+                      </button>
                       <button
                         mat-menu-item
                         type="button"
@@ -147,4 +150,8 @@
   </div>
 
   <app-create-monitor-panel [isOpen]="isPanelOpen()" (closed)="onClosePanel()" (created)="onMonitorCreated($event)" />
+  <app-edit-monitor-panel
+    [monitorId]="editingMonitorId()"
+    (closed)="onCloseEditPanel()"
+    (updated)="onMonitorUpdated($event)" />
 </section>

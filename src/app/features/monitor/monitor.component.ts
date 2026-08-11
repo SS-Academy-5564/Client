@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { PaginationComponent } from '@shared/ui/pagination/pagination.component';
 import { debounceTime, distinctUntilChanged, finalize, Subscription } from 'rxjs';
 import { CreateMonitorPanelComponent } from './create-monitor/create-monitor-panel.component';
+import { EditMonitorPanelComponent } from './edit-monitor/edit-monitor-panel.component';
 import { MonitorIntervalPipe } from './pipes/monitor-interval.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 
@@ -20,6 +21,7 @@ import { RelativeTimePipe } from './pipes/relative-time.pipe';
     MonitorIntervalPipe,
     RelativeTimePipe,
     CreateMonitorPanelComponent,
+    EditMonitorPanelComponent,
     PaginationComponent,
     ReactiveFormsModule,
     MatButtonModule,
@@ -45,6 +47,7 @@ export class MonitorComponent implements OnInit {
   protected readonly totalPages = signal(0);
   protected readonly isPanelOpen = signal<boolean>(false);
   protected readonly pendingMonitorCheckIds = signal<Set<string>>(new Set());
+  protected readonly editingMonitorId = signal<string | null>(null);
   protected readonly searchControl = new FormControl('');
 
   private readonly queryParams = toSignal(this.route.queryParamMap, {
@@ -141,6 +144,32 @@ export class MonitorComponent implements OnInit {
     );
 
     this.navigateToPage(1);
+  }
+
+  /**
+   * Opens the edit panel for the given monitor.
+   * @param monitor - The row the user activated the Edit action on.
+   */
+  onOpenEditPanel(monitor: MonitorModel): void {
+    this.editingMonitorId.set(monitor.id);
+  }
+
+  /** Closes the edit panel without saving. */
+  onCloseEditPanel(): void {
+    this.editingMonitorId.set(null);
+  }
+
+  /**
+   * Replaces the stale list item with the updated projection, closes the edit panel,
+   * and shows a success toast.
+   * @param monitor - The updated monitor returned by the API.
+   */
+  onMonitorUpdated(monitor: MonitorModel): void {
+    this.editingMonitorId.set(null);
+    this.monitors.update((list) => list.map((m) => (m.id === monitor.id ? monitor : m)));
+    this.toastService.success(
+      $localize`:@@monitorsUpdateSuccess:Monitor "${monitor.name}:name:" updated successfully.`,
+    );
   }
 
   onRunMonitorCheck(monitor: MonitorModel): void {
