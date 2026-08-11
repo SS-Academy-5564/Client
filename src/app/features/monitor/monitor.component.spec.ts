@@ -66,23 +66,25 @@ describe('MonitorComponent', () => {
     success: vi.fn(),
     error: vi.fn(),
   };
-  let monitorUpdatedHandler:
-    | ((update: {
-        monitorId: string;
-        currentValue: string | null;
-        lastCheckedAt: string;
-        nextExecutionAt: string;
-        status: string;
-      }) => void)
+  let monitorsUpdatedHandler:
+    | ((
+        updates: {
+          monitorId: string;
+          currentValue: string | null;
+          lastCheckedAt: string;
+          nextExecutionAt: string;
+          status: string;
+        }[],
+      ) => void)
     | null;
-  let monitorUpdatedSubscription: Subscription;
+  let monitorsUpdatedSubscription: Subscription;
   const signalrServiceMock = {
     start: vi.fn(() => of(undefined)),
     stop: vi.fn(() => of(undefined)),
-    onMonitorUpdated: vi.fn((handler: typeof monitorUpdatedHandler) => {
-      monitorUpdatedHandler = handler;
-      monitorUpdatedSubscription = new Subscription();
-      return monitorUpdatedSubscription;
+    onMonitorsUpdated: vi.fn((handler: typeof monitorsUpdatedHandler) => {
+      monitorsUpdatedHandler = handler;
+      monitorsUpdatedSubscription = new Subscription();
+      return monitorsUpdatedSubscription;
     }),
   };
 
@@ -113,8 +115,8 @@ describe('MonitorComponent', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    monitorUpdatedHandler = null;
-    monitorUpdatedSubscription = new Subscription();
+    monitorsUpdatedHandler = null;
+    monitorsUpdatedSubscription = new Subscription();
     monitorServiceMock.triggerMonitorCheck.mockReturnValue(of(undefined));
 
     await TestBed.configureTestingModule({
@@ -143,23 +145,32 @@ describe('MonitorComponent', () => {
   });
 
   it('subscribes before starting the SignalR connection', (): void => {
-    expect(signalrServiceMock.onMonitorUpdated).toHaveBeenCalledOnce();
+    expect(signalrServiceMock.onMonitorsUpdated).toHaveBeenCalledOnce();
     expect(signalrServiceMock.start).toHaveBeenCalledOnce();
-    expect(signalrServiceMock.onMonitorUpdated.mock.invocationCallOrder[0]).toBeLessThan(
+    expect(signalrServiceMock.onMonitorsUpdated.mock.invocationCallOrder[0]).toBeLessThan(
       signalrServiceMock.start.mock.invocationCallOrder[0],
     );
   });
 
-  it('updates the monitor in local state when SignalR sends an update without triggering HTTP refresh', (): void => {
+  it('updates matching monitors in local state when SignalR updates without HTTP refresh', (): void => {
     const initialRequestCount = monitorServiceMock.getMonitors.mock.calls.length;
 
-    monitorUpdatedHandler?.({
-      monitorId: 'enabled-monitor',
-      currentValue: 'healthy',
-      lastCheckedAt: '2026-08-05T08:00:00Z',
-      nextExecutionAt: '2026-08-05T08:01:00Z',
-      status: 'Enabled',
-    });
+    monitorsUpdatedHandler?.([
+      {
+        monitorId: 'enabled-monitor',
+        currentValue: 'healthy',
+        lastCheckedAt: '2026-08-05T08:00:00Z',
+        nextExecutionAt: '2026-08-05T08:01:00Z',
+        status: 'Enabled',
+      },
+      {
+        monitorId: 'not-on-page-monitor',
+        currentValue: '500',
+        lastCheckedAt: '2026-08-05T08:00:00Z',
+        nextExecutionAt: '2026-08-05T08:01:00Z',
+        status: 'Error',
+      },
+    ]);
 
     const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
       .monitors()

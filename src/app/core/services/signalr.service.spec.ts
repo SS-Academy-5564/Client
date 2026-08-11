@@ -102,18 +102,18 @@ describe('SignalrService', (): void => {
     expect(connection.start).not.toHaveBeenCalled();
   });
 
-  it('registers and unregisters the monitor update handler', (): void => {
+  it('registers and unregisters the monitor updates handler', (): void => {
     const handler = vi.fn();
 
-    const subscription = service.onMonitorUpdated(handler);
+    const subscription = service.onMonitorsUpdated(handler);
     subscription.unsubscribe();
 
-    expect(connection.on).toHaveBeenCalledWith('SendUpdatedMonitorAsync', handler);
-    expect(connection.off).toHaveBeenCalledWith('SendUpdatedMonitorAsync', handler);
+    expect(connection.on).toHaveBeenCalledWith('SendUpdatedMonitorsAsync', handler);
+    expect(connection.off).toHaveBeenCalledWith('SendUpdatedMonitorsAsync', handler);
   });
 
   it('tracks reconnecting, reconnected, and closed states', (): void => {
-    service.onMonitorUpdated(vi.fn());
+    service.onMonitorsUpdated(vi.fn());
 
     reconnectingHandler?.(new Error('Connection interrupted'));
     expect(service.connectionState()).toBe(signalR.HubConnectionState.Reconnecting);
