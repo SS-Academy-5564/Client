@@ -77,17 +77,7 @@ describe('MonitorComponent', () => {
         }[],
       ) => void)
     | null;
-  let monitorUpdatedHandler:
-    | ((update: {
-        monitorId: string;
-        currentValue: string | null;
-        lastCheckedAt: string;
-        nextExecutionAt: string;
-        status: string;
-      }) => void)
-    | null;
   let monitorsUpdatedSubscription: Subscription;
-  let monitorUpdatedSubscription: Subscription;
   const signalrServiceMock = {
     start: vi.fn(() => of(undefined)),
     stop: vi.fn(() => of(undefined)),
@@ -95,11 +85,6 @@ describe('MonitorComponent', () => {
       monitorsUpdatedHandler = handler;
       monitorsUpdatedSubscription = new Subscription();
       return monitorsUpdatedSubscription;
-    }),
-    onMonitorUpdated: vi.fn((handler: typeof monitorUpdatedHandler) => {
-      monitorUpdatedHandler = handler;
-      monitorUpdatedSubscription = new Subscription();
-      return monitorUpdatedSubscription;
     }),
   };
 
@@ -131,9 +116,7 @@ describe('MonitorComponent', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     monitorsUpdatedHandler = null;
-    monitorUpdatedHandler = null;
     monitorsUpdatedSubscription = new Subscription();
-    monitorUpdatedSubscription = new Subscription();
     monitorServiceMock.triggerMonitorCheck.mockReturnValue(of(undefined));
 
     await TestBed.configureTestingModule({
@@ -141,7 +124,6 @@ describe('MonitorComponent', () => {
       providers: [
         { provide: MonitorService, useValue: monitorServiceMock },
         { provide: ToastService, useValue: toastServiceMock },
-        { provide: SignalrService, useValue: signalrServiceMock },
         { provide: SignalrService, useValue: signalrServiceMock },
         provideNoopAnimations(),
         provideRouter([]),
@@ -164,12 +146,8 @@ describe('MonitorComponent', () => {
 
   it('subscribes before starting the SignalR connection', (): void => {
     expect(signalrServiceMock.onMonitorsUpdated).toHaveBeenCalledOnce();
-    expect(signalrServiceMock.onMonitorUpdated).toHaveBeenCalledOnce();
     expect(signalrServiceMock.start).toHaveBeenCalledOnce();
     expect(signalrServiceMock.onMonitorsUpdated.mock.invocationCallOrder[0]).toBeLessThan(
-      signalrServiceMock.start.mock.invocationCallOrder[0],
-    );
-    expect(signalrServiceMock.onMonitorUpdated.mock.invocationCallOrder[0]).toBeLessThan(
       signalrServiceMock.start.mock.invocationCallOrder[0],
     );
   });
@@ -193,25 +171,6 @@ describe('MonitorComponent', () => {
         status: 'Error',
       },
     ]);
-
-    const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
-      .monitors()
-      .find((m) => m.id === 'enabled-monitor');
-    expect(updatedMonitor?.currentValue).toBe('healthy');
-    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-05T08:00:00Z');
-    expect(monitorServiceMock.getMonitors).toHaveBeenCalledTimes(initialRequestCount);
-  });
-
-  it('updates matching monitor in local state when single monitor update arrives without HTTP refresh', (): void => {
-    const initialRequestCount = monitorServiceMock.getMonitors.mock.calls.length;
-
-    monitorUpdatedHandler?.({
-      monitorId: 'enabled-monitor',
-      currentValue: 'healthy',
-      lastCheckedAt: '2026-08-05T08:00:00Z',
-      nextExecutionAt: '2026-08-05T08:00:00Z',
-      status: 'Enabled',
-    });
 
     const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
       .monitors()

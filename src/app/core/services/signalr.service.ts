@@ -95,21 +95,6 @@ export class SignalrService {
     });
   }
 
-  /**
-   * Registers a handler for a single completed monitor check.
-   *
-   * @param handler Callback that receives the updated monitor payload.
-   * @returns A subscription that unregisters the handler when unsubscribed.
-   */
-  onMonitorUpdated(handler: (update: UpdateMonitorPayload) => void): Subscription {
-    const connection = this.getOrCreateConnection();
-    connection.on('SendUpdatedMonitorAsync', handler);
-
-    return new Subscription((): void => {
-      connection.off('SendUpdatedMonitorAsync', handler);
-    });
-  }
-
   private getOrCreateConnection(): signalR.HubConnection {
     if (this.hubConnection) {
       return this.hubConnection;

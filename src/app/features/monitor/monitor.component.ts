@@ -84,9 +84,6 @@ export class MonitorComponent implements OnInit {
     const monitorsUpdatedSubscription = this.signalrService.onMonitorsUpdated((updates: UpdateMonitorPayload[]): void =>
       this.handleMonitorsUpdated(updates),
     );
-    const monitorUpdatedSubscription = this.signalrService.onMonitorUpdated((update: UpdateMonitorPayload): void =>
-      this.handleMonitorsUpdated([update]),
-    );
 
     this.signalrService
       .start()
@@ -99,7 +96,6 @@ export class MonitorComponent implements OnInit {
 
     this.destroyRef.onDestroy((): void => {
       monitorsUpdatedSubscription.unsubscribe();
-      monitorUpdatedSubscription.unsubscribe();
       this.signalrService.stop().subscribe({ error: (): void => undefined });
     });
 

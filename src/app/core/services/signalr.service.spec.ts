@@ -112,16 +112,6 @@ describe('SignalrService', (): void => {
     expect(connection.off).toHaveBeenCalledWith('SendUpdatedMonitorsAsync', handler);
   });
 
-  it('registers and unregisters the single monitor update handler', (): void => {
-    const handler = vi.fn();
-
-    const subscription = service.onMonitorUpdated(handler);
-    subscription.unsubscribe();
-
-    expect(connection.on).toHaveBeenCalledWith('SendUpdatedMonitorAsync', handler);
-    expect(connection.off).toHaveBeenCalledWith('SendUpdatedMonitorAsync', handler);
-  });
-
   it('tracks reconnecting, reconnected, and closed states', (): void => {
     service.onMonitorsUpdated(vi.fn());
 
