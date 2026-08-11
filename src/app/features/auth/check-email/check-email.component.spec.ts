@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { of, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 
 import { EmailVerificationService } from '@core/services/email-verification.service';
 import { ToastService } from '@core/services/toast.service';
@@ -57,6 +57,20 @@ describe('CheckEmailComponent', (): void => {
     expect(fixture.nativeElement.textContent).toContain('Resend in 47s');
   });
 
+  it('should disable resend while the request is in progress', (): void => {
+    const response = new Subject();
+    serviceMock.requestResend.mockReturnValue(response);
+
+    clickButton('Resend Email');
+    fixture.detectChanges();
+
+    const resendButton = findButton('Sending…');
+    expect(resendButton).toBeDefined();
+    expect(resendButton!.disabled).toBe(true);
+
+    response.complete();
+  });
+
   it('should show a clear message when the IP rate limit is exceeded', (): void => {
     serviceMock.requestResend.mockReturnValue(throwError(() => ({ status: 429 })));
 
@@ -74,11 +88,15 @@ describe('CheckEmailComponent', (): void => {
   }
 
   function clickButton(label: string): void {
-    const button = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
-      (candidate) => candidate.textContent?.trim() === label,
-    );
+    const button = findButton(label);
 
     expect(button).toBeDefined();
     button!.click();
+  }
+
+  function findButton(label: string): HTMLButtonElement | undefined {
+    return Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+      (candidate) => candidate.textContent?.trim() === label,
+    );
   }
 });

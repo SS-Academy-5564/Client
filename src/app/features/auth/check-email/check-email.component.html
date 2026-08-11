@@ -31,7 +31,7 @@
 
       <p class="resend-section">
         <span class="resend-text" i18n="@@emailVerificationResendPrompt">Didn't receive the verification email?</span>
-        @if (resendDisabled()) {
+        @if (resendCountdown() > 0) {
           <span class="resend-text resend-countdown" i18n="@@emailVerificationResendCountdown">
             Resend in {{ resendCountdown() }}s
           </span>
