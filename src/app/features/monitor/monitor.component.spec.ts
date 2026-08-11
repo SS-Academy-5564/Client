@@ -204,6 +204,31 @@ describe('MonitorComponent', () => {
     );
   });
 
+  it('redirects to the clamped page number when requested page exceeds total pages', (): void => {
+    const router = TestBed.inject(Router);
+    const spy = vi.spyOn(router, 'navigate');
+
+    monitorServiceMock.getMonitors.mockReturnValueOnce(
+      of({
+        items: monitors,
+        pageNumber: 1,
+        pageSize: 10,
+        totalCount: monitors.length,
+        totalPages: 1,
+      }),
+    );
+
+    component['loadMonitors'](5, 10);
+
+    expect(spy).toHaveBeenCalledWith(
+      [],
+      expect.objectContaining({
+        queryParams: { page: 1, pageSize: 10 },
+        replaceUrl: true,
+      }),
+    );
+  });
+
   it('sets editingMonitorId when onOpenEditPanel is called', () => {
     component.onOpenEditPanel(monitors[0]);
 
@@ -242,4 +267,5 @@ describe('MonitorComponent', () => {
 
     expect(component['editingMonitorId']()).toBeNull();
   });
+  
 });
