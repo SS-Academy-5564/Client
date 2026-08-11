@@ -62,6 +62,7 @@ describe('MonitorComponent', () => {
     triggerMonitorCheck: vi.fn().mockReturnValue(of(undefined)),
     getMonitorById: vi.fn(),
     updateMonitor: vi.fn(),
+    updateMonitorStatus: vi.fn().mockReturnValue(of(monitors[0])),
   };
   const toastServiceMock = {
     success: vi.fn(),
@@ -241,5 +242,39 @@ describe('MonitorComponent', () => {
     component.onMonitorUpdated(monitors[0]);
 
     expect(component['editingMonitorId']()).toBeNull();
+  });
+
+  it('toggles monitor status using the update API and shows a toast', () => {
+    const updatedMonitor: MonitorModel = {
+      ...monitors[0],
+      status: MonitorStatus.Disabled,
+    };
+    monitorServiceMock.updateMonitorStatus = vi.fn().mockReturnValue(of(updatedMonitor));
+
+    component.onToggleMonitorStatus(monitors[0]);
+
+    expect(monitorServiceMock.updateMonitorStatus).toHaveBeenCalledWith('enabled-monitor', MonitorStatus.Disabled);
+    expect(toastServiceMock.success).toHaveBeenCalledWith('Monitor status updated successfully.');
+    expect(component['monitors']().find((item) => item.id === 'enabled-monitor')?.status).toBe(MonitorStatus.Disabled);
+  });
+
+  it('returns false for error monitors in toggle visibility helper', () => {
+    expect(component.shouldShowToggleAction(monitors[2])).toBe(false);
+  });
+
+  it('returns true for enabled and disabled monitors in toggle visibility helper', () => {
+    expect(component.shouldShowToggleAction(monitors[0])).toBe(true);
+    expect(component.shouldShowToggleAction(monitors[1])).toBe(true);
+  });
+
+  it('renders Enable/Disable action only for non-error monitors', () => {
+    const allActionLabels = Array.from(
+      fixture.nativeElement.querySelectorAll('.mat-menu-item span') as NodeListOf<HTMLSpanElement>,
+    ).map((span) => span.textContent?.trim());
+
+    expect(allActionLabels).toContain('Edit');
+    expect(allActionLabels).toContain('Disable');
+    expect(allActionLabels).toContain('Enable');
+    expect(allActionLabels).not.toContain('Error');
   });
 });

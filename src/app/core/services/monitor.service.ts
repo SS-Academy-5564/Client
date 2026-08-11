@@ -140,6 +140,24 @@ export class MonitorService {
     );
   }
 
+  /**
+   * Updates only the status of an existing monitor.
+   * @param id - The monitor GUID.
+   * @param status - The new writeable status.
+   * @returns The updated monitor in list-projection shape.
+   * @throws Error When the API response is successful but contains no data.
+   */
+  updateMonitorStatus(id: string, status: MonitorStatus.Enabled | MonitorStatus.Disabled): Observable<MonitorModel> {
+    return this.http.patch<ApiResponse<MonitorModel>>(`${this.monitorBaseEndpoint}/${id}/status`, { status }).pipe(
+      map((response) => {
+        if (!response.data) {
+          throw new Error('Monitor status update returned no data');
+        }
+        return response.data;
+      }),
+    );
+  }
+
   clearError(): void {
     this.error.set(null);
   }

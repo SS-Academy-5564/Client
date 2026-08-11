@@ -205,6 +205,28 @@ export class MonitorComponent implements OnInit {
       });
   }
 
+  /** Toggles the monitor status between Enabled and Disabled. */
+  onToggleMonitorStatus(monitor: MonitorModel): void {
+    const updatedStatus = monitor.status === MonitorStatus.Enabled ? MonitorStatus.Disabled : MonitorStatus.Enabled;
+
+    this.monitorService.updateMonitorStatus(monitor.id, updatedStatus).subscribe({
+      next: (updatedMonitor) => {
+        this.monitors.update((list) => list.map((item) => (item.id === updatedMonitor.id ? updatedMonitor : item)));
+        this.toastService.success(
+          $localize`:@@monitorsStatusToggleSuccess:Monitor status updated successfully.`,
+        );
+      },
+      error: (err: Error) => {
+        this.toastService.error(err.message);
+      },
+    });
+  }
+
+  /** Determines whether the enable/disable action should be shown for a monitor. */
+  shouldShowToggleAction(monitor: MonitorModel): boolean {
+    return monitor.status !== MonitorStatus.Error;
+  }
+
   isMonitorCheckPending(monitorId: string): boolean {
     return this.pendingMonitorCheckIds().has(monitorId);
   }

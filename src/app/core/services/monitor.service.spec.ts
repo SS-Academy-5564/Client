@@ -126,6 +126,32 @@ describe('MonitorService', () => {
     expect(completed).toBe(true);
   });
 
+  it('should PATCH status updates and return updated monitor', () => {
+    let updated: MonitorModel | undefined;
+
+    service.updateMonitorStatus('monitor-1', MonitorStatus.Disabled).subscribe((monitor) => {
+      updated = monitor;
+    });
+
+    const httpRequest = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors/monitor-1/status`);
+    expect(httpRequest.request.method).toBe('PATCH');
+    expect(httpRequest.request.body).toEqual({ status: MonitorStatus.Disabled });
+
+    const updatedMonitor: MonitorModel = {
+      id: 'monitor-1',
+      name: 'Updated monitor',
+      url: 'https://api.example.com/health',
+      currentValue: 'OK',
+      lastCheckedAt: '2026-07-13T10:11:04.5066667+00:00',
+      status: MonitorStatus.Disabled,
+      interval: 60,
+      organizationId: 'org-1',
+    };
+
+    httpRequest.flush({ data: updatedMonitor, pagination: null, success: true, errors: [] });
+    expect(updated).toEqual(updatedMonitor);
+  });
+
   it('should surface API error messages from run-now failures', () => {
     let errorMessage = '';
 

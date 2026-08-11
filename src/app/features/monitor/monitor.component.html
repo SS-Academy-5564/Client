@@ -114,6 +114,17 @@
                       <button mat-menu-item type="button" (click)="onOpenEditPanel(monitor)">
                         <span i18n="@@monitorsEditButton">Edit</span>
                       </button>
+                      @if (shouldShowToggleAction(monitor)) {
+                        @if (monitor.status === MonitorStatus.Enabled) {
+                          <button mat-menu-item type="button" (click)="onToggleMonitorStatus(monitor)">
+                            <span i18n="@@monitorsDisableButton">Disable</span>
+                          </button>
+                        } @else {
+                          <button mat-menu-item type="button" (click)="onToggleMonitorStatus(monitor)">
+                            <span i18n="@@monitorsEnableButton">Enable</span>
+                          </button>
+                        }
+                      }
                       <button
                         mat-menu-item
                         type="button"
