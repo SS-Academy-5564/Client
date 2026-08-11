@@ -181,6 +181,23 @@ describe('AuthService', () => {
     expect(stopSignalrSpy).toHaveBeenCalled();
   });
 
+  it('should clear the local session even when SignalR shutdown fails during logout', () => {
+    const signalrService = TestBed.inject(SignalrService);
+    const stopSignalrSpy = vi
+      .spyOn(signalrService, 'stop')
+      .mockReturnValue(throwError(() => new Error('SignalR stop error')));
+    tokenStorage.setToken('access-token');
+    service.currentUser.set(currentUser);
+    httpMock.post.mockReturnValue(of({}));
+
+    service.logout().subscribe();
+
+    expect(tokenStorage.getToken()).toBeNull();
+    expect(service.currentUser()).toBeNull();
+    expect(service.authenticationState()).toBe(AuthState.Unauthenticated);
+    expect(stopSignalrSpy).toHaveBeenCalled();
+  });
+
   it('should clear the authenticated session when loading the current user ends in 401', () => {
     httpMock.post.mockReturnValue(of(tokenResponse));
     service.refreshAccessToken().subscribe();

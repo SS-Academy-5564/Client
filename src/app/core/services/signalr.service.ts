@@ -31,6 +31,7 @@ export class SignalrService {
    * Starts the authenticated monitor hub connection.
    *
    * @returns An observable that completes when the connection has started.
+   * @throws {Error} Re-emitted when connection startup fails.
    */
   start(): Observable<void> {
     return defer((): Observable<void> => {
@@ -64,6 +65,7 @@ export class SignalrService {
    * Stops the current monitor hub connection.
    *
    * @returns An observable that completes when the connection has stopped.
+   * @throws {Error} Re-emitted when connection shutdown fails.
    */
   stop(): Observable<void> {
     return defer((): Observable<void> => {

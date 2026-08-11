@@ -136,7 +136,7 @@ describe('MonitorComponent', () => {
     await fixture.whenStable();
   });
 
-  afterEach(() => {
+  afterEach((): void => {
     vi.useRealTimers();
   });
 
@@ -177,7 +177,41 @@ describe('MonitorComponent', () => {
       .find((m) => m.id === 'enabled-monitor');
     expect(updatedMonitor?.currentValue).toBe('healthy');
     expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-05T08:00:00Z');
+    expect(updatedMonitor?.status).toBe(MonitorStatus.Enabled);
     expect(monitorServiceMock.getMonitors).toHaveBeenCalledTimes(initialRequestCount);
+  });
+
+  it('preserves SignalR updates received while initial HTTP request is in flight', (): void => {
+    const getMonitorsSubject = new Subject<MonitorPage>();
+    monitorServiceMock.getMonitors.mockReturnValueOnce(getMonitorsSubject.asObservable());
+
+    component['loadMonitors'](1, 10);
+
+    monitorsUpdatedHandler?.([
+      {
+        monitorId: 'enabled-monitor',
+        currentValue: '200 OK',
+        lastCheckedAt: '2026-08-11T12:00:00Z',
+        nextExecutionAt: '2026-08-11T12:01:00Z',
+        status: 'Enabled',
+      },
+    ]);
+
+    getMonitorsSubject.next({
+      items: monitors,
+      pageNumber: 1,
+      pageSize: 10,
+      totalCount: monitors.length,
+      totalPages: 1,
+    });
+    getMonitorsSubject.complete();
+
+    const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
+      .monitors()
+      .find((m) => m.id === 'enabled-monitor');
+    expect(updatedMonitor?.currentValue).toBe('200 OK');
+    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-11T12:00:00Z');
+    expect(updatedMonitor?.status).toBe(MonitorStatus.Enabled);
   });
 
   it.each([

@@ -57,6 +57,8 @@ export class MonitorComponent implements OnInit {
   protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
   protected readonly searchQuery = computed(() => this.queryParams().get('query') ?? '');
 
+  private readonly pendingUpdates = new Map<string, UpdateMonitorPayload>();
+
   constructor() {
     effect(() => {
       const query = this.searchQuery();
@@ -80,6 +82,9 @@ export class MonitorComponent implements OnInit {
     });
   }
 
+  /**
+   * Initializes real-time monitor update subscriptions and the SignalR connection lifecycle.
+   */
   ngOnInit(): void {
     const monitorsUpdatedSubscription = this.signalrService.onMonitorsUpdated((updates: UpdateMonitorPayload[]): void =>
       this.handleMonitorsUpdated(updates),
@@ -205,12 +210,39 @@ export class MonitorComponent implements OnInit {
       return;
     }
 
+    for (const update of updates) {
+      this.pendingUpdates.set(update.monitorId.toLowerCase(), update);
+    }
+
     const updatesMap = new Map<string, UpdateMonitorPayload>(
       updates.map((update: UpdateMonitorPayload): [string, UpdateMonitorPayload] => [
         update.monitorId.toLowerCase(),
         update,
       ]),
     );
+
+    const activeStatus = this.selectedStatus();
+    let membershipChanged = false;
+
+    if (activeStatus !== null) {
+      for (const monitor of this.monitors()) {
+        const update = updatesMap.get(monitor.id.toLowerCase());
+        if (!update) {
+          continue;
+        }
+
+        const newStatus = this.parseMonitorStatus(update.status);
+        if (monitor.status !== newStatus && (monitor.status === activeStatus || newStatus === activeStatus)) {
+          membershipChanged = true;
+          break;
+        }
+      }
+    }
+
+    if (membershipChanged) {
+      this.loadMonitors(this.pageNumber(), this.pageSize(), this.selectedStatus(), this.searchQuery());
+      return;
+    }
 
     this.monitors.update((monitors: MonitorModel[]): MonitorModel[] =>
       monitors.map((monitor: MonitorModel): MonitorModel => {
@@ -249,7 +281,28 @@ export class MonitorComponent implements OnInit {
   ): Subscription {
     return this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
       next: (result) => {
-        this.monitors.set(result.items);
+        const items = result.items.map((item: MonitorModel): MonitorModel => {
+          const pending = this.pendingUpdates.get(item.id.toLowerCase());
+          if (!pending) {
+            return item;
+          }
+
+          const itemTimestamp = item.lastCheckedAt ? new Date(item.lastCheckedAt).getTime() : 0;
+          const pendingTimestamp = pending.lastCheckedAt ? new Date(pending.lastCheckedAt).getTime() : 0;
+
+          if (pendingTimestamp >= itemTimestamp) {
+            return {
+              ...item,
+              currentValue: pending.currentValue,
+              lastCheckedAt: pending.lastCheckedAt,
+              status: this.parseMonitorStatus(pending.status),
+            };
+          }
+
+          return item;
+        });
+
+        this.monitors.set(items);
         this.totalCount.set(result.totalCount);
         this.totalPages.set(result.totalPages);
       },
