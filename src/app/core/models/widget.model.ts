@@ -2,6 +2,7 @@ import { ChartData } from './chart-data-model';
 
 export type Widget = {
   id: string;
+  monitorId: string;
   type: string;
   metric: string;
   title?: string;
@@ -16,6 +17,7 @@ export type Widget = {
 
 export type CreateWidgetRequest = {
   dashboardTabId: string;
+  monitorId: string;
   type: string;
 
   title?: string;

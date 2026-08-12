@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, output } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CreateWidgetRequest } from '@core/models/widget.model';
+import { MonitorService } from '@core/services/monitor.service';
 
 @Component({
   selector: 'app-create-widget',
@@ -27,10 +28,11 @@ import { CreateWidgetRequest } from '@core/models/widget.model';
 })
 export class CreateWidgetComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly monitorService = inject(MonitorService);
 
   readonly isCreateWidgetDrawerOpen = input(false);
   readonly dashboardTabId = input.required<string>();
-
+  readonly monitors = toSignal(this.monitorService.getMonitorsLookup(), { initialValue: [] });
   readonly closed = output<void>();
   readonly created = output<CreateWidgetRequest>();
 
@@ -60,6 +62,7 @@ export class CreateWidgetComponent {
   ];
 
   readonly form = this.fb.nonNullable.group({
+    monitorId: ['', Validators.required],
     type: ['', Validators.required],
     title: [''],
     subtitle: [''],
@@ -72,6 +75,7 @@ export class CreateWidgetComponent {
     effect(() => {
       if (this.isCreateWidgetDrawerOpen()) {
         this.form.reset({
+          monitorId: '',
           type: '',
           title: '',
           subtitle: '',

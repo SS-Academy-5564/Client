@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateWidgetComponent } from './create-widget.component';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
+import { MonitorService } from '@core/services/monitor.service';
 
 describe('CreateWidgetComponent', () => {
   let fixture: ComponentFixture<CreateWidgetComponent>;
@@ -18,6 +20,12 @@ describe('CreateWidgetComponent', () => {
               params: {},
               queryParams: {},
             },
+          },
+        },
+        {
+          provide: MonitorService,
+          useValue: {
+            getMonitorsLookup: vi.fn().mockReturnValue(of([{ id: 'mon-1', name: 'API Server' }])),
           },
         },
       ],
@@ -41,6 +49,7 @@ describe('CreateWidgetComponent', () => {
     component.created.subscribe(createdSpy);
 
     component.form.setValue({
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response chart',
       subtitle: 'Last 24 hours',
@@ -53,6 +62,7 @@ describe('CreateWidgetComponent', () => {
 
     expect(createdSpy).toHaveBeenCalledWith({
       dashboardTabId: '00000000-0000-0000-0000-000000000001',
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response chart',
       subtitle: 'Last 24 hours',
@@ -98,6 +108,7 @@ describe('CreateWidgetComponent', () => {
 
   it('should reset form when opened', async () => {
     component.form.patchValue({
+      monitorId: 'mon-1',
       type: 'line-chart',
       metric: 'errors',
       timeRange: '24h',
@@ -109,6 +120,7 @@ describe('CreateWidgetComponent', () => {
     await fixture.whenStable();
 
     expect(component.form.value).toEqual({
+      monitorId: '',
       type: '',
       title: '',
       subtitle: '',

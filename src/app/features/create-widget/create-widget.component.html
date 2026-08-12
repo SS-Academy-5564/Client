@@ -22,6 +22,31 @@
       <app-error-message [message]="error()" />
 
       <div class="field">
+        <label class="field-label" for="widget-monitor" i18n="@@monitor">Monitor</label>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-select
+            formControlName="monitorId"
+            id="widget-monitor"
+            panelClass="white-select-panel"
+            placeholder="Select a monitor"
+            i18n-placeholder="@@selectMonitor">
+            @for (monitor of monitors(); track monitor.id) {
+              <mat-option [value]="monitor.id">
+                {{ monitor.name }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        @if (form.get('monitorId'); as monitorId) {
+          @if (monitorId.touched && monitorId.hasError('required')) {
+            <div class="field-error" i18n="@@monitorRequired">Monitor is required.</div>
+          }
+        }
+      </div>
+
+      <div class="field">
         <label class="field-label" for="widget-type" i18n="@@widgetType">Widget type</label>
 
         <mat-form-field appearance="outline" class="full-width">

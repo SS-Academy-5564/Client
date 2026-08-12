@@ -63,6 +63,7 @@ describe('OverviewComponent', () => {
   it('should create widget and reload widgets', () => {
     const request = {
       dashboardTabId: '00000000-0000-0000-0000-000000000001',
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response time',
       subtitle: '',
