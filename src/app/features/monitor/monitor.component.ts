@@ -93,7 +93,7 @@ export class MonitorComponent implements OnInit {
       .subscribe((value: string | null) => {
         const cleanValue = value?.trim() ?? '';
 
-        this.router.navigate([], {
+        this.router.navigate(['.'], {
           relativeTo: this.route,
           queryParams: {
             query: cleanValue || null,
@@ -255,6 +255,17 @@ export class MonitorComponent implements OnInit {
         this.monitors.set(result.items);
         this.totalCount.set(result.totalCount);
         this.totalPages.set(result.totalPages);
+        if (page !== result.pageNumber || pageSize !== result.pageSize) {
+          void this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: {
+              page: result.pageNumber,
+              pageSize: result.pageSize,
+            },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+          });
+        }
       },
       error: () => {
         this.monitors.set([]);
