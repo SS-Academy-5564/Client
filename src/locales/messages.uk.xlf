@@ -230,7 +230,7 @@
         <source>Edit widget</source>
         <target>Редагувати віджет</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/create-widget/create-widget.component.ts</context>
+          <context context-type="sourcefile">src/app/features/widget-form/widget-form.component.ts</context>
           <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
@@ -238,7 +238,7 @@
         <source>Update widget</source>
         <target>Оновити віджет</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/create-widget/create-widget.component.ts</context>
+          <context context-type="sourcefile">src/app/features/widget-form/widget-form.component.ts</context>
           <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>

@@ -203,14 +203,14 @@
       <trans-unit id="editWidgetTitle" datatype="html">
         <source>Edit widget</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/create-widget/create-widget.component.ts</context>
+          <context context-type="sourcefile">src/app/features/widget-form/widget-form.component.ts</context>
           <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="updateWidget" datatype="html">
         <source>Update widget</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/features/create-widget/create-widget.component.ts</context>
+          <context context-type="sourcefile">src/app/features/widget-form/widget-form.component.ts</context>
           <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>

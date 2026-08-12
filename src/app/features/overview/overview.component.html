@@ -27,10 +27,10 @@
     </div>
   </header>
 
-  <app-create-widget
+  <app-widget-form
     [dashboardTabId]="dashboardTabId"
     [error]="formError()"
-    [isCreateWidgetDrawerOpen]="isWidgetFormOpen()"
+    [isOpen]="isWidgetFormOpen()"
     [submitting]="submitting()"
     [widget]="editingWidget()"
     (closed)="closeWidgetForm()"

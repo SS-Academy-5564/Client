@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CreateWidgetRequest, UpdateWidgetRequest, Widget } from '@core/models/widget.model';
 
 @Component({
-  selector: 'app-create-widget',
+  selector: 'app-widget-form',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -21,15 +21,15 @@ import { CreateWidgetRequest, UpdateWidgetRequest, Widget } from '@core/models/w
     ErrorMessageComponent,
     MatIconModule,
   ],
-  templateUrl: './create-widget.component.html',
-  styleUrl: './create-widget.component.scss',
+  templateUrl: './widget-form.component.html',
+  styleUrl: './widget-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CreateWidgetComponent {
+export class WidgetFormComponent {
   private readonly fb = inject(FormBuilder);
 
-  /** Whether the widget drawer is open. */
-  readonly isCreateWidgetDrawerOpen = input(false);
+  /** Whether the widget form drawer is open. */
+  readonly isOpen = input(false);
   /** The identifier of the dashboard tab the widget belongs to. */
   readonly dashboardTabId = input.required<string>();
 
@@ -99,7 +99,7 @@ export class CreateWidgetComponent {
   /** Prepares the form each time the drawer opens. */
   constructor() {
     effect(() => {
-      if (this.isCreateWidgetDrawerOpen()) {
+      if (this.isOpen()) {
         this.prepareForm(this.widget());
       }
     });

@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CreateWidgetComponent } from './create-widget.component';
+import { WidgetFormComponent } from './widget-form.component';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ActivatedRoute } from '@angular/router';
 
-describe('CreateWidgetComponent', () => {
-  let fixture: ComponentFixture<CreateWidgetComponent>;
-  let component: CreateWidgetComponent;
+describe('WidgetFormComponent', () => {
+  let fixture: ComponentFixture<WidgetFormComponent>;
+  let component: WidgetFormComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateWidgetComponent],
+      imports: [WidgetFormComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -23,7 +23,7 @@ describe('CreateWidgetComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CreateWidgetComponent);
+    fixture = TestBed.createComponent(WidgetFormComponent);
     component = fixture.componentInstance;
 
     fixture.componentRef.setInput('dashboardTabId', '00000000-0000-0000-0000-000000000001');
@@ -103,7 +103,7 @@ describe('CreateWidgetComponent', () => {
       timeRange: '24h',
     });
 
-    fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
+    fixture.componentRef.setInput('isOpen', true);
 
     fixture.detectChanges();
     await fixture.whenStable();
@@ -129,7 +129,7 @@ describe('CreateWidgetComponent', () => {
       settings: '{"showGrid":true}',
     });
 
-    fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
+    fixture.componentRef.setInput('isOpen', true);
 
     fixture.detectChanges();
     await fixture.whenStable();
@@ -159,7 +159,7 @@ describe('CreateWidgetComponent', () => {
       settings: null,
     });
 
-    fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
+    fixture.componentRef.setInput('isOpen', true);
 
     fixture.detectChanges();
     await fixture.whenStable();

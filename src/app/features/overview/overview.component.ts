@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CreateWidgetComponent } from '@features/create-widget/create-widget.component';
+import { WidgetFormComponent } from '@features/widget-form/widget-form.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,7 +11,7 @@ import { DEFAULT_DASHBOARD_TAB_ID } from '@core/constants/default-dashboard.cons
 
 @Component({
   selector: 'app-overview',
-  imports: [CreateWidgetComponent, WidgetCardComponent, MatIconModule, MatButtonModule, MatSelectModule],
+  imports: [WidgetFormComponent, WidgetCardComponent, MatIconModule, MatButtonModule, MatSelectModule],
   templateUrl: './overview.component.html',
   styleUrl: './overview.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
