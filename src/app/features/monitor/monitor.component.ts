@@ -214,12 +214,8 @@ export class MonitorComponent implements OnInit {
 
     this.monitorService.updateMonitorStatus(monitor.id, updatedStatus).subscribe({
       next: (updatedMonitor: MonitorModel) => {
-        this.monitors.update((list) =>
-          list.map((item) => (item.id === monitor.id ? updatedMonitor : item)),
-        );
-        this.toastService.success(
-          $localize`:@@monitorsStatusToggleSuccess:Monitor status updated successfully.`,
-        );
+        this.monitors.update((list) => list.map((item) => (item.id === monitor.id ? updatedMonitor : item)));
+        this.toastService.success($localize`:@@monitorsStatusToggleSuccess:Monitor status updated successfully.`);
       },
       error: (err: Error) => {
         this.toastService.error(err.message);

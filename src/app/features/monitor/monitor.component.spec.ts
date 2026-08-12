@@ -267,31 +267,53 @@ describe('MonitorComponent', () => {
     expect(component.shouldShowToggleAction(monitors[1])).toBe(true);
   });
 
-  it('renders Enable/Disable action only for non-error monitors', (): void => {
-    const rowButtons = Array.from(
-      fixture.nativeElement.querySelectorAll('.row-action-button'),
-    ) as HTMLButtonElement[];
-    const getMenuLabels = (): string[] =>
-      Array.from(
-        document.body.querySelectorAll('.mat-mdc-menu-panel .mat-mdc-menu-item span'),
-      ).map((span) => span.textContent?.trim() ?? '');
+  it('renders Enable/Disable action only for non-error monitors', async (): Promise<void> => {
+    const rowButtons = Array.from(fixture.nativeElement.querySelectorAll('.row-action-button')) as HTMLButtonElement[];
+
+    const getMenuLabels = (): string[] => {
+      const panels = Array.from(document.body.querySelectorAll('.mat-mdc-menu-panel'));
+
+      const activePanel = panels.at(-1);
+
+      return activePanel
+        ? Array.from(activePanel.querySelectorAll('.mat-mdc-menu-item span')).map(
+            (span) => span.textContent?.trim() ?? '',
+          )
+        : [];
+    };
+
+    const closeMenu = async (): Promise<void> => {
+      document.body.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
 
     rowButtons[0].click();
     fixture.detectChanges();
+    await fixture.whenStable();
+
     const enabledMenuLabels = getMenuLabels();
     expect(enabledMenuLabels).toContain('Edit');
     expect(enabledMenuLabels).toContain('Disable');
     expect(enabledMenuLabels).not.toContain('Enable');
 
+    await closeMenu();
+
     rowButtons[1].click();
     fixture.detectChanges();
+    await fixture.whenStable();
+
     const disabledMenuLabels = getMenuLabels();
     expect(disabledMenuLabels).toContain('Edit');
     expect(disabledMenuLabels).toContain('Enable');
     expect(disabledMenuLabels).not.toContain('Disable');
 
+    await closeMenu();
+
     rowButtons[2].click();
     fixture.detectChanges();
+    await fixture.whenStable();
+
     const errorMenuLabels = getMenuLabels();
     expect(errorMenuLabels).toContain('Edit');
     expect(errorMenuLabels).not.toContain('Disable');
