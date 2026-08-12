@@ -13,37 +13,20 @@ import { SignalrService } from '@core/services/signalr.service';
 describe('MonitorComponent', () => {
   let component: MonitorComponent;
   let fixture: ComponentFixture<MonitorComponent>;
+  const makeMonitor = (id: string, name: string, status: MonitorStatus): MonitorModel => ({
+    id,
+    name,
+    url: `https://example.com/${id}`,
+    currentValue: id === 'enabled-monitor' ? '200' : null,
+    lastCheckedAt: null,
+    status,
+    interval: 60,
+    organizationId: 'org-1',
+  });
   const monitors: MonitorModel[] = [
-    {
-      id: 'enabled-monitor',
-      name: 'Enabled monitor',
-      url: 'https://example.com/enabled',
-      currentValue: '200',
-      lastCheckedAt: null,
-      status: MonitorStatus.Enabled,
-      interval: 60,
-      organizationId: 'org-1',
-    },
-    {
-      id: 'disabled-monitor',
-      name: 'Disabled monitor',
-      url: 'https://example.com/disabled',
-      currentValue: null,
-      lastCheckedAt: null,
-      status: MonitorStatus.Disabled,
-      interval: 300,
-      organizationId: 'org-1',
-    },
-    {
-      id: 'error-monitor',
-      name: 'Error monitor',
-      url: 'https://example.com/error',
-      currentValue: null,
-      lastCheckedAt: null,
-      status: MonitorStatus.Error,
-      interval: 900,
-      organizationId: 'org-1',
-    },
+    makeMonitor('enabled-monitor', 'Enabled monitor', MonitorStatus.Enabled),
+    makeMonitor('disabled-monitor', 'Disabled monitor', MonitorStatus.Disabled),
+    makeMonitor('error-monitor', 'Error monitor', MonitorStatus.Error),
   ];
   const monitorServiceMock = {
     isLoading: signal(false),
@@ -366,5 +349,52 @@ describe('MonitorComponent', () => {
 
     expect(component['editingMonitorId']()).toBeNull();
   });
-  
+
+  it('discards stale monitor responses when requests resolve in reverse order', async (): Promise<void> => {
+    const subject1 = new Subject<MonitorPage>();
+    const subject2 = new Subject<MonitorPage>();
+
+    await selectStatus(MonitorStatus.Enabled);
+
+    monitorServiceMock.getMonitors
+      .mockReturnValueOnce(subject1.asObservable())
+      .mockReturnValueOnce(subject2.asObservable());
+
+    const update1 = [
+      {
+        monitorId: 'enabled-monitor',
+        currentValue: '200',
+        lastCheckedAt: '2026-08-12T10:00:00Z',
+        nextExecutionAt: '2026-08-12T10:01:00Z',
+        status: 'Disabled',
+      },
+    ];
+    const update2 = [
+      {
+        monitorId: 'enabled-monitor',
+        currentValue: '500',
+        lastCheckedAt: '2026-08-12T10:00:00Z',
+        nextExecutionAt: '2026-08-12T10:01:00Z',
+        status: 'Error',
+      },
+    ];
+
+    monitorsUpdatedHandler?.(update1);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    monitorsUpdatedHandler?.(update2);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    subject2.next({ items: [monitors[0]], pageNumber: 1, pageSize: 10, totalCount: 1, totalPages: 1 });
+    subject2.complete();
+
+    subject1.next({ items: monitors, pageNumber: 1, pageSize: 10, totalCount: 3, totalPages: 1 });
+    subject1.complete();
+
+    expect((component as unknown as { monitors: () => MonitorModel[] }).monitors()).toHaveLength(1);
+    expect((component as unknown as { monitors: () => MonitorModel[] }).monitors()[0].id).toBe('enabled-monitor');
+    expect((component as unknown as { totalCount: () => number }).totalCount()).toBe(1);
+  });
 });

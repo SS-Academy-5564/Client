@@ -61,6 +61,8 @@ export class MonitorComponent implements OnInit {
   protected readonly searchQuery = computed(() => this.queryParams().get('query') ?? '');
 
   private readonly pendingUpdates = new Map<string, UpdateMonitorPayload>();
+  private readonly refreshTrigger = signal(0);
+  private activeLoadSubscription?: Subscription;
 
   constructor() {
     effect(() => {
@@ -72,6 +74,7 @@ export class MonitorComponent implements OnInit {
     });
 
     effect((onCleanup) => {
+      this.refreshTrigger();
       const subscription = this.loadMonitors(
         this.pageNumber(),
         this.pageSize(),
@@ -269,7 +272,7 @@ export class MonitorComponent implements OnInit {
     }
 
     if (membershipChanged) {
-      this.loadMonitors(this.pageNumber(), this.pageSize(), this.selectedStatus(), this.searchQuery());
+      this.refreshTrigger.update((count) => count + 1);
       return;
     }
 
@@ -308,7 +311,9 @@ export class MonitorComponent implements OnInit {
     status: MonitorStatus | null = null,
     searchString: string | null = null,
   ): Subscription {
-    return this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
+    this.activeLoadSubscription?.unsubscribe();
+
+    const subscription = this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
       next: (result) => {
         const items = result.items.map((item: MonitorModel): MonitorModel => {
           const pending = this.pendingUpdates.get(item.id.toLowerCase());
@@ -352,5 +357,8 @@ export class MonitorComponent implements OnInit {
         this.totalPages.set(0);
       },
     });
+
+    this.activeLoadSubscription = subscription;
+    return subscription;
   }
 }
