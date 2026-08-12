@@ -117,11 +117,11 @@
                       @if (shouldShowToggleAction(monitor)) {
                         @if (monitor.status === MonitorStatus.Enabled) {
                           <button mat-menu-item type="button" (click)="onToggleMonitorStatus(monitor)">
-                            <span i18n="@@monitorsDisableButton">Disable</span>
+                            <span i18n="monitor action|@@monitorsDisableButton">Disable</span>
                           </button>
                         } @else {
                           <button mat-menu-item type="button" (click)="onToggleMonitorStatus(monitor)">
-                            <span i18n="@@monitorsEnableButton">Enable</span>
+                            <span i18n="monitor action|@@monitorsEnableButton">Enable</span>
                           </button>
                         }
                       }

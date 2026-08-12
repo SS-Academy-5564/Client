@@ -151,7 +151,7 @@ export class MonitorService {
     return this.http.patch<ApiResponse<MonitorModel>>(`${this.monitorBaseEndpoint}/${id}/status`, { status }).pipe(
       map((response) => {
         if (!response.data) {
-          throw new Error('Monitor status update returned no data');
+          throw new Error($localize`:@@monitorStatusUpdateNoData:Monitor status update returned no data`);
         }
         return response.data;
       }),

@@ -126,11 +126,15 @@ describe('MonitorService', () => {
     expect(completed).toBe(true);
   });
 
-  it('should PATCH status updates and complete when the request succeeds', () => {
+  it('should PATCH status updates and complete when the request succeeds', (): void => {
     let completed = false;
+    let result: MonitorModel | undefined;
 
     service.updateMonitorStatus('monitor-1', MonitorStatus.Disabled).subscribe({
-      next: () => {
+      next: (monitor: MonitorModel): void => {
+        result = monitor;
+      },
+      complete: (): void => {
         completed = true;
       },
     });
@@ -139,7 +143,19 @@ describe('MonitorService', () => {
     expect(httpRequest.request.method).toBe('PATCH');
     expect(httpRequest.request.body).toEqual({ status: MonitorStatus.Disabled });
 
-    httpRequest.flush({ success: true, errors: [] });
+    const expectedMonitor: MonitorModel = {
+      id: 'monitor-1',
+      name: 'Status monitor',
+      url: 'https://api.example.com/status',
+      currentValue: null,
+      lastCheckedAt: null,
+      status: MonitorStatus.Disabled,
+      interval: 120,
+      organizationId: 'org-1',
+    };
+
+    httpRequest.flush({ data: expectedMonitor, pagination: null, success: true, errors: [] });
+    expect(result).toEqual(expectedMonitor);
     expect(completed).toBe(true);
   });
 

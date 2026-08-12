@@ -244,7 +244,7 @@ describe('MonitorComponent', () => {
     expect(component['editingMonitorId']()).toBeNull();
   });
 
-  it('toggles monitor status using the update API and shows a toast', () => {
+  it('toggles monitor status using the update API and shows a toast', (): void => {
     const updatedMonitor: MonitorModel = {
       ...monitors[0],
       status: MonitorStatus.Disabled,
@@ -258,23 +258,43 @@ describe('MonitorComponent', () => {
     expect(component['monitors']().find((item) => item.id === 'enabled-monitor')?.status).toBe(MonitorStatus.Disabled);
   });
 
-  it('returns false for error monitors in toggle visibility helper', () => {
+  it('returns false for error monitors in toggle visibility helper', (): void => {
     expect(component.shouldShowToggleAction(monitors[2])).toBe(false);
   });
 
-  it('returns true for enabled and disabled monitors in toggle visibility helper', () => {
+  it('returns true for enabled and disabled monitors in toggle visibility helper', (): void => {
     expect(component.shouldShowToggleAction(monitors[0])).toBe(true);
     expect(component.shouldShowToggleAction(monitors[1])).toBe(true);
   });
 
-  it('renders Enable/Disable action only for non-error monitors', () => {
-    const allActionLabels = Array.from(
-      fixture.nativeElement.querySelectorAll('.mat-menu-item span') as NodeListOf<HTMLSpanElement>,
-    ).map((span) => span.textContent?.trim());
+  it('renders Enable/Disable action only for non-error monitors', (): void => {
+    const rowButtons = Array.from(
+      fixture.nativeElement.querySelectorAll('.row-action-button'),
+    ) as HTMLButtonElement[];
+    const getMenuLabels = (): string[] =>
+      Array.from(
+        document.body.querySelectorAll('.mat-mdc-menu-panel .mat-mdc-menu-item span'),
+      ).map((span) => span.textContent?.trim() ?? '');
 
-    expect(allActionLabels).toContain('Edit');
-    expect(allActionLabels).toContain('Disable');
-    expect(allActionLabels).toContain('Enable');
-    expect(allActionLabels).not.toContain('Error');
+    rowButtons[0].click();
+    fixture.detectChanges();
+    const enabledMenuLabels = getMenuLabels();
+    expect(enabledMenuLabels).toContain('Edit');
+    expect(enabledMenuLabels).toContain('Disable');
+    expect(enabledMenuLabels).not.toContain('Enable');
+
+    rowButtons[1].click();
+    fixture.detectChanges();
+    const disabledMenuLabels = getMenuLabels();
+    expect(disabledMenuLabels).toContain('Edit');
+    expect(disabledMenuLabels).toContain('Enable');
+    expect(disabledMenuLabels).not.toContain('Disable');
+
+    rowButtons[2].click();
+    fixture.detectChanges();
+    const errorMenuLabels = getMenuLabels();
+    expect(errorMenuLabels).toContain('Edit');
+    expect(errorMenuLabels).not.toContain('Disable');
+    expect(errorMenuLabels).not.toContain('Enable');
   });
 });
