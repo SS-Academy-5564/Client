@@ -10,6 +10,14 @@ import { ToastService } from '@core/services/toast.service';
 import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
 import { SignalrService } from '@core/services/signalr.service';
 
+type SignalrUpdate = {
+  monitorId: string;
+  currentValue: string | null;
+  lastCheckedAt: string;
+  nextExecutionAt: string;
+  status: string;
+};
+
 describe('MonitorComponent', () => {
   let component: MonitorComponent;
   let fixture: ComponentFixture<MonitorComponent>;
@@ -32,8 +40,7 @@ describe('MonitorComponent', () => {
     isLoading: signal(false),
     error: signal<string | null>(null),
     getMonitors: vi.fn((pageNumber = 1, pageSize = 10, status: MonitorStatus | null = null) => {
-      const items = status === null ? monitors : monitors.filter((monitor) => monitor.status === status);
-
+      const items = status === null ? monitors : monitors.filter((m) => m.status === status);
       return of({
         items,
         pageNumber,
@@ -46,22 +53,10 @@ describe('MonitorComponent', () => {
     triggerMonitorCheck: vi.fn().mockReturnValue(of(undefined)),
     getMonitorById: vi.fn(),
     updateMonitor: vi.fn(),
+    updateMonitorStatus: vi.fn().mockReturnValue(of(monitors[0])),
   };
-  const toastServiceMock = {
-    success: vi.fn(),
-    error: vi.fn(),
-  };
-  let monitorsUpdatedHandler:
-    | ((
-        updates: {
-          monitorId: string;
-          currentValue: string | null;
-          lastCheckedAt: string;
-          nextExecutionAt: string;
-          status: string;
-        }[],
-      ) => void)
-    | null;
+  const toastServiceMock = { success: vi.fn(), error: vi.fn() };
+  let monitorsUpdatedHandler: ((updates: SignalrUpdate[]) => void) | null;
   let monitorsUpdatedSubscription: Subscription;
   const signalrServiceMock = {
     start: vi.fn(() => of(undefined)),
@@ -84,19 +79,29 @@ describe('MonitorComponent', () => {
     organizationId: 'org-1',
   };
 
-  const getRenderedMonitorNames = (): string[] => {
-    const rootElement = fixture.nativeElement as HTMLElement;
-
-    return Array.from(rootElement.querySelectorAll('.monitor-name')).map(
-      (element) => element.textContent?.trim() ?? '',
+  const getRenderedMonitorNames = (): string[] =>
+    Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.monitor-name')).map(
+      (el) => el.textContent?.trim() ?? '',
     );
-  };
 
   const selectStatus = async (status: MonitorStatus | null): Promise<void> => {
     component.onClickStatus(status);
     await fixture.whenStable();
     fixture.detectChanges();
   };
+
+  const makeUpdate = (
+    monitorId: string,
+    currentValue: string | null,
+    status: string,
+    lastCheckedAt = '2026-08-05T08:00:00Z',
+  ): SignalrUpdate => ({
+    monitorId,
+    currentValue,
+    lastCheckedAt,
+    nextExecutionAt: '2026-08-05T08:01:00Z',
+    status,
+  });
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -141,28 +146,14 @@ describe('MonitorComponent', () => {
     const initialRequestCount = monitorServiceMock.getMonitors.mock.calls.length;
 
     monitorsUpdatedHandler?.([
-      {
-        monitorId: 'enabled-monitor',
-        currentValue: 'healthy',
-        lastCheckedAt: '2026-08-05T08:00:00Z',
-        nextExecutionAt: '2026-08-05T08:01:00Z',
-        status: 'Enabled',
-      },
-      {
-        monitorId: 'not-on-page-monitor',
-        currentValue: '500',
-        lastCheckedAt: '2026-08-05T08:00:00Z',
-        nextExecutionAt: '2026-08-05T08:01:00Z',
-        status: 'Error',
-      },
+      makeUpdate('enabled-monitor', 'healthy', 'Enabled'),
+      makeUpdate('not-on-page-monitor', '500', 'Error'),
     ]);
 
-    const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
-      .monitors()
-      .find((m) => m.id === 'enabled-monitor');
-    expect(updatedMonitor?.currentValue).toBe('healthy');
-    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-05T08:00:00Z');
-    expect(updatedMonitor?.status).toBe(MonitorStatus.Enabled);
+    const updated = component['monitors']().find((m) => m.id === 'enabled-monitor');
+    expect(updated?.currentValue).toBe('healthy');
+    expect(updated?.lastCheckedAt).toBe('2026-08-05T08:00:00Z');
+    expect(updated?.status).toBe(MonitorStatus.Enabled);
     expect(monitorServiceMock.getMonitors).toHaveBeenCalledTimes(initialRequestCount);
   });
 
@@ -171,16 +162,7 @@ describe('MonitorComponent', () => {
     monitorServiceMock.getMonitors.mockReturnValueOnce(getMonitorsSubject.asObservable());
 
     component['loadMonitors'](1, 10);
-
-    monitorsUpdatedHandler?.([
-      {
-        monitorId: 'enabled-monitor',
-        currentValue: '200 OK',
-        lastCheckedAt: '2026-08-11T12:00:00Z',
-        nextExecutionAt: '2026-08-11T12:01:00Z',
-        status: 'Enabled',
-      },
-    ]);
+    monitorsUpdatedHandler?.([makeUpdate('enabled-monitor', '200 OK', 'Enabled', '2026-08-11T12:00:00Z')]);
 
     getMonitorsSubject.next({
       items: monitors,
@@ -191,12 +173,10 @@ describe('MonitorComponent', () => {
     });
     getMonitorsSubject.complete();
 
-    const updatedMonitor = (component as unknown as { monitors: () => MonitorModel[] })
-      .monitors()
-      .find((m) => m.id === 'enabled-monitor');
-    expect(updatedMonitor?.currentValue).toBe('200 OK');
-    expect(updatedMonitor?.lastCheckedAt).toBe('2026-08-11T12:00:00Z');
-    expect(updatedMonitor?.status).toBe(MonitorStatus.Enabled);
+    const updated = component['monitors']().find((m) => m.id === 'enabled-monitor');
+    expect(updated?.currentValue).toBe('200 OK');
+    expect(updated?.lastCheckedAt).toBe('2026-08-11T12:00:00Z');
+    expect(updated?.status).toBe(MonitorStatus.Enabled);
   });
 
   it.each([
@@ -204,14 +184,12 @@ describe('MonitorComponent', () => {
     { tab: 'Disabled', status: MonitorStatus.Disabled, expectedNames: ['Disabled monitor'] },
   ])('filters rendered monitors by the $tab tab', async ({ status, expectedNames }) => {
     await selectStatus(status);
-
     expect(getRenderedMonitorNames()).toEqual(expectedNames);
   });
 
   it('shows monitors with every status, including Error, on the All tab', async () => {
     await selectStatus(MonitorStatus.Enabled);
     await selectStatus(null);
-
     expect(getRenderedMonitorNames()).toEqual(['Enabled monitor', 'Disabled monitor', 'Error monitor']);
   });
 
@@ -219,9 +197,7 @@ describe('MonitorComponent', () => {
     const button = (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('.new-monitor-button');
     button?.click();
     fixture.detectChanges();
-
-    const panel = (fixture.nativeElement as HTMLElement).querySelector('.panel');
-    expect(panel).not.toBeNull();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.panel')).not.toBeNull();
   });
 
   it('closes panel and shows toast notification when a monitor is created', () => {
@@ -242,12 +218,7 @@ describe('MonitorComponent', () => {
 
     component.onPageSizeChange(20);
 
-    expect(spy).toHaveBeenCalledWith(
-      [],
-      expect.objectContaining({
-        queryParams: { page: 1, pageSize: 20 },
-      }),
-    );
+    expect(spy).toHaveBeenCalledWith([], expect.objectContaining({ queryParams: { page: 1, pageSize: 20 } }));
   });
 
   it('triggers a manual check and shows a success toast', () => {
@@ -264,13 +235,11 @@ describe('MonitorComponent', () => {
 
     component.onRunMonitorCheck(monitors[0]);
     fixture.detectChanges();
-
     expect(component.isMonitorCheckPending('enabled-monitor')).toBe(true);
 
     triggerSubject.next();
     triggerSubject.complete();
     fixture.detectChanges();
-
     expect(component.isMonitorCheckPending('enabled-monitor')).toBe(false);
   });
 
@@ -278,9 +247,7 @@ describe('MonitorComponent', () => {
     monitorServiceMock.triggerMonitorCheck.mockReturnValue(
       throwError(() => new Error('Manual check was already triggered recently. Please wait before trying again.')),
     );
-
     component.onRunMonitorCheck(monitors[0]);
-
     expect(toastServiceMock.error).toHaveBeenCalledWith(
       'Manual check was already triggered recently. Please wait before trying again.',
     );
@@ -291,36 +258,25 @@ describe('MonitorComponent', () => {
     const spy = vi.spyOn(router, 'navigate');
 
     monitorServiceMock.getMonitors.mockReturnValueOnce(
-      of({
-        items: monitors,
-        pageNumber: 1,
-        pageSize: 10,
-        totalCount: monitors.length,
-        totalPages: 1,
-      }),
+      of({ items: monitors, pageNumber: 1, pageSize: 10, totalCount: monitors.length, totalPages: 1 }),
     );
 
     component['loadMonitors'](5, 10);
 
     expect(spy).toHaveBeenCalledWith(
       [],
-      expect.objectContaining({
-        queryParams: { page: 1, pageSize: 10 },
-        replaceUrl: true,
-      }),
+      expect.objectContaining({ queryParams: { page: 1, pageSize: 10 }, replaceUrl: true }),
     );
   });
 
   it('sets editingMonitorId when onOpenEditPanel is called', () => {
     component.onOpenEditPanel(monitors[0]);
-
     expect(component['editingMonitorId']()).toBe('enabled-monitor');
   });
 
   it('clears editingMonitorId when onCloseEditPanel is called', () => {
     component.onOpenEditPanel(monitors[0]);
     component.onCloseEditPanel();
-
     expect(component['editingMonitorId']()).toBeNull();
   });
 
@@ -328,11 +284,7 @@ describe('MonitorComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const updatedMonitor: MonitorModel = {
-      ...monitors[0],
-      name: 'Renamed monitor',
-    };
-
+    const updatedMonitor: MonitorModel = { ...monitors[0], name: 'Renamed monitor' };
     component.onMonitorUpdated(updatedMonitor);
     fixture.detectChanges();
 
@@ -344,9 +296,7 @@ describe('MonitorComponent', () => {
   it('closes the edit panel after a successful update', () => {
     component.onOpenEditPanel(monitors[0]);
     expect(component['editingMonitorId']()).not.toBeNull();
-
     component.onMonitorUpdated(monitors[0]);
-
     expect(component['editingMonitorId']()).toBeNull();
   });
 
@@ -355,46 +305,96 @@ describe('MonitorComponent', () => {
     const subject2 = new Subject<MonitorPage>();
 
     await selectStatus(MonitorStatus.Enabled);
-
     monitorServiceMock.getMonitors
       .mockReturnValueOnce(subject1.asObservable())
       .mockReturnValueOnce(subject2.asObservable());
 
-    const update1 = [
-      {
-        monitorId: 'enabled-monitor',
-        currentValue: '200',
-        lastCheckedAt: '2026-08-12T10:00:00Z',
-        nextExecutionAt: '2026-08-12T10:01:00Z',
-        status: 'Disabled',
-      },
-    ];
-    const update2 = [
-      {
-        monitorId: 'enabled-monitor',
-        currentValue: '500',
-        lastCheckedAt: '2026-08-12T10:00:00Z',
-        nextExecutionAt: '2026-08-12T10:01:00Z',
-        status: 'Error',
-      },
-    ];
-
-    monitorsUpdatedHandler?.(update1);
+    monitorsUpdatedHandler?.([makeUpdate('enabled-monitor', '200', 'Disabled', '2026-08-12T10:00:00Z')]);
     await fixture.whenStable();
     fixture.detectChanges();
 
-    monitorsUpdatedHandler?.(update2);
+    monitorsUpdatedHandler?.([makeUpdate('enabled-monitor', '500', 'Error', '2026-08-12T10:00:00Z')]);
     await fixture.whenStable();
     fixture.detectChanges();
 
     subject2.next({ items: [monitors[0]], pageNumber: 1, pageSize: 10, totalCount: 1, totalPages: 1 });
     subject2.complete();
-
     subject1.next({ items: monitors, pageNumber: 1, pageSize: 10, totalCount: 3, totalPages: 1 });
     subject1.complete();
 
-    expect((component as unknown as { monitors: () => MonitorModel[] }).monitors()).toHaveLength(1);
-    expect((component as unknown as { monitors: () => MonitorModel[] }).monitors()[0].id).toBe('enabled-monitor');
-    expect((component as unknown as { totalCount: () => number }).totalCount()).toBe(1);
+    expect(component['monitors']()).toHaveLength(1);
+    expect(component['monitors']()[0].id).toBe('enabled-monitor');
+    expect(component['totalCount']()).toBe(1);
+  });
+
+  it('toggles monitor status using the update API and shows a toast', (): void => {
+    const updatedMonitor: MonitorModel = { ...monitors[0], status: MonitorStatus.Disabled };
+    monitorServiceMock.updateMonitorStatus = vi.fn().mockReturnValue(of(updatedMonitor));
+
+    component.onToggleMonitorStatus(monitors[0]);
+
+    expect(monitorServiceMock.updateMonitorStatus).toHaveBeenCalledWith('enabled-monitor', MonitorStatus.Disabled);
+    expect(toastServiceMock.success).toHaveBeenCalledWith('Monitor status updated successfully.');
+    expect(component['monitors']().find((item) => item.id === 'enabled-monitor')?.status).toBe(MonitorStatus.Disabled);
+  });
+
+  it('returns false for error monitors in toggle visibility helper', (): void => {
+    expect(component.shouldShowToggleAction(monitors[2])).toBe(false);
+  });
+
+  it('returns true for enabled and disabled monitors in toggle visibility helper', (): void => {
+    expect(component.shouldShowToggleAction(monitors[0])).toBe(true);
+    expect(component.shouldShowToggleAction(monitors[1])).toBe(true);
+  });
+
+  it('renders Enable/Disable action only for non-error monitors', async (): Promise<void> => {
+    const rowButtons = Array.from(fixture.nativeElement.querySelectorAll('.row-action-button')) as HTMLButtonElement[];
+
+    const getMenuLabels = (): string[] => {
+      const panels = Array.from(document.body.querySelectorAll('.mat-mdc-menu-panel'));
+      const activePanel = panels.at(-1);
+      return activePanel
+        ? Array.from(activePanel.querySelectorAll('.mat-mdc-menu-item span')).map(
+            (span) => span.textContent?.trim() ?? '',
+          )
+        : [];
+    };
+
+    const closeMenu = async (): Promise<void> => {
+      document.body.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+    };
+
+    rowButtons[0].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const enabledMenuLabels = getMenuLabels();
+    expect(enabledMenuLabels).toContain('Edit');
+    expect(enabledMenuLabels).toContain('Disable');
+    expect(enabledMenuLabels).not.toContain('Enable');
+
+    await closeMenu();
+
+    rowButtons[1].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const disabledMenuLabels = getMenuLabels();
+    expect(disabledMenuLabels).toContain('Edit');
+    expect(disabledMenuLabels).toContain('Enable');
+    expect(disabledMenuLabels).not.toContain('Disable');
+
+    await closeMenu();
+
+    rowButtons[2].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const errorMenuLabels = getMenuLabels();
+    expect(errorMenuLabels).toContain('Edit');
+    expect(errorMenuLabels).not.toContain('Disable');
+    expect(errorMenuLabels).not.toContain('Enable');
   });
 });
