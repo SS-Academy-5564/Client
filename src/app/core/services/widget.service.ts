@@ -1,38 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { CreateWidgetRequest, CreateWidgetResult, Widget } from '@core/models/widget.model';
 import { ApiResponse } from '@core/models/api-response';
 import { environment } from '@/environments/environment';
-
-/** Raw shape returned by the server — value is an array of decimal/metric numbers. */
-type WidgetApiDto = Omit<Widget, 'value' | 'chartData'> & {
-  value: number[];
-};
-
-const CHART_TYPES = new Set(['line-chart', 'bar-chart', 'horizontal-bar-chart', 'donut-chart']);
-
-function mapWidget(dto: WidgetApiDto): Widget {
-  const { value, ...rest } = dto;
-  const raw = value ?? [];
-
-  if (CHART_TYPES.has(dto.type)) {
-    return {
-      ...rest,
-      chartData: {
-        labels: raw.map((_, i) => String(i + 1)),
-        values: raw,
-      },
-    };
-  }
-
-  // stat-card: single aggregate value
-  return {
-    ...rest,
-    value: raw.length > 0 ? raw[0] : '--',
-  };
-}
 
 @Injectable({
   providedIn: 'root',
@@ -53,11 +25,9 @@ export class WidgetService {
   /**
    * Retrieves all dashboard widgets for the given dashboard tab.
    * @param dashboardTabId The unique identifier of the dashboard tab.
-   * @returns An observable with the API response containing mapped widget data.
+   * @returns An observable with the API response containing widget data.
    */
   getWidgets(dashboardTabId: string): Observable<ApiResponse<Widget[]>> {
-    return this.http
-      .get<ApiResponse<WidgetApiDto[]>>(`${this.apiUrl}/${dashboardTabId}/widgets`)
-      .pipe(map((res) => ({ ...res, data: res.data.map(mapWidget) })));
+    return this.http.get<ApiResponse<Widget[]>>(`${this.apiUrl}/${dashboardTabId}/widgets`);
   }
 }

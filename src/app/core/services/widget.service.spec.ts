@@ -3,7 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { environment } from '@environments/environment';
-import { CreateWidgetRequest, CreateWidgetResult } from '@core/models/widget.model';
+import { CreateWidgetRequest, CreateWidgetResult, Widget } from '@core/models/widget.model';
 import { WidgetService } from './widget.service';
 
 describe('WidgetService', (): void => {
@@ -61,7 +61,7 @@ describe('WidgetService', (): void => {
   describe('getWidgets', (): void => {
     const tabId = '00000000-0000-0000-0000-000000000001';
 
-    it('should GET widgets and map chart types with numeric values and 1-based labels', (): void => {
+    it('should GET widgets and return them as-is from the API', (): void => {
       const rawApiResponse = {
         data: [
           {
@@ -79,48 +79,6 @@ describe('WidgetService', (): void => {
             id: 'widget-2',
             dashboardTabId: tabId,
             monitorId: 'mon-2',
-            type: 'bar-chart',
-            title: 'Requests',
-            metric: 'requests',
-            timeRange: '2026-08-12T10:00:00.000Z',
-            settings: null,
-            value: [500, 750],
-          },
-        ],
-        pagination: null,
-        success: true,
-        errors: [],
-      };
-
-      service.getWidgets(tabId).subscribe((response): void => {
-        expect(response.data).toHaveLength(2);
-
-        const lineChart = response.data[0];
-        expect(lineChart.chartData).toEqual({
-          labels: ['1', '2', '3'],
-          values: [120.5, 95.2, 140.0],
-        });
-        expect(lineChart.value).toBeUndefined();
-
-        const barChart = response.data[1];
-        expect(barChart.chartData).toEqual({
-          labels: ['1', '2'],
-          values: [500, 750],
-        });
-      });
-
-      const req = httpTesting.expectOne(`${environment.apiBaseUrl}/dashboard/${tabId}/widgets`);
-      expect(req.request.method).toBe('GET');
-      req.flush(rawApiResponse);
-    });
-
-    it('should map stat-card with first value from array or fallback to --', (): void => {
-      const rawApiResponse = {
-        data: [
-          {
-            id: 'widget-stat-1',
-            dashboardTabId: tabId,
-            monitorId: 'mon-1',
             type: 'stat-card',
             title: 'Availability',
             metric: 'availability',
@@ -128,72 +86,24 @@ describe('WidgetService', (): void => {
             settings: null,
             value: [99.95],
           },
-          {
-            id: 'widget-stat-2',
-            dashboardTabId: tabId,
-            monitorId: 'mon-2',
-            type: 'stat-card',
-            title: 'Errors',
-            metric: 'errors',
-            timeRange: '2026-08-12T10:00:00.000Z',
-            settings: null,
-            value: [],
-          },
         ],
         pagination: null,
         success: true,
         errors: [],
       };
 
+      let result: Widget[] | undefined;
       service.getWidgets(tabId).subscribe((response): void => {
-        expect(response.data[0].value).toBe(99.95);
-        expect(response.data[0].chartData).toBeUndefined();
-
-        expect(response.data[1].value).toBe('--');
+        result = response.data;
       });
 
       const req = httpTesting.expectOne(`${environment.apiBaseUrl}/dashboard/${tabId}/widgets`);
+      expect(req.request.method).toBe('GET');
       req.flush(rawApiResponse);
-    });
 
-    it('should map horizontal-bar-chart and donut-chart types properly', (): void => {
-      const rawApiResponse = {
-        data: [
-          {
-            id: 'widget-donut',
-            dashboardTabId: tabId,
-            monitorId: 'mon-1',
-            type: 'donut-chart',
-            metric: 'requests',
-            value: [100, 200, 300],
-          },
-          {
-            id: 'widget-hbar',
-            dashboardTabId: tabId,
-            monitorId: 'mon-2',
-            type: 'horizontal-bar-chart',
-            metric: 'requests',
-            value: [450],
-          },
-        ],
-        pagination: null,
-        success: true,
-        errors: [],
-      };
-
-      service.getWidgets(tabId).subscribe((response): void => {
-        expect(response.data[0].chartData).toEqual({
-          labels: ['1', '2', '3'],
-          values: [100, 200, 300],
-        });
-        expect(response.data[1].chartData).toEqual({
-          labels: ['1'],
-          values: [450],
-        });
-      });
-
-      const req = httpTesting.expectOne(`${environment.apiBaseUrl}/dashboard/${tabId}/widgets`);
-      req.flush(rawApiResponse);
+      expect(result).toHaveLength(2);
+      expect(result![0].value).toEqual([120.5, 95.2, 140.0]);
+      expect(result![1].value).toEqual([99.95]);
     });
   });
 });

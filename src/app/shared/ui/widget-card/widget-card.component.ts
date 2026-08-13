@@ -5,6 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Widget } from '@/app/core/models/widget.model';
+import { ChartData } from '@/app/core/models/chart-data-model';
 import {
   createBarChartOptions,
   createDonutChartOptions,
@@ -25,10 +26,11 @@ export class WidgetCardComponent {
 
   readonly chartOptions = computed<EChartsOption>(() => {
     const widget = this.widget();
+    const raw = widget.value ?? [];
 
-    const data = widget.chartData ?? {
-      labels: [],
-      values: [],
+    const data: ChartData = {
+      labels: raw.map((_, i) => String(i + 1)),
+      values: raw,
     };
 
     switch (widget.type) {

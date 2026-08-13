@@ -17,10 +17,7 @@ describe('WidgetCardComponent', () => {
     type: 'line-chart',
     metric: 'ResponseTime',
     title: 'Response Time',
-    chartData: {
-      labels: ['10:00', '10:05'],
-      values: [100, 200],
-    },
+    value: [100, 200],
   };
 
   beforeEach(async () => {

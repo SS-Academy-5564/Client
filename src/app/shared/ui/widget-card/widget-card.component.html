@@ -36,7 +36,7 @@
       @case ('stat-card') {
         <div class="widget-stat">
           <div class="stat-value">
-            {{ widget().value ?? '--' }}
+            {{ widget().value?.[0] ?? '--' }}
           </div>
 
           <div [class]="'stat-trend ' + (widget().trendType || 'up')">
