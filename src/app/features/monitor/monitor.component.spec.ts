@@ -269,13 +269,9 @@ describe('MonitorComponent', () => {
     );
   });
 
-  it('sets editingMonitorId when onOpenEditPanel is called', () => {
+  it('sets editingMonitorId on open and clears it on close', () => {
     component.onOpenEditPanel(monitors[0]);
     expect(component['editingMonitorId']()).toBe('enabled-monitor');
-  });
-
-  it('clears editingMonitorId when onCloseEditPanel is called', () => {
-    component.onOpenEditPanel(monitors[0]);
     component.onCloseEditPanel();
     expect(component['editingMonitorId']()).toBeNull();
   });
@@ -342,13 +338,10 @@ describe('MonitorComponent', () => {
     expect(component['monitors']().find((item) => item.id === 'enabled-monitor')?.status).toBe(MonitorStatus.Disabled);
   });
 
-  it('returns false for error monitors in toggle visibility helper', (): void => {
-    expect(component.shouldShowToggleAction(monitors[2])).toBe(false);
-  });
-
-  it('returns true for enabled and disabled monitors in toggle visibility helper', (): void => {
+  it('shows the toggle action for enabled/disabled monitors but hides it for error monitors', (): void => {
     expect(component.shouldShowToggleAction(monitors[0])).toBe(true);
     expect(component.shouldShowToggleAction(monitors[1])).toBe(true);
+    expect(component.shouldShowToggleAction(monitors[2])).toBe(false);
   });
 
   it('renders Enable/Disable action only for non-error monitors', async (): Promise<void> => {
