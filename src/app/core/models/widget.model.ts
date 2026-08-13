@@ -1,16 +1,14 @@
 import { ChartData } from './chart-data-model';
 
-/**
- * Represents a dashboard widget configuration and its associated display/metric data.
- */
 export type Widget = {
   id: string;
   monitorId: string;
   type: string;
   metric: string;
-  title?: string;
-  subtitle?: string;
+  title?: string | null;
+  subtitle?: string | null;
   timeRange?: string;
+  settings?: string | null;
   serviceName?: string;
   value?: number[];
   chartData?: ChartData;
@@ -18,25 +16,28 @@ export type Widget = {
   trendValue?: string;
 };
 
-/**
- * Request payload for creating a new dashboard widget.
- */
 export type CreateWidgetRequest = {
   dashboardTabId: string;
   monitorId: string;
   type: string;
-
-  title?: string;
-  subtitle?: string;
-
+  title: string | null;
+  subtitle: string | null;
   metric: string;
   timeRange: string;
   settings: string | null;
 };
 
-/**
- * Result returned upon successful widget creation.
- */
+export type UpdateWidgetRequest = {
+  widgetId: string;
+  monitorId: string;
+  type: string;
+  title: string | null;
+  subtitle: string | null;
+  metric: string;
+  timeRange: string;
+  settings: string | null;
+};
+
 export type CreateWidgetResult = {
   widgetId: string;
 };

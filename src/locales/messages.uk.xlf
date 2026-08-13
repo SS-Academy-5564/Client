@@ -155,7 +155,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">48</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
@@ -171,7 +171,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">49</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
@@ -223,7 +223,39 @@
         <target>Вхід виконано успішно.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="editWidgetTitle" datatype="html">
+        <source>Edit widget</source>
+        <target>Редагувати віджет</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/widget-form/widget-form.component.ts</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="updateWidget" datatype="html">
+        <source>Update widget</source>
+        <target>Оновити віджет</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/widget-form/widget-form.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="widgetCreateFailed" datatype="html">
+        <source>Failed to create widget.</source>
+        <target>Не вдалося створити віджет.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/overview/overview.component.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="widgetUpdateFailed" datatype="html">
+        <source>Failed to update widget.</source>
+        <target>Не вдалося оновити віджет.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/overview/overview.component.ts</context>
+          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="registerTitle" datatype="html">
@@ -450,12 +482,12 @@
           <context context-type="linenumber">153,155</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="register.success" datatype="html">
-        <source>Registration successful. You can now log in.</source>
-        <target>Реєстрацію завершено. Тепер ви можете увійти.</target>
+      <trans-unit id="registrationMissingResendCooldown" datatype="html">
+        <source>We could not complete registration. Please try again.</source>
+        <target>Не вдалося завершити реєстрацію. Спробуйте ще раз.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">93</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resetPasswordTitle" datatype="html">
@@ -1406,6 +1438,14 @@
           <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="monitorsRealtimeConnectionError" datatype="html">
+        <source>Real-time updates are unavailable.</source>
+        <target>Оновлення в реальному часі недоступні.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="monitorIntervalSeconds" datatype="html">
         <source><x id="INTERVAL" equiv-text="intervalInSeconds"/>s</source>
         <target><x id="INTERVAL" equiv-text="intervalInSeconds"/>с</target>
@@ -1564,6 +1604,274 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/ui/pagination/pagination.component.html</context>
           <context context-type="linenumber">33,35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="checkEmailTitle" datatype="html">
+        <source>Check your email</source>
+        <target>Перевірте електронну пошту</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">15,17</context>
+        </context-group>
+        <note priority="1" from="description">check-email title</note>
+      </trans-unit>
+      <trans-unit id="checkEmailMessage" datatype="html">
+        <source>We sent you a verification email. Open the link in that message to finish creating your Pulse account.</source>
+        <target>Ми надіслали вам лист для підтвердження. Відкрийте посилання в ньому, щоб завершити створення облікового запису Pulse.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">17,19</context>
+        </context-group>
+        <note priority="1" from="description">check-email message</note>
+      </trans-unit>
+      <trans-unit id="checkEmailHint" datatype="html">
+        <source>If you don&apos;t see it, check your spam or junk folder.</source>
+        <target>Якщо листа немає, перевірте папки «Спам» або «Небажана пошта».</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">19,21</context>
+        </context-group>
+        <note priority="1" from="description">check-email hint</note>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendPrompt" datatype="html">
+        <source>Didn&apos;t receive the verification email?</source>
+        <target>Не отримали листа для підтвердження?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">32,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendCountdown" datatype="html">
+        <source> Resend in <x id="INTERPOLATION" equiv-text="{{ resendCountdown() | number }}"/>s </source>
+        <target> Надіслати знову через <x id="INTERPOLATION" equiv-text="{{ resendCountdown() | number }}"/>с </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">35,36</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">96,97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendSending" datatype="html">
+        <source>Sending…</source>
+        <target>Надсилання…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">40,42</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">105,107</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendButton" datatype="html">
+        <source>Resend Email</source>
+        <target>Надіслати лист повторно</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">42,44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">107,109</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendSuccess" datatype="html">
+        <source>If eligible, a new verification email has been sent.</source>
+        <target>Якщо обліковий запис ще не підтверджено, новий лист для підтвердження надіслано.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendRateLimit" datatype="html">
+        <source>Please wait before trying again.</source>
+        <target>Зачекайте перед повторною спробою.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">161</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="emailVerificationResendFailure" datatype="html">
+        <source>We could not process the request. Please try again.</source>
+        <target>Не вдалося обробити запит. Спробуйте ще раз.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
+          <context context-type="linenumber">95</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">162</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="loginVerificationResendPrompt" datatype="html">
+        <source> Didn&apos;t receive your verification email? </source>
+        <target> Не отримали листа для підтвердження? </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
+          <context context-type="linenumber">92,94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="checkEmailSignIn" datatype="html">
+        <source>Sign in</source>
+        <target>Увійти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <note priority="1" from="description">check-email sign in</note>
+      </trans-unit>
+      <trans-unit id="verifyEmailVerifyingTitle" datatype="html">
+        <source>Verifying your email</source>
+        <target>Підтверджуємо вашу електронну адресу</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">11,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailVerifyingMessage" datatype="html">
+        <source> Please wait while we confirm your verification link. </source>
+        <target> Зачекайте, поки ми перевіримо посилання для підтвердження. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">13,17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSuccessTitle" datatype="html">
+        <source>Email verified</source>
+        <target>Електронну адресу підтверджено</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">24,25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSuccessMessage" datatype="html">
+        <source> Your email address has been verified successfully. You can now sign in to Pulse. </source>
+        <target> Вашу електронну адресу успішно підтверджено. Тепер ви можете увійти до Pulse. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSignIn" datatype="html">
+        <source>Sign in</source>
+        <target>Увійти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailExpiredTitle" datatype="html">
+        <source>Verification link expired</source>
+        <target>Термін дії посилання минув</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">45,46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailExpiredMessage" datatype="html">
+        <source> This link is no longer valid. Request a new verification email to finish creating your account. </source>
+        <target> Це посилання більше не дійсне. Запросіть новий лист для підтвердження, щоб завершити створення облікового запису. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">47,50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendSuccess" datatype="html">
+        <source> A new verification email has been sent. Check your inbox. </source>
+        <target> Новий лист для підтвердження надіслано. Перевірте вхідні повідомлення. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">55,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSentButton" datatype="html">
+        <source>Email sent</source>
+        <target>Лист надіслано</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">66,67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailSendingButton" datatype="html">
+        <source>Sending…</source>
+        <target>Надсилаємо…</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">73,74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendButton" datatype="html">
+        <source>Resend email</source>
+        <target>Надіслати лист повторно</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">80,81</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailExpiredSignIn" datatype="html">
+        <source>Sign in</source>
+        <target>Увійти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailInvalidTitle" datatype="html">
+        <source>Invalid verification link</source>
+        <target>Недійсне посилання для підтвердження</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">103,104</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailInvalidMessage" datatype="html">
+        <source> This verification link is invalid or has already been used. Check that you opened the complete link from your email. </source>
+        <target> Це посилання для підтвердження недійсне або вже було використане. Переконайтеся, що ви відкрили повне посилання з листа. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">105,108</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailInvalidSignIn" datatype="html">
+        <source>Sign in</source>
+        <target>Увійти</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.html</context>
+          <context context-type="linenumber">111</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendCooldown" datatype="html">
+        <source>Please wait before requesting another verification email.</source>
+        <target>Зачекайте, перш ніж запитувати ще один лист для підтвердження.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.ts</context>
+          <context context-type="linenumber">97</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="verifyEmailResendError" datatype="html">
+        <source>We couldn&apos;t send another email. Please try again.</source>
+        <target>Не вдалося надіслати ще один лист. Спробуйте ще раз.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/verify-email/verify-email.component.ts</context>
+          <context context-type="linenumber">98</context>
         </context-group>
       </trans-unit>
     </body>

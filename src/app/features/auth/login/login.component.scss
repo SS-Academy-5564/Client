@@ -160,6 +160,60 @@ mat-card-content {
   }
 }
 
+.resend-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  text-align: center;
+}
+
+.resend-text {
+  color: var(--text-gray);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.resend-countdown {
+  color: var(--primary-purple);
+}
+
+.resend-button {
+  padding: 0;
+  border: none;
+  color: var(--primary-purple);
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.verification-resend-feedback {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.verification-resend-feedback-error {
+  color: var(--color-error-text);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+}
+
 // Media Query for smaller screens
 @media (max-width: 480px) {
   mat-card-content,

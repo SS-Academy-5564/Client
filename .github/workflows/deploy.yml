@@ -27,6 +27,7 @@ jobs:
           export const environment = {
             production: true,
             apiBaseUrl: '${{ vars.API_URL }}',
+            hubsBaseUrl: '${{ vars.HUBS_URL }}',
           };
           EOF
       - run: npm run build -- --configuration=production

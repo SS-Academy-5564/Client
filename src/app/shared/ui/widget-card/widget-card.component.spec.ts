@@ -89,12 +89,14 @@ describe('WidgetCardComponent', () => {
     expect(component.chartOptions()).toEqual({});
   });
 
-  it('should call edit widget', () => {
-    const spy = vi.spyOn(console, 'log');
+  it('should emit edit event with the widget', () => {
+    const editSpy = vi.fn();
+
+    component.edit.subscribe(editSpy);
 
     component.editWidget();
 
-    expect(spy).toHaveBeenCalledWith('Edit', mockWidget);
+    expect(editSpy).toHaveBeenCalledWith(mockWidget);
   });
 
   it('should call delete widget', () => {

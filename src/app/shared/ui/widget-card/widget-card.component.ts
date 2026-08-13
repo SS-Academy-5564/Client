@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { NgxEchartsDirective } from 'ngx-echarts';
 import { EChartsOption } from 'echarts';
 import { MatMenuModule } from '@angular/material/menu';
@@ -22,6 +22,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WidgetCardComponent {
+  /** The widget rendered by the card. */
   readonly widget = input.required<Widget>();
 
   readonly displayTitle = computed(() => {
@@ -82,6 +83,10 @@ export class WidgetCardComponent {
     return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   });
 
+  /** Emits the widget when its edit action is triggered. */
+  readonly edit = output<Widget>();
+
+  /** The ECharts options for the widget's chart. */
   readonly chartOptions = computed<EChartsOption>(() => {
     const widget = this.widget();
     const raw = widget.value ?? [];
@@ -109,10 +114,12 @@ export class WidgetCardComponent {
     }
   });
 
+  /** Triggers the edit action for the widget. */
   editWidget(): void {
-    console.log('Edit', this.widget());
+    this.edit.emit(this.widget());
   }
 
+  /** Triggers the delete action for the widget. */
   deleteWidget(): void {
     console.log('Delete', this.widget());
   }
