@@ -60,16 +60,18 @@ describe('CreateWidgetComponent', () => {
 
     component.onSubmit();
 
-    expect(createdSpy).toHaveBeenCalledWith({
-      dashboardTabId: '00000000-0000-0000-0000-000000000001',
-      monitorId: 'mon-1',
-      type: 'line-chart',
-      title: 'Response chart',
-      subtitle: 'Last 24 hours',
-      metric: 'responseTime',
-      timeRange: '24h',
-      settings: '',
-    });
+    expect(createdSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dashboardTabId: '00000000-0000-0000-0000-000000000001',
+        monitorId: 'mon-1',
+        type: 'line-chart',
+        title: 'Response chart',
+        subtitle: 'Last 24 hours',
+        metric: 'responseTime',
+        timeRange: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
+        settings: '',
+      }),
+    );
   });
 
   it('should not emit created event when form is invalid', () => {

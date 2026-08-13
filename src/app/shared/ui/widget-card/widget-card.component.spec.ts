@@ -13,6 +13,7 @@ describe('WidgetCardComponent', () => {
 
   const mockWidget: Widget = {
     id: '1',
+    monitorId: 'mon-1',
     type: 'line-chart',
     metric: 'ResponseTime',
     title: 'Response Time',

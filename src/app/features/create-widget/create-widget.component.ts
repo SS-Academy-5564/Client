@@ -95,15 +95,31 @@ export class CreateWidgetComponent {
     this.closed.emit();
   }
 
+  private resolveTimeRange(range: string): string {
+    const now = new Date();
+    const units: Record<string, number> = {
+      h: 60 * 60 * 1000,
+      d: 24 * 60 * 60 * 1000,
+    };
+    const match = range.match(/^(\d+)([hd])$/);
+    if (match) {
+      const ms = parseInt(match[1], 10) * units[match[2]];
+      return new Date(now.getTime() - ms).toISOString();
+    }
+    return range;
+  }
+
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
+    const raw = this.form.getRawValue();
     this.created.emit({
       dashboardTabId: this.dashboardTabId(),
-      ...this.form.getRawValue(),
+      ...raw,
+      timeRange: this.resolveTimeRange(raw.timeRange),
     });
   }
 }

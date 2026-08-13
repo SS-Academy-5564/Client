@@ -88,16 +88,19 @@ describe('OverviewComponent', () => {
     component._widgets.set([
       {
         id: '1',
+        monitorId: 'mon-1',
         type: 'bar-chart',
         metric: 'requests',
       },
       {
         id: '2',
+        monitorId: 'mon-1',
         type: 'stat-card',
         metric: 'availability',
       },
       {
         id: '3',
+        monitorId: 'mon-1',
         type: 'line-chart',
         metric: 'responseTime',
       },
