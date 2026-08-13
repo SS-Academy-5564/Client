@@ -9,7 +9,7 @@
         i18n="@@addWidget"
         mat-flat-button
         type="button"
-        (click)="openCreateWidget()">
+        (click)="openWidgetForm()">
         <mat-icon>add</mat-icon>
         Add widget
       </button>
@@ -27,13 +27,15 @@
     </div>
   </header>
 
-  <app-create-widget
+  <app-widget-form
     [dashboardTabId]="dashboardTabId"
-    [error]="createError()"
-    [isCreateWidgetDrawerOpen]="isCreateWidgetOpen()"
+    [error]="formError()"
+    [isOpen]="isWidgetFormOpen()"
     [submitting]="submitting()"
-    (closed)="closeCreateWidget()"
-    (created)="onWidgetCreated($event)" />
+    [widget]="editingWidget()"
+    (closed)="closeWidgetForm()"
+    (created)="onWidgetCreated($event)"
+    (updated)="onWidgetUpdated($event)" />
 
   <div class="widgets-grid">
     @for (widget of widgets(); track widget.id) {
@@ -42,7 +44,8 @@
         [class.widget--full]="widget.type === 'line-chart' || widget.type === 'bar-chart'"
         [class.widget--half]="widget.type === 'donut-chart' || widget.type === 'horizontal-bar-chart'"
         [class.widget--stat]="widget.type === 'stat-card'"
-        [widget]="widget" />
+        [widget]="widget"
+        (edit)="editWidget($event)" />
     }
   </div>
 </section>
