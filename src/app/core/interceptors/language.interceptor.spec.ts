@@ -28,13 +28,28 @@ describe('languageInterceptor', () => {
     httpMock.verify();
   });
 
-  it('should send the active UI locale to the Pulse API', (): void => {
-    const url = `${environment.apiBaseUrl}/auth/register`;
+  it.each([
+    '/auth/register',
+    '/auth/email-verification/resend',
+    '/auth/email-verification/resend-expired',
+    '/auth/password-reset/request',
+  ])('should send the active UI locale to %s', (path): void => {
+    const url = `${environment.apiBaseUrl}${path}`;
 
     http.post(url, {}).subscribe();
 
     const request = httpMock.expectOne(url);
     expect(request.request.headers.get('Accept-Language')).toBe('uk');
+    request.flush({});
+  });
+
+  it('should not send the active UI locale to API requests that do not create localized emails', (): void => {
+    const url = `${environment.apiBaseUrl}/auth/login`;
+
+    http.post(url, {}).subscribe();
+
+    const request = httpMock.expectOne(url);
+    expect(request.request.headers.has('Accept-Language')).toBe(false);
     request.flush({});
   });
 

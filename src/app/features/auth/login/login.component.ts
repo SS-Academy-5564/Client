@@ -182,7 +182,7 @@ export class LoginComponent implements OnDestroy {
   }
 
   private getHttpStatus(error: unknown): number | undefined {
-    return typeof error === 'object' && error !== null && 'status' in error
+    return error !== null && typeof error === 'object' && 'status' in error
       ? (error as { status?: number }).status
       : undefined;
   }
