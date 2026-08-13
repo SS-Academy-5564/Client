@@ -93,7 +93,7 @@
             </span>
             @if (verificationResendCountdown() > 0) {
               <span class="resend-text resend-countdown" i18n="@@emailVerificationResendCountdown">
-                Resend in {{ verificationResendCountdown() }}s
+                Resend in {{ verificationResendCountdown() | number }}s
               </span>
             } @else {
               <button

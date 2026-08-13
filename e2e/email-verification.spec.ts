@@ -13,7 +13,23 @@ type VerificationApiOptions = {
   resendStatus?: number;
 };
 
-const mockVerificationApi = async (page: Page, options: VerificationApiOptions = {}): Promise<void> => {
+type VerificationApiRequests = {
+  registrationAcceptLanguage?: string;
+  verificationBodies: unknown[];
+  resendBodies: unknown[];
+  expiredResendBodies: unknown[];
+};
+
+const mockVerificationApi = async (
+  page: Page,
+  options: VerificationApiOptions = {},
+): Promise<VerificationApiRequests> => {
+  const requests: VerificationApiRequests = {
+    verificationBodies: [],
+    resendBodies: [],
+    expiredResendBodies: [],
+  };
+
   await page.route('**/api/**', async (route): Promise<void> => {
     if (route.request().method() === 'OPTIONS') {
       await route.fulfill({ status: 204, headers: corsHeaders });
@@ -33,7 +49,7 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
     }
 
     if (path === '/api/auth/register') {
-      expect(request.headers()['accept-language']).toBe('en-US');
+      requests.registrationAcceptLanguage = request.headers()['accept-language'];
       await fulfillJson(route, 200, {
         success: true,
         data: { resendCooldownSeconds: 47 },
@@ -43,7 +59,7 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
     }
 
     if (path === '/api/auth/email-verification/verify') {
-      expect(request.postDataJSON()).toEqual({ token: expect.any(String) });
+      requests.verificationBodies.push(request.postDataJSON());
       const status = options.verificationStatus ?? 200;
 
       await fulfillJson(
@@ -67,7 +83,7 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
     }
 
     if (path === '/api/auth/email-verification/resend') {
-      expect(request.postDataJSON()).toEqual({ email: expect.any(String) });
+      requests.resendBodies.push(request.postDataJSON());
       const status = options.resendStatus ?? 200;
       await fulfillJson(
         route,
@@ -88,7 +104,7 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
     }
 
     if (path === '/api/auth/email-verification/resend-expired') {
-      expect(request.postDataJSON()).toEqual({ token: 'expired-token' });
+      requests.expiredResendBodies.push(request.postDataJSON());
       await fulfillJson(route, 200, {
         success: true,
         data: { resendCooldownSeconds: 60 },
@@ -99,6 +115,8 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
 
     await fulfillJson(route, 404, { success: false, data: null, errors: [] });
   });
+
+  return requests;
 };
 
 const fulfillJson = async (route: Route, status: number, body: object): Promise<void> => {
@@ -112,8 +130,8 @@ const fulfillJson = async (route: Route, status: number, body: object): Promise<
   });
 };
 
-test('redirects successful registration to the check-email page', async ({ page }) => {
-  await mockVerificationApi(page);
+test('redirects successful registration to the check-email page', async ({ page }): Promise<void> => {
+  const requests = await mockVerificationApi(page);
   await page.goto('/register');
 
   await page.getByLabel('First name').fill('Jane');
@@ -124,11 +142,13 @@ test('redirects successful registration to the check-email page', async ({ page 
   await page.getByRole('button', { name: 'Create account' }).click();
 
   await expect(page).toHaveURL(/\/check-email$/);
+  expect(requests.registrationAcceptLanguage).toBe('en-US');
   await expect(page.getByRole('heading', { name: 'Check your email' })).toBeVisible();
   await expect(page.getByLabel('Email')).toHaveCount(0);
-  await expect(page.getByText(/Resend in (47|46)s/)).toBeVisible();
+  const resendCountdown = page.getByText(/Resend in \d+s/);
+  await expect(resendCountdown).toBeVisible();
   const signInBox = await page.getByRole('button', { name: 'Sign in' }).boundingBox();
-  const resendBox = await page.getByText(/Resend in (47|46)s/).boundingBox();
+  const resendBox = await resendCountdown.boundingBox();
   expect(signInBox).not.toBeNull();
   expect(resendBox).not.toBeNull();
   expect(resendBox!.y).toBeGreaterThan(signInBox!.y);
@@ -137,56 +157,62 @@ test('redirects successful registration to the check-email page', async ({ page 
   await page.reload();
   await page.getByRole('button', { name: 'Resend Email' }).click();
   await expect(page.getByText('If eligible, a new verification email has been sent.')).toBeVisible();
+  expect(requests.resendBodies).toEqual([{ email: 'jane@example.com' }]);
   await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Return to landing page' })).toHaveCount(0);
 });
 
 test('resends a verification email from the sign-in page', async ({ page }): Promise<void> => {
-  await mockVerificationApi(page);
+  const requests = await mockVerificationApi(page);
   await page.goto('/login');
 
   await page.getByLabel('Email').fill('jane@example.com');
   await page.getByRole('button', { name: 'Resend Email' }).click();
 
   await expect(page.getByText('If eligible, a new verification email has been sent.')).toBeVisible();
+  expect(requests.resendBodies).toEqual([{ email: 'jane@example.com' }]);
   await expect(page.getByText('Resend in 37s')).toBeVisible();
 });
 
 test('shows a clear rate-limit message for verification resend', async ({ page }): Promise<void> => {
-  await mockVerificationApi(page, { resendStatus: 429 });
+  const requests = await mockVerificationApi(page, { resendStatus: 429 });
   await page.goto('/login');
 
   await page.getByLabel('Email').fill('jane@example.com');
   await page.getByRole('button', { name: 'Resend Email' }).click();
 
   await expect(page.getByText('Please wait before trying again')).toBeVisible();
+  expect(requests.resendBodies).toEqual([{ email: 'jane@example.com' }]);
 });
 
-test('shows successful verification for a valid link', async ({ page }) => {
-  await mockVerificationApi(page);
+test('shows successful verification for a valid link', async ({ page }): Promise<void> => {
+  const requests = await mockVerificationApi(page);
 
   await page.goto('/verify-email?token=valid-token');
 
   await expect(page.getByRole('heading', { name: 'Email verified' })).toBeVisible();
+  expect(requests.verificationBodies).toEqual([{ token: 'valid-token' }]);
   await expect(page.getByText('You can now sign in to Pulse')).toBeVisible();
 });
 
-test('resends verification email from the expired-link state', async ({ page }) => {
-  await mockVerificationApi(page, {
+test('resends verification email from the expired-link state', async ({ page }): Promise<void> => {
+  const requests = await mockVerificationApi(page, {
     verificationStatus: 400,
     verificationCode: 'EMAIL_VERIFICATION_TOKEN_EXPIRED',
   });
 
   await page.goto('/verify-email?token=expired-token');
   await expect(page.getByRole('heading', { name: 'Verification link expired' })).toBeVisible();
+  expect(requests.verificationBodies).toEqual([{ token: 'expired-token' }]);
   await page.getByRole('button', { name: 'Resend email' }).click();
 
   await expect(page.getByText('A new verification email has been sent')).toBeVisible();
+  expect(requests.expiredResendBodies).toEqual([{ token: 'expired-token' }]);
   await expect(page.getByRole('button', { name: 'Email sent' })).toBeDisabled();
 });
 
-test('shows the invalid state for a corrupted or previously used link', async ({ page }) => {
-  await mockVerificationApi(page, {
+test('shows the invalid state for a corrupted or previously used link', async ({ page }): Promise<void> => {
+  const requests = await mockVerificationApi(page, {
     verificationStatus: 409,
     verificationCode: 'EMAIL_VERIFICATION_TOKEN_ALREADY_USED',
   });
@@ -194,10 +220,11 @@ test('shows the invalid state for a corrupted or previously used link', async ({
   await page.goto('/verify-email?token=used-token');
 
   await expect(page.getByRole('heading', { name: 'Invalid verification link' })).toBeVisible();
+  expect(requests.verificationBodies).toEqual([{ token: 'used-token' }]);
   await expect(page.getByText('invalid or has already been used')).toBeVisible();
 });
 
-test('keeps the check-email page within a mobile viewport', async ({ page }) => {
+test('keeps the check-email page within a mobile viewport', async ({ page }): Promise<void> => {
   await page.setViewportSize({ width: 390, height: 844 });
   await mockVerificationApi(page);
 

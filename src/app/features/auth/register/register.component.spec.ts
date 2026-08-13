@@ -107,6 +107,31 @@ describe('RegisterComponent', () => {
     });
   });
 
+  it('should reject a registration response without resend cooldown guidance', (): void => {
+    authServiceMock.register.mockReturnValue(of({ success: true, data: {}, errors: [] }));
+
+    fillValidForm();
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Registration response is missing resend cooldown guidance');
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it.each([Number.NaN, Number.POSITIVE_INFINITY, -1])(
+    'should reject invalid resend cooldown value %s',
+    (resendCooldownSeconds: number): void => {
+      authServiceMock.register.mockReturnValue(of({ success: true, data: { resendCooldownSeconds }, errors: [] }));
+
+      fillValidForm();
+      component.onSubmit();
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.textContent).toContain('Registration response is missing resend cooldown guidance');
+      expect(router.navigate).not.toHaveBeenCalled();
+    },
+  );
+
   it('should display a generic error message for non-429 failures', () => {
     const errorResponse = { error: { message: 'Something went wrong' } };
     authServiceMock.register.mockReturnValue(throwError(() => errorResponse));

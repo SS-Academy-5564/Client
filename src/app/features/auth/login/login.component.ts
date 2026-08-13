@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,8 @@ import { LoginRequest } from '@core/models/login-model';
 import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
 import { EmailVerificationService } from '@core/services/email-verification.service';
+import { createCountdownTimer } from '@core/utils/countdown-timer.util';
+import { getHttpStatus } from '@core/utils/http-error.util';
 
 @Component({
   selector: 'app-login',
@@ -36,12 +38,12 @@ import { EmailVerificationService } from '@core/services/email-verification.serv
   styleUrl: './login.component.scss',
 })
 /** Presents the login form and navigates after successful authentication. */
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
   private readonly emailVerificationService = inject(EmailVerificationService);
-  private resendTimerId: ReturnType<typeof setInterval> | null = null;
+  private readonly verificationResendTimer = createCountdownTimer(inject(DestroyRef));
 
   /** Authentication facade used by the login view. */
   protected readonly authService = inject(AuthService);
@@ -62,18 +64,13 @@ export class LoginComponent implements OnDestroy {
   protected readonly verificationResendError = signal<string | null>(null);
 
   /** Remaining verification resend cooldown in seconds. */
-  protected readonly verificationResendCountdown = signal(0);
+  protected readonly verificationResendCountdown = this.verificationResendTimer.remainingSeconds;
 
   /** Reactive login form. */
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
-
-  /** Clears the verification resend timer when the sign-in page is destroyed. */
-  ngOnDestroy(): void {
-    this.clearVerificationResendTimer();
-  }
 
   /**
    * Toggles password visibility without propagating the button click.
@@ -142,10 +139,10 @@ export class LoginComponent implements OnDestroy {
           this.toastService.success(
             $localize`:@@emailVerificationResendSuccess:If eligible, a new verification email has been sent.`,
           );
-          this.startVerificationResendTimer(response.data.resendCooldownSeconds);
+          this.verificationResendTimer.start(response.data.resendCooldownSeconds);
         },
         error: (error: unknown) => {
-          const isRateLimited = this.getHttpStatus(error) === 429;
+          const isRateLimited = getHttpStatus(error) === 429;
           this.verificationResendError.set(
             isRateLimited
               ? $localize`:@@emailVerificationResendRateLimit:Please wait before trying again.`
@@ -153,37 +150,5 @@ export class LoginComponent implements OnDestroy {
           );
         },
       });
-  }
-
-  private startVerificationResendTimer(seconds: number): void {
-    this.clearVerificationResendTimer();
-    this.verificationResendCountdown.set(Math.max(0, seconds));
-
-    if (seconds <= 0) {
-      return;
-    }
-
-    this.resendTimerId = setInterval(() => {
-      const current = this.verificationResendCountdown();
-      if (current <= 1) {
-        this.clearVerificationResendTimer();
-        this.verificationResendCountdown.set(0);
-      } else {
-        this.verificationResendCountdown.set(current - 1);
-      }
-    }, 1000);
-  }
-
-  private clearVerificationResendTimer(): void {
-    if (this.resendTimerId !== null) {
-      clearInterval(this.resendTimerId);
-      this.resendTimerId = null;
-    }
-  }
-
-  private getHttpStatus(error: unknown): number | undefined {
-    return error !== null && typeof error === 'object' && 'status' in error
-      ? (error as { status?: number }).status
-      : undefined;
   }
 }

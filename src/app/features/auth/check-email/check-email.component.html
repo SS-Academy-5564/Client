@@ -22,6 +22,7 @@
 
       <div class="verification-actions">
         <app-button
+          buttonType="button"
           label="Sign in"
           i18n-label="check-email sign in@@checkEmailSignIn"
           type="primary"
@@ -33,7 +34,7 @@
         <span class="resend-text" i18n="@@emailVerificationResendPrompt">Didn't receive the verification email?</span>
         @if (resendCountdown() > 0) {
           <span class="resend-text resend-countdown" i18n="@@emailVerificationResendCountdown">
-            Resend in {{ resendCountdown() }}s
+            Resend in {{ resendCountdown() | number }}s
           </span>
         } @else {
           <button class="resend-button" type="button" [disabled]="isResending()" (click)="resendEmail()">

@@ -7,6 +7,7 @@ import { ApiResponse, LoginRequest, LoginResponse, LoginResult } from '@core/mod
 import { RegisterRequest, RegistrationResponse } from '@core/models/register-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { SignalrService } from '@core/services/signalr.service';
+import { getHttpStatus } from '@core/utils/http-error.util';
 import { environment } from '@environments/environment';
 
 /**
@@ -203,7 +204,7 @@ export class AuthService {
       catchError((error: unknown) => {
         this.currentUser.set(null);
 
-        if (this.getHttpStatus(error) === 401) {
+        if (getHttpStatus(error) === 401) {
           this.clearLocalSession();
           this.setError('Your session has expired. Please log in again.');
         } else {
@@ -272,11 +273,5 @@ export class AuthService {
     this.tokenStorage.setToken(result.accessToken, result.expiresAt);
     this.authenticationStateValue.set(AuthState.Authenticated);
     this.clearError();
-  }
-
-  private getHttpStatus(error: unknown): number | undefined {
-    return typeof error === 'object' && error !== null && 'status' in error
-      ? (error as { status?: number }).status
-      : undefined;
   }
 }

@@ -1,25 +1,27 @@
-import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { ROUTES } from '@core/constants/route.constants';
 import { EmailVerificationService } from '@core/services/email-verification.service';
 import { ToastService } from '@core/services/toast.service';
+import { createCountdownTimer } from '@core/utils/countdown-timer.util';
 import { ButtonComponent } from '@shared/ui/button/button.component';
 import { LogoComponent } from '@shared/ui/logo/logo.component';
 
 /** Explains the next registration step after the initial verification email is sent. */
 @Component({
   selector: 'app-check-email',
-  imports: [ButtonComponent, LogoComponent],
+  imports: [DecimalPipe, ButtonComponent, LogoComponent],
   templateUrl: './check-email.component.html',
   styleUrl: './check-email.component.scss',
 })
-export class CheckEmailComponent implements OnInit, OnDestroy {
+export class CheckEmailComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly emailVerificationService = inject(EmailVerificationService);
   private readonly toastService = inject(ToastService);
-  private timerId: ReturnType<typeof setInterval> | null = null;
+  private readonly resendTimer = createCountdownTimer(inject(DestroyRef));
 
   /** Application routes used by the page actions. */
   protected readonly routes = ROUTES;
@@ -34,27 +36,22 @@ export class CheckEmailComponent implements OnInit, OnDestroy {
   protected readonly resendError = signal<string | null>(null);
 
   /** Remaining client-side cooldown in seconds. */
-  protected readonly resendCountdown = signal(0);
+  protected readonly resendCountdown = this.resendTimer.remainingSeconds;
 
   /** Whether the resend action is unavailable during its cooldown or an active request. */
   protected readonly resendDisabled = computed(() => this.resendCountdown() > 0 || this.isResending());
 
   /** Reads registration state and starts the initial resend cooldown. */
   ngOnInit(): void {
-    const state = history.state as { email?: string; cooldown?: number };
+    const state = history.state as { email?: string; cooldown?: number } | null;
 
-    if (!state.email || typeof state.cooldown !== 'number') {
+    if (!state || !state.email || typeof state.cooldown !== 'number') {
       void this.router.navigate([ROUTES.REGISTER]);
       return;
     }
 
     this.email.set(state.email);
-    this.startResendTimer(state.cooldown);
-  }
-
-  /** Clears the active resend timer when the page is destroyed. */
-  ngOnDestroy(): void {
-    this.clearTimer();
+    this.resendTimer.start(state.cooldown);
   }
 
   /** Requests another verification message for the registered email address. */
@@ -74,7 +71,7 @@ export class CheckEmailComponent implements OnInit, OnDestroy {
           this.toastService.success(
             $localize`:@@emailVerificationResendSuccess:If eligible, a new verification email has been sent.`,
           );
-          this.startResendTimer(response.data.resendCooldownSeconds);
+          this.resendTimer.start(response.data.resendCooldownSeconds);
         },
         error: (error: unknown) => {
           const isRateLimited =
@@ -86,31 +83,5 @@ export class CheckEmailComponent implements OnInit, OnDestroy {
           );
         },
       });
-  }
-
-  private startResendTimer(seconds: number): void {
-    this.clearTimer();
-    this.resendCountdown.set(Math.max(0, seconds));
-
-    if (seconds <= 0) {
-      return;
-    }
-
-    this.timerId = setInterval(() => {
-      const current = this.resendCountdown();
-      if (current <= 1) {
-        this.clearTimer();
-        this.resendCountdown.set(0);
-      } else {
-        this.resendCountdown.set(current - 1);
-      }
-    }, 1000);
-  }
-
-  private clearTimer(): void {
-    if (this.timerId !== null) {
-      clearInterval(this.timerId);
-      this.timerId = null;
-    }
   }
 }

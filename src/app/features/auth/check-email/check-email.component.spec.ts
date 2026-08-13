@@ -1,14 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { of, Subject, throwError } from 'rxjs';
 
 import { EmailVerificationService } from '@core/services/email-verification.service';
+import { ROUTES } from '@core/constants/route.constants';
 import { ToastService } from '@core/services/toast.service';
 import { CheckEmailComponent } from './check-email.component';
 
 describe('CheckEmailComponent', (): void => {
   let fixture: ComponentFixture<CheckEmailComponent>;
+  let router: Router;
   let serviceMock: { requestResend: ReturnType<typeof vi.fn> };
   const toastServiceMock = { success: vi.fn() };
 
@@ -34,11 +36,13 @@ describe('CheckEmailComponent', (): void => {
       ],
     }).compileComponents();
 
+    router = TestBed.inject(Router);
+    vi.spyOn(router, 'navigate');
     fixture = TestBed.createComponent(CheckEmailComponent);
     fixture.detectChanges();
   });
 
-  it('should explain that a verification email was sent', () => {
+  it('should explain that a verification email was sent', (): void => {
     expect(fixture.nativeElement.textContent).toContain('Check your email');
     expect(fixture.nativeElement.textContent).toContain('We sent you a verification email');
   });
@@ -46,6 +50,16 @@ describe('CheckEmailComponent', (): void => {
   it('should reuse the registration email without rendering another email input', (): void => {
     expect(fixture.nativeElement.querySelector('input[type="email"]')).toBeNull();
     expect(buttonLabels()).toEqual(['Sign in', 'Resend Email']);
+  });
+
+  it('should redirect to registration when navigation state is null', (): void => {
+    fixture.destroy();
+    history.replaceState(null, '');
+
+    fixture = TestBed.createComponent(CheckEmailComponent);
+    fixture.detectChanges();
+
+    expect(router.navigate).toHaveBeenCalledWith([ROUTES.REGISTER]);
   });
 
   it('should request another email and show a privacy-safe confirmation', (): void => {

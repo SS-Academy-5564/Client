@@ -10,7 +10,7 @@ describe('EmailVerificationService', () => {
   let service: EmailVerificationService;
   let httpMock: { post: ReturnType<typeof vi.fn> };
 
-  beforeEach(() => {
+  beforeEach((): void => {
     httpMock = {
       post: vi.fn(),
     };
@@ -22,7 +22,7 @@ describe('EmailVerificationService', () => {
     service = TestBed.inject(EmailVerificationService);
   });
 
-  it('should post the token to the verification endpoint', () => {
+  it('should post the token to the verification endpoint', (): void => {
     httpMock.post.mockReturnValue(of({ success: true, data: null, errors: [] }));
 
     service.verify('verification-token').subscribe();

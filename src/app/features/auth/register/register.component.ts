@@ -97,7 +97,13 @@ export class RegisterComponent {
 
     this.authService.register(this.form.getRawValue() as RegisterRequest).subscribe({
       next: (response) => {
-        if (!response.data) {
+        const resendCooldownSeconds = response.data?.resendCooldownSeconds;
+
+        if (
+          typeof resendCooldownSeconds !== 'number' ||
+          !Number.isFinite(resendCooldownSeconds) ||
+          resendCooldownSeconds < 0
+        ) {
           this.error.set(
             $localize`:@@registrationMissingResendCooldown:Registration response is missing resend cooldown guidance`,
           );
@@ -107,7 +113,7 @@ export class RegisterComponent {
         this.router.navigate([ROUTES.CHECK_EMAIL], {
           state: {
             email: this.form.controls.email.value,
-            cooldown: response.data.resendCooldownSeconds,
+            cooldown: resendCooldownSeconds,
           },
         });
       },

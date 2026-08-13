@@ -24,7 +24,7 @@ const resendSuccessResponse = {
   errors: [],
 };
 
-describe('VerifyEmailComponent', () => {
+describe('VerifyEmailComponent', (): void => {
   let fixture: ComponentFixture<VerifyEmailComponent>;
   let serviceMock: EmailVerificationServiceMock;
   const queryParamMap = new BehaviorSubject<ParamMap>(convertToParamMap({ token: 'verification-token' }));
@@ -35,7 +35,7 @@ describe('VerifyEmailComponent', () => {
     queryParamMap: queryParamMap.asObservable(),
   };
 
-  beforeEach(async () => {
+  beforeEach(async (): Promise<void> => {
     serviceMock = {
       verify: vi.fn().mockReturnValue(of(successResponse)),
       resendExpired: vi.fn().mockReturnValue(of(resendSuccessResponse)),
@@ -51,14 +51,14 @@ describe('VerifyEmailComponent', () => {
     }).compileComponents();
   });
 
-  it('should verify the query token and display the successful state', () => {
+  it('should verify the query token and display the successful state', (): void => {
     createComponent('valid-token');
 
     expect(serviceMock.verify).toHaveBeenCalledWith('valid-token');
     expect(fixture.nativeElement.textContent).toContain('Email verified');
   });
 
-  it('should display the expired state with a resend action', () => {
+  it('should display the expired state with a resend action', (): void => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
 
     createComponent('expired-token');
@@ -67,7 +67,7 @@ describe('VerifyEmailComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Resend email');
   });
 
-  it('should display the invalid state for a corrupted or used token', () => {
+  it('should display the invalid state for a corrupted or used token', (): void => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(409, 'EMAIL_VERIFICATION_TOKEN_ALREADY_USED')));
 
     createComponent('used-token');
@@ -76,14 +76,14 @@ describe('VerifyEmailComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('invalid or has already been used');
   });
 
-  it('should reject a missing token without calling the backend', () => {
+  it('should reject a missing token without calling the backend', (): void => {
     createComponent(null);
 
     expect(serviceMock.verify).not.toHaveBeenCalled();
     expect(fixture.nativeElement.textContent).toContain('Invalid verification link');
   });
 
-  it('should resend an expired verification email and display confirmation', () => {
+  it('should resend an expired verification email and display confirmation', (): void => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
     createComponent('expired-token');
 
@@ -95,7 +95,7 @@ describe('VerifyEmailComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Email sent');
   });
 
-  it('should use the current query token when resending', () => {
+  it('should use the current query token when resending', (): void => {
     serviceMock.verify.mockReturnValue(throwError(() => apiError(400, 'EMAIL_VERIFICATION_TOKEN_EXPIRED')));
     createComponent('expired-token');
     setQueryToken('updated-token');
