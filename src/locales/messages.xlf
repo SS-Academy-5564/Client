@@ -1414,6 +1414,13 @@
           <context context-type="linenumber">197</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="monitorsRealtimeConnectionError" datatype="html">
+        <source>Real-time updates are unavailable.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/monitor/monitor.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="monitorIntervalSeconds" datatype="html">
         <source><x id="INTERVAL" equiv-text="intervalInSeconds"/>s</source>
         <context-group purpose="location">
