@@ -24,6 +24,64 @@ import {
 export class WidgetCardComponent {
   readonly widget = input.required<Widget>();
 
+  readonly displayTitle = computed(() => {
+    const widget = this.widget();
+    if (widget.title && widget.title.trim()) {
+      return widget.title;
+    }
+
+    const metricLabels: Record<string, string> = {
+      responseTime: 'Response Time',
+      availability: 'Availability',
+      requests: 'Requests',
+      errors: 'Errors',
+    };
+
+    return metricLabels[widget.metric] || widget.metric;
+  });
+
+  readonly formattedTimeRange = computed(() => {
+    const timeRange = this.widget().timeRange;
+    if (!timeRange) {
+      return null;
+    }
+
+    if (['1h', '24h', '7d', '30d', '90d'].includes(timeRange)) {
+      const labels: Record<string, string> = {
+        '1h': 'last hour',
+        '24h': 'last 24 hours',
+        '7d': 'last 7 days',
+        '30d': 'last 30 days',
+        '90d': 'last 90 days',
+      };
+      return labels[timeRange] || timeRange;
+    }
+
+    const date = new Date(timeRange);
+    if (isNaN(date.getTime())) {
+      return timeRange;
+    }
+
+    const diffMs = Date.now() - date.getTime();
+    const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffHours <= 2) {
+      return 'last hour';
+    }
+    if (diffHours <= 36) {
+      return 'last 24 hours';
+    }
+    if (diffDays <= 10) {
+      return 'last 7 days';
+    }
+    if (diffDays <= 45) {
+      return 'last 30 days';
+    }
+
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  });
+
   readonly chartOptions = computed<EChartsOption>(() => {
     const widget = this.widget();
     const raw = widget.value ?? [];
