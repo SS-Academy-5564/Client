@@ -240,7 +240,7 @@ export class MonitorComponent implements OnInit {
   onToggleMonitorStatus(monitor: MonitorModel): void {
     const updatedStatus = monitor.status === MonitorStatus.Enabled ? MonitorStatus.Disabled : MonitorStatus.Enabled;
 
-    this.monitorService.updateMonitorStatus(monitor.id, updatedStatus).subscribe({
+    this.monitorService.updateMonitorStatus(monitor.id, updatedStatus, monitor).subscribe({
       next: (updatedMonitor: MonitorModel) => {
         this.monitors.update((list) => list.map((item) => (item.id === monitor.id ? updatedMonitor : item)));
         this.toastService.success($localize`:@@monitorsStatusToggleSuccess:Monitor status updated successfully.`);

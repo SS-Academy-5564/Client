@@ -144,16 +144,26 @@ export class MonitorService {
    * Updates only the status of an existing monitor.
    * @param id - The monitor GUID.
    * @param status - The new writeable status.
+   * @param currentMonitor - The monitor currently displayed in the UI; used as a fallback when the backend does not return a payload.
    * @returns The updated monitor in list-projection shape.
-   * @throws Error When the API response is successful but contains no data.
+   * @throws Error When the API response is successful but contains no data and no fallback monitor is available.
    */
-  updateMonitorStatus(id: string, status: MonitorStatus.Enabled | MonitorStatus.Disabled): Observable<MonitorModel> {
+  updateMonitorStatus(
+    id: string,
+    status: MonitorStatus.Enabled | MonitorStatus.Disabled,
+    currentMonitor?: MonitorModel,
+  ): Observable<MonitorModel> {
     return this.http.patch<ApiResponse<MonitorModel>>(`${this.monitorBaseEndpoint}/${id}/status`, { status }).pipe(
       map((response) => {
-        if (!response.data) {
-          throw new Error($localize`:@@monitorStatusUpdateNoData:Monitor status update returned no data`);
+        if (response.data) {
+          return response.data;
         }
-        return response.data;
+
+        if (currentMonitor) {
+          return { ...currentMonitor, status };
+        }
+
+        throw new Error($localize`:@@monitorStatusUpdateNoData:Monitor status update returned no data`);
       }),
     );
   }

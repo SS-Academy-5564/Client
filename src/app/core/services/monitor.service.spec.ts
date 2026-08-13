@@ -159,6 +159,32 @@ describe('MonitorService', () => {
     expect(completed).toBe(true);
   });
 
+  it('should use the current monitor as a fallback when the PATCH response has no data payload', (): void => {
+    const currentMonitor: MonitorModel = {
+      id: 'monitor-1',
+      name: 'Status monitor',
+      url: 'https://api.example.com/status',
+      currentValue: null,
+      lastCheckedAt: null,
+      status: MonitorStatus.Enabled,
+      interval: 120,
+      organizationId: 'org-1',
+    };
+
+    let result: MonitorModel | undefined;
+
+    service.updateMonitorStatus('monitor-1', MonitorStatus.Disabled, currentMonitor).subscribe({
+      next: (monitor: MonitorModel): void => {
+        result = monitor;
+      },
+    });
+
+    const httpRequest = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors/monitor-1/status`);
+    httpRequest.flush({ data: null, pagination: null, success: true, errors: [] });
+
+    expect(result).toEqual({ ...currentMonitor, status: MonitorStatus.Disabled });
+  });
+
   it('should surface API error messages from run-now failures', () => {
     let errorMessage = '';
 

@@ -333,7 +333,11 @@ describe('MonitorComponent', () => {
 
     component.onToggleMonitorStatus(monitors[0]);
 
-    expect(monitorServiceMock.updateMonitorStatus).toHaveBeenCalledWith('enabled-monitor', MonitorStatus.Disabled);
+    expect(monitorServiceMock.updateMonitorStatus).toHaveBeenCalledWith(
+      'enabled-monitor',
+      MonitorStatus.Disabled,
+      monitors[0],
+    );
     expect(toastServiceMock.success).toHaveBeenCalledWith('Monitor status updated successfully.');
     expect(component['monitors']().find((item) => item.id === 'enabled-monitor')?.status).toBe(MonitorStatus.Disabled);
   });
