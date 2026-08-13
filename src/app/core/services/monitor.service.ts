@@ -35,15 +35,15 @@ export class MonitorService {
     :@@monitorService.defaultCheckError:
     Unable to start the check right now.
   `;
-  
+
   /**
    * Fetches minimal monitor lookup items for select dropdowns.
    * @returns Array of monitor lookup items with only id and name.
    */
   getMonitorsLookup(): Observable<MonitorLookupDto[]> {
-    return this.http.get<ApiResponse<MonitorLookupDto[]>>(`${this.monitorBaseEndpoint}/lookup`).pipe(
-      map((response) => response.data ?? [])
-    );
+    return this.http
+      .get<ApiResponse<MonitorLookupDto[]>>(`${this.monitorBaseEndpoint}/lookup`)
+      .pipe(map((response) => response.data ?? []));
   }
 
   getMonitors(
