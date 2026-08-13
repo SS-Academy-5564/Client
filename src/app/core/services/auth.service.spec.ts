@@ -66,7 +66,7 @@ describe('AuthService', () => {
       password: 'Password1',
       confirmPassword: 'Password1',
     };
-    httpMock.post.mockReturnValue(of({}));
+    httpMock.post.mockReturnValue(of({ success: true, data: { resendCooldownSeconds: 47 }, errors: [] }));
 
     service.register(payload).subscribe();
 

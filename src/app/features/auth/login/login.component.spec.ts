@@ -8,6 +8,7 @@ import { AuthService } from '@core/services/auth.service';
 import { UserService } from '@core/services/user.service';
 import { ToastService } from '@core/services/toast.service';
 import { ROUTES } from '@core/constants/route.constants';
+import { EmailVerificationService } from '@core/services/email-verification.service';
 
 type AuthServiceMock = {
   login: ReturnType<typeof vi.fn>;
@@ -23,6 +24,7 @@ describe('LoginComponent', () => {
   let router: Router;
 
   let authServiceMock: AuthServiceMock;
+  let emailVerificationServiceMock: { requestResend: ReturnType<typeof vi.fn> };
 
   let userServiceMock: {
     getMe: ReturnType<typeof vi.fn>;
@@ -36,6 +38,15 @@ describe('LoginComponent', () => {
     authServiceMock = {
       login: vi.fn(),
     };
+    emailVerificationServiceMock = {
+      requestResend: vi.fn().mockReturnValue(
+        of({
+          success: true,
+          data: { resendCooldownSeconds: 47 },
+          errors: [],
+        }),
+      ),
+    };
 
     userServiceMock = {
       getMe: vi.fn(),
@@ -45,6 +56,7 @@ describe('LoginComponent', () => {
       imports: [LoginComponent, NoopAnimationsModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
+        { provide: EmailVerificationService, useValue: emailVerificationServiceMock },
         { provide: UserService, useValue: userServiceMock },
         { provide: ToastService, useValue: toastServiceMock },
         provideRouter([]),
@@ -152,5 +164,36 @@ describe('LoginComponent', () => {
     expect(authServiceMock.login).toHaveBeenCalledTimes(1);
     expect(router.navigate).not.toHaveBeenCalled();
     expect(fixture.nativeElement.textContent).toContain('Incorrect email or password');
+  });
+
+  it('should request another verification email from the sign-in page', (): void => {
+    component.form.controls.email.setValue('user@test.com');
+    fixture.detectChanges();
+
+    const resendButton = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+      (button) => button.textContent?.trim() === 'Resend Email',
+    );
+    expect(resendButton).toBeDefined();
+
+    resendButton!.click();
+    fixture.detectChanges();
+
+    expect(emailVerificationServiceMock.requestResend).toHaveBeenCalledWith('user@test.com');
+    expect(toastServiceMock.success).toHaveBeenCalledWith('If eligible, a new verification email has been sent.');
+    expect(fixture.nativeElement.textContent).toContain('Resend in 47s');
+  });
+
+  it('should show rate-limit guidance for verification resend', (): void => {
+    emailVerificationServiceMock.requestResend.mockReturnValue(throwError(() => ({ status: 429 })));
+    component.form.controls.email.setValue('user@test.com');
+    fixture.detectChanges();
+
+    const resendButton = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+      (button) => button.textContent?.trim() === 'Resend Email',
+    );
+    resendButton!.click();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Please wait before trying again');
   });
 });

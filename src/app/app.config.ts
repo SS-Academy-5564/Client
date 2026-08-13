@@ -14,6 +14,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { routes } from './app.routes';
 import { AuthService } from '@core/services/auth.service';
 import { authInterceptor } from '@core/interceptors/auth.interceptor';
+import { languageInterceptor } from '@core/interceptors/language.interceptor';
 import { serverErrorInterceptor } from '@core/interceptors/server-error.interceptor';
 
 const initializeAuthentication = (): Observable<void> => inject(AuthService).initializeSession();
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(withInterceptors([authInterceptor, serverErrorInterceptor])),
+    provideHttpClient(withInterceptors([languageInterceptor, authInterceptor, serverErrorInterceptor])),
     provideAppInitializer(initializeAuthentication),
     importProvidersFrom(
       NgxEchartsModule.forRoot({

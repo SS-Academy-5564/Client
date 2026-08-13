@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, filter, finalize, map, Observable, of, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 
 import { ApiResponse, LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
-import { RegisterRequest } from '@core/models/register-model';
+import { RegisterRequest, RegistrationResponse } from '@core/models/register-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { SignalrService } from '@core/services/signalr.service';
 import { environment } from '@environments/environment';
@@ -98,13 +98,15 @@ export class AuthService {
    * Registers a new user account.
    *
    * @param payload Registration form values.
-   * @returns The backend registration request.
+   * @returns The backend response containing registration and resend cooldown data.
    */
-  register(payload: RegisterRequest): Observable<unknown> {
+  register(payload: RegisterRequest): Observable<RegistrationResponse> {
     this.isLoading.set(true);
     this.clearError();
 
-    return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
+    return this.http
+      .post<RegistrationResponse>(this.registerEndpoint, payload)
+      .pipe(finalize(() => this.isLoading.set(false)));
   }
 
   /**

@@ -10,6 +10,7 @@ const corsHeaders = {
 type VerificationApiOptions = {
   verificationStatus?: number;
   verificationCode?: string;
+  resendStatus?: number;
 };
 
 const mockVerificationApi = async (page: Page, options: VerificationApiOptions = {}): Promise<void> => {
@@ -32,7 +33,12 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
     }
 
     if (path === '/api/auth/register') {
-      await fulfillJson(route, 200, { success: true, data: null, errors: [] });
+      expect(request.headers()['accept-language']).toBe('en-US');
+      await fulfillJson(route, 200, {
+        success: true,
+        data: { resendCooldownSeconds: 47 },
+        errors: [],
+      });
       return;
     }
 
@@ -61,6 +67,27 @@ const mockVerificationApi = async (page: Page, options: VerificationApiOptions =
     }
 
     if (path === '/api/auth/email-verification/resend') {
+      expect(request.postDataJSON()).toEqual({ email: expect.any(String) });
+      const status = options.resendStatus ?? 200;
+      await fulfillJson(
+        route,
+        status,
+        status === 200
+          ? {
+              success: true,
+              data: { resendCooldownSeconds: 37 },
+              errors: [],
+            }
+          : {
+              success: false,
+              data: null,
+              errors: [{ code: 'RateLimited', field: null, message: 'Too many requests.' }],
+            },
+      );
+      return;
+    }
+
+    if (path === '/api/auth/email-verification/resend-expired') {
       expect(request.postDataJSON()).toEqual({ token: 'expired-token' });
       await fulfillJson(route, 200, {
         success: true,
@@ -98,8 +125,41 @@ test('redirects successful registration to the check-email page', async ({ page 
 
   await expect(page).toHaveURL(/\/check-email$/);
   await expect(page.getByRole('heading', { name: 'Check your email' })).toBeVisible();
+  await expect(page.getByLabel('Email')).toHaveCount(0);
+  await expect(page.getByText(/Resend in (47|46)s/)).toBeVisible();
+  const signInBox = await page.getByRole('button', { name: 'Sign in' }).boundingBox();
+  const resendBox = await page.getByText(/Resend in (47|46)s/).boundingBox();
+  expect(signInBox).not.toBeNull();
+  expect(resendBox).not.toBeNull();
+  expect(resendBox!.y).toBeGreaterThan(signInBox!.y);
+
+  await page.evaluate(() => history.replaceState({ email: 'jane@example.com', cooldown: 0 }, '', location.href));
+  await page.reload();
+  await page.getByRole('button', { name: 'Resend Email' }).click();
+  await expect(page.getByText('If eligible, a new verification email has been sent.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Sign in' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Return to landing page' })).toHaveCount(0);
+});
+
+test('resends a verification email from the sign-in page', async ({ page }): Promise<void> => {
+  await mockVerificationApi(page);
+  await page.goto('/login');
+
+  await page.getByLabel('Email').fill('jane@example.com');
+  await page.getByRole('button', { name: 'Resend Email' }).click();
+
+  await expect(page.getByText('If eligible, a new verification email has been sent.')).toBeVisible();
+  await expect(page.getByText('Resend in 37s')).toBeVisible();
+});
+
+test('shows a clear rate-limit message for verification resend', async ({ page }): Promise<void> => {
+  await mockVerificationApi(page, { resendStatus: 429 });
+  await page.goto('/login');
+
+  await page.getByLabel('Email').fill('jane@example.com');
+  await page.getByRole('button', { name: 'Resend Email' }).click();
+
+  await expect(page.getByText('Please wait before trying again')).toBeVisible();
 });
 
 test('shows successful verification for a valid link', async ({ page }) => {
@@ -141,7 +201,9 @@ test('keeps the check-email page within a mobile viewport', async ({ page }) => 
   await page.setViewportSize({ width: 390, height: 844 });
   await mockVerificationApi(page);
 
-  await page.goto('/check-email');
+  await page.goto('/register');
+  await page.evaluate(() => history.replaceState({ email: 'jane@example.com', cooldown: 60 }, '', '/check-email'));
+  await page.reload();
 
   await expect(page.getByRole('heading', { name: 'Check your email' })).toBeVisible();
   const hasHorizontalOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);

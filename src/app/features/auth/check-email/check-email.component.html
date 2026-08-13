@@ -28,6 +28,27 @@
           variant="full-width"
           [routerLink]="routes.LOGIN" />
       </div>
+
+      <p class="resend-section">
+        <span class="resend-text" i18n="@@emailVerificationResendPrompt">Didn't receive the verification email?</span>
+        @if (resendCountdown() > 0) {
+          <span class="resend-text resend-countdown" i18n="@@emailVerificationResendCountdown">
+            Resend in {{ resendCountdown() }}s
+          </span>
+        } @else {
+          <button class="resend-button" type="button" [disabled]="isResending()" (click)="resendEmail()">
+            @if (isResending()) {
+              <ng-container i18n="@@emailVerificationResendSending">Sending…</ng-container>
+            } @else {
+              <ng-container i18n="@@emailVerificationResendButton">Resend Email</ng-container>
+            }
+          </button>
+        }
+      </p>
+
+      @if (resendError(); as error) {
+        <p class="verification-feedback verification-feedback-error" role="alert">{{ error }}</p>
+      }
     </main>
   </div>
 </div>

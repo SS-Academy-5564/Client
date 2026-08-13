@@ -78,7 +78,7 @@ export class VerifyEmailComponent implements OnInit {
     this.isResending.set(true);
     this.clearError();
 
-    this.emailVerificationService.resend(token).subscribe({
+    this.emailVerificationService.resendExpired(token).subscribe({
       next: () => {
         this.isResending.set(false);
         this.resendComplete.set(true);
