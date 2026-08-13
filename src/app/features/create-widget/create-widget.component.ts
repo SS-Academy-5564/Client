@@ -59,19 +59,19 @@ export class CreateWidgetComponent {
   ];
 
   readonly timeRanges = [
-    { value: '1h', label: 'Last hour' },
-    { value: '24h', label: 'Last 24 hours' },
-    { value: '7d', label: 'Last 7 days' },
-    { value: '30d', label: 'Last 30 days' },
+    { value: 60 * 60, label: 'Last hour' },
+    { value: 24 * 60 * 60, label: 'Last 24 hours' },
+    { value: 7 * 24 * 60 * 60, label: 'Last 7 days' },
+    { value: 30 * 24 * 60 * 60, label: 'Last 30 days' },
   ];
 
-  readonly form = this.fb.nonNullable.group({
+  readonly form = this.fb.group({
     monitorId: ['', Validators.required],
     type: ['', Validators.required],
     title: [''],
     subtitle: [''],
     metric: ['', Validators.required],
-    timeRange: ['', Validators.required],
+    timeRange: [null as number | null, Validators.required],
     settings: [''],
   });
 
@@ -84,7 +84,7 @@ export class CreateWidgetComponent {
           title: '',
           subtitle: '',
           metric: '',
-          timeRange: '',
+          timeRange: null,
           settings: '',
         });
       }
@@ -99,20 +99,6 @@ export class CreateWidgetComponent {
     this.closed.emit();
   }
 
-  private resolveTimeRange(range: string): string {
-    const now = new Date();
-    const units: Record<string, number> = {
-      h: 60 * 60 * 1000,
-      d: 24 * 60 * 60 * 1000,
-    };
-    const match = range.match(/^(\d+)([hd])$/);
-    if (match) {
-      const ms = parseInt(match[1], 10) * units[match[2]];
-      return new Date(now.getTime() - ms).toISOString();
-    }
-    return range;
-  }
-
   /**
    * Validates the form and emits the widget creation request with resolved time range.
    */
@@ -123,10 +109,18 @@ export class CreateWidgetComponent {
     }
 
     const raw = this.form.getRawValue();
+    const seconds = raw.timeRange ?? 24 * 60 * 60;
+    const timeRange = new Date(Date.now() - seconds * 1000).toISOString();
+
     this.created.emit({
       dashboardTabId: this.dashboardTabId(),
-      ...raw,
-      timeRange: this.resolveTimeRange(raw.timeRange),
+      monitorId: raw.monitorId ?? '',
+      type: raw.type ?? '',
+      title: raw.title ?? '',
+      subtitle: raw.subtitle ?? '',
+      metric: raw.metric ?? '',
+      timeRange,
+      settings: raw.settings ?? null,
     });
   }
 }

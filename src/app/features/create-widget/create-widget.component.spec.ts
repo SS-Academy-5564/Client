@@ -63,7 +63,7 @@ describe('CreateWidgetComponent', () => {
       title: 'Response chart',
       subtitle: 'Last 24 hours',
       metric: 'responseTime',
-      timeRange: '24h',
+      timeRange: 24 * 60 * 60,
       settings: '',
     });
 
@@ -120,7 +120,7 @@ describe('CreateWidgetComponent', () => {
       monitorId: 'mon-1',
       type: 'line-chart',
       metric: 'errors',
-      timeRange: '24h',
+      timeRange: 24 * 60 * 60,
     });
 
     fixture.componentRef.setInput('isCreateWidgetDrawerOpen', true);
@@ -134,7 +134,7 @@ describe('CreateWidgetComponent', () => {
       title: '',
       subtitle: '',
       metric: '',
-      timeRange: '',
+      timeRange: null,
       settings: '',
     });
   });
