@@ -86,6 +86,35 @@
             type="primary"
             variant="full-width"
             [disabled]="form.invalid" />
+
+          <p class="resend-section">
+            <span class="resend-text" i18n="@@loginVerificationResendPrompt">
+              Didn't receive your verification email?
+            </span>
+            @if (verificationResendCountdown() > 0) {
+              <span class="resend-text resend-countdown" i18n="@@emailVerificationResendCountdown">
+                Resend in {{ verificationResendCountdown() | number }}s
+              </span>
+            } @else {
+              <button
+                class="resend-button"
+                type="button"
+                [disabled]="form.controls.email.invalid || isResendingVerification()"
+                (click)="resendVerificationEmail()">
+                @if (isResendingVerification()) {
+                  <ng-container i18n="@@emailVerificationResendSending">Sending…</ng-container>
+                } @else {
+                  <ng-container i18n="@@emailVerificationResendButton">Resend Email</ng-container>
+                }
+              </button>
+            }
+          </p>
+
+          @if (verificationResendError(); as resendError) {
+            <p class="verification-resend-feedback verification-resend-feedback-error" role="alert">
+              {{ resendError }}
+            </p>
+          }
         </form>
       </mat-card-content>
     </mat-card>

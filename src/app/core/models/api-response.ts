@@ -1,3 +1,4 @@
+/** Standard backend response envelope. */
 export type ApiResponse<T> = {
   data: T;
   pagination?: ApiPagination | null;
@@ -5,6 +6,7 @@ export type ApiResponse<T> = {
   errors: ApiError[];
 };
 
+/** Pagination metadata returned for collection endpoints. */
 export type ApiPagination = {
   pageNumber: number;
   pageSize: number;
@@ -12,6 +14,7 @@ export type ApiPagination = {
   totalPages: number;
 };
 
+/** Structured backend error returned in an API envelope. */
 export type ApiError = {
   code: string;
   field: string | null;
