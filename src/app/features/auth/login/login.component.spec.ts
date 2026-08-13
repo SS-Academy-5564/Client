@@ -183,6 +183,22 @@ describe('LoginComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Resend in 47s');
   });
 
+  it('should show an error when a successful resend response has no payload', (): void => {
+    emailVerificationServiceMock.requestResend.mockReturnValue(of({ success: true, data: null, errors: [] }));
+    component.form.controls.email.setValue('user@test.com');
+    fixture.detectChanges();
+
+    const resendButton = Array.from<HTMLButtonElement>(fixture.nativeElement.querySelectorAll('button')).find(
+      (button) => button.textContent?.trim() === 'Resend Email',
+    );
+    resendButton!.click();
+    fixture.detectChanges();
+
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).toContain('We could not process the request. Please try again.');
+    expect(fixture.nativeElement.textContent).not.toContain('Resend in');
+  });
+
   it('should show rate-limit guidance for verification resend', (): void => {
     emailVerificationServiceMock.requestResend.mockReturnValue(throwError(() => ({ status: 429 })));
     component.form.controls.email.setValue('user@test.com');

@@ -1,4 +1,4 @@
-import { ApiResponse } from '@core/models/login-model';
+import { ApiResponse } from '@core/models/api-response';
 
 export type RegisterRequest = {
   firstName: string;
@@ -14,7 +14,7 @@ export type RegistrationResult = {
 };
 
 /** Backend envelope returned after registration succeeds. */
-export type RegistrationResponse = ApiResponse<RegistrationResult>;
+export type RegistrationResponse = ApiResponse<RegistrationResult | null>;
 
 export type AuthResponse = {
   isLoading: boolean;

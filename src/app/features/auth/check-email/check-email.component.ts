@@ -68,10 +68,23 @@ export class CheckEmailComponent implements OnInit {
       .pipe(finalize(() => this.isResending.set(false)))
       .subscribe({
         next: (response) => {
+          const resendCooldownSeconds = response.data?.resendCooldownSeconds;
+          if (
+            !response.success ||
+            typeof resendCooldownSeconds !== 'number' ||
+            !Number.isFinite(resendCooldownSeconds) ||
+            resendCooldownSeconds < 0
+          ) {
+            this.resendError.set(
+              $localize`:@@emailVerificationResendFailure:We could not process the request. Please try again.`,
+            );
+            return;
+          }
+
           this.toastService.success(
             $localize`:@@emailVerificationResendSuccess:If eligible, a new verification email has been sent.`,
           );
-          this.resendTimer.start(response.data.resendCooldownSeconds);
+          this.resendTimer.start(resendCooldownSeconds);
         },
         error: (error: unknown) => {
           const isRateLimited =

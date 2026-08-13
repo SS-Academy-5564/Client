@@ -105,7 +105,7 @@ export class RegisterComponent {
           resendCooldownSeconds < 0
         ) {
           this.error.set(
-            $localize`:@@registrationMissingResendCooldown:Registration response is missing resend cooldown guidance`,
+            $localize`:@@registrationMissingResendCooldown:We could not complete registration. Please try again.`,
           );
           return;
         }

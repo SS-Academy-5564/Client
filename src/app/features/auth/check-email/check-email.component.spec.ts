@@ -71,6 +71,17 @@ describe('CheckEmailComponent', (): void => {
     expect(fixture.nativeElement.textContent).toContain('Resend in 47s');
   });
 
+  it('should show an error when a successful resend response has no payload', (): void => {
+    serviceMock.requestResend.mockReturnValue(of({ success: true, data: null, errors: [] }));
+
+    clickButton('Resend Email');
+    fixture.detectChanges();
+
+    expect(toastServiceMock.success).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.textContent).toContain('We could not process the request. Please try again.');
+    expect(fixture.nativeElement.textContent).not.toContain('Resend in');
+  });
+
   it('should disable resend while the request is in progress', (): void => {
     const response = new Subject();
     serviceMock.requestResend.mockReturnValue(response);

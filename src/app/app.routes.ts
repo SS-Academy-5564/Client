@@ -48,6 +48,7 @@ export const routes: Routes = [
   },
   {
     path: 'verify-email',
+    canActivate: [loggedOutOnlyGuard],
     loadComponent: () =>
       import('./features/auth/verify-email/verify-email.component').then((m) => m.VerifyEmailComponent),
   },

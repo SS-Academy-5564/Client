@@ -1,23 +1,16 @@
+import { ApiResponse } from '@core/models/api-response';
+
+/** Credentials submitted to the login endpoint. */
 export type LoginRequest = {
   email: string;
   password: string;
 };
 
-export type ApiError = {
-  code: string;
-  field?: string;
-  message: string;
-};
-
-export type ApiResponse<T> = {
-  success: boolean;
-  data: T | null;
-  errors: ApiError[];
-};
-
+/** Authentication data returned after a successful login or token refresh. */
 export type LoginResult = {
   accessToken: string;
   expiresAt: string;
 };
 
-export type LoginResponse = ApiResponse<LoginResult>;
+/** Backend login envelope whose payload is absent when authentication fails. */
+export type LoginResponse = ApiResponse<LoginResult | null>;

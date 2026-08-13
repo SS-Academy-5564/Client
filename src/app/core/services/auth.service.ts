@@ -3,7 +3,8 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { HttpClient } from '@angular/common/http';
 import { catchError, filter, finalize, map, Observable, of, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 
-import { ApiResponse, LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
+import { ApiResponse } from '@core/models/api-response';
+import { LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
 import { RegisterRequest, RegistrationResponse } from '@core/models/register-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
 import { SignalrService } from '@core/services/signalr.service';

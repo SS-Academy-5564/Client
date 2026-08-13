@@ -136,10 +136,23 @@ export class LoginComponent {
       .pipe(finalize(() => this.isResendingVerification.set(false)))
       .subscribe({
         next: (response) => {
+          const resendCooldownSeconds = response.data?.resendCooldownSeconds;
+          if (
+            !response.success ||
+            typeof resendCooldownSeconds !== 'number' ||
+            !Number.isFinite(resendCooldownSeconds) ||
+            resendCooldownSeconds < 0
+          ) {
+            this.verificationResendError.set(
+              $localize`:@@emailVerificationResendFailure:We could not process the request. Please try again.`,
+            );
+            return;
+          }
+
           this.toastService.success(
             $localize`:@@emailVerificationResendSuccess:If eligible, a new verification email has been sent.`,
           );
-          this.verificationResendTimer.start(response.data.resendCooldownSeconds);
+          this.verificationResendTimer.start(resendCooldownSeconds);
         },
         error: (error: unknown) => {
           const isRateLimited = getHttpStatus(error) === 429;

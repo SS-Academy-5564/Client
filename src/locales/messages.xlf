@@ -146,7 +146,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
@@ -161,7 +161,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">49</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/reset-password/reset-password.component.html</context>
@@ -207,7 +207,7 @@
         <source>Login successful.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
-          <context context-type="linenumber">98</context>
+          <context context-type="linenumber">111</context>
         </context-group>
       </trans-unit>
       <trans-unit id="editWidgetTitle" datatype="html">
@@ -435,10 +435,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="registrationMissingResendCooldown" datatype="html">
-        <source>Registration response is missing resend cooldown guidance</source>
+        <source>We could not complete registration. Please try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/register/register.component.ts</context>
-          <context context-type="linenumber">97</context>
+          <context context-type="linenumber">108</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resetPasswordTitle" datatype="html">
@@ -1565,12 +1565,12 @@
         <source>Check your email</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">15,16</context>
+          <context context-type="linenumber">15,17</context>
         </context-group>
         <note priority="1" from="description">check-email title</note>
       </trans-unit>
       <trans-unit id="checkEmailMessage" datatype="html">
-        <source> We sent you a verification email. Open the link in that message to finish creating your Pulse account. </source>
+        <source>We sent you a verification email. Open the link in that message to finish creating your Pulse account.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
           <context context-type="linenumber">17,19</context>
@@ -1578,10 +1578,10 @@
         <note priority="1" from="description">check-email message</note>
       </trans-unit>
       <trans-unit id="checkEmailHint" datatype="html">
-        <source> If you don&apos;t see it, check your spam or junk folder. </source>
+        <source>If you don&apos;t see it, check your spam or junk folder.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">20,23</context>
+          <context context-type="linenumber">19,21</context>
         </context-group>
         <note priority="1" from="description">check-email hint</note>
       </trans-unit>
@@ -1589,7 +1589,7 @@
         <source>Sign in</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">25</context>
         </context-group>
         <note priority="1" from="description">check-email sign in</note>
       </trans-unit>
@@ -1716,14 +1716,14 @@
         <source>Didn&apos;t receive the verification email?</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">34,35</context>
+          <context context-type="linenumber">32,33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="emailVerificationResendCountdown" datatype="html">
         <source> Resend in <x id="INTERPOLATION" equiv-text="{{ resendCountdown() | number }}"/>s </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">37,38</context>
+          <context context-type="linenumber">35,36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
@@ -1734,7 +1734,7 @@
         <source>Sending…</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">42,44</context>
+          <context context-type="linenumber">40,42</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
@@ -1745,7 +1745,7 @@
         <source>Resend Email</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.html</context>
-          <context context-type="linenumber">44,46</context>
+          <context context-type="linenumber">42,44</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.html</context>
@@ -1756,33 +1756,41 @@
         <source>If eligible, a new verification email has been sent.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">85</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">153</context>
         </context-group>
       </trans-unit>
       <trans-unit id="emailVerificationResendRateLimit" datatype="html">
         <source>Please wait before trying again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
-          <context context-type="linenumber">81</context>
+          <context context-type="linenumber">94</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="emailVerificationResendFailure" datatype="html">
         <source>We could not process the request. Please try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/check-email/check-email.component.ts</context>
+          <context context-type="linenumber">95</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
-          <context context-type="linenumber">149</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/features/auth/login/login.component.ts</context>
+          <context context-type="linenumber">162</context>
         </context-group>
       </trans-unit>
       <trans-unit id="loginVerificationResendPrompt" datatype="html">

@@ -11,7 +11,7 @@ export type ResendEmailVerificationResult = {
 };
 
 /** Backend envelope returned after a replacement verification email is sent. */
-export type ResendEmailVerificationResponse = ApiResponse<ResendEmailVerificationResult>;
+export type ResendEmailVerificationResponse = ApiResponse<ResendEmailVerificationResult | null>;
 
 /** Coordinates email verification and replacement-link requests. */
 @Injectable({

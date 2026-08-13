@@ -114,7 +114,7 @@ describe('RegisterComponent', () => {
     component.onSubmit();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Registration response is missing resend cooldown guidance');
+    expect(fixture.nativeElement.textContent).toContain('We could not complete registration. Please try again.');
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
@@ -127,7 +127,7 @@ describe('RegisterComponent', () => {
       component.onSubmit();
       fixture.detectChanges();
 
-      expect(fixture.nativeElement.textContent).toContain('Registration response is missing resend cooldown guidance');
+      expect(fixture.nativeElement.textContent).toContain('We could not complete registration. Please try again.');
       expect(router.navigate).not.toHaveBeenCalled();
     },
   );
