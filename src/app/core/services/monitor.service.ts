@@ -1,7 +1,7 @@
 import { environment } from '@/environments/environment';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, finalize, map, Observable, tap, throwError } from 'rxjs';
+import { catchError, finalize, map, Observable, of, tap, throwError } from 'rxjs';
 import { ApiError, ApiResponse } from '@core/models/api-response';
 import {
   CreateMonitorRequest,
@@ -19,6 +19,9 @@ export type MonitorPage = {
   totalPages: number;
 };
 
+/**
+ * Minimal monitor data representation used in lookup selectors and dropdowns.
+ */
 export type MonitorLookupDto = {
   id: string;
   name: string;
@@ -38,12 +41,17 @@ export class MonitorService {
 
   /**
    * Fetches minimal monitor lookup items for select dropdowns.
+   * Catches HTTP errors and falls back to an empty array to safely support reactive signals.
    * @returns Array of monitor lookup items with only id and name.
    */
   getMonitorsLookup(): Observable<MonitorLookupDto[]> {
-    return this.http
-      .get<ApiResponse<MonitorLookupDto[]>>(`${this.monitorBaseEndpoint}/lookup`)
-      .pipe(map((response) => response.data ?? []));
+    return this.http.get<ApiResponse<MonitorLookupDto[]>>(`${this.monitorBaseEndpoint}/lookup`).pipe(
+      map((response) => response.data ?? []),
+      catchError(() => {
+        this.error.set('Failed to load monitors lookup');
+        return of([]);
+      }),
+    );
   }
 
   getMonitors(

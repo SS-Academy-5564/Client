@@ -32,6 +32,10 @@ export class CreateWidgetComponent {
 
   readonly isCreateWidgetDrawerOpen = input(false);
   readonly dashboardTabId = input.required<string>();
+
+  /**
+   * Reactive signal containing available monitor lookup items for selection.
+   */
   readonly monitors = toSignal(this.monitorService.getMonitorsLookup(), { initialValue: [] });
   readonly closed = output<void>();
   readonly created = output<CreateWidgetRequest>();
@@ -109,6 +113,9 @@ export class CreateWidgetComponent {
     return range;
   }
 
+  /**
+   * Validates the form and emits the widget creation request with resolved time range.
+   */
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

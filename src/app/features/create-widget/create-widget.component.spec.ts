@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreateWidgetComponent } from './create-widget.component';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { MonitorService } from '@core/services/monitor.service';
@@ -39,11 +39,20 @@ describe('CreateWidgetComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('should emit created event when form is valid', () => {
+    const fixedNow = new Date('2026-08-13T10:00:00.000Z');
+    vi.useFakeTimers();
+    vi.setSystemTime(fixedNow);
+
+    const expectedTimeRange = new Date('2026-08-12T10:00:00.000Z').toISOString();
     const createdSpy = vi.fn();
 
     component.created.subscribe(createdSpy);
@@ -60,18 +69,16 @@ describe('CreateWidgetComponent', () => {
 
     component.onSubmit();
 
-    expect(createdSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        dashboardTabId: '00000000-0000-0000-0000-000000000001',
-        monitorId: 'mon-1',
-        type: 'line-chart',
-        title: 'Response chart',
-        subtitle: 'Last 24 hours',
-        metric: 'responseTime',
-        timeRange: expect.stringMatching(/^\d{4}-\d{2}-\d{2}T/),
-        settings: '',
-      }),
-    );
+    expect(createdSpy).toHaveBeenCalledWith({
+      dashboardTabId: '00000000-0000-0000-0000-000000000001',
+      monitorId: 'mon-1',
+      type: 'line-chart',
+      title: 'Response chart',
+      subtitle: 'Last 24 hours',
+      metric: 'responseTime',
+      timeRange: expectedTimeRange,
+      settings: '',
+    });
   });
 
   it('should not emit created event when form is invalid', () => {

@@ -22,7 +22,7 @@
       <app-error-message [message]="error()" />
 
       <div class="field">
-        <label class="field-label" for="widget-monitor" i18n="@@monitor">Monitor</label>
+        <label class="field-label" for="widget-monitor" i18n="Monitor label|@@monitor">Monitor</label>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-select
@@ -30,7 +30,7 @@
             id="widget-monitor"
             panelClass="white-select-panel"
             placeholder="Select a monitor"
-            i18n-placeholder="@@selectMonitor">
+            i18n-placeholder="Monitor placeholder|@@selectMonitor">
             @for (monitor of monitors(); track monitor.id) {
               <mat-option [value]="monitor.id">
                 {{ monitor.name }}
@@ -41,7 +41,7 @@
 
         @if (form.get('monitorId'); as monitorId) {
           @if (monitorId.touched && monitorId.hasError('required')) {
-            <div class="field-error" i18n="@@monitorRequired">Monitor is required.</div>
+            <div class="field-error" i18n="Monitor required validation|@@monitorRequired">Monitor is required.</div>
           }
         }
       </div>

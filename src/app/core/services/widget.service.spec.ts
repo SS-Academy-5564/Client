@@ -3,14 +3,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { environment } from '@environments/environment';
-import { CreateWidgetRequest, CreateWidgetResult } from '../models/widget.model';
+import { CreateWidgetRequest, CreateWidgetResult } from '@core/models/widget.model';
 import { WidgetService } from './widget.service';
 
-describe('WidgetService', () => {
+describe('WidgetService', (): void => {
   let service: WidgetService;
   let httpTesting: HttpTestingController;
 
-  beforeEach(() => {
+  beforeEach((): void => {
     TestBed.configureTestingModule({
       providers: [WidgetService, provideHttpClient(), provideHttpClientTesting()],
     });
@@ -19,16 +19,16 @@ describe('WidgetService', () => {
     httpTesting = TestBed.inject(HttpTestingController);
   });
 
-  afterEach(() => {
+  afterEach((): void => {
     httpTesting.verify();
   });
 
-  it('should be created', () => {
+  it('should be created', (): void => {
     expect(service).toBeTruthy();
   });
 
-  describe('createWidget', () => {
-    it('should POST request to /dashboard/widgets and return result', () => {
+  describe('createWidget', (): void => {
+    it('should POST request to /dashboard/widgets and return result', (): void => {
       const request: CreateWidgetRequest = {
         dashboardTabId: 'tab-1',
         monitorId: 'mon-1',
@@ -45,7 +45,7 @@ describe('WidgetService', () => {
       };
 
       let result: CreateWidgetResult | undefined;
-      service.createWidget(request).subscribe((res) => {
+      service.createWidget(request).subscribe((res): void => {
         result = res;
       });
 
@@ -58,10 +58,10 @@ describe('WidgetService', () => {
     });
   });
 
-  describe('getWidgets', () => {
+  describe('getWidgets', (): void => {
     const tabId = '00000000-0000-0000-0000-000000000001';
 
-    it('should GET widgets and map chart types with numeric values and 1-based labels', () => {
+    it('should GET widgets and map chart types with numeric values and 1-based labels', (): void => {
       const rawApiResponse = {
         data: [
           {
@@ -92,7 +92,7 @@ describe('WidgetService', () => {
         errors: [],
       };
 
-      service.getWidgets(tabId).subscribe((response) => {
+      service.getWidgets(tabId).subscribe((response): void => {
         expect(response.data).toHaveLength(2);
 
         const lineChart = response.data[0];
@@ -114,7 +114,7 @@ describe('WidgetService', () => {
       req.flush(rawApiResponse);
     });
 
-    it('should map stat-card with first value from array or fallback to --', () => {
+    it('should map stat-card with first value from array or fallback to --', (): void => {
       const rawApiResponse = {
         data: [
           {
@@ -145,7 +145,7 @@ describe('WidgetService', () => {
         errors: [],
       };
 
-      service.getWidgets(tabId).subscribe((response) => {
+      service.getWidgets(tabId).subscribe((response): void => {
         expect(response.data[0].value).toBe(99.95);
         expect(response.data[0].chartData).toBeUndefined();
 
@@ -156,7 +156,7 @@ describe('WidgetService', () => {
       req.flush(rawApiResponse);
     });
 
-    it('should map horizontal-bar-chart and donut-chart types properly', () => {
+    it('should map horizontal-bar-chart and donut-chart types properly', (): void => {
       const rawApiResponse = {
         data: [
           {
@@ -181,7 +181,7 @@ describe('WidgetService', () => {
         errors: [],
       };
 
-      service.getWidgets(tabId).subscribe((response) => {
+      service.getWidgets(tabId).subscribe((response): void => {
         expect(response.data[0].chartData).toEqual({
           labels: ['1', '2', '3'],
           values: [100, 200, 300],
