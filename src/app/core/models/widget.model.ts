@@ -1,3 +1,5 @@
+import { ChartData } from './chart-data-model';
+
 /**
  * Represents a dashboard widget configuration and its associated display/metric data.
  */
@@ -11,6 +13,7 @@ export type Widget = {
   timeRange?: string;
   serviceName?: string;
   value?: number[];
+  chartData?: ChartData;
   trendType?: 'up' | 'down' | 'neutral';
   trendValue?: string;
 };
