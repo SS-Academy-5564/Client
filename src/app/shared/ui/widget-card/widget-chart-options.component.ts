@@ -214,9 +214,16 @@ export function createHorizontalBarChartOptions(data: ChartData, seriesName: str
 }
 
 export function createDonutChartOptions(data: ChartData): EChartsOption {
-  const chartData = data.labels.map((label, index) => ({
-    name: label,
-    value: data.values[index],
+  const aggregatedMap = new Map<string, number>();
+
+  data.labels.forEach((label, index) => {
+    const val = data.values[index] ?? 0;
+    aggregatedMap.set(label, (aggregatedMap.get(label) ?? 0) + val);
+  });
+
+  const chartData = Array.from(aggregatedMap.entries()).map(([name, value]) => ({
+    name,
+    value: Number(value.toFixed(2)),
   }));
 
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
