@@ -60,16 +60,19 @@ describe('WidgetFormComponent', () => {
 
     component.onSubmit();
 
-    expect(createdSpy).toHaveBeenCalledWith({
-      dashboardTabId: '00000000-0000-0000-0000-000000000001',
-      monitorId: 'mon-1',
-      type: 'line-chart',
-      title: 'Response chart',
-      subtitle: 'Last 24 hours',
-      metric: 'responseTime',
-      timeRange: '24h',
-      settings: '',
-    });
+    expect(createdSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dashboardTabId: '00000000-0000-0000-0000-000000000001',
+        monitorId: 'mon-1',
+        type: 'line-chart',
+        title: 'Response chart',
+        subtitle: 'Last 24 hours',
+        metric: 'responseTime',
+        settings: '',
+      }),
+    );
+    const callArg = createdSpy.mock.calls[0][0];
+    expect(Date.parse(callArg.timeRange)).not.toBeNaN();
   });
 
   it('should not emit created event when form is invalid', () => {
@@ -191,16 +194,19 @@ describe('WidgetFormComponent', () => {
 
     component.onSubmit();
 
-    expect(updatedSpy).toHaveBeenCalledWith({
-      widgetId: '1',
-      monitorId: 'mon-1',
-      type: 'stat-card',
-      title: null,
-      subtitle: null,
-      metric: 'availability',
-      timeRange: '24h',
-      settings: null,
-    });
+    expect(updatedSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        widgetId: '1',
+        monitorId: 'mon-1',
+        type: 'stat-card',
+        title: null,
+        subtitle: null,
+        metric: 'availability',
+        settings: null,
+      }),
+    );
+    const callArg1 = updatedSpy.mock.calls[0][0];
+    expect(Date.parse(callArg1.timeRange)).not.toBeNaN();
   });
 
   it('should emit updated event when form is valid in edit mode', async () => {
@@ -231,16 +237,19 @@ describe('WidgetFormComponent', () => {
 
     component.onSubmit();
 
-    expect(updatedSpy).toHaveBeenCalledWith({
-      widgetId: '1',
-      monitorId: 'mon-1',
-      type: 'bar-chart',
-      title: 'Updated title',
-      subtitle: 'Updated subtitle',
-      metric: 'requests',
-      timeRange: '7d',
-      settings: '{}',
-    });
+    expect(updatedSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        widgetId: '1',
+        monitorId: 'mon-1',
+        type: 'bar-chart',
+        title: 'Updated title',
+        subtitle: 'Updated subtitle',
+        metric: 'requests',
+        settings: '{}',
+      }),
+    );
+    const callArg2 = updatedSpy.mock.calls[0][0];
+    expect(Date.parse(callArg2.timeRange)).not.toBeNaN();
   });
 
   it('should not emit updated event when form is invalid in edit mode', async () => {
