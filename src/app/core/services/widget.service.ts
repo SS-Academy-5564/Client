@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { ApiResponse } from '@core/models/api-response';
 import { CreateWidgetRequest, CreateWidgetResult, UpdateWidgetRequest, Widget } from '@core/models/widget.model';
+import { ApiResponse } from '@core/models/api-response';
 import { environment } from '@/environments/environment';
 
 /**
@@ -18,9 +18,8 @@ export class WidgetService {
 
   /**
    * Creates a new dashboard widget.
-   *
-   * @param request The widget configuration to create.
-   * @returns The identifier of the created widget.
+   * @param request The widget creation request payload.
+   * @returns An observable containing the result with the newly created widget ID.
    */
   createWidget(request: CreateWidgetRequest): Observable<CreateWidgetResult> {
     return this.http.post<CreateWidgetResult>(`${this.apiUrl}/widgets`, request);
@@ -37,10 +36,9 @@ export class WidgetService {
   }
 
   /**
-   * Loads the widgets of a dashboard tab.
-   *
-   * @param dashboardTabId The identifier of the dashboard tab.
-   * @returns The backend response containing the tab's widgets.
+   * Retrieves all dashboard widgets for the given dashboard tab.
+   * @param dashboardTabId The unique identifier of the dashboard tab.
+   * @returns An observable with the API response containing widget data.
    */
   getWidgets(dashboardTabId: string): Observable<ApiResponse<Widget[]>> {
     return this.http.get<ApiResponse<Widget[]>>(`${this.apiUrl}/${dashboardTabId}/widgets`);

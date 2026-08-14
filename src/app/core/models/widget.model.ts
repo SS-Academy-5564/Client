@@ -1,5 +1,8 @@
 import { ChartData } from './chart-data-model';
 
+/**
+ * Represents a dashboard widget configuration and its associated display/metric data.
+ */
 export type Widget = {
   id: string;
   monitorId: string;
@@ -16,6 +19,9 @@ export type Widget = {
   trendValue?: string;
 };
 
+/**
+ * Request payload for creating a new dashboard widget.
+ */
 export type CreateWidgetRequest = {
   dashboardTabId: string;
   monitorId: string;
@@ -38,6 +44,9 @@ export type UpdateWidgetRequest = {
   settings: string | null;
 };
 
+/**
+ * Result returned upon successful widget creation.
+ */
 export type CreateWidgetResult = {
   widgetId: string;
 };

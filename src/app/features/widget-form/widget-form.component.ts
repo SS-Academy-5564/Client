@@ -128,20 +128,67 @@ export class WidgetFormComponent {
       return;
     }
 
+    const raw = this.form.getRawValue();
+    const timeRange = this.resolveTimeRange(raw.timeRange);
     const widget = this.widget();
 
     if (widget) {
       this.updated.emit({
         widgetId: widget.id,
-        ...this.form.getRawValue(),
+        ...raw,
+        timeRange,
       });
       return;
     }
 
     this.created.emit({
       dashboardTabId: this.dashboardTabId(),
-      ...this.form.getRawValue(),
+      ...raw,
+      timeRange,
     });
+  }
+
+  private resolveTimeRange(range: string): string {
+    const units: Record<string, number> = {
+      h: 60 * 60 * 1000,
+      d: 24 * 60 * 60 * 1000,
+    };
+    const match = range.match(/^(\d+)([hd])$/);
+    if (match) {
+      const ms = parseInt(match[1], 10) * units[match[2]];
+      return new Date(Date.now() - ms).toISOString();
+    }
+    return range;
+  }
+
+  private normalizeTimeRange(timeRange?: string | null): string {
+    if (!timeRange) {
+      return '';
+    }
+
+    if (['1h', '24h', '7d', '30d'].includes(timeRange)) {
+      return timeRange;
+    }
+
+    const date = new Date(timeRange);
+    if (isNaN(date.getTime())) {
+      return timeRange;
+    }
+
+    const diffMs = Date.now() - date.getTime();
+    const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffHours <= 2) {
+      return '1h';
+    }
+    if (diffHours <= 36) {
+      return '24h';
+    }
+    if (diffDays <= 10) {
+      return '7d';
+    }
+    return '30d';
   }
 
   private prepareForm(widget: Widget | null): void {
@@ -152,7 +199,7 @@ export class WidgetFormComponent {
         title: widget.title ?? null,
         subtitle: widget.subtitle ?? null,
         metric: widget.metric,
-        timeRange: widget.timeRange,
+        timeRange: this.normalizeTimeRange(widget.timeRange),
         settings: widget.settings ?? null,
       });
       return;
