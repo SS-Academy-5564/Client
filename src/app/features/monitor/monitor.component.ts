@@ -1,5 +1,6 @@
-import { MonitorModel, MonitorStatus } from '@core/models/monitor-model';
+import { MonitorModel, MonitorStatus, UpdateMonitorPayload } from '@core/models/monitor-model';
 import { MonitorService } from '@core/services/monitor.service';
+import { SignalrService } from '@core/services/signalr.service';
 import { ToastService } from '@core/services/toast.service';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
@@ -36,6 +37,7 @@ export class MonitorComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly toastService = inject(ToastService);
+  private readonly signalrService = inject(SignalrService);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly MonitorStatus = MonitorStatus;
@@ -58,6 +60,10 @@ export class MonitorComponent implements OnInit {
   protected readonly pageSize = computed(() => Number(this.queryParams().get('pageSize') ?? 10));
   protected readonly searchQuery = computed(() => this.queryParams().get('query') ?? '');
 
+  private readonly pendingUpdates = new Map<string, UpdateMonitorPayload>();
+  private readonly refreshTrigger = signal(0);
+  private activeLoadSubscription?: Subscription;
+
   constructor() {
     effect(() => {
       const query = this.searchQuery();
@@ -68,6 +74,7 @@ export class MonitorComponent implements OnInit {
     });
 
     effect((onCleanup) => {
+      this.refreshTrigger();
       const subscription = this.loadMonitors(
         this.pageNumber(),
         this.pageSize(),
@@ -81,7 +88,28 @@ export class MonitorComponent implements OnInit {
     });
   }
 
+  /**
+   * Initializes real-time monitor update subscriptions and the SignalR connection lifecycle.
+   */
   ngOnInit(): void {
+    const monitorsUpdatedSubscription = this.signalrService.onMonitorsUpdated((updates: UpdateMonitorPayload[]): void =>
+      this.handleMonitorsUpdated(updates),
+    );
+
+    this.signalrService
+      .start()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: (): void => {
+          this.toastService.error($localize`:@@monitorsRealtimeConnectionError:Real-time updates are unavailable.`);
+        },
+      });
+
+    this.destroyRef.onDestroy((): void => {
+      monitorsUpdatedSubscription.unsubscribe();
+      this.signalrService.stop().subscribe({ error: (): void => undefined });
+    });
+
     const initialQuery = this.searchQuery();
 
     if (initialQuery) {
@@ -236,6 +264,66 @@ export class MonitorComponent implements OnInit {
     return this.pendingMonitorCheckIds().has(monitorId);
   }
 
+  private handleMonitorsUpdated(updates: UpdateMonitorPayload[]): void {
+    if (!updates.length) {
+      return;
+    }
+
+    for (const update of updates) {
+      this.pendingUpdates.set(update.monitorId.toLowerCase(), update);
+    }
+
+    const updatesMap = new Map<string, UpdateMonitorPayload>(
+      updates.map((update: UpdateMonitorPayload): [string, UpdateMonitorPayload] => [
+        update.monitorId.toLowerCase(),
+        update,
+      ]),
+    );
+
+    const activeStatus = this.selectedStatus();
+    let membershipChanged = false;
+
+    if (activeStatus !== null) {
+      for (const monitor of this.monitors()) {
+        const update = updatesMap.get(monitor.id.toLowerCase());
+        if (!update) {
+          continue;
+        }
+
+        const newStatus = this.parseMonitorStatus(update.status);
+        if (monitor.status !== newStatus && (monitor.status === activeStatus || newStatus === activeStatus)) {
+          membershipChanged = true;
+          break;
+        }
+      }
+    }
+
+    if (membershipChanged) {
+      this.refreshTrigger.update((count) => count + 1);
+      return;
+    }
+
+    this.monitors.update((monitors: MonitorModel[]): MonitorModel[] =>
+      monitors.map((monitor: MonitorModel): MonitorModel => {
+        const update = updatesMap.get(monitor.id.toLowerCase());
+        if (!update) {
+          return monitor;
+        }
+
+        return {
+          ...monitor,
+          currentValue: update.currentValue,
+          lastCheckedAt: update.lastCheckedAt,
+          status: this.parseMonitorStatus(update.status),
+        };
+      }),
+    );
+  }
+
+  private parseMonitorStatus(status: string): MonitorStatus {
+    return MonitorStatus[status as keyof typeof MonitorStatus] ?? MonitorStatus.Error;
+  }
+
   private navigateToPage(page: number, pageSize: number = this.pageSize()): void {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -250,9 +338,32 @@ export class MonitorComponent implements OnInit {
     status: MonitorStatus | null = null,
     searchString: string | null = null,
   ): Subscription {
-    return this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
+    this.activeLoadSubscription?.unsubscribe();
+
+    const subscription = this.monitorService.getMonitors(page, pageSize, status, searchString).subscribe({
       next: (result) => {
-        this.monitors.set(result.items);
+        const items = result.items.map((item: MonitorModel): MonitorModel => {
+          const pending = this.pendingUpdates.get(item.id.toLowerCase());
+          if (!pending) {
+            return item;
+          }
+
+          const itemTimestamp = item.lastCheckedAt ? new Date(item.lastCheckedAt).getTime() : 0;
+          const pendingTimestamp = pending.lastCheckedAt ? new Date(pending.lastCheckedAt).getTime() : 0;
+
+          if (pendingTimestamp >= itemTimestamp) {
+            return {
+              ...item,
+              currentValue: pending.currentValue,
+              lastCheckedAt: pending.lastCheckedAt,
+              status: this.parseMonitorStatus(pending.status),
+            };
+          }
+
+          return item;
+        });
+
+        this.monitors.set(items);
         this.totalCount.set(result.totalCount);
         this.totalPages.set(result.totalPages);
         if (page !== result.pageNumber || pageSize !== result.pageSize) {
@@ -273,5 +384,8 @@ export class MonitorComponent implements OnInit {
         this.totalPages.set(0);
       },
     });
+
+    this.activeLoadSubscription = subscription;
+    return subscription;
   }
 }

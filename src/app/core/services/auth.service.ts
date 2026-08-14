@@ -3,9 +3,12 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { HttpClient } from '@angular/common/http';
 import { catchError, filter, finalize, map, Observable, of, shareReplay, switchMap, take, tap, throwError } from 'rxjs';
 
-import { ApiResponse, LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
-import { RegisterRequest } from '@core/models/register-model';
+import { ApiResponse } from '@core/models/api-response';
+import { LoginRequest, LoginResponse, LoginResult } from '@core/models/login-model';
+import { RegisterRequest, RegistrationResponse } from '@core/models/register-model';
 import { TokenStorageService } from '@core/services/token-storage.service';
+import { SignalrService } from '@core/services/signalr.service';
+import { getHttpStatus } from '@core/utils/http-error.util';
 import { environment } from '@environments/environment';
 
 /**
@@ -38,6 +41,7 @@ export type CurrentUser = {
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenStorage = inject(TokenStorageService);
+  private readonly signalrService = inject(SignalrService);
   private readonly registerEndpoint = `${environment.apiBaseUrl}/auth/register`;
   private readonly loginEndpoint = `${environment.apiBaseUrl}/auth/login`;
   private readonly refreshEndpoint = `${environment.apiBaseUrl}/auth/refresh`;
@@ -96,13 +100,15 @@ export class AuthService {
    * Registers a new user account.
    *
    * @param payload Registration form values.
-   * @returns The backend registration request.
+   * @returns The backend response containing registration and resend cooldown data.
    */
-  register(payload: RegisterRequest): Observable<unknown> {
+  register(payload: RegisterRequest): Observable<RegistrationResponse> {
     this.isLoading.set(true);
     this.clearError();
 
-    return this.http.post(this.registerEndpoint, payload).pipe(finalize(() => this.isLoading.set(false)));
+    return this.http
+      .post<RegistrationResponse>(this.registerEndpoint, payload)
+      .pipe(finalize(() => this.isLoading.set(false)));
   }
 
   /**
@@ -199,7 +205,7 @@ export class AuthService {
       catchError((error: unknown) => {
         this.currentUser.set(null);
 
-        if (this.getHttpStatus(error) === 401) {
+        if (getHttpStatus(error) === 401) {
           this.clearLocalSession();
           this.setError('Your session has expired. Please log in again.');
         } else {
@@ -229,6 +235,7 @@ export class AuthService {
    * Clears the access token, current user, and authenticated state locally.
    */
   clearLocalSession(): void {
+    this.signalrService.stop().subscribe({ error: (): void => undefined });
     this.tokenStorage.clearToken();
     this.currentUser.set(null);
     this.authenticationStateValue.set(AuthState.Unauthenticated);
@@ -267,11 +274,5 @@ export class AuthService {
     this.tokenStorage.setToken(result.accessToken, result.expiresAt);
     this.authenticationStateValue.set(AuthState.Authenticated);
     this.clearError();
-  }
-
-  private getHttpStatus(error: unknown): number | undefined {
-    return typeof error === 'object' && error !== null && 'status' in error
-      ? (error as { status?: number }).status
-      : undefined;
   }
 }

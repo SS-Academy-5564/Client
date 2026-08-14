@@ -1,0 +1,42 @@
+@use '../email-verification-page' as verification-page;
+
+@include verification-page.styles;
+
+.resend-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  text-align: center;
+}
+
+.resend-text {
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.resend-countdown {
+  color: var(--accent);
+}
+
+.resend-button {
+  padding: 0;
+  border: none;
+  color: var(--accent);
+  background: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
+}

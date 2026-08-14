@@ -1,0 +1,8 @@
+@use '../email-verification-page' as verification-page;
+
+@include verification-page.styles;
+
+.verification-spinner {
+  margin-bottom: 4px;
+  --mat-progress-spinner-active-indicator-color: var(--accent);
+}

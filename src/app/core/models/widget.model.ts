@@ -8,9 +8,10 @@ export type Widget = {
   monitorId: string;
   type: string;
   metric: string;
-  title?: string;
-  subtitle?: string;
+  title?: string | null;
+  subtitle?: string | null;
   timeRange?: string;
+  settings?: string | null;
   serviceName?: string;
   value?: number[];
   chartData?: ChartData;
@@ -25,10 +26,19 @@ export type CreateWidgetRequest = {
   dashboardTabId: string;
   monitorId: string;
   type: string;
+  title: string | null;
+  subtitle: string | null;
+  metric: string;
+  timeRange: string;
+  settings: string | null;
+};
 
-  title?: string;
-  subtitle?: string;
-
+export type UpdateWidgetRequest = {
+  widgetId: string;
+  monitorId: string;
+  type: string;
+  title: string | null;
+  subtitle: string | null;
   metric: string;
   timeRange: string;
   settings: string | null;

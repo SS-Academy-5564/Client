@@ -5,7 +5,11 @@ import { Observable } from 'rxjs';
 import { CreateWidgetRequest, CreateWidgetResult, Widget } from '@core/models/widget.model';
 import { ApiResponse } from '@core/models/api-response';
 import { environment } from '@/environments/environment';
+import { ApiResponse } from '@/app/core/models/api-response';
 
+/**
+ * Communicates with the dashboard widget endpoints.
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -20,6 +24,16 @@ export class WidgetService {
    */
   createWidget(request: CreateWidgetRequest): Observable<CreateWidgetResult> {
     return this.http.post<CreateWidgetResult>(`${this.apiUrl}/widgets`, request);
+  }
+
+  /**
+   * Updates the configuration of an existing widget.
+   *
+   * @param request The updated widget configuration.
+   * @returns An observable that completes when the update finishes.
+   */
+  updateWidget(request: UpdateWidgetRequest): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/widgets/${request.widgetId}`, request);
   }
 
   /**

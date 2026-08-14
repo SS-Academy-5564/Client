@@ -1,0 +1,53 @@
+<div class="page-shell">
+  <div class="logo-container">
+    <app-logo />
+  </div>
+
+  <div class="page-container">
+    <main class="surface-card verification-card">
+      <div aria-hidden="true" class="status-icon status-icon-info">
+        <svg viewBox="0 0 24 24">
+          <rect height="16" rx="2" width="20" x="2" y="4" />
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+        </svg>
+      </div>
+
+      <h1 class="verification-title" i18n="check-email title@@checkEmailTitle">Check your email</h1>
+      <!-- prettier-ignore -->
+      <p class="verification-message" i18n="check-email message@@checkEmailMessage">We sent you a verification email. Open the link in that message to finish creating your Pulse account.</p>
+      <!-- prettier-ignore -->
+      <p class="verification-hint" i18n="check-email hint@@checkEmailHint">If you don't see it, check your spam or junk folder.</p>
+
+      <div class="verification-actions">
+        <app-button
+          buttonType="button"
+          label="Sign in"
+          i18n-label="check-email sign in@@checkEmailSignIn"
+          type="primary"
+          variant="full-width"
+          [routerLink]="routes.LOGIN" />
+      </div>
+
+      <p class="resend-section">
+        <span class="resend-text" i18n="@@emailVerificationResendPrompt">Didn't receive the verification email?</span>
+        @if (resendCountdown() > 0) {
+          <span class="resend-text resend-countdown" i18n="@@emailVerificationResendCountdown">
+            Resend in {{ resendCountdown() | number }}s
+          </span>
+        } @else {
+          <button class="resend-button" type="button" [disabled]="isResending()" (click)="resendEmail()">
+            @if (isResending()) {
+              <ng-container i18n="@@emailVerificationResendSending">Sending…</ng-container>
+            } @else {
+              <ng-container i18n="@@emailVerificationResendButton">Resend Email</ng-container>
+            }
+          </button>
+        }
+      </p>
+
+      @if (resendError(); as error) {
+        <p class="verification-feedback verification-feedback-error" role="alert">{{ error }}</p>
+      }
+    </main>
+  </div>
+</div>

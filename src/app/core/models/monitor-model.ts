@@ -63,3 +63,12 @@ export type MonitorDetail = {
   createdAt: string;
   lastModifiedAt: string;
 };
+
+/** Payload sent by SignalR after a monitor check completes. */
+export type UpdateMonitorPayload = {
+  monitorId: string;
+  currentValue: string | null;
+  lastCheckedAt: string;
+  nextExecutionAt: string;
+  status: string;
+};
