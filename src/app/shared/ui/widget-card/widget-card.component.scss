@@ -39,7 +39,7 @@
 
 .widget-card-heading h3 {
   margin: 0;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   color: #0f172a;
   white-space: nowrap;
@@ -119,6 +119,9 @@
     .trend-period {
       color: #64748b;
       font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &.up .trend-badge {

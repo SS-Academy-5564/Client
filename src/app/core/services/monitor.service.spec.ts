@@ -186,4 +186,35 @@ describe('MonitorService', () => {
 
     expect(errorMessage).toBe('Manual check was already triggered recently. Please wait before trying again.');
   });
+
+  it('should fetch monitors lookup items', (): void => {
+    const lookupData = [
+      { id: 'mon-1', name: 'API Server' },
+      { id: 'mon-2', name: 'Web Server' },
+    ];
+
+    let result: { id: string; name: string }[] | undefined;
+    service.getMonitorsLookup().subscribe((data): void => {
+      result = data;
+    });
+
+    const req = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors/lookup`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ data: lookupData, pagination: null, success: true, errors: [] });
+
+    expect(result).toEqual(lookupData);
+  });
+
+  it('should catch error and return empty array fallback when getMonitorsLookup fails', (): void => {
+    let result: { id: string; name: string }[] | undefined;
+    service.getMonitorsLookup().subscribe((data): void => {
+      result = data;
+    });
+
+    const req = httpTesting.expectOne(`${environment.apiBaseUrl}/monitors/lookup`);
+    req.flush('Error loading lookup', { status: 500, statusText: 'Internal Server Error' });
+
+    expect(result).toEqual([]);
+    expect(service.error()).toBe('Failed to load monitors lookup');
+  });
 });

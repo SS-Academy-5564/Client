@@ -2,6 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WidgetFormComponent } from './widget-form.component';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ActivatedRoute } from '@angular/router';
+import { MonitorLookupDto, MonitorService } from '@core/services/monitor.service';
+import { Observable, of } from 'rxjs';
 
 describe('WidgetFormComponent', () => {
   let fixture: ComponentFixture<WidgetFormComponent>;
@@ -11,6 +13,12 @@ describe('WidgetFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [WidgetFormComponent],
       providers: [
+        {
+          provide: MonitorService,
+          useValue: {
+            getMonitorsLookup: (): Observable<MonitorLookupDto[]> => of([]),
+          },
+        },
         {
           provide: ActivatedRoute,
           useValue: {
@@ -41,6 +49,7 @@ describe('WidgetFormComponent', () => {
     component.created.subscribe(createdSpy);
 
     component.form.setValue({
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response chart',
       subtitle: 'Last 24 hours',
@@ -53,6 +62,7 @@ describe('WidgetFormComponent', () => {
 
     expect(createdSpy).toHaveBeenCalledWith({
       dashboardTabId: '00000000-0000-0000-0000-000000000001',
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response chart',
       subtitle: 'Last 24 hours',
@@ -98,6 +108,7 @@ describe('WidgetFormComponent', () => {
 
   it('should reset form when opened', async () => {
     component.form.patchValue({
+      monitorId: 'mon-1',
       type: 'line-chart',
       metric: 'errors',
       timeRange: '24h',
@@ -109,6 +120,7 @@ describe('WidgetFormComponent', () => {
     await fixture.whenStable();
 
     expect(component.form.value).toEqual({
+      monitorId: '',
       type: '',
       title: null,
       subtitle: null,
@@ -121,6 +133,7 @@ describe('WidgetFormComponent', () => {
   it('should prefill form with widget configuration when editing', async () => {
     fixture.componentRef.setInput('widget', {
       id: '1',
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response chart',
       subtitle: 'Last 24 hours',
@@ -135,6 +148,7 @@ describe('WidgetFormComponent', () => {
     await fixture.whenStable();
 
     expect(component.form.value).toEqual({
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response chart',
       subtitle: 'Last 24 hours',
@@ -151,6 +165,7 @@ describe('WidgetFormComponent', () => {
 
     fixture.componentRef.setInput('widget', {
       id: '1',
+      monitorId: 'mon-1',
       type: 'stat-card',
       title: null,
       subtitle: null,
@@ -165,6 +180,7 @@ describe('WidgetFormComponent', () => {
     await fixture.whenStable();
 
     expect(component.form.value).toEqual({
+      monitorId: 'mon-1',
       type: 'stat-card',
       title: null,
       subtitle: null,
@@ -177,6 +193,7 @@ describe('WidgetFormComponent', () => {
 
     expect(updatedSpy).toHaveBeenCalledWith({
       widgetId: '1',
+      monitorId: 'mon-1',
       type: 'stat-card',
       title: null,
       subtitle: null,
@@ -193,6 +210,7 @@ describe('WidgetFormComponent', () => {
 
     fixture.componentRef.setInput('widget', {
       id: '1',
+      monitorId: 'mon-1',
       type: 'line-chart',
       metric: 'responseTime',
       timeRange: '24h',
@@ -202,6 +220,7 @@ describe('WidgetFormComponent', () => {
     await fixture.whenStable();
 
     component.form.setValue({
+      monitorId: 'mon-1',
       type: 'bar-chart',
       title: 'Updated title',
       subtitle: 'Updated subtitle',
@@ -214,6 +233,7 @@ describe('WidgetFormComponent', () => {
 
     expect(updatedSpy).toHaveBeenCalledWith({
       widgetId: '1',
+      monitorId: 'mon-1',
       type: 'bar-chart',
       title: 'Updated title',
       subtitle: 'Updated subtitle',
@@ -230,6 +250,7 @@ describe('WidgetFormComponent', () => {
 
     fixture.componentRef.setInput('widget', {
       id: '1',
+      monitorId: 'mon-1',
       type: 'line-chart',
       metric: 'responseTime',
       timeRange: '24h',
@@ -239,6 +260,7 @@ describe('WidgetFormComponent', () => {
     await fixture.whenStable();
 
     component.form.reset({
+      monitorId: '',
       type: '',
       metric: '',
       timeRange: '',

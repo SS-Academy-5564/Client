@@ -1,10 +1,10 @@
 <div class="widget-card" [class.widget-card--stat]="widget().type === 'stat-card'">
   <div class="widget-card-header">
     <div class="widget-card-heading">
-      <h3>{{ widget().title || widget().metric }}</h3>
+      <h3 [attr.title]="displayTitle()">{{ displayTitle() }}</h3>
 
       @if (widget().subtitle) {
-        <span class="widget-subtitle">
+        <span class="widget-subtitle" [attr.title]="widget().subtitle">
           {{ widget().subtitle }}
         </span>
       }
@@ -36,7 +36,7 @@
       @case ('stat-card') {
         <div class="widget-stat">
           <div class="stat-value">
-            {{ widget().value ?? '--' }}
+            {{ widget().value?.[0] ?? '--' }}
           </div>
 
           <div [class]="'stat-trend ' + (widget().trendType || 'up')">
@@ -56,10 +56,10 @@
               </span>
             }
 
-            @if (widget().timeRange) {
+            @if (formattedTimeRange()) {
               <span class="trend-period">
                 <span i18n="@@vsLabel">vs</span>
-                {{ widget().timeRange }}
+                {{ formattedTimeRange() }}
               </span>
             }
           </div>

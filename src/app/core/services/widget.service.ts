@@ -2,12 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { CreateWidgetRequest } from '@core/models/widget.model';
-import { CreateWidgetResult } from '@core/models/widget.model';
-import { UpdateWidgetRequest } from '@core/models/widget.model';
-import { Widget } from '@core/models/widget.model';
-import { environment } from '@/environments/environment';
 import { ApiResponse } from '@core/models/api-response';
+import { CreateWidgetRequest, CreateWidgetResult, UpdateWidgetRequest, Widget } from '@core/models/widget.model';
+import { environment } from '@/environments/environment';
 
 /**
  * Communicates with the dashboard widget endpoints.

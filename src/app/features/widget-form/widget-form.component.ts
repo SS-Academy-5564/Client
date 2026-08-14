@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input, output } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -8,6 +9,7 @@ import { ButtonComponent } from '@shared/ui/button/button.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CreateWidgetRequest, UpdateWidgetRequest, Widget } from '@core/models/widget.model';
+import { MonitorService } from '@core/services/monitor.service';
 
 @Component({
   selector: 'app-widget-form',
@@ -27,11 +29,15 @@ import { CreateWidgetRequest, UpdateWidgetRequest, Widget } from '@core/models/w
 })
 export class WidgetFormComponent {
   private readonly fb = inject(FormBuilder);
+  private readonly monitorService = inject(MonitorService);
 
   /** Whether the widget form drawer is open. */
   readonly isOpen = input(false);
   /** The identifier of the dashboard tab the widget belongs to. */
   readonly dashboardTabId = input.required<string>();
+
+  /** Reactive signal containing available monitor lookup items for selection. */
+  readonly monitors = toSignal(this.monitorService.getMonitorsLookup(), { initialValue: [] });
 
   /** The widget being edited; when set, the drawer runs in edit mode. */
   readonly widget = input<Widget | null>(null);
@@ -88,6 +94,7 @@ export class WidgetFormComponent {
 
   /** The widget configuration form. */
   readonly form = this.fb.group({
+    monitorId: this.fb.nonNullable.control('', Validators.required),
     type: this.fb.nonNullable.control('', Validators.required),
     title: [null as string | null],
     subtitle: [null as string | null],
@@ -140,6 +147,7 @@ export class WidgetFormComponent {
   private prepareForm(widget: Widget | null): void {
     if (widget) {
       this.form.patchValue({
+        monitorId: widget.monitorId ?? '',
         type: widget.type,
         title: widget.title ?? null,
         subtitle: widget.subtitle ?? null,
@@ -151,6 +159,7 @@ export class WidgetFormComponent {
     }
 
     this.form.reset({
+      monitorId: '',
       type: '',
       title: null,
       subtitle: null,

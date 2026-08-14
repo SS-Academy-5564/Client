@@ -64,7 +64,7 @@ describe('OverviewComponent', () => {
   });
 
   it('should open widget form for editing with the selected widget', () => {
-    const widget = { id: '1', type: 'stat-card', metric: 'availability' };
+    const widget = { id: '1', monitorId: 'mon-1', type: 'stat-card', metric: 'availability' };
 
     component.editWidget(widget);
 
@@ -73,7 +73,7 @@ describe('OverviewComponent', () => {
   });
 
   it('should cancel editing without calling updateWidget', () => {
-    const widget = { id: '1', type: 'stat-card', metric: 'availability' };
+    const widget = { id: '1', monitorId: 'mon-1', type: 'stat-card', metric: 'availability' };
 
     component.editWidget(widget);
     component.closeWidgetForm();
@@ -86,6 +86,7 @@ describe('OverviewComponent', () => {
   it('should create widget and reload widgets', () => {
     const request = {
       dashboardTabId: '00000000-0000-0000-0000-000000000001',
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response time',
       subtitle: '',
@@ -109,6 +110,7 @@ describe('OverviewComponent', () => {
   it('should update widget and reload widgets', () => {
     const request = {
       widgetId: '1',
+      monitorId: 'mon-1',
       type: 'line-chart',
       title: 'Response time',
       subtitle: '',
@@ -133,16 +135,19 @@ describe('OverviewComponent', () => {
     component._widgets.set([
       {
         id: '1',
+        monitorId: 'mon-1',
         type: 'bar-chart',
         metric: 'requests',
       },
       {
         id: '2',
+        monitorId: 'mon-1',
         type: 'stat-card',
         metric: 'availability',
       },
       {
         id: '3',
+        monitorId: 'mon-1',
         type: 'line-chart',
         metric: 'responseTime',
       },

@@ -13,13 +13,11 @@ describe('WidgetCardComponent', () => {
 
   const mockWidget: Widget = {
     id: '1',
+    monitorId: 'mon-1',
     type: 'line-chart',
     metric: 'ResponseTime',
     title: 'Response Time',
-    chartData: {
-      labels: ['10:00', '10:05'],
-      values: [100, 200],
-    },
+    value: [100, 200],
   };
 
   beforeEach(async () => {
